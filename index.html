@@ -533,7 +533,9 @@ function rugTex(style){                        // flat-colour woven look: concen
   const c=document.createElement('canvas'); c.width=c.height=1024; const g=c.getContext('2d'), K=512;
   const cream='#f1e8d8', terra='#c8714f', sage='#8fa58e', navy='#35506b', blush='#e0b184', ring=function(r0,r1,col){ g.strokeStyle=col; g.lineWidth=(r1-r0)*K; g.beginPath(); g.arc(K,K,(r0+r1)/2*K,0,TAU); g.stroke(); };
   const dots=function(r,n,rad,col){ g.fillStyle=col; for(let i=0;i<n;i++){ const a=i/n*TAU; g.beginPath(); g.arc(K+Math.cos(a)*r*K,K+Math.sin(a)*r*K,rad*K,0,TAU); g.fill(); } };
-  if(style==='rings'){
+  if(style==='plain'){
+    g.fillStyle='#efe6d4'; g.fillRect(0,0,1024,1024);
+  } else if(style==='rings'){
     g.fillStyle=cream; g.fillRect(0,0,1024,1024);
     ring(0.9,1.1,terra); ring(0.84,0.87,navy); dots(0.78,40,0.013,navy); ring(0.68,0.72,sage); ring(0.6,0.62,terra);
     for(let i=0;i<16;i++){ g.fillStyle=i%2?blush:terra; g.beginPath(); g.moveTo(K,K); g.arc(K,K,0.54*K,i/16*TAU,(i+1)/16*TAU); g.closePath(); g.fill(); }
@@ -1132,7 +1134,7 @@ plant(845,1240,1.0);
   fb(x+0.1/S,y,0.56,0.01,0.06,M.sofaD,0.38,false);                           // seam between the seat cushions
   rb(x-0.12/S,y-0.4/S,0.16,0.42,0.4,0.07,M.cushA,0.44,false).rotation.z=0.2;
   rb(x-0.12/S,y+0.45/S,0.16,0.4,0.36,0.07,M.cushB,0.44,false).rotation.z=0.2;
-  roundRug(772,1510,0.95,'rings',24,0.012);
+  roundRug(772,1510,0.95,'plain',24,0.0);
   lb(1,function(){
   rb(772,1510,0.5,0.9,0.03,0.015,M.oak,0.4,true);                           // coffee table, long side parallel to the sofa
   legs(772,1510,0.2,0.38,0.4,0.022,0.014,M.oakD);
