@@ -165,7 +165,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
       <button type="button" class="tog" data-l="1" aria-pressed="true">配置一</button>
       <button type="button" class="tog" data-l="2" aria-pressed="false">配置二（書房＋折疊桌）</button>
     </div>
-    <div class="toggles" id="foldRow" hidden><button id="tFold" class="tog" type="button" aria-pressed="false">折疊桌：展開中</button></div>
+    <div class="toggles" id="foldRow" hidden><button id="tFold" class="tog" type="button" aria-pressed="false">升降桌：茶几模式</button></div>
     <h3>配色</h3>
     <div id="themeBtns" class="seg">
       <button type="button" class="tog" data-t="A" aria-pressed="true">暖色北歐</button>
@@ -1114,10 +1114,11 @@ plant(845,1240,1.0);
   rb(772,1510-0.2/S,0.22,0.3,0.03,0.006,lam(0x8a9a86),0.43,false);           // magazine
   fcyl(772+0.04/S,1510+0.25/S,0.04,0.035,0.43,0.09,M.ceramic,false);         // mug
   });
-  cyl(X(650),Z(1430),0.14,0.14,0,0.02,M.dark,{group:furn,cast:false},16);
-  cyl(X(650),Z(1430),0.011,0.011,0.02,1.45,M.steel,{group:furn,cast:false},8);
-  shade(X(650),Z(1430),0.17,0.14,1.3,1.58);
-  cyl(X(650),Z(1430),0.12,0.12,1.56,1.565,lampMat,{group:furn,cast:false},16);
+  const lx=X(780), lz=Z(1705), fy=-0.05;                                    // floor lamp moved out to the balcony (floor level -5 cm)
+  cyl(lx,lz,0.14,0.14,fy,fy+0.02,M.dark,{group:furn,cast:false},16);
+  cyl(lx,lz,0.011,0.011,fy+0.02,fy+1.45,M.steel,{group:furn,cast:false},8);
+  shade(lx,lz,0.17,0.14,fy+1.3,fy+1.58);
+  cyl(lx,lz,0.12,0.12,fy+1.56,fy+1.565,lampMat,{group:furn,cast:false},16);
 })();
 (function(){                                   // TV board on short legs with three doors, TV on a stand
   const x=840, y=1510;
@@ -1223,28 +1224,28 @@ lb(2,function(){
   furnCols.push({x0:sx0,x1:sx1,z0:sz0,z1:sz1,kind:'f'});
   rb(500,1245,1.5,1.0,0.012,0.006,M.rug,0,false);                                    // floor rug
   plant(580,1290,0.8);
-  /* folding table in the living room: two leaves hinged at the middle, legs fold flat, stack drops to the floor */
+  /* lift-top table in the living room: a coffee table that rises to dining height while two leaves slide apart and a centre leaf pops up */
   const G=new THREE.Group(); G.position.set(X(772),0,Z(1510)); scene.add(G);
-  const topG=new THREE.BoxGeometry(0.65,0.03,0.6); fitUV(topG,0.65,0.03,0.6);
-  const legG=new THREE.BoxGeometry(0.04,0.34,0.04);
-  const mk=function(geo,mat,x,y,z,par){ const m=new THREE.Mesh(geo,mat); m.position.set(x,y,z); m.castShadow=true; m.receiveShadow=true; par.add(m); return m; };
-  mk(topG,M.oak,0,0.365,-0.3,G);
-  const legsA=[], legsB=[], B=new THREE.Group(); B.position.set(0,0.38,0); G.add(B);
-  mk(topG,M.oak,0,-0.015,0.3,B);
-  [-0.26,0.26].forEach(function(x){
-    const pa=new THREE.Group(); pa.position.set(x,0.35,-0.55); G.add(pa); mk(legG,M.oakD,0,-0.17,0,pa); legsA.push(pa);
-    const pb=new THREE.Group(); pb.position.set(x,-0.03,0.55); B.add(pb); mk(legG,M.oakD,0,-0.17,0,pb); legsB.push(pb);
-  });
-  const col={x0:X(772)-0.35,x1:X(772)+0.35,z0:Z(1510)-0.6,z1:Z(1510)+0.6,kind:'f'}; furnCols.push(col);
-  const book=mk(new THREE.BoxGeometry(0.1,0.06,0.1),M.cushB,0.2,0.41,-0.3,G);   // a book on the table
+  const lg=function(w,h,d){ const g=new THREE.BoxGeometry(w,h,d); fitUV(g,w,h,d); return g; };
+  const mkm=function(geo,mat,par){ const m=new THREE.Mesh(geo,mat); m.castShadow=true; m.receiveShadow=true; par.add(m); return m; };
+  const LA=new THREE.Group(), LB=new THREE.Group(); G.add(LA); G.add(LB);
+  const mA=mkm(lg(0.5,0.03,0.5),M.oak,LA), mB=mkm(lg(0.5,0.03,0.5),M.oak,LB), mC=mkm(lg(0.5,0.03,0.4),M.oak,G);
+  const legs4=[]; [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(c){ const l=mkm(new THREE.BoxGeometry(0.045,1,0.045),M.oakD,G); l.userData.c=c; legs4.push(l); });
+  const col={x0:0,x1:0,z0:0,z1:0,kind:'f'}; furnCols.push(col);
+  const book=mkm(new THREE.BoxGeometry(0.12,0.03,0.18),M.cushB,LA); book.position.set(0.03,0.03,-0.12);   // a book rides on the table
+  const cup=mkm(new THREE.CylinderGeometry(0.04,0.035,0.09,14),M.ceramic,LB); cup.position.set(-0.05,0.06,0.1);
+  const ss=function(x){ x=clamp(x,0,1); return x*x*(3-2*x); };
   foldApply=function(t){
-    const f1=clamp(t/0.3,0,1), f2=clamp((t-0.3)/0.4,0,1), f3=clamp((t-0.7)/0.3,0,1);
-    legsA.forEach(function(l){ l.rotation.x=-Math.PI/2*f1; }); legsB.forEach(function(l){ l.rotation.x=Math.PI/2*f1; });
-    B.rotation.x=-Math.PI*f2; G.position.y=-0.31*f3; book.visible=f2<0.05;
-    const folded=f2>0.5;
-    col.z0=Z(1510)-0.6; col.z1=folded?Z(1510):Z(1510)+0.6;
+    const e1=ss(t/0.5), e2=ss((t-0.35)/0.65), topY=0.40+0.32*e1, gap=0.4*e2, sx=1+0.4*e2, half=0.25*sx;
+    LA.position.set(0,topY-0.015,-(0.25+gap/2)); LB.position.set(0,topY-0.015,0.25+gap/2);
+    mA.scale.x=sx; mB.scale.x=sx; mC.scale.x=sx;
+    const rise=ss((e2-0.55)/0.35); mC.visible=e2>0.02; mC.position.set(0,topY-0.015-0.05*(1-rise),0);
+    const h=topY-0.03;
+    legs4.forEach(function(l){ const c=l.userData.c; l.scale.y=h; l.position.set(c[0]*(half-0.05),h/2,c[1]*(0.5+gap/2-0.05)); });
+    col.x0=X(772)-half; col.x1=X(772)+half; col.z0=Z(1510)-0.5-gap/2; col.z1=Z(1510)+0.5+gap/2;
     renderer.shadowMap.needsUpdate=true;
   };
+  foldApply(0);
 });
 
 /* ---------- ceiling lights: flush domes, the main rooms also get a warm point light ---------- */
@@ -1665,7 +1666,7 @@ function setDoor(d,open,quiet){
 const things=doors.map(function(d){
   return {pt:d.mid, label:function(){ return d.kind==='slide'?(d.open?'拉上拉門':'拉開拉門'):(d.open?'關門':'開門'); }, act:function(){ setDoor(d,!d.open); }};
 });
-things.push({pt:[772,1510], on:function(){return curLayout===2;}, label:function(){ return foldTarget?'展開桌子':'折起桌子'; }, act:function(){ foldTarget=foldTarget?0:1; syncFold(); }});
+things.push({pt:[772,1510], on:function(){return curLayout===2;}, label:function(){ return foldTarget?'降成茶几':'升成餐桌'; }, act:function(){ foldTarget=foldTarget?0:1; syncFold(); }});
 things.push({seg:[X(XR),Z(1315),X(XR),Z(1550)], label:function(){ return ['拉開一扇','全部拉開','拉上拉門'][partState]; }, act:function(){ setPart((partState+1)%3); }});
 function thingVec(t){
   if(!t.seg) return [t.pt[0]-player.x,t.pt[1]-player.z];
@@ -1779,7 +1780,7 @@ function tick(now){
   requestAnimationFrame(tick);
   const t=now||last, dt=Math.min(0.05,(t-last)/1000)||0.016; last=t; frame++;
   updateDoors(dt);
-  if(foldT!==foldTarget){ foldT=foldTarget>foldT?Math.min(foldTarget,foldT+dt/1.4):Math.max(foldTarget,foldT-dt/1.4); foldApply(foldT); }
+  if(foldT!==foldTarget){ foldT=foldTarget>foldT?Math.min(foldTarget,foldT+dt/2.2):Math.max(foldTarget,foldT-dt/2.2); foldApply(foldT); }
   stepPlayer(dt);
   player.camY+=(floorY(player.x,player.z)-player.camY)*Math.min(1,dt*9);
   updateCamera();
@@ -1798,7 +1799,7 @@ function tick(now){
 }
 /* ---------- furniture layouts ---------- */
 const ROOM2=ROOMS.filter(function(r){return r.n==='洋室 (2)';})[0], layBtns=Array.prototype.slice.call($('layBtns').querySelectorAll('button')), foldBtn=$('tFold');
-function syncFold(){ foldBtn.textContent=foldTarget?'折疊桌：已收合':'折疊桌：展開中'; foldBtn.setAttribute('aria-pressed',String(!!foldTarget)); updateAct(); }
+function syncFold(){ foldBtn.textContent=foldTarget?'升降桌：餐桌模式':'升降桌：茶几模式'; foldBtn.setAttribute('aria-pressed',String(!!foldTarget)); updateAct(); }
 function setLayout(n){
   curLayout=n;
   layObjs.forEach(function(o){ o.visible=(o.userData.lay===n); });
