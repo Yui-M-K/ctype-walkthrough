@@ -281,7 +281,7 @@ const fabricTex=noiseTex(128,128,90,false);
 function makeWood(){
   const c=document.createElement('canvas'); c.width=1024; c.height=512; const g=c.getContext('2d');
   const rows=3, rh=512/rows, offs=[0,0.38,0.73];
-  const base=function(){ return 'hsl('+(30+rnd()*6)+','+(38+rnd()*8)+'%,'+(58+rnd()*8)+'%)'; };
+  const base=function(){ return 'hsl('+(31+rnd()*6)+','+(32+rnd()*8)+'%,'+(68+rnd()*8)+'%)'; };
   for(let r=0;r<rows;r++){
     const y=r*rh, o=Math.floor(offs[r]*1024);
     g.fillStyle=base(); g.fillRect(o,y,1024-o,rh);
@@ -317,8 +317,8 @@ const FL={
 const WT=[1.818,0.909], T06=[0.6,0.6], T1=[1,1];
 const fab=function(c,o){ return lam(c,Object.assign({bumpMap:fabricTex,bumpScale:0.004,roughness:1},o||{})); };
 const M={
-  wall:lam(0xf3f0ea,{map:wallTex,bumpMap:wallTex,bumpScale:0.0015,roughness:0.9}), ceil:lam(0xfcfcfa,{emissive:0x2e2e2c}),
-  frame:lam(0xcdd1d6,{roughness:0.5}), conc:lam(0xb4b1aa), white:lam(0xf6f6f4,{roughness:0.3}), trim:lam(0xfbfaf7,{roughness:0.5}),
+  wall:lam(0xf3f0ea,{map:wallTex,bumpMap:wallTex,bumpScale:0.0015,roughness:0.9}), ceil:lam(0xf2ece0,{emissive:0x2b2720}),
+  frame:lam(0xe9e5dc,{roughness:0.5}), conc:lam(0xb4b1aa), white:lam(0xf6f6f4,{roughness:0.3}), trim:lam(0xfbfaf7,{roughness:0.5}),
   dark:lam(0x2a2d32), black:lam(0x16181b,{roughness:0.4}), steel:lam(0x8d949c,{metalness:0.9,roughness:0.25,envMapIntensity:1}),
   entry:lam(0x3f444a,{metalness:0.4,roughness:0.45}), door:lam(0xe4d2b4,{roughness:0.55}),
   wood:lam(0xcfae82,{roughness:0.55}), woodD:lam(0x8d6a47,{roughness:0.6}),
@@ -329,7 +329,7 @@ const M={
   railGlass:lam(0xbcd6cc,{transparent:true,opacity:0.24,side:THREE.DoubleSide,depthWrite:false,roughness:0.05,envMapIntensity:1}),
   ghost:lam(0x8fc7f2,{transparent:true,opacity:0.2,depthWrite:false}),
   sofa:fab(0x7f90a5), sofaD:fab(0x6b7b8f), bedA:fab(0xe9eef3), bedB:fab(0xb8c4d2), pillow:fab(0xffffff),
-  rug:fab(0xb9b0a3,{bumpScale:0.008}), linen:fab(0xf0ebe2,{side:THREE.DoubleSide,bumpScale:0.002}),
+  rug:fab(0xb9b0a3,{bumpScale:0.008}), linen:fab(0xe9dfcd,{side:THREE.DoubleSide,bumpScale:0.002}),
   cushA:fab(0xc9b27f), cushB:fab(0x5f6f82), leaf:lam(0x4f7a46), leafL:lam(0x6f9a5b), pot:lam(0xb8aa98,{roughness:0.7}),
   tv:lam(0x15171a,{roughness:0.2,metalness:0.3}), chair:lam(0xc9a27a,{roughness:0.55}), rail:lam(0xe2e4e6),
   mirror:lam(0xdfe8ec,{metalness:1,roughness:0.03,envMapIntensity:1}), fridge:lam(0xe6e9ec,{roughness:0.35,metalness:0.2}),
@@ -533,9 +533,9 @@ function mirror(cx,cz,w,h,yc,rotY){           // planar reflection (after three.
   const rt=new THREE.WebGLRenderTarget(384,384); rt.texture.encoding=renderer.outputEncoding;
   const vcam=new THREE.PerspectiveCamera(), tm=new THREE.Matrix4();
   const mat=new THREE.ShaderMaterial({
-    uniforms:{tDiffuse:{value:rt.texture},textureMatrix:{value:tm},tint:{value:new THREE.Color(0xd8e2e6).convertSRGBToLinear()}},
+    uniforms:{tDiffuse:{value:rt.texture},textureMatrix:{value:tm},ready:{value:0},tint:{value:new THREE.Color(0xd8e2e6).convertSRGBToLinear()}},
     vertexShader:'uniform mat4 textureMatrix; varying vec4 vUv; void main(){ vUv=textureMatrix*vec4(position,1.0); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }',
-    fragmentShader:'#include <common>\nuniform sampler2D tDiffuse; uniform vec3 tint; varying vec4 vUv;\nvoid main(){ vec4 b=sRGBToLinear(texture2DProj(tDiffuse,vUv)); gl_FragColor=vec4(mix(b.rgb,b.rgb*tint,0.3),1.0);\n#include <encodings_fragment>\n}'
+    fragmentShader:'#include <common>\nuniform sampler2D tDiffuse; uniform vec3 tint; uniform float ready; varying vec4 vUv;\nvoid main(){ vec4 b=ready>0.5?sRGBToLinear(texture2DProj(tDiffuse,vUv)):vec4(tint*0.9,1.0); gl_FragColor=vec4(mix(b.rgb,b.rgb*tint,0.3),1.0);\n#include <encodings_fragment>\n}'
   });
   mat.toneMapped=false;
   const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),mat);
@@ -563,6 +563,7 @@ function mirror(cx,cz,w,h,yc,rotY){           // planar reflection (after three.
     const prevRT=rd.getRenderTarget(), prevAuto=rd.shadowMap.autoUpdate;
     rd.shadowMap.autoUpdate=false; rd.setRenderTarget(rt); rd.render(sc,vcam);
     rd.setRenderTarget(prevRT); rd.shadowMap.autoUpdate=prevAuto;
+    mat.uniforms.ready.value=1;
     m.visible=true;
   };
   return place(m,{pick:false,cast:false,recv:false});
@@ -660,7 +661,7 @@ function wall(d){
     let x0,x1,z0,z1;
     if(horiz){ x0=X(p.s); x1=X(p.e); z0=Z(c)-t/2; z1=Z(c)+t/2; }
     else { x0=X(c)-t/2; x1=X(c)+t/2; z0=Z(p.s); z1=Z(p.e); }
-    box(x0,x1,z0,z1,p.b,p.u,M.wall);
+    box(x0,x1,z0,z1,p.b,p.u,wallFaces(horiz,c,t,p));
     if(p.col) addCol(x0,x1,z0,z1,p.col);
     if((p.e-p.s)*S<0.06) return;
     sides.forEach(function(s){ trims(horiz,x0,x1,z0,z1,s,p.b===BASE,p.u===h,h); });
@@ -713,6 +714,31 @@ const XR=616;                                  // room 1 / LDK partition sits 2,
 const BAY={ax:457,ay:756,cx:535,cy:805};       // utility room: angled window bay between the NW pilaster face and the north wall line
 function inBay(px,py){ return px>=BAY.ax&&py<=BAY.cy&&py>=BAY.ay+(px-BAY.ax)*(BAY.cy-BAY.ay)/(BAY.cx-BAY.ax); }
 
+/* ---------- wall palette: warm Scandinavian, one accent wall per main room ---------- */
+const WC={oat:0xe6dccb, sage:0xa9b8a3, mist:0xb9c4cf, peach:0xe6c7b0, hall:0xe2d8c6, genkan:0xd9cdb9, utility:0xe9e0d1, wc:0xd9dcd8, bath:0xdfe8ec, dress:0xe7e2d8, outside:0xd8d3c8};
+const wallMatCache={};
+function wallMat(c){ return wallMatCache[c]||(wallMatCache[c]=lam(c,{map:wallTex,bumpMap:wallTex,bumpScale:0.0015,roughness:0.9})); }
+M.wall=wallMat(WC.oat);
+function wallColorAt(px,py){                   // colour of the room that contains this plan point
+  if(px>=XC&&px<XE&&py>=806&&py<928) return WC.bath;
+  if(px>=XC&&px<XE&&py>=928&&py<999) return WC.dress;
+  if(px>=470&&px<XP&&py>=1020&&py<1100) return WC.wc;
+  if(px>=406&&px<XP&&py>=805&&py<1048) return WC.utility;
+  if(px>=406&&px<XP&&py>=1100&&py<1310.6) return WC.peach;
+  if(px>=406&&px<XR&&py>=1310.6&&py<1330) return WC.mist;          // wall behind the bed head
+  if(px>=406&&px<XR&&py>=1310.6&&py<=YB) return WC.oat;
+  if(px>=XP&&px<XC&&py>=800&&py<1027) return WC.hall;
+  if(px>=601&&px<=800&&py>=713&&py<806) return WC.genkan;
+  if(px>XE-30&&px<XE&&py>=1230&&py<=YB) return WC.sage;            // TV wall in the living area
+  if(px>=XP&&px<XE&&py>=999&&py<=YB) return WC.oat;
+  return WC.outside;
+}
+function wallFaces(horiz,c,t,p){               // BoxGeometry face order: +x -x +y -y +z -z
+  const mid=(p.s+p.e)/2, off=t/2/S+5, e=wallMat(WC.outside);
+  const neg=wallMat(wallColorAt(horiz?mid:c-off,horiz?c-off:mid)), pos=wallMat(wallColorAt(horiz?mid:c+off,horiz?c+off:mid));
+  return horiz?[e,e,e,e,pos,neg]:[pos,neg,e,e,e,e];
+}
+
 /* ---------- floors ---------- */
 floor(406,805,XP,1020,FL.wood,WT,0,'#ecdcc3');                 // utility room
 floor(406,1020,470,1047,FL.wood,WT,0,'#ecdcc3');
@@ -736,8 +762,14 @@ solid(XP,797,XS,800.5,-0.15,-0.002,M.wood,null);
 
 /* ---------- walls ---------- */
 const WALLS=[
-  {x0:XW,y0:797,x1:XW,y1:1597,t:0.2,trimSide:1},
-  {x0:XE,y0:705,x1:XE,y1:1597,t:0.2,trimSide:-1},
+  {x0:XW,y0:797,x1:XW,y1:1100,t:0.2,trimSide:1},
+  {x0:XW,y0:1100,x1:XW,y1:1310.6,t:0.2,trimSide:1},
+  {x0:XW,y0:1310.6,x1:XW,y1:1597,t:0.2,trimSide:1},
+  {x0:XE,y0:705,x1:XE,y1:806,t:0.2,trimSide:-1},
+  {x0:XE,y0:806,x1:XE,y1:928,t:0.2,trimSide:-1},
+  {x0:XE,y0:928,x1:XE,y1:999,t:0.2,trimSide:-1},
+  {x0:XE,y0:999,x1:XE,y1:1230,t:0.2,trimSide:-1},
+  {x0:XE,y0:1230,x1:XE,y1:1597,t:0.2,trimSide:-1},
   {x0:397,y0:YB,x1:875,y1:YB,t:0.2,trimSide:-1,open:[
     {a:500,b:609,sill:0,head:2.0,kind:'slider'},
     {a:624,b:770,sill:0,head:2.0,kind:'slider'}]},
@@ -746,9 +778,11 @@ const WALLS=[
   {x0:601,y0:705,x1:601,y1:805,t:0.2,trimSide:1},
   {x0:593,y0:713,x1:866,y1:713,t:0.2,trimSide:1,open:[{a:628,b:696,sill:0,head:2.05,kind:'door'}]},
   {x0:XS,y0:713,x1:XS,y1:806,t:0.1,open:[{a:727,b:782,sill:0,head:2.0,kind:'open'}]},
-  {x0:XP,y0:805,x1:XP,y1:1310.6,t:0.1,open:[
+  {x0:XP,y0:805,x1:XP,y1:1020,t:0.1,open:[
     {a:822,b:957,sill:0,head:H,kind:'niche'},               // washbasin alcove, open to the hallway
-    {a:957,b:1018,sill:0,head:2.0,kind:'open'},
+    {a:957,b:1018,sill:0,head:2.0,kind:'open'}]},
+  {x0:XP,y0:1020,x1:XP,y1:1100,t:0.1},
+  {x0:XP,y0:1100,x1:XP,y1:1310.6,t:0.1,open:[
     {a:1208,b:1290,sill:0,head:2.0,kind:'open'}]},
   {x0:560,y0:822,x1:560,y1:957,t:0.1},                      // back wall of the washbasin alcove
   {x0:556,y0:822,x1:609,y1:822,t:0.1},
@@ -758,7 +792,9 @@ const WALLS=[
   {x0:470,y0:1020,x1:XP,y1:1020,t:0.1,open:[{a:551,b:600,sill:0,head:2.0,kind:'open'}]},
   {x0:470,y0:1020,x1:470,y1:1100,t:0.1},
   {x0:XP,y0:1027,x1:XC,y1:1027,t:0.1,open:[{a:622,b:690,sill:0,head:2.0,kind:'open'}]},
-  {x0:XC,y0:806,x1:XC,y1:1027,t:0.1,open:[{a:934,b:996,sill:0,head:1.95,kind:'open'}]},
+  {x0:XC,y0:806,x1:XC,y1:928,t:0.1},
+  {x0:XC,y0:928,x1:XC,y1:999,t:0.1,open:[{a:934,b:996,sill:0,head:1.95,kind:'open'}]},
+  {x0:XC,y0:999,x1:XC,y1:1027,t:0.1},
   {x0:XC,y0:806,x1:XE,y1:806,t:0.12},
   {x0:XC,y0:928,x1:XE,y1:928,t:0.1,open:[{a:716,b:772,sill:0,head:1.9,kind:'open'}]},
   {x0:XC,y0:999,x1:XE,y1:999,t:0.1},
