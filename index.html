@@ -179,7 +179,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
     <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿（往哪個方向拖就往哪走），兩指一起拖曳可轉向與抬頭低頭，左下搖桿也能用；電腦：滑鼠拖曳轉向，右下「俯瞰」可看整體格局（電腦可用 WASD 與方向鍵，Shift 加速）。走近門並面向它，畫面下方會出現開關按鈕（電腦可按 F）。畫面下方數字是視線正前方到牆或家具的距離。手機橫向握持時視野較寬。</p>
-    <p class="help"><b>比例參考：</b>沙發 160 cm、餐桌 140 × 80 cm、雙人床 140 × 200 cm、單人床 97 × 195 cm、天花板 2.40 m。</p>
+    <p class="help"><b>比例參考：</b>沙發 160 cm、餐桌 140 × 80 cm、Queen 床 160 × 195 cm、單人床 97 × 195 cm、電視 56 吋（約 124 × 70 cm）、天花板 2.40 m。</p>
     <p class="help"><b>注意：</b>牆、門、窗、浴室與廚房設備的位置依圖面尺寸換算，天花板高度、門的寬度、家具與日照方向是推測，可能與實際不同。走廊旁的檯面在圖面上標為「上部カウンター／下部物入」，此處依其輪廓畫成洗面檯與鏡櫃，屬推測。簽約前請以建商的正式圖面與現場為準。</p>
   </div>
 </div>
@@ -1093,8 +1093,8 @@ function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:f
   cabDoors('z',Z(y)-0.68,Z(y)+0.68,X(x)-0.2,-1,0.1,0.42,3,false,M.oakD,furn);
   rb(x,y,0.22,0.5,0.015,0.005,M.black,0.44,false);
   fb(x,y,0.04,0.12,0.12,M.black,0.45,false);
-  fb(842,1510,0.05,1.0,0.6,M.tv,0.56,false);
-  fb(841.5,1510,0.005,0.94,0.54,new THREE.MeshStandardMaterial({color:0x0a0d12,roughness:0.1,metalness:0.4,emissive:new THREE.Color(0x101624)}),0.59,false);
+  fb(842,1510,0.05,1.26,0.73,M.tv,0.56,false);                              // 56-inch 16:9: 124 x 70 cm panel
+  fb(841.5,1510,0.005,1.2,0.67,new THREE.MeshStandardMaterial({color:0x0a0d12,roughness:0.1,metalness:0.4,emissive:new THREE.Color(0x101624)}),0.59,false);
 })();
 picture(X(XE)-0.1,Z(1360),0.6,0.45,1.5,-Math.PI/2);
 (function(){                                   // room 1: Japanese queen bed 160 x 195, bedside table and lamp, print, plant
