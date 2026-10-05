@@ -729,7 +729,7 @@ box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.black,{pick:false});
   solid(vx0,vy0,vx1,vy1,0,0.78,M.cab,'x');                                        // cabinet
   box(X(vx0),X(vx1)+0.01,Z(vy0),Z(vy1),0.78,0.81,M.top,{pick:false});              // counter top
   box(X(vx0)+0.02,X(vx1)-0.02,Z(vy0)+0.02,Z(vy1)-0.02,0.4,0.42,M.frame,{pick:false});
-  const bx0=X(vx0)+0.11, bx1=X(vx1)-0.02, bz0=Z(836), bz1=Z(912), bw=0.04, bt=0.93;   // large square basin
+  const bx0=X(vx0)+0.14, bx1=X(vx1)-0.04, bz0=Z(873.6-22.7), bz1=Z(873.6+22.7), bw=0.035, bt=0.93;   // large square basin, about 55 x 36 cm
   rbox(bx0,bx1,bz0,bz1,0.81,bt,0.02,M.ceramic,{pick:false});
   box(bx0+bw,bx1-bw,bz0+bw,bz1-bw,0.86,bt+0.002,M.tubIn,{pick:false,cast:false});
   cyl((bx0+bx1)/2,(bz0+bz1)/2,0.025,0.025,0.862,0.866,M.steel,{pick:false,cast:false},12);   // drain
