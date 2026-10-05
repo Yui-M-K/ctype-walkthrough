@@ -469,6 +469,12 @@ function mirror(cx,cz,w,h,yc,rotY){           // planar reflection (after three.
   };
   return place(m,{pick:false,cast:false,recv:false});
 }
+function slide(xc,a,b,side,h){                 // sliding door standing open: panel parked on the wall just north of the opening, floor track across it
+  const len=(b-a)*S+0.04, x=X(xc)+side*0.065, z1=Z(a)+0.02, z0=z1-len, opt={pick:false};
+  box(x-0.02,x+0.02,z0,z1,0,h,M.door,opt);
+  box(x-0.035,x+0.035,z0,Z(b),0,0.01,M.steel,{pick:false,cast:false});
+  box(x+side*0.025-0.008,x+side*0.025+0.008,z1-0.14,z1-0.04,0.9,1.1,M.steel,{pick:false,cast:false});
+}
 function door(hx,hy,len,ang,h,y0,mat){        // leaf hinged at plan point (hx,hy), swung to direction ang, with a lever handle
   y0=y0||0;
   const ux=Math.cos(ang), uz=-Math.sin(ang), nx=-uz, nz=ux;
@@ -664,10 +670,9 @@ solid(587,921,608.6,956,0,0.95,M.cab,'x');       // counter with storage below
 door(696,713,0.82,Math.PI/2,2.05,-0.15,M.entry); // entrance door, hinged on the SIC side, swings out to the corridor
 door(690,1027,0.82,-Math.PI/2,2.0);              // hallway -> LDK
 door(551,1020,0.6,Math.PI/2,2.0);                // toilet, opens into the utility room
-door(700,727,0.62,-2.2,2.0,-0.15);               // shoe-in closet, opens into the genkan
-door(XP,1290,0.95,Math.PI/2+1.05,2.0);           // room 2
 door(716,928,0.68,1.42,1.9);                     // bath
-door(XC,934,0.73,-0.9,1.95);                     // changing room
+slide(XP,1208,1290,-1,2.0);                      // room 2: sliding door retracted over the wall on the room side
+slide(XC,934,996,-1,1.95);                       // changing room: sliding door retracted over the wall on the hallway side
 
 /* ---------- ceilings ---------- */
 slab(397,797,875,1597);
