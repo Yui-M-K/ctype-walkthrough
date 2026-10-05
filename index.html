@@ -1135,6 +1135,7 @@ const pointLights=[];
 [[655,757],[650,905],[500,900],[540,1060],[770,900],[730,1130,1],[730,1420,1],[505,1210,1],[505,1450,1],[636,1680]].forEach(function(l){
   const m=new THREE.Mesh(lampGeo,lampMat); m.position.set(X(l[0]),H+0.02,Z(l[1])); m.scale.y=0.6; scene.add(m);
   const ring=new THREE.Mesh(new THREE.TorusGeometry(0.15,0.014,8,28),M.lampRim); ring.rotation.x=Math.PI/2; ring.position.set(X(l[0]),H-0.006,Z(l[1])); scene.add(ring);
+  ceilings.push(m,ring);                       // hidden together with the ceiling in the overview
   if(l[2]){ const p=new THREE.PointLight(0xffe2bd,0.35,6,2); p.position.set(X(l[0]),H-0.3,Z(l[1])); scene.add(p); pointLights.push(p); }
 });
 
@@ -1429,17 +1430,17 @@ partBtns.forEach(function(b){ b.addEventListener('click',function(){ setPart(+b.
 /* ---------- colour schemes ---------- */
 const THEMES={
   A:{ wall:{oat:0xdcceb7,sage:0xa3b39d,mist:0xb3bfca,peach:0xe2c0a8,hall:0xd8caB2,genkan:0xd0c3ad,utility:0xe0d4bf,wc:0xd9dcd8,bath:0xdfe8ec,dress:0xe7e2d8,outside:0xd8d3c8},
-      ceil:[0xf5f0e6,0x2b2720], trim:0xfbfaf7, frame:0xe9e5dc, floor:0xc4aa88, floorD:0xb39a78, ft:'A', ftint:0xffffff, ftintD:0xe8e0d6, exposure:1.0, amb:0.48,
-      mat:{oak:0xd6b88e,oakD:0x8f6a49,oakChair:0xcfa77c,chairBack:0xc9a074,sofa:0x7f90a5,sofaD:0x6b7b8f,bedA:0xe9eef3,bedB:0xb8c4d2,cushA:0xc9b27f,cushB:0x5f6f82,
-           linen:0xb98368,rug:0xb9b0a3,door:0xe4d2b4,cab:0xe9e5dc,cabF:0xf4f1ea,top:0xc4c6c8,panel:0xf1efe9} },
+      ceil:[0xf5f0e6,0x2b2720], trim:0xfbfaf7, frame:0xe9e5dc, floor:0xc4aa88, floorD:0xb39a78, ft:'A', wood:'C', ftint:0xffffff, ftintD:0xe8e0d6, exposure:1.0, amb:0.48,
+      mat:{oak:0xf6ead6,oakD:0xc2a37c,oakChair:0xf0dcbc,chairBack:0xe3c9a2,sofa:0x7f90a5,sofaD:0x6b7b8f,bedA:0xe9eef3,bedB:0xb8c4d2,cushA:0xc9b27f,cushB:0x5f6f82,
+           linen:0xb98368,rug:0xb9b0a3,door:0xf2ead8,cab:0xe9e5dc,cabF:0xf4f1ea,top:0xeeeeee,panel:0xf1efe9} },
   B:{ wall:{oat:0xbfb4a1,sage:0x5e4330,mist:0x6f6053,peach:0xb9aa90,hall:0xb3a894,genkan:0xa89c88,utility:0xc2b8a5,wc:0xaeb0a8,bath:0xb7c1c1,dress:0xc0b9ac,outside:0xb5afa3},
-      ceil:[0xe2dbcd,0x211e19], trim:0xd6cebf, frame:0xb9b09d, floor:0x7f6c5a, floorD:0x6a5a4a, ft:'B', ftint:0xa89888, ftintD:0x8e8070, exposure:1.05, amb:0.5,
-      mat:{oak:0x8a6a4a,oakD:0x4f3a2a,oakChair:0x7a5c40,chairBack:0x72563c,sofa:0x5b5a56,sofaD:0x484743,bedA:0xd6d2c8,bedB:0x6a6a64,cushA:0xb5895a,cushB:0x4a4f4a,
-           linen:0x4a423a,rug:0x8d867a,door:0x6b513b,cab:0x4a4036,cabF:0x6a5645,top:0xcfcac0,panel:0xd2c9b8} },
+      ceil:[0xe2dbcd,0x211e19], trim:0xd6cebf, frame:0xb9b09d, floor:0x7f6c5a, floorD:0x6a5a4a, ft:'B', wood:'A', ftint:0xa89888, ftintD:0x8e8070, exposure:1.05, amb:0.5,
+      mat:{oak:0x8a6a50,oakD:0x5a4030,oakChair:0x7e5e46,chairBack:0x72563c,sofa:0x5b5a56,sofaD:0x484743,bedA:0xd6d2c8,bedB:0x6a6a64,cushA:0xb5895a,cushB:0x4a4f4a,
+           linen:0x4a423a,rug:0x8d867a,door:0x7a5e46,cab:0x4a4036,cabF:0x6a5645,top:0xd9d3c9,panel:0xd2c9b8} },
   C:{ wall:{oat:0xf2e6dc,sage:0xaabdcc,mist:0xdfbdb7,peach:0xe2d9e6,hall:0xf4ece4,genkan:0xeadfd2,utility:0xf3ebe0,wc:0xe6e9e6,bath:0xe3edf0,dress:0xf0e6df,outside:0xe0dbd0},
-      ceil:[0xfdf9f3,0x2e2a24], trim:0xffffff, frame:0xf6f2ea, floor:0xe3c9a2, floorD:0xd2b88f, ft:'C', ftint:0xfff2e0, ftintD:0xeee4d2, exposure:1.0, amb:0.5,
-      mat:{oak:0xe6d4b6,oakD:0xbfa98a,oakChair:0xe9d9bf,chairBack:0xe4d3b8,sofa:0xcf9d99,sofaD:0xb98582,bedA:0xf6f1ea,bedB:0xd7c4cc,cushA:0xe6c46f,cushB:0x9fb4c6,
-           linen:0xb4c4d2,rug:0xd9ccc2,door:0xf2ebe0,cab:0xf1ece2,cabF:0xf9f6f0,top:0xe4e0d8,panel:0xfaf6ef} }
+      ceil:[0xfdf9f3,0x2e2a24], trim:0xffffff, frame:0xf6f2ea, floor:0xe3c9a2, floorD:0xd2b88f, ft:'C', wood:'C', ftint:0xfff2e0, ftintD:0xeee4d2, exposure:1.0, amb:0.5,
+      mat:{oak:0xffffff,oakD:0xd6c3a8,oakChair:0xfaf1e2,chairBack:0xe4d3b8,sofa:0xcf9d99,sofaD:0xb98582,bedA:0xf6f1ea,bedB:0xd7c4cc,cushA:0xe6c46f,cushB:0x9fb4c6,
+           linen:0xb4c4d2,rug:0xd9ccc2,door:0xfdf8ee,cab:0xf1ece2,cabF:0xf9f6f0,top:0xffffff,panel:0xfaf6ef} }
 };
 function paint(m,hex){ m.color.setHex(hex).convertSRGBToLinear(); }
 let themeId='A';
@@ -1467,6 +1468,27 @@ function useFloorTex(th){                      // floor planes map 1.818 x 0.909
   c.d=loadTex('floor'+ft+'_diff.jpg',true,1.818/1.7,0.909/1.7,rot,done);
   c.n=loadTex('floor'+ft+'_nor.jpg',false,1.818/1.7,0.909/1.7,rot,done);
 }
+function mapMat(m,base,span,rough){            // photographic colour + normal (+ roughness) map; span = metres covered by one texture tile, uv units are 1 m or the floor tile size
+  loadTex(base+'_diff.jpg',true,1/span,1/span,0,function(t){ m.map=t; m.needsUpdate=true; });
+  loadTex(base+'_nor.jpg',false,1/span,1/span,0,function(t){ m.normalMap=t; m.normalScale.set(0.8,0.8); m.needsUpdate=true; });
+  if(rough) loadTex(base+'_rough.jpg',false,1/span,1/span,0,function(t){ m.roughnessMap=t; m.roughness=1; m.needsUpdate=true; });
+}
+mapMat(FL.bath,'bathtile',1.8/0.6,true);       // floor uv = metres / 0.6, photo tile = 1.8 m (30 cm tiles)
+mapMat(FL.stone,'genkantile',2.0/0.6,true);
+mapMat(FL.balc,'balctile',2.4/0.6);
+mapMat(FL.corr,'corrconc',2.0); paint(FL.corr,0xdedcd8);
+mapMat(FL.wc,'balctile',2.4); paint(FL.wc,0xe8e8e6);
+mapMat(FL.cf,'balctile',2.4); paint(FL.cf,0xe2d8c6);
+mapMat(M.top,'counter',1.2,true);
+mapMat(M.conc,'pilaster',2.0); paint(M.conc,0xdcdad4);
+const woodTexCache={};
+function useWoodTex(th){                       // veneer on tables, chairs, bed frames, doors: warm oak or pale oak
+  const k=th.wood, apply=function(c){ [M.oak,M.oakD,M.oakChair,M.door].forEach(function(m){ m.map=c.d; m.normalMap=c.n; m.normalScale.set(0.5,0.5); m.roughness=0.55; m.needsUpdate=true; }); };
+  let c=woodTexCache[k]; if(c){ if(c.ready) apply(c); return; }
+  c=woodTexCache[k]={ready:false}; let n=0; const span=k==='A'?1.83:1.0;
+  const done=function(){ if(++n===2){ c.ready=true; if(THEMES[themeId].wood===k) apply(c); } };
+  c.d=loadTex('oak'+k+'_diff.jpg',true,1/span,1/span,0,done); c.n=loadTex('oak'+k+'_nor.jpg',false,1/span,1/span,0,done);
+}
 loadTex('wall_nor.jpg',false,0.5,0.5,0,function(t){            // plaster grain on every wall colour
   Object.keys(WM).forEach(function(k){ const m=WM[k]; m.bumpMap=null; m.normalMap=t; m.normalScale.set(0.55,0.55); m.needsUpdate=true; });
 });
@@ -1481,7 +1503,7 @@ function applyTheme(id){
   Object.keys(th.mat).forEach(function(k){ paint(M[k],th.mat[k]); });
   paint(M.ceil,th.ceil[0]); M.ceil.emissive.setHex(th.ceil[1]).convertSRGBToLinear();
   paint(M.trim,th.trim); paint(M.frame,th.frame); paint(FL.wood,th.floor); paint(FL.woodD,th.floorD);
-  useFloorTex(th);
+  useFloorTex(th); useWoodTex(th);
   renderer.toneMappingExposure=th.exposure; amb.intensity=th.amb;
   themeBtns.forEach(function(b){ b.setAttribute('aria-pressed',String(b.getAttribute('data-t')===id)); });
   try{ localStorage.setItem('ctypeTheme',id); }catch(_){}
