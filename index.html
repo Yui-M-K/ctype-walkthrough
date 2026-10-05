@@ -1516,7 +1516,12 @@ mapMat(M.kTile,'wtkitchen',0.9,true);          // kitchen panel: white hexagon m
 mapMat(M.conc,'pilaster',2.0); paint(M.conc,0xdcdad4);
 const woodTexCache={};
 function useWoodTex(th){                       // veneer on tables, chairs, bed frames, doors: warm oak or pale oak
-  const k=th.wood, apply=function(c){ [M.oak,M.oakD,M.oakChair,M.door].forEach(function(m){ m.map=c.d; m.normalMap=c.n; m.normalScale.set(0.5,0.5); m.roughness=0.55; m.needsUpdate=true; }); };
+  const k=th.wood, span0=k==='A'?1.83:1.0, apply=function(c){
+    [M.oak,M.oakD,M.oakChair,M.door].forEach(function(m){ m.map=c.d; m.normalMap=c.n; m.normalScale.set(0.5,0.5); m.roughness=0.55; m.needsUpdate=true; });
+    const bd=c.d.clone(), bn=c.n.clone();       // the curved chair back uses 0..1 uv around a 0.4 x 0.38 m arc
+    [bd,bn].forEach(function(t){ t.repeat.set(0.4/span0,0.38/span0); t.needsUpdate=true; });
+    M.chairBack.map=bd; M.chairBack.normalMap=bn; M.chairBack.normalScale.set(0.5,0.5); M.chairBack.needsUpdate=true;
+  };
   let c=woodTexCache[k]; if(c){ if(c.ready) apply(c); return; }
   c=woodTexCache[k]={ready:false}; let n=0; const span=k==='A'?1.83:1.0;
   const done=function(){ if(++n===2){ c.ready=true; if(THEMES[themeId].wood===k) apply(c); } };
@@ -1528,6 +1533,10 @@ loadTex('wall_nor.jpg',false,0.5,0.5,0,function(t){            // plaster grain 
 loadTex('fabric_nor.jpg',false,3.66,3.66,0,function(t){        // knit / weave on sofa, bedding, curtains, cushions
   fabMats.forEach(function(m){ m.bumpMap=null; m.normalMap=t; m.normalScale.set(0.9,0.9); m.needsUpdate=true; });
 });
+loadTex('fabric_diff.jpg',true,3.66,3.66,0,function(t){        // neutral weave, tinted by each material colour
+  fabMats.forEach(function(m){ if(m!==M.linen){ m.map=t; m.needsUpdate=true; } });
+});
+loadTex('linen_diff.jpg',true,1,1,0,function(t){ M.linen.map=t; M.linen.needsUpdate=true; });   // curtains use 0..1 uv
 const themeBtns=Array.prototype.slice.call($('themeBtns').querySelectorAll('button'));
 function applyTheme(id){
   const th=THEMES[id]; if(!th) return;
