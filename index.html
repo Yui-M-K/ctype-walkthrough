@@ -1212,12 +1212,47 @@ picture(X(XE)-0.1,Z(1360),0.6,0.45,1.5,-Math.PI/2);
   fb(575,1340-0.2/S,0.34,0.01,0.12,M.oakD,0.3,false);                       // drawer seam
   cyl(X(575),Z(1340),0.05,0.05,0.45,0.6,M.steel,{group:furn,cast:false},10);
   shade(X(575),Z(1340),0.13,0.1,0.58,0.75);
+  rb(cx,top+1.78/S,1.66,0.4,0.035,0.015,fab(0xb8745a),0.555,false);                      // throw blanket at the foot
+  rb(cx-0.5/S,top+0.62/S,0.42,0.13,0.36,0.06,M.cushB,0.56,false);                         // two cushions propped against the pillows
+  rb(cx+0.1/S,top+0.62/S,0.4,0.13,0.34,0.06,M.cushA,0.56,false);
   { const bedG=new THREE.Group(), mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); bedG.add(o); }); furn.add(bedG);   // bed + bedside table rotate together: head on the west wall
     const p=[X(cx),X(0)*0+Z(top),X(414.5),Z(1450)], c=0, sn=1, ox=p[2]-p[1], oz=p[3]+p[0];
     bedG.rotation.y=Math.PI/2; bedG.position.set(p[2]-(p[0]*c+p[1]*sn),0,p[3]-(-p[0]*sn+p[1]*c));
     furnCols.slice(c0).forEach(function(k){ const x0=k.z0+ox, x1=k.z1+ox, z0=-k.x1+oz, z1=-k.x0+oz; k.x0=x0; k.x1=x1; k.z0=z0; k.z1=z1; }); }
   picture(X(XW)+0.1,Z(1450),0.5,0.7,1.5,Math.PI/2);
   plant(430,1570,0.8);
+})();
+
+(function(){                                   // master bedroom extras: bed rug, second bedside table, wall shelves, full-length mirror (no clothing storage by request)
+  const rw=2.16, rd=2.55, rcx=507, rcz=1450;                                          // rounded-rectangle wool rug under and around the bed
+  const sh=new THREE.Shape(), r=0.12, hw=rw/2, hd=rd/2;
+  sh.moveTo(-hw+r,-hd); sh.lineTo(hw-r,-hd); sh.quadraticCurveTo(hw,-hd,hw,-hd+r); sh.lineTo(hw,hd-r); sh.quadraticCurveTo(hw,hd,hw-r,hd);
+  sh.lineTo(-hw+r,hd); sh.quadraticCurveTo(-hw,hd,-hw,hd-r); sh.lineTo(-hw,-hd+r); sh.quadraticCurveTo(-hw,-hd,-hw+r,-hd);
+  const c=document.createElement('canvas'); c.width=c.height=1024; const g=c.getContext('2d');
+  g.fillStyle='#e2d8c4'; g.fillRect(0,0,1024,1024);
+  const stripe=function(ins,col,wd){ g.strokeStyle=col; g.lineWidth=wd; g.strokeRect(ins/rw*1024,ins/rd*1024,1024-2*ins/rw*1024,1024-2*ins/rd*1024); };
+  stripe(0.08,'#9fb39c',16); stripe(0.14,'#c8714f',8);
+  for(let i=0;i<6000;i++){ g.fillStyle='rgba('+(rnd()<0.5?'255,255,255':'80,60,40')+','+(0.03+rnd()*0.05)+')'; g.fillRect(rnd()*1024,rnd()*1024,2+rnd()*3,2+rnd()*3); }
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.anisotropy=ANISO; t.repeat.set(1/rw,1/rd); t.offset.set(0.5,0.5);
+  const rug=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:0.012,bevelEnabled:false,curveSegments:6}),[new THREE.MeshStandardMaterial({map:t,roughness:1}),lam(0xcdbfa6,{roughness:1})]);
+  rug.rotation.x=-Math.PI/2; rug.position.set(X(rcx),0.001,Z(rcz)); rug.receiveShadow=true; place(rug,{group:furn,cast:false,pick:false});
+  rb(432,1537,0.4,0.4,0.45,0.02,M.oak,0,true);                                         // second bedside table + lamp + small things
+  fb(432+0.2/S,1537,0.01,0.34,0.12,M.oakD,0.3,false);
+  cyl(X(432),Z(1537),0.05,0.05,0.45,0.6,M.steel,{group:furn,cast:false},10);
+  shade(X(432),Z(1537),0.13,0.1,0.58,0.75);
+  fb(432+0.1/S,1537+0.12/S,0.16,0.12,0.03,fab(0x8a9a86),0.45,false); cyl(X(432)+0.08,Z(1537)+0.1,0.035,0.03,0.48,0.56,M.ceramic,{group:furn,cast:false},12);
+  const zf=Z(1314.8), bk=[0x8d6a47,0x5f6f82,0xb26b5a,0xd8d2c6,0x3f4a58,0x8a9a86].map(function(c){return lam(c,{roughness:0.8});});
+  [[420,490,1.25],[432,478,1.58]].forEach(function(s2,k){                               // floating shelves on the north wall
+    box(X(s2[0]),X(s2[1]),zf,zf+0.17,s2[2],s2[2]+0.025,M.oak,{group:furn,pick:false});
+    if(k===0){ for(let i=0;i<6;i++) box(X(s2[0])+0.05+i*0.045,X(s2[0])+0.05+i*0.045+0.036,zf+0.02,zf+0.15,s2[2]+0.025,s2[2]+0.025+0.17+(i%3)*0.03,bk[i],{group:furn,pick:false,cast:false});
+      cyl(X(s2[1])-0.08,zf+0.085,0.06,0.045,s2[2]+0.025,s2[2]+0.2,M.pot,{group:furn,cast:false},14); cyl(X(s2[1])-0.08,zf+0.085,0.05,0.05,s2[2]+0.2,s2[2]+0.215,M.leafL,{group:furn,cast:false},12); }
+    else { rotBox(X(s2[0])+0.14,zf+0.1,0.2,0.02,s2[2]+0.025,s2[2]+0.25,0,M.woodD,{group:furn,pick:false,cast:false}); box(X(s2[0])+0.05,X(s2[0])+0.23,zf+0.09,zf+0.11,s2[2]+0.05,s2[2]+0.23,lam(0xf3ecdf),{group:furn,pick:false,cast:false}); }
+  });
+})();
+(function(){                                   // full-length mirror in the utility room (the clothes room), west wall between the two racks
+  const mx=X(406)+0.1, mz=Z(982);
+  box(mx,mx+0.03,mz-0.28,mz+0.28,0.12,1.8,M.woodD,{group:furn,pick:false});
+  mirror(mx+0.032,mz,0.5,1.6,0.96,Math.PI/2);
 })();
 lb(1,function(){                               // room 2: single bed 97 x 195, desk with lamp and books, chair
   const cx=456, top=1106, cy=top+0.975/S;
