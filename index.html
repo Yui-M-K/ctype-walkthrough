@@ -1195,7 +1195,7 @@ plant(845,1240,1.0);
   tvG=new THREE.Group(); { const mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); tvG.add(o); }); furn.add(tvG); }
   tvCols0=furnCols.slice(c0); tvCols0.forEach(function(c){ c.lay=1; });
 })();
-picture(X(XE)-0.1,Z(1360),0.6,0.45,1.5,-Math.PI/2);
+picture(X(XE)-0.1,Z(1418),0.6,0.45,1.5,-Math.PI/2);
 (function(){                                   // room 1: Japanese queen bed 160 x 195, bedside table and lamp, print, plant
   const cx=487, top=1316, cy=top+0.995/S, a0=furn.children.length, c0=furnCols.length;
   rb(cx,cy,1.64,1.99,0.2,0.02,M.oakD,0.08,true);                          // frame on short legs
@@ -1253,6 +1253,39 @@ picture(X(XE)-0.1,Z(1360),0.6,0.45,1.5,-Math.PI/2);
   const mx=X(406)+0.1, mz=Z(982);
   box(mx,mx+0.03,mz-0.28,mz+0.28,0.12,1.8,M.woodD,{group:furn,pick:false});
   mirror(mx+0.032,mz,0.5,1.6,0.96,Math.PI/2);
+})();
+(function(){                                   // cat corner: wall steps + perch (living room east wall), feeding nook (by the fridge), automatic litter box (utility room north end)
+  const o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
+  const wf=X(XE)-0.1, sis=lam(0xc9b48b,{roughness:1}), brk=M.steel;
+  [[1268,0.45],[1292,0.8],[1316,1.15],[1340,1.5]].forEach(function(st){                 // 40 x 26 cm steps, 35 cm apart vertically
+    const zc=Z(st[0]), y=st[1];
+    box(wf-0.26,wf,zc-0.2,zc+0.2,y,y+0.03,M.oak,o);
+    box(wf-0.255,wf-0.005,zc-0.195,zc+0.195,y+0.03,y+0.036,sis,oc);
+    [-0.14,0.14].forEach(function(dz){ box(wf-0.012,wf,zc+dz-0.015,zc+dz+0.015,y-0.14,y,brk,oc); box(wf-0.2,wf,zc+dz-0.012,zc+dz+0.012,y-0.025,y,brk,oc); });
+  });
+  const pz=Z(1304), py=1.85;                                                         // 1 m perch with a round cat bed
+  box(wf-0.24,wf,pz-0.5,pz+0.5,py,py+0.03,M.oak,o); box(wf-0.235,wf-0.005,pz-0.495,pz+0.495,py+0.03,py+0.036,sis,oc);
+  [-0.35,0,0.35].forEach(function(dz){ box(wf-0.012,wf,pz+dz-0.015,pz+dz+0.015,py-0.14,py,brk,oc); box(wf-0.2,wf,pz+dz-0.012,pz+dz+0.012,py-0.025,py,brk,oc); });
+  cyl(wf-0.13,pz+0.22,0.2,0.17,py+0.036,py+0.136,lam(0xcbb08c,{roughness:1,side:THREE.DoubleSide}),{group:furn,cast:true,open:true},28);
+  cyl(wf-0.13,pz+0.22,0.17,0.17,py+0.036,py+0.056,fab(0xb98368),oc,28);
+  const mat=rbox(X(836.3),X(857.2),Z(1072),Z(1122),0,0.006,0.008,lam(0x4a5560,{roughness:0.8}),oc);   // feeding mat, 21 x 50 cm
+  const bowl=function(x,z,r,h,col,fill,fillCol,fy){
+    const pts=[[0.001,0],[r*0.72,0],[r,h],[r-0.007,h],[r*0.72-0.007,0.007],[0.001,0.007]].map(function(q){ return new THREE.Vector2(q[0],q[1]); });
+    const m=new THREE.Mesh(new THREE.LatheGeometry(pts,28),lam(col,{roughness:0.25,side:THREE.DoubleSide,envMapIntensity:0.8})); m.position.set(x,0.006,z); place(m,o);
+    cyl(x,z,r-0.012,r-0.012,0.006+fy,0.006+fy+0.004,fill?fillCol:fillCol,oc,24);
+  };
+  bowl(X(847),Z(1088),0.065,0.045,0xe6d9c6,true,lam(0x6b4a35,{roughness:1}),0.022);    // food bowl 13 cm
+  bowl(X(847),Z(1112),0.075,0.055,0xdfe7ea,true,lam(0x9fd3ee,{roughness:0.05,transparent:true,opacity:0.6}),0.038);   // water bowl 15 cm
+  const cx=X(490), cz=Z(840), W=0.58, D=0.65;                                         // automatic litter box, 58 x 65 x 65 cm, opening faces south
+  const wh=lam(0xf4f4f1,{roughness:0.25,envMapIntensity:0.8}), gr=lam(0xc8ccd0,{roughness:0.35});
+  rbox(cx-W/2,cx+W/2,cz-D/2,cz+D/2,0,0.2,0.05,gr,o);
+  const dome=new THREE.Mesh(new THREE.SphereGeometry(0.29,32,20),wh); dome.position.set(cx,0.4,cz); dome.scale.set(1,0.83,1.12); place(dome,o);
+  const hole=new THREE.Mesh(new THREE.CircleGeometry(0.13,28),lam(0x15181b,{roughness:0.3})); hole.scale.y=1.15; hole.position.set(cx,0.4,cz+0.327); place(hole,oc);
+  const rim=new THREE.Mesh(new THREE.TorusGeometry(0.135,0.012,10,32),gr); rim.scale.y=1.15; rim.position.set(cx,0.4,cz+0.327); place(rim,oc);
+  const ramp=new THREE.Mesh(new THREE.BoxGeometry(0.3,0.02,0.28),gr); ramp.position.set(cx,0.1,cz+0.43); ramp.rotation.x=-0.75; place(ramp,o);
+  box(cx+0.19,cx+0.22,cz+0.31,cz+0.33,0.12,0.14,new THREE.MeshBasicMaterial({color:0x66ccff}),oc);   // status LED
+  rbox(cx-0.32,cx+0.32,cz+0.5,cz+0.9,0,0.008,0.01,lam(0x8d949c,{roughness:1}),oc);                   // litter mat
+  furnCols.push({x0:cx-W/2,x1:cx+W/2,z0:cz-D/2,z1:cz+D/2,kind:'f'}); contactShadow(cx-W/2,cx+W/2,cz-D/2,cz+D/2,0,furn);
 })();
 lb(1,function(){                               // room 2: single bed 97 x 195, desk with lamp and books, chair
   const cx=456, top=1106, cy=top+0.975/S;
