@@ -335,12 +335,31 @@ const M={
   mirror:lam(0xdfe8ec,{metalness:1,roughness:0.03,envMapIntensity:1}), fridge:lam(0xe6e9ec,{roughness:0.35,metalness:0.2}),
   tubIn:lam(0xcfe3ee,{roughness:0.15}), slat:lam(0xaaa69d), panel:fab(0xf1efe9,{bumpScale:0.002})
 };
-const clothMats=[0x6d7f99,0xc9b8a0,0x3f4a58,0xd8d2c6,0x8a9a86,0xb26b5a,0xe7e4de].map(function(c){return lam(c);});
+const clothMats=[0x6d7f99,0xc9b8a0,0x3f4a58,0xd8d2c6,0x8a9a86,0xb26b5a,0xe7e4de].map(function(c){return fab(c,{side:THREE.DoubleSide});});
+(function(){                                   // fine wood grain for furniture (the floor keeps its plank texture)
+  const c=document.createElement('canvas'); c.width=512; c.height=256; const g=c.getContext('2d');
+  g.fillStyle='#ffffff'; g.fillRect(0,0,512,256);
+  for(let k=0;k<520;k++){
+    g.strokeStyle='rgba('+(70+rnd()*30)+','+(45+rnd()*20)+',25,'+(0.025+rnd()*0.06)+')'; g.lineWidth=0.6+rnd()*1.2;
+    const y=rnd()*256, x=rnd()*512, l=60+rnd()*260;
+    g.beginPath(); g.moveTo(x,y); g.bezierCurveTo(x+l*0.3,y+(rnd()-0.5)*5,x+l*0.7,y+(rnd()-0.5)*5,x+l,y+(rnd()-0.5)*3); g.stroke();
+  }
+  const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=ANISO; t.encoding=THREE.sRGBEncoding;
+  M.oak=lam(0xd6b88e,{map:t,roughness:0.55});
+  M.oakD=lam(0x8f6a49,{map:t,roughness:0.55});
+  M.oakChair=lam(0xcfa77c,{map:t,roughness:0.55});
+  M.chairBack=lam(0xc9a074,{roughness:0.55,side:THREE.DoubleSide});
+})();
+M.cabF=lam(0xf4f1ea,{roughness:0.4});
+M.hob=lam(0x14171a,{roughness:0.1,metalness:0.3,envMapIntensity:0.9});
+M.washGlass=lam(0x1d2a35,{metalness:0.5,roughness:0.08,envMapIntensity:1});
+M.display=lam(0x9fd6ff,{emissive:0x4aa8e8});
+const shoeMats=[0x2a2a2e,0x6b4a35,0xe8e6e0,0x1f2c44,0x8a8d90,0xa5714a].map(function(c){return lam(c,{roughness:0.7});});
 
 /* ---------- containers ---------- */
 const furn=new THREE.Group(); scene.add(furn);
 const partG=new THREE.Group(); scene.add(partG);
-const furnMeshes=[], furnCols=[], picks=[], colliders=[], ceilings=[], floorRects=[], floorTris=[];
+const furnMeshes=[], furnCols=[], picks=[], colliders=[], ceilings=[], floorRects=[], floorTris=[], detailMeshes=[];
 let partMeshes=[], partCols=[], allCols=[];
 
 function addCol(x0,x1,z0,z1,kind){ colliders.push({x0:x0,x1:x1,z0:z0,z1:z1,kind:kind}); }
@@ -350,6 +369,7 @@ function fitUV(g,w,h,d){                       // box textures repeat once per m
 }
 function place(m,o){
   o=o||{};
+  if(o.detail) detailMeshes.push(m);
   m.castShadow=o.cast!==false; m.receiveShadow=o.recv!==false;
   (o.group||scene).add(m);
   if(o.group===furn) furnMeshes.push(m);
@@ -419,6 +439,69 @@ function plant(cx,cy,sz){
     const m=new THREE.Mesh(new THREE.SphereGeometry((0.09+rnd()*0.08)*sz,10,8),i%2?M.leaf:M.leafL);
     m.position.set(X(cx)+Math.cos(a)*rr,hh,Z(cy)+Math.sin(a)*rr); m.scale.y=1.3; place(m,{group:furn});
   }
+}
+function chair(cx,cy,dz){                      // dining / desk chair; dz = +1 when the back is on the south side
+  rb(cx,cy,0.42,0.42,0.05,0.035,M.oakChair,0.42,true);
+  [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(s){ fcyl(cx+s[0]*0.17/S,cy+s[1]*0.17/S,0.02,0.012,0,0.43,M.oakD,false); });
+  const m=new THREE.Mesh(new THREE.CylinderGeometry(0.27,0.27,0.38,16,1,true,(dz>0?0:Math.PI)-0.75,1.5),M.chairBack);
+  m.position.set(X(cx),0.68,Z(cy)-dz*0.08); place(m,{group:furn});
+}
+function legs(cx,cy,hw,hd,h,r0,r1,mat){
+  [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(s){ fcyl(cx+s[0]*hw/S,cy+s[1]*hd/S,r0,r1,0,h,mat,false); });
+}
+function cabDoors(run,a0,a1,plane,side,y0,y1,n,low,mat,grp){   // door fronts with seams and bar handles on one face of a cabinet
+  const w=(a1-a0)/n, t=0.016, d={pick:false,cast:false,group:grp}, dd={pick:false,cast:false,detail:true,group:grp};
+  const p0=side>0?plane:plane-t, p1=side>0?plane+t:plane, h0=side>0?plane+t:plane-t-0.012, h1=side>0?plane+t+0.012:plane-t;
+  for(let i=0;i<n;i++){
+    const ca=a0+w*i, hx=ca+w*(i%2?0.14:0.86), hy0=low?y0+0.05:y1-0.21, hy1=hy0+0.15;
+    if(run==='x'){
+      box(ca+0.003,ca+w-0.003,p0,p1,y0,y1,mat||M.cabF,d);
+      box(hx-0.008,hx+0.008,h0,h1,hy0,hy1,M.steel,dd);
+    } else {
+      box(p0,p1,ca+0.003,ca+w-0.003,y0,y1,mat||M.cabF,d);
+      box(h0,h1,hx-0.008,hx+0.008,hy0,hy1,M.steel,dd);
+    }
+  }
+}
+function garmentGeo(type,hh,w){
+  hh=Math.max(hh,0.7);
+  const R=[
+    [[0.06,0],[w,-0.05],[w+0.1,-0.17],[w+0.06,-0.23],[w,-0.14],[w-0.015,-hh]],                 // short-sleeve shirt
+    [[0.07,0],[w,-0.05],[w+0.05,-0.4],[w+0.045,-0.62],[w+0.0,-0.62],[w-0.01,-hh]],               // coat with long sleeves
+    [[0.05,0],[w-0.04,-0.06],[w-0.07,-0.3],[w+0.07,-hh]]                                          // flared dress
+  ][type];
+  const s=new THREE.Shape();
+  s.moveTo(R[0][0],R[0][1]); for(let i=1;i<R.length;i++) s.lineTo(R[i][0],R[i][1]);
+  for(let i=R.length-1;i>=0;i--) s.lineTo(-R[i][0],R[i][1]);
+  s.quadraticCurveTo(0,-0.075,R[0][0],R[0][1]);
+  return new THREE.ExtrudeGeometry(s,{depth:0.03,bevelEnabled:true,bevelThickness:0.006,bevelSize:0.006,bevelSegments:1});
+}
+function shelfItems(x0,x1,z0,z1,boards,kind){  // shoes or storage boxes on the lower boards of a shelf
+  const alongZ=(z1-z0)>(x1-x0), depth=alongZ?(x1-x0):(z1-z0), len=alongZ?(z1-z0):(x1-x0), o={group:furn,detail:true,pick:false};
+  const cc=alongZ?(x0+x1)/2:(z0+z1)/2, start=alongZ?z0:x0;
+  boards.forEach(function(y,i){
+    if(i>=boards.length-2) return;
+    const top=y+0.025;
+    if(kind==='shoes'){
+      const L=Math.min(depth-0.05,0.27), step=0.115, n=Math.floor((len-0.05)/step);
+      for(let k=0;k<n;k++){
+        if(rnd()<0.28) continue;
+        const p=start+0.04+step*(k+0.5), mat=shoeMats[Math.floor(rnd()*shoeMats.length)];
+        const a0=cc-L/2, aMid=a0+L*0.4, a1=cc+L/2, w=0.042;     // heel/ankle part, lower toe part, dark sole
+        const part=function(s,e,y0,y1,r,m){ if(alongZ) rbox(s,e,p-w,p+w,y0,y1,r,m,o); else rbox(p-w,p+w,s,e,y0,y1,r,m,o); };
+        part(a0,a1,top,top+0.014,0.006,M.dark);
+        part(a0,aMid+0.02,top+0.014,top+0.095,0.025,mat);
+        part(aMid-0.02,a1,top+0.014,top+0.055,0.022,mat);
+      }
+    } else {
+      const n=Math.max(1,Math.floor(len/0.4)), bw=Math.min(0.34,len/n-0.04), hg=0.2+rnd()*0.08, bd=depth-0.06;
+      for(let k=0;k<n;k++){
+        const p=start+len*(k+0.5)/n, mat=clothMats[(i+k)%clothMats.length];
+        if(alongZ) rbox(cc-bd/2,cc+bd/2,p-bw/2,p+bw/2,top,top+hg,0.025,mat,o);
+        else rbox(p-bw/2,p+bw/2,cc-bd/2,cc+bd/2,top,top+hg,0.025,mat,o);
+      }
+    }
+  });
 }
 function artTex(){
   const c=document.createElement('canvas'); c.width=256; c.height=192; const g=c.getContext('2d');
@@ -535,7 +618,11 @@ function addWindow(c,o,t){
   const fw=0.045, fd=t+0.02;
   const f=function(a0,a1,b0,b1){ box(a0,a1,zc-fd/2,zc+fd/2,b0,b1,M.frame,{pick:false,cast:false}); };
   f(x0,x1,y1-fw,y1); f(x0,x1,y0,y0+fw); f(x0,x0+fw,y0,y1); f(x1-fw,x1,y0,y1);
-  if(slider){ f((x0+x1)/2-fw/2,(x0+x1)/2+fw/2,y0,y1); }
+  if(slider){
+    f((x0+x1)/2-fw/2,(x0+x1)/2+fw/2,y0,y1);
+    box(x0,x1,zc-0.05,zc+0.05,y0,y0+0.014,M.steel,{pick:false,cast:false});                                    // floor track
+    box((x0+x1)/2+0.03,(x0+x1)/2+0.05,zc-0.032,zc+0.032,0.95,1.1,M.steel,{pick:false,cast:false,detail:true});   // crescent lock
+  }
   else { f(x0,x1,y0+0.55,y0+0.55+fw); }
 }
 function frameOpen(horiz,c,t,o){
@@ -587,11 +674,13 @@ function trims(horiz,x0,x1,z0,z1,s,base,top,h){  // skirting board at the floor 
   if(base){ const fy=floorY((a0+a1)/2+(horiz?0:s*0.15),(b0+b1)/2+(horiz?s*0.15:0)); box(a0,a1,b0,b1,fy,fy+0.06,M.trim,opt); }
   if(top) box(a0,a1,b0,b1,h-0.03,h,M.trim,opt);
 }
-function ghost(a,b,c,d,h,boards,rods){
+function ghost(a,b,c,d,h,boards,rods,items){
   const x0=X(Math.min(a,c)), x1=X(Math.max(a,c)), z0=Z(Math.min(b,d)), z1=Z(Math.max(b,d));
   const g=new THREE.Mesh(new THREE.BoxGeometry(x1-x0,h,z1-z0),M.ghost);
   g.position.set((x0+x1)/2,h/2,(z0+z1)/2); scene.add(g);
   boards.forEach(function(y){ box(x0+0.01,x1-0.01,z0+0.01,z1-0.01,y,y+0.025,M.board,{pick:false}); });
+  [[x0+0.012,z0+0.012],[x1-0.012,z0+0.012],[x0+0.012,z1-0.012],[x1-0.012,z1-0.012]].forEach(function(p){ cyl(p[0],p[1],0.01,0.01,0,h,M.steel,{pick:false,cast:false},8); });
+  if(items) shelfItems(x0,x1,z0,z1,boards,items);
   const alongZ=(z1-z0)>(x1-x0), len=alongZ?(z1-z0):(x1-x0);
   rods.forEach(function(y){
     const r=new THREE.Mesh(new THREE.CylinderGeometry(0.014,0.014,len,8),M.steel);
@@ -603,10 +692,18 @@ function ghost(a,b,c,d,h,boards,rods){
 function clothes(a,b,c,d,rodY,hmin,hmax,n){
   const x0=X(Math.min(a,c)), x1=X(Math.max(a,c)), z0=Z(Math.min(b,d)), z1=Z(Math.max(b,d));
   const alongZ=(z1-z0)>(x1-x0);
+  const half=Math.min(0.18,(alongZ?(x1-x0):(z1-z0))*0.46);
   for(let i=0;i<n;i++){
     const t=(i+0.5)/n, hh=hmin+rnd()*(hmax-hmin), mat=clothMats[Math.floor(rnd()*clothMats.length)];
-    if(alongZ){ const cz=z0+(z1-z0)*t, cx=(x0+x1)/2, hw=(x1-x0)*0.38; box(cx-hw,cx+hw,cz-0.025,cz+0.025,rodY-hh,rodY-0.03,mat,{group:furn}); }
-    else { const cx=x0+(x1-x0)*t, cz=(z0+z1)/2, hw=(z1-z0)*0.38; box(cx-0.025,cx+0.025,cz-hw,cz+hw,rodY-hh,rodY-0.03,mat,{group:furn}); }
+    const g=new THREE.Group();
+    g.position.set(alongZ?(x0+x1)/2:x0+(x1-x0)*t, rodY-0.1, alongZ?z0+(z1-z0)*t:(z0+z1)/2);
+    g.rotation.y=alongZ?0:Math.PI/2;
+    const m=new THREE.Mesh(garmentGeo(Math.floor(rnd()*3),hh-0.1,half),mat); m.position.z=-0.015; m.castShadow=true; m.receiveShadow=true; g.add(m);
+    const hook=lbox(g,0.006,0.09,0.006,0,0.055,0,M.steel,false);
+    const armL=lbox(g,0.2,0.006,0.006,-0.09,0.015,0,M.steel,false), armR=lbox(g,0.2,0.006,0.006,0.09,0.015,0,M.steel,false);
+    armL.rotation.z=0.22; armR.rotation.z=-0.22;
+    detailMeshes.push(hook,armL,armR);
+    furn.add(g); g.traverse(function(o){ if(o.isMesh) furnMeshes.push(o); });
   }
 }
 
@@ -744,9 +841,24 @@ solid(862,1688,870,1763,BASE,2.0,M.board,'w');
 /* ---------- fixtures ---------- */
 /* kitchen counter, sink, hob */
 solid(672,1130,857,1213,0,0.84,M.cab,'x');
-box(X(672)-0.01,X(857),Z(1130)-0.01,Z(1213)+0.04,0.84,0.88,M.top,{pick:false});
-box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.black,{pick:false});
-[[803,1148],[829,1148],[816,1166]].forEach(function(p){ cyl(X(p[0]),Z(p[1]),0.07,0.07,0.89,0.9,M.steel,{pick:false,cast:false},16); });   // hob burners
+(function(){                                   // worktop with a real sink cut-out, bowl, drain and hob rings
+  const tx0=X(672)-0.01, tx1=X(857), tz0=Z(1130)-0.01, tz1=Z(1213)+0.04, sx0=X(684), sx1=X(751), sz0=Z(1138), sz1=Z(1180), o={pick:false};
+  box(tx0,sx0,tz0,tz1,0.84,0.88,M.top,o); box(sx1,tx1,tz0,tz1,0.84,0.88,M.top,o);
+  box(sx0,sx1,tz0,sz0,0.84,0.88,M.top,o); box(sx0,sx1,sz1,tz1,0.84,0.88,M.top,o);
+  box(sx0,sx1,sz0,sz1,0.7,0.712,M.sink,{pick:false,cast:false});
+  box(sx0,sx0+0.012,sz0,sz1,0.7,0.88,M.sink,o); box(sx1-0.012,sx1,sz0,sz1,0.7,0.88,M.sink,o);
+  box(sx0,sx1,sz0,sz0+0.012,0.7,0.88,M.sink,o); box(sx0,sx1,sz1-0.012,sz1,0.7,0.88,M.sink,o);
+  box(sx0-0.012,sx1+0.012,sz0-0.012,sz0,0.88,0.886,M.sink,{pick:false,cast:false}); box(sx0-0.012,sx1+0.012,sz1,sz1+0.012,0.88,0.886,M.sink,{pick:false,cast:false});
+  box(sx0-0.012,sx0,sz0,sz1,0.88,0.886,M.sink,{pick:false,cast:false}); box(sx1,sx1+0.012,sz0,sz1,0.88,0.886,M.sink,{pick:false,cast:false});
+  cyl((sx0+sx1)/2,(sz0+sz1)/2,0.03,0.03,0.712,0.716,M.dark,{pick:false,cast:false},14);
+  box(X(672),X(857),Z(1130)-0.012,Z(1130),0,0.1,M.dark,{pick:false,cast:false});           // plinth on the cook's side
+  cabDoors('x',X(672),X(857),Z(1130),-1,0.1,0.83,5,false);
+})();
+box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.hob,{pick:false});
+[[803,1148],[829,1148],[816,1166]].forEach(function(p){
+  const r=new THREE.Mesh(new THREE.TorusGeometry(0.055,0.009,8,20),M.steel); r.rotation.x=Math.PI/2; r.position.set(X(p[0]),0.895,Z(p[1])); scene.add(r);
+  cyl(X(p[0]),Z(p[1]),0.035,0.035,0.89,0.9,M.dark,{pick:false,cast:false},14);
+});
 (function(){
   cyl(X(718),Z(1141),0.012,0.012,0.88,1.1,M.steel,{pick:false},8);
   const sp=cyl(X(718),Z(1141)+0.09,0.009,0.009,1.09,1.1,M.steel,{pick:false},8); sp.rotation.x=Math.PI/2; sp.scale.y=18;
@@ -758,6 +870,8 @@ box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.black,{pick:false});
   const bowl=cyl(X(516),zc,0.19,0.16,0.08,0.38,M.ceramic,{pick:false},24); bowl.scale.set(1.3,1,0.95);
   cyl(X(506),zc,0.12,0.14,0,0.09,M.ceramic,{pick:false},16);
   rbox(X(493),X(541),zc-0.19,zc+0.19,0.38,0.42,0.16,M.ceramic,{pick:false});
+  rbox(X(476)-0.01,X(493)+0.01,Z(1044)-0.01,Z(1077)+0.01,0.78,0.795,0.01,M.ceramic,{pick:false});   // tank lid
+  cyl(X(484),zc,0.025,0.025,0.795,0.81,M.steel,{pick:false,cast:false},12);                          // flush button
   addCol(X(476),X(541),Z(1040),Z(1081),'x');
   box(X(512),X(602),Z(1086),Z(1099),0.9,0.94,M.board,{pick:false});
 })();
@@ -801,26 +915,37 @@ box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.black,{pick:false});
 })();
 /* washing machine */
 solid(780,934,832,986,0,0.98,M.white,'x');
-(function(){
-  const d=new THREE.Mesh(new THREE.CircleGeometry(0.2,24),M.dark);
-  d.rotation.y=-Math.PI/2; d.position.set(X(780)-0.005,0.5,Z(960)); scene.add(d);
+(function(){                                   // front-loader: chrome door ring, dark glass, control strip with dial and display
+  const fx=X(780), fz=Z(960);
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(0.2,0.03,10,28),M.steel); ring.rotation.y=Math.PI/2; ring.position.set(fx-0.012,0.5,fz); scene.add(ring);
+  const gl=new THREE.Mesh(new THREE.CylinderGeometry(0.19,0.17,0.05,26),M.washGlass); gl.rotation.z=Math.PI/2; gl.position.set(fx-0.015,0.5,fz); scene.add(gl);
+  box(fx-0.008,fx,fz-0.24,fz+0.24,0.86,0.95,M.dark,{pick:false,cast:false});
+  const dial=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.025,16),M.steel); dial.rotation.z=Math.PI/2; dial.position.set(fx-0.02,0.905,fz+0.13); scene.add(dial);
+  box(fx-0.014,fx-0.006,fz-0.18,fz-0.06,0.89,0.92,M.display,{pick:false,cast:false});
 })();
 box(X(798),X(833),Z(938),Z(994),1.5,2.1,M.cab,{pick:false});     // wall cabinet above the washer
+cabDoors('z',Z(938),Z(994),X(798),-1,1.5,2.1,2,true);
 rb(806,948,0.3,0.24,0.08,0.03,M.cushA,0.98,false); rb(806,972,0.3,0.24,0.07,0.03,M.pillow,0.98,false);   // folded towels
-/* kitchen: range hood over the hob, wall cabinet beside it */
-box(X(791)-0.05,X(841)+0.05,Z(1136)-0.05,Z(1176)+0.05,1.5,1.58,M.steel,{pick:false});
-box(X(816)-0.15,X(816)+0.15,Z(1156)-0.15,Z(1156)+0.15,1.58,H,M.cab,{pick:false});
+/* kitchen: sloped range hood with chimney over the hob, wall cabinet on the east wall */
+(function(){
+  const hx=X(816), hz=Z(1156);
+  const hood=new THREE.Mesh(new THREE.CylinderGeometry(0.17,0.43,0.2,4),M.steel); hood.rotation.y=Math.PI/4; hood.scale.z=0.75;
+  hood.position.set(hx,1.6,hz); scene.add(hood);
+  box(hx-0.11,hx+0.11,hz-0.1,hz+0.1,1.7,H,M.steel,{pick:false});
+  box(hx-0.3,hx+0.3,hz-0.23,hz+0.23,1.5,1.505,M.dark,{pick:false,cast:false});
+})();
 box(X(XE)-0.1-0.2,X(XE)-0.1,Z(1125),Z(1218),1.5,2.25,M.cab,{pick:false});
-box(X(684),X(751),Z(1138),Z(1180),0.88,0.886,M.sink,{pick:false,cast:false});   // sink
+cabDoors('z',Z(1125),Z(1218),X(XE)-0.3,-1,1.5,2.25,3,true);
 /* shoe-in closet shelves */
-ghost(772,730,797,800,2.2,[0.05,0.45,0.85,1.25,1.65,2.1],[]);
-ghost(707,782,772,802,2.2,[0.05,0.45,0.85,1.25,1.65,2.1],[]);
+ghost(772,730,797,800,2.2,[0.05,0.45,0.85,1.25,1.65,2.1],[],'shoes');
+ghost(707,782,772,802,2.2,[0.05,0.45,0.85,1.25,1.65,2.1],[],'shoes');
 /* utility room: hanging racks and shelves */
 ghost(423,810,457,942,2.0,[0.2,1.9],[1.75,0.95]);
 ghost(524,833,554,948,2.0,[0.2,1.9],[1.75,0.95]);
-ghost(423,1020,470,1047,2.1,[0.05,0.5,0.95,1.4,1.85],[]);
+ghost(423,1020,470,1047,2.1,[0.05,0.5,0.95,1.4,1.85],[],'boxes');
 box(X(423),X(457),Z(810),Z(870),0.74,0.77,M.board,{pick:false});           // work shelf (作業棚)
 box(X(476),X(497),Z(1024),Z(1076),1.45,2.05,M.cab,{pick:false});           // wall cabinet above the toilet tank
+cabDoors('z',Z(1024),Z(1076),X(497),1,1.45,2.05,2,true);
 clothes(423,872,457,942,1.75,0.5,1.0,6);
 clothes(524,833,554,948,1.75,0.5,1.0,10);
 
@@ -835,13 +960,10 @@ function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.linen,{group:f
 })();
 (function(){                                   // dining table 140 x 80, four chairs, pendant lamp
   const cx=770, cy=1330, w=1.4, d=0.8;
-  rb(cx,cy,w,d,0.035,0.015,M.wood,0.70,true);
-  [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(s){ fb(cx+s[0]*(w/2-0.07)/S,cy+s[1]*(d/2-0.07)/S,0.05,0.05,0.7,M.woodD,0,false); });
-  [[745,1289,-1],[800,1289,-1],[745,1371,1],[800,1371,1]].forEach(function(c){
-    rb(c[0],c[1],0.42,0.42,0.045,0.03,M.chair,0.43,true);
-    rb(c[0],c[1]+c[2]*0.19/S,0.4,0.035,0.4,0.015,M.chair,0.47,false);
-    [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(s){ fb(c[0]+s[0]*0.18/S,c[1]+s[1]*0.18/S,0.03,0.03,0.43,M.woodD,0,false); });
-  });
+  rb(cx,cy,w,d,0.035,0.015,M.oak,0.72,true);
+  rb(cx,cy,w-0.18,d-0.18,0.07,0.01,M.oakD,0.65,false);                  // apron under the top
+  legs(cx,cy,w/2-0.07,d/2-0.07,0.72,0.032,0.02,M.oakD);
+  [[745,1289,-1],[800,1289,-1],[745,1371,1],[800,1371,1]].forEach(function(c){ chair(c[0],c[1],c[2]); });
   cyl(X(cx),Z(cy),0.004,0.004,1.75,H,M.dark,{group:furn,cast:false},6);
   shade(X(cx),Z(cy),0.2,0.09,1.6,1.76);
   cyl(X(cx),Z(cy),0.17,0.17,1.605,1.61,lampMat,{group:furn,cast:false},20);
@@ -849,35 +971,53 @@ function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.linen,{group:f
 })();
 (function(){                                   // sofa 160 cm facing the TV, rug, coffee table, floor lamp
   const x=690, y=1510, fx=X(x), fz=Z(y);
-  rb(x,y,0.8,1.6,0.38,0.06,M.sofaD,0,true);
-  rb(x+0.08/S,y-0.33/S,0.62,0.62,0.14,0.07,M.sofa,0.38,false);
-  rb(x+0.08/S,y+0.33/S,0.62,0.62,0.14,0.07,M.sofa,0.38,false);
-  rb(x-0.3/S,y,0.2,1.6,0.5,0.07,M.sofa,0.38,false);
-  rb(x+0.07/S,y-0.72/S,0.64,0.16,0.26,0.06,M.sofa,0.38,false);
-  rb(x+0.07/S,y+0.72/S,0.64,0.16,0.26,0.06,M.sofa,0.38,false);
-  rb(x-0.14/S,y-0.4/S,0.16,0.42,0.42,0.07,M.cushA,0.52,false);
-  rb(x-0.14/S,y+0.45/S,0.16,0.4,0.38,0.07,M.cushB,0.52,false);
+  rb(x,y,0.8,1.6,0.26,0.07,M.sofaD,0.1,true);                              // frame
+  legs(x,y,0.34,0.74,0.1,0.03,0.02,M.oakD);
+  rb(x-0.35/S,y,0.1,1.6,0.52,0.05,M.sofaD,0.1,false);                       // back frame
+  [-1,1].forEach(function(s){
+    rb(x+0.1/S,y+s*0.34/S,0.62,0.62,0.15,0.08,M.sofa,0.36,false);          // seat cushions
+    const bk=rb(x-0.27/S,y+s*0.34/S,0.17,0.62,0.4,0.075,M.sofa,0.5,false); bk.rotation.z=0.13;   // leaning back cushions
+    rb(x,y+s*0.73/S,0.78,0.14,0.36,0.065,M.sofa,0.1,false);                 // arm rests
+  });
+  fb(x+0.1/S,y,0.62,0.01,0.1,M.dark,0.4,false);                             // seam between the seat cushions
+  rb(x-0.12/S,y-0.4/S,0.16,0.42,0.4,0.07,M.cushA,0.5,false).rotation.z=0.2;
+  rb(x-0.12/S,y+0.45/S,0.16,0.4,0.36,0.07,M.cushB,0.5,false).rotation.z=0.2;
   rb(775,1510,1.2,2.0,0.012,0.006,M.rug,0,false);
-  rb(775,1510,0.9,0.5,0.03,0.015,M.wood,0.36,true);
-  fb(775,1510,0.08,0.08,0.36,M.woodD,0,false);
+  rb(775,1510,0.9,0.5,0.03,0.015,M.oak,0.4,true);                           // coffee table
+  legs(775,1510,0.38,0.2,0.4,0.022,0.014,M.oakD);
+  rb(775,1510,0.8,0.4,0.02,0.008,M.oakD,0.12,false);
+  rb(775-0.15/S,1510-0.05/S,0.22,0.3,0.03,0.006,lam(0x8a9a86),0.43,false);   // magazine
+  fcyl(775+0.2/S,1510+0.08/S,0.04,0.035,0.43,0.09,M.ceramic,false);          // mug
   cyl(X(650),Z(1430),0.14,0.14,0,0.02,M.dark,{group:furn,cast:false},16);
   cyl(X(650),Z(1430),0.011,0.011,0.02,1.45,M.steel,{group:furn,cast:false},8);
   shade(X(650),Z(1430),0.17,0.14,1.3,1.58);
   cyl(X(650),Z(1430),0.12,0.12,1.56,1.565,lampMat,{group:furn,cast:false},16);
 })();
-rb(840,1510,0.4,1.4,0.4,0.01,M.woodD,0,true);   // TV board
-fb(842,1510,0.05,1.0,0.6,M.tv,0.55,false);       // TV
-fb(841.5,1510,0.005,0.94,0.54,new THREE.MeshStandardMaterial({color:0x0a0d12,roughness:0.1,metalness:0.4,emissive:new THREE.Color(0x101624)}),0.58,false);
+(function(){                                   // TV board on short legs with three doors, TV on a stand
+  const x=840, y=1510;
+  rb(x,y,0.4,1.4,0.36,0.015,M.oak,0.08,true);
+  legs(x,y,0.15,0.62,0.08,0.03,0.02,M.oakD);
+  cabDoors('z',Z(y)-0.68,Z(y)+0.68,X(x)-0.2,-1,0.1,0.42,3,false,M.oakD,furn);
+  rb(x,y,0.22,0.5,0.015,0.005,M.black,0.44,false);
+  fb(x,y,0.04,0.12,0.12,M.black,0.45,false);
+  fb(842,1510,0.05,1.0,0.6,M.tv,0.56,false);
+  fb(841.5,1510,0.005,0.94,0.54,new THREE.MeshStandardMaterial({color:0x0a0d12,roughness:0.1,metalness:0.4,emissive:new THREE.Color(0x101624)}),0.59,false);
+})();
 picture(X(XE)-0.1,Z(1360),0.6,0.45,1.5,-Math.PI/2);
 (function(){                                   // room 1: double bed 140 x 200, bedside table and lamp, print, plant
   const cx=475, top=1316, cy=top+1.0/S;
-  rb(cx,cy,1.42,2.02,0.22,0.02,M.woodD,0,true);
-  rb(cx,cy,1.38,1.98,0.2,0.06,M.bedA,0.22,false);
-  rb(cx,top+0.03/S,1.42,0.06,0.9,0.02,M.woodD,0,false);
-  rb(cx,top+1.3/S,1.4,1.34,0.1,0.06,M.bedB,0.4,false);
-  rb(cx-0.33/S,top+0.3/S,0.55,0.38,0.14,0.06,M.pillow,0.42,false);
-  rb(cx+0.33/S,top+0.3/S,0.55,0.38,0.14,0.06,M.pillow,0.42,false);
-  rb(560,1340,0.4,0.4,0.45,0.02,M.wood,0,true);
+  rb(cx,cy,1.42,2.02,0.2,0.02,M.oakD,0.08,true);                          // frame on short legs
+  legs(cx,cy,0.65,0.95,0.08,0.03,0.025,M.oakD);
+  rb(cx,cy,1.38,1.98,0.2,0.08,M.bedA,0.28,false);                          // mattress
+  rb(cx,top+0.03/S,1.46,0.06,0.9,0.02,M.oakD,0,false);                     // headboard with an upholstered panel
+  rb(cx,top+0.085/S,1.3,0.05,0.42,0.05,M.sofaD,0.46,false);
+  rb(cx,top+1.32/S,1.42,1.3,0.1,0.06,M.bedB,0.46,false);                   // duvet, draped over both sides
+  fb(cx-0.71/S,top+1.32/S,0.025,1.3,0.22,M.bedB,0.28,false); fb(cx+0.71/S,top+1.32/S,0.025,1.3,0.22,M.bedB,0.28,false);
+  rb(cx,top+0.68/S,1.4,0.2,0.13,0.06,M.bedB,0.47,false);                   // folded top edge
+  rb(cx-0.33/S,top+0.3/S,0.55,0.38,0.15,0.07,M.pillow,0.48,false);
+  rb(cx+0.33/S,top+0.3/S,0.55,0.38,0.15,0.07,M.pillow,0.48,false);
+  rb(560,1340,0.4,0.4,0.45,0.02,M.oak,0,true);
+  fb(560,1340-0.2/S,0.34,0.01,0.12,M.oakD,0.3,false);                       // drawer seam
   cyl(X(560),Z(1340),0.05,0.05,0.45,0.6,M.steel,{group:furn,cast:false},10);
   shade(X(560),Z(1340),0.13,0.1,0.58,0.75);
   picture(X(XW)+0.1,Z(1450),0.5,0.7,1.5,Math.PI/2);
@@ -885,20 +1025,22 @@ picture(X(XE)-0.1,Z(1360),0.6,0.45,1.5,-Math.PI/2);
 })();
 (function(){                                   // room 2: single bed 97 x 195, desk with lamp and books, chair
   const cx=456, top=1106, cy=top+0.975/S;
-  rb(cx,cy,0.99,1.97,0.22,0.02,M.woodD,0,true);
-  rb(cx,cy,0.95,1.93,0.18,0.06,M.bedA,0.22,false);
-  rb(cx,top+1.25/S,0.97,1.3,0.08,0.05,M.bedB,0.4,false);
-  rb(cx,top+0.3/S,0.5,0.36,0.13,0.06,M.pillow,0.4,false);
-  rb(545,1127,1.0,0.5,0.035,0.01,M.wood,0.72,true);
-  fb(504,1127,0.04,0.46,0.72,M.woodD,0,false);
-  fb(586,1127,0.04,0.46,0.72,M.woodD,0,false);
+  rb(cx,cy,0.99,1.97,0.2,0.02,M.oakD,0.08,true);
+  legs(cx,cy,0.42,0.92,0.08,0.03,0.025,M.oakD);
+  rb(cx,cy,0.95,1.93,0.18,0.08,M.bedA,0.28,false);
+  rb(cx,top+0.03/S,1.0,0.06,0.8,0.02,M.oakD,0,false);
+  rb(cx,top+1.25/S,0.99,1.3,0.09,0.05,M.bedB,0.45,false);
+  rb(cx,top+0.3/S,0.5,0.36,0.14,0.07,M.pillow,0.46,false);
+  rb(545,1127,1.0,0.5,0.035,0.01,M.oak,0.72,true);                          // desk: round legs and a two-drawer unit
+  legs(545,1127,0.46,0.21,0.72,0.025,0.018,M.oakD);
+  rb(545+0.26/S,1127,0.4,0.44,0.2,0.01,M.oakD,0.52,false);
+  fb(545+0.26/S,1127+0.22/S,0.38,0.012,0.08,M.oak,0.53,false); fb(545+0.26/S,1127+0.22/S,0.38,0.012,0.08,M.oak,0.62,false);
+  fcyl(545+0.26/S,1127+0.235/S,0.012,0.012,0.56,0.02,M.steel,false); fcyl(545+0.26/S,1127+0.235/S,0.012,0.012,0.65,0.02,M.steel,false);
   cyl(X(578),Z(1115),0.06,0.06,0.755,0.77,M.dark,{group:furn,cast:false},12);
   cyl(X(578),Z(1115),0.008,0.008,0.77,1.1,M.dark,{group:furn,cast:false},6);
   shade(X(578),Z(1115),0.09,0.06,1.0,1.12);
   [[0x8d6a47,0.05],[0x5f6f82,0.04],[0xb26b5a,0.035]].forEach(function(b,i){ fb(515+i*0.045/S,1120,0.04,0.22,0.3-i*0.04,lam(b[0]),0.755,false); });
-  rb(545,1160,0.42,0.42,0.045,0.03,M.chair,0.43,true);
-  rb(545,1160+0.19/S,0.4,0.035,0.4,0.015,M.chair,0.47,false);
-  [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(s){ fb(545+s[0]*0.18/S,1160+s[1]*0.18/S,0.03,0.03,0.43,M.woodD,0,false); });
+  chair(545,1160,1);
 })();
 curtains(500,609,YB,-1); curtains(624,770,YB,-1);
 rb(650,770,0.6,0.4,0.012,0.006,M.rug,-0.15,false);   // doormat
@@ -916,14 +1058,30 @@ const city=new THREE.Group(); scene.add(city);
 (function(){
   const g=new THREE.Mesh(new THREE.PlaneGeometry(3000,3000),lam(0xa8b2a6));
   g.rotation.x=-Math.PI/2; g.position.y=-30; scene.add(g);
-  const mats=[0xd5d9dc,0xdcd6cb,0xc6ccd2,0xe2dfd8,0xbfc8cf].map(function(c){return lam(c);});
+  const fc=document.createElement('canvas'); fc.width=fc.height=128; const fg=fc.getContext('2d');   // facade tile: 2 x 2 windows, 6 m square
+  fg.fillStyle='#ffffff'; fg.fillRect(0,0,128,128);
+  for(let i=0;i<2;i++) for(let j=0;j<2;j++){
+    fg.fillStyle='hsl(205,'+(18+rnd()*14)+'%,'+(38+rnd()*22)+'%)'; fg.fillRect(i*64+9,j*64+13,46,34);
+    fg.fillStyle='rgba(255,255,255,.5)'; fg.fillRect(i*64+9,j*64+13,46,7);
+    fg.fillStyle='rgba(60,70,80,.55)'; fg.fillRect(i*64+9,j*64+47,46,4);
+  }
+  fg.fillStyle='rgba(0,0,0,.09)'; fg.fillRect(0,59,128,5); fg.fillRect(0,123,128,5);
+  const ft=new THREE.CanvasTexture(fc); ft.wrapS=ft.wrapT=THREE.RepeatWrapping; ft.anisotropy=ANISO; ft.encoding=THREE.sRGBEncoding;
+  const mats=[0xd5d9dc,0xdcd6cb,0xc6ccd2,0xe2dfd8,0xbfc8cf].map(function(c){return lam(c,{map:ft});});
+  const roofM=lam(0xaeb2b6), unitM=lam(0x8d949c);
   for(let i=0;i<70;i++){
     const ang=rnd()*TAU, dist=60+rnd()*340;
     const w=10+rnd()*26, d=10+rnd()*26;
     const top=dist<140?(-26+rnd()*18):(-24+rnd()*(24+(dist-140)*0.14));   // near blocks stay below the balcony, far ones make a skyline
-    const h=top+30;
-    const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mats[i%mats.length]);
-    m.position.set(X(636)+Math.cos(ang)*dist,-30+h/2,Z(1180)+Math.sin(ang)*dist); city.add(m);
+    const h=top+30, sm=mats[i%mats.length];
+    const g=new THREE.BoxGeometry(w,h,d); fitUV(g,w/6,h/6,d/6);
+    const m=new THREE.Mesh(g,[sm,sm,roofM,roofM,sm,sm]);
+    const bx=X(636)+Math.cos(ang)*dist, bz=Z(1180)+Math.sin(ang)*dist;
+    m.position.set(bx,-30+h/2,bz); city.add(m);
+    if(dist<260){                              // rooftop unit and a stair head on the nearer blocks
+      const u=new THREE.Mesh(new THREE.BoxGeometry(w*0.25,2.4,d*0.2),unitM); u.position.set(bx+w*0.2,top+1.2,bz-d*0.2); city.add(u);
+      const s=new THREE.Mesh(new THREE.BoxGeometry(w*0.18,3,d*0.22),roofM); s.position.set(bx-w*0.25,top+1.5,bz+d*0.2); city.add(s);
+    }
   }
 })();
 
@@ -1302,7 +1460,7 @@ function tick(now){
     aqT+=dt; aqN++;
     if(aqN>=120){
       aqDone=true;
-      if(aqN/aqT<26){ pointLights.forEach(function(p){ scene.remove(p); }); if(pixelRatio>1){ pixelRatio=1; renderer.setPixelRatio(1); resize(); } }
+      if(aqN/aqT<26){ pointLights.forEach(function(p){ scene.remove(p); }); detailMeshes.forEach(function(m){ m.visible=false; }); if(pixelRatio>1){ pixelRatio=1; renderer.setPixelRatio(1); resize(); } }
     }
   }
 }
