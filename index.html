@@ -1019,8 +1019,8 @@ box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.hob,{pick:false});
   cyl(X(p[0]),Z(p[1]),0.035,0.035,0.89,0.9,M.dark,{pick:false,cast:false},14);
 });
 (function(){
-  cyl(X(718),Z(1141),0.012,0.012,0.88,1.1,M.steel,{pick:false},8);
-  const sp=cyl(X(718),Z(1141)+0.09,0.009,0.009,1.09,1.1,M.steel,{pick:false},8); sp.rotation.x=Math.PI/2; sp.scale.y=18;
+  cyl(X(718),Z(1192),0.012,0.012,0.88,1.1,M.steel,{pick:false},8);
+  const sp=cyl(X(718),Z(1192)-0.14,0.009,0.009,1.09,1.1,M.steel,{pick:false},8); sp.rotation.x=Math.PI/2; sp.scale.y=28;   // spout reaches over the bowl toward the cook
 })();
 /* toilet: tank, bowl, seat and the small hand-wash counter */
 (function(){
@@ -1120,11 +1120,16 @@ clothes(524,833,554,948,1.75,0.5,1.0,10);
 const lampMat=new THREE.MeshBasicMaterial({color:0xffdc96});
 M.shade=lam(0xf2d9a6,{emissive:0x8a6428,side:THREE.DoubleSide,roughness:0.9});
 function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:furn,cast:false,open:true},20); }
-(function(){                                   // fridge with a door seam and handles, facing the kitchen aisle
+(function(){                                   // fridge with a door seam and handles, back to the north wall, door facing south
+  const a0=furn.children.length, c0=furnCols.length;
   rb(821,1038,0.65,0.7,1.75,0.03,M.fridge,0,true);
   box(X(821)-0.326,X(821)-0.32,Z(1038)-0.33,Z(1038)+0.33,0.95,0.965,M.dark,{group:furn,cast:false});
   box(X(821)-0.345,X(821)-0.325,Z(1038)+0.2,Z(1038)+0.23,0.5,0.9,M.steel,{group:furn,cast:false});
   box(X(821)-0.345,X(821)-0.325,Z(1038)+0.2,Z(1038)+0.23,1.05,1.5,M.steel,{group:furn,cast:false});
+  { const G=new THREE.Group(), mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); G.add(o); }); furn.add(G);
+    const p=[X(821),Z(1038),X(821),Z(1030)], ox=p[2]-p[1], oz=p[3]+p[0];
+    G.rotation.y=Math.PI/2; G.position.set(p[2]-p[1],0,p[3]+p[0]);
+    furnCols.slice(c0).forEach(function(k){ const x0=k.z0+ox, x1=k.z1+ox, z0=-k.x1+oz, z1=-k.x0+oz; k.x0=x0; k.x1=x1; k.z0=z0; k.z1=z1; }); }
 })();
 lb(1,function(){                               // dining table 140 x 80, four chairs, pendant lamp
   const cx=770, cy=1330, w=1.4, d=0.8;
@@ -1145,7 +1150,8 @@ plant(845,1240,1.0);
   [-1,1].forEach(function(s){
     rb(x+0.1/S,y+s*0.34/S,0.62,0.62,0.10,0.05,M.sofa,0.34,false);          // seat cushions
     const bk=rb(x-0.27/S,y+s*0.34/S,0.17,0.62,0.42,0.075,M.sofa,0.40,false); bk.rotation.z=0.13;   // leaning back cushions
-    rb(x,y+s*0.73/S,0.78,0.14,0.36,0.065,M.sofa,0.1,false);                 // arm rests
+    rb(x,y+s*0.71/S,0.78,0.18,0.45,0.07,M.sofa,0.1,false);                  // tall arm rests (top at 64 cm, rolled), comfortable to lie against
+    { const roll=new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,0.78,20),M.sofa); roll.rotation.z=Math.PI/2; roll.position.set(X(x),0.55,Z(y+s*0.71/S)); roll.castShadow=true; roll.receiveShadow=true; place(roll,{group:furn,cast:true,pick:false}); }
   });
   fb(x+0.1/S,y,0.56,0.01,0.06,M.sofaD,0.38,false);                           // seam between the seat cushions
   rb(x-0.12/S,y-0.4/S,0.16,0.42,0.4,0.07,M.cushA,0.44,false).rotation.z=0.2;
@@ -1195,7 +1201,6 @@ plant(845,1240,1.0);
   tvG=new THREE.Group(); { const mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); tvG.add(o); }); furn.add(tvG); }
   tvCols0=furnCols.slice(c0); tvCols0.forEach(function(c){ c.lay=1; });
 })();
-picture(X(XE)-0.1,Z(1418),0.6,0.45,1.5,-Math.PI/2);
 (function(){                                   // room 1: Japanese queen bed 160 x 195, bedside table and lamp, print, plant
   const cx=487, top=1316, cy=top+0.995/S, a0=furn.children.length, c0=furnCols.length;
   rb(cx,cy,1.64,1.99,0.2,0.02,M.oakD,0.08,true);                          // frame on short legs
@@ -1212,9 +1217,6 @@ picture(X(XE)-0.1,Z(1418),0.6,0.45,1.5,-Math.PI/2);
   fb(575,1340-0.2/S,0.34,0.01,0.12,M.oakD,0.3,false);                       // drawer seam
   cyl(X(575),Z(1340),0.05,0.05,0.45,0.6,M.steel,{group:furn,cast:false},10);
   shade(X(575),Z(1340),0.13,0.1,0.58,0.75);
-  rb(cx,top+1.78/S,1.66,0.4,0.035,0.015,fab(0xb8745a),0.555,false);                      // throw blanket at the foot
-  rb(cx-0.5/S,top+0.62/S,0.42,0.13,0.36,0.06,M.cushB,0.56,false);                         // two cushions propped against the pillows
-  rb(cx+0.1/S,top+0.62/S,0.4,0.13,0.34,0.06,M.cushA,0.56,false);
   { const bedG=new THREE.Group(), mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); bedG.add(o); }); furn.add(bedG);   // bed + bedside table rotate together: head on the west wall
     const p=[X(cx),X(0)*0+Z(top),X(414.5),Z(1450)], c=0, sn=1, ox=p[2]-p[1], oz=p[3]+p[0];
     bedG.rotation.y=Math.PI/2; bedG.position.set(p[2]-(p[0]*c+p[1]*sn),0,p[3]-(-p[0]*sn+p[1]*c));
@@ -1257,17 +1259,57 @@ picture(X(XE)-0.1,Z(1418),0.6,0.45,1.5,-Math.PI/2);
 (function(){                                   // cat corner: wall steps + perch (living room east wall), feeding nook (by the fridge), automatic litter box (utility room north end)
   const o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
   const wf=X(XE)-0.1, sis=lam(0xc9b48b,{roughness:1}), brk=M.steel;
-  [[1268,0.45],[1292,0.8],[1316,1.15],[1340,1.5]].forEach(function(st){                 // 40 x 26 cm steps, 35 cm apart vertically
-    const zc=Z(st[0]), y=st[1];
-    box(wf-0.26,wf,zc-0.2,zc+0.2,y,y+0.03,M.oak,o);
-    box(wf-0.255,wf-0.005,zc-0.195,zc+0.195,y+0.03,y+0.036,sis,oc);
-    [-0.14,0.14].forEach(function(dz){ box(wf-0.012,wf,zc+dz-0.015,zc+dz+0.015,y-0.14,y,brk,oc); box(wf-0.2,wf,zc+dz-0.012,zc+dz+0.012,y-0.025,y,brk,oc); });
-  });
-  const pz=Z(1304), py=1.85;                                                         // 1 m perch with a round cat bed
-  box(wf-0.24,wf,pz-0.5,pz+0.5,py,py+0.03,M.oak,o); box(wf-0.235,wf-0.005,pz-0.495,pz+0.495,py+0.03,py+0.036,sis,oc);
-  [-0.35,0,0.35].forEach(function(dz){ box(wf-0.012,wf,pz+dz-0.015,pz+dz+0.015,py-0.14,py,brk,oc); box(wf-0.2,wf,pz+dz-0.012,pz+dz+0.012,py-0.025,py,brk,oc); });
-  cyl(wf-0.13,pz+0.22,0.2,0.17,py+0.036,py+0.136,lam(0xcbb08c,{roughness:1,side:THREE.DoubleSide}),{group:furn,cast:true,open:true},28);
-  cyl(wf-0.13,pz+0.22,0.17,0.17,py+0.036,py+0.056,fab(0xb98368),oc,28);
+  const cwood=lam(0xd2b27d,{roughness:0.6}), cdark=lam(0x3a2616,{roughness:0.9}), rope=lam(0xb69a6c,{roughness:1}), bedM=fab(0xd7cfc2), post=lam(0xc9b48b,{roughness:1});
+  const grp=function(py,yb){ const G=new THREE.Group(); G.position.set(wf,yb,Z(py)); G.rotation.y=Math.PI; scene.add(G); return G; };      // local +x = away from wall, local z = -world z
+  const add=function(G,geo,mat,x,y,z){ const m=new THREE.Mesh(geo,mat); m.position.set(x,y,z); m.castShadow=true; m.receiveShadow=true; G.add(m); return m; };
+  const bx=function(dx,dy,dz){ return new THREE.BoxGeometry(dx,dy,dz); };
+  const headPts=function(c,s){ return [[-0.11,0.02],[-0.1,0.12],[-0.05,0.08],[0.05,0.08],[0.1,0.12],[0.11,0.02],[0.1,-0.05],[0.06,-0.09],[-0.06,-0.09],[-0.1,-0.05]].map(function(q){ return new THREE.Vector2(q[0]*s,q[1]*s+c); }); };
+  const panel=function(G,shape,x,th,mat){ const m=add(G,new THREE.ExtrudeGeometry(shape,{depth:th,bevelEnabled:false}),mat,x,0,0); m.rotation.y=Math.PI/2; return m; };
+  const catHouse=function(py,yb){                                                       // 50 x 42 x 40 cm wall box with a cat-head doorway
+    const G=grp(py,yb), W=0.5, H=0.42, D=0.4;
+    add(G,bx(D,0.02,W),cwood,D/2,0.01,0); add(G,bx(D,0.02,W),cwood,D/2,H-0.01,0);
+    [-1,1].forEach(function(sd){ add(G,bx(D,H,0.02),cwood,D/2,H/2,sd*(W/2-0.01)); });
+    add(G,new THREE.PlaneGeometry(W-0.04,H-0.04),cdark,0.006,H/2,0).rotation.y=Math.PI/2;
+    const sh=new THREE.Shape([new THREE.Vector2(-W/2,0),new THREE.Vector2(W/2,0),new THREE.Vector2(W/2,H),new THREE.Vector2(-W/2,H)]);
+    sh.holes.push(new THREE.Path(headPts(H/2,1.0))); panel(G,sh,D-0.02,0.02,cwood);
+    add(G,bx(0.2,0.02,W*0.9),cwood,D+0.1,0.01,0);                                       // doorstep ledge
+    return G;
+  };
+  const catStep=function(py,yb){                                                        // T-shaped step: plate + vertical fin
+    const G=grp(py,yb); add(G,bx(0.24,0.025,0.32),cwood,0.12,0,0); add(G,bx(0.22,0.007,0.28),post,0.12,0.016,0); add(G,bx(0.2,0.2,0.02),cwood,0.1,-0.11,0); return G;
+  };
+  const earBed=function(py,yb){                                                         // cat-ear hammock tray
+    const G=grp(py,yb); add(G,bx(0.36,0.025,0.34),cwood,0.18,0,0);
+    const sh=new THREE.Shape([[-0.17,0],[-0.17,0.14],[-0.12,0.14],[-0.1,0.25],[-0.04,0.14],[0.04,0.14],[0.1,0.25],[0.12,0.14],[0.17,0.14],[0.17,0]].map(function(q){ return new THREE.Vector2(q[0],q[1]); }));
+    panel(G,sh,0,0.02,cwood).position.y=0.012;
+    [-1,1].forEach(function(sd){ add(G,bx(0.34,0.07,0.02),cwood,0.18,0.045,sd*0.16); });
+    add(G,new THREE.CylinderGeometry(0.15,0.15,0.045,28),bedM,0.2,0.035,0); return G;
+  };
+  const catColumn=function(py,yb,yt,plats){                                             // sisal post with a few small plates
+    const G=grp(py,yb); add(G,new THREE.CylinderGeometry(0.055,0.055,yt-yb,16),post,0.1,(yt-yb)/2,0);
+    [0.04,yt-yb-0.04].forEach(function(y){ add(G,bx(0.2,0.04,0.12),cwood,0.05,y,0); });
+    (plats||[]).forEach(function(h,i){ const m=add(G,bx(0.3,0.025,0.3),cwood,0.15,h-yb,0); m.rotation.y=(i%2?0.35:-0.3); });
+    return G;
+  };
+  const bridge=function(py1,y1,py2,y2){                                                 // sagging plank bridge between two wall points
+    const n=11, x=wf-0.12;
+    for(let k=0;k<=n;k++){
+      const t=k/n, z=Z(py1+(py2-py1)*t), y=y1+(y2-y1)*t-0.1*Math.sin(Math.PI*t), dz=Z(py2)-Z(py1), sl=((y2-y1)-0.1*Math.PI*Math.cos(Math.PI*t))/dz;
+      const pl=new THREE.Mesh(bx(0.16,0.015,0.05),cwood); pl.position.set(x,y,z); pl.rotation.x=-Math.atan(sl); pl.castShadow=true; scene.add(pl);
+    }
+    [-0.08,0.08].forEach(function(dx){ const m=new THREE.Mesh(bx(0.012,0.012,Math.abs(Z(py2)-Z(py1))*1.03),rope); m.position.set(x+dx,(y1+y2)/2-0.035,(Z(py1)+Z(py2))/2); m.rotation.x=-Math.atan((y2-y1)/(Z(py2)-Z(py1))); scene.add(m); });
+  };
+  const lay1=function(){                                                                // layout 1: staggered boxes, steps and a rope bridge across the whole wall (steps above the TV, 1.4 m +)
+    earBed(1248,1.85); catHouse(1275,0.95); catStep(1322,1.55); bridge(1298,1.05,1380,1.1); catStep(1388,1.1);
+    catHouse(1425,1.55); catColumn(1425,0.95,1.55,[]); catStep(1425,0.9);
+    earBed(1472,1.95); catStep(1500,1.72); catColumn(1578,0.5,1.95,[0.95,1.4]); earBed(1578,1.95);
+  };
+  const lay2=function(){                                                                // layout 2: tall post at the north end, low steps climbing to a long bridge, boxes above the sofa
+    catColumn(1243,0.4,1.9,[0.85,1.35]); earBed(1243,1.9); catHouse(1290,1.0); bridge(1312,1.05,1428,1.5);
+    catStep(1345,0.45); catStep(1375,0.75); catStep(1405,1.05);
+    catHouse(1450,1.45); catStep(1500,1.7); catStep(1525,1.35); catColumn(1578,0.5,1.6,[1.0]); earBed(1578,1.6);
+  };
+  lb(1,lay1); lb(2,lay2);
   const mat=rbox(X(836.3),X(857.2),Z(1072),Z(1122),0,0.006,0.008,lam(0x4a5560,{roughness:0.8}),oc);   // feeding mat, 21 x 50 cm
   const bowl=function(x,z,r,h,col,fill,fillCol,fy){
     const pts=[[0.001,0],[r*0.72,0],[r,h],[r-0.007,h],[r*0.72-0.007,0.007],[0.001,0.007]].map(function(q){ return new THREE.Vector2(q[0],q[1]); });
