@@ -535,7 +535,7 @@ function rugTex(style){                        // flat-colour woven look: concen
   const cream='#f1e8d8', terra='#c8714f', sage='#8fa58e', navy='#35506b', blush='#e0b184', ring=function(r0,r1,col){ g.strokeStyle=col; g.lineWidth=(r1-r0)*K; g.beginPath(); g.arc(K,K,(r0+r1)/2*K,0,TAU); g.stroke(); };
   const dots=function(r,n,rad,col){ g.fillStyle=col; for(let i=0;i<n;i++){ const a=i/n*TAU; g.beginPath(); g.arc(K+Math.cos(a)*r*K,K+Math.sin(a)*r*K,rad*K,0,TAU); g.fill(); } };
   if(style==='plain'){
-    g.fillStyle='#efe6d4'; g.fillRect(0,0,1024,1024);
+    g.fillStyle='#cfc4ad'; g.fillRect(0,0,1024,1024);
   } else if(style==='rings'){
     g.fillStyle=cream; g.fillRect(0,0,1024,1024);
     ring(0.9,1.1,terra); ring(0.84,0.87,navy); dots(0.78,40,0.013,navy); ring(0.68,0.72,sage); ring(0.6,0.62,terra);
@@ -557,6 +557,21 @@ function roundRug(px,pz,R,style,lobes,amp){    // round rug with a gently scallo
   const m=new THREE.Mesh(geo,[new THREE.MeshStandardMaterial({map:t,roughness:1}),lam(0xcdbfa6,{roughness:1})]);
   m.rotation.x=-Math.PI/2; m.position.set(X(px),floorY(X(px),Z(pz))+0.001,Z(pz)); m.receiveShadow=true;
   return place(m,{group:furn,cast:false,pick:false});
+}
+function shagLayers(px,pz,R){                  // fluffy pile: stacked alpha-tested shells whose strand density thins out toward the tip
+  const N=14, size=256, data=new Uint8Array(size*size*4);
+  for(let i=0;i<size*size;i++){ const v=196+Math.floor(rnd()*52); data[i*4]=v; data[i*4+1]=v-7; data[i*4+2]=v-19; data[i*4+3]=Math.floor(rnd()*255); }
+  const tex=new THREE.DataTexture(data,size,size,THREE.RGBAFormat); tex.wrapS=tex.wrapT=THREE.RepeatWrapping; tex.encoding=THREE.sRGBEncoding;
+  tex.magFilter=THREE.LinearFilter; tex.minFilter=THREE.LinearMipmapLinearFilter; tex.generateMipmaps=true; tex.repeat.set(1.5,1.5); tex.needsUpdate=true;
+  const pts=[]; for(let i=0;i<72;i++){ const th=i/72*TAU; pts.push(new THREE.Vector2(Math.cos(th)*R,Math.sin(th)*R)); }
+  const geo=new THREE.ShapeGeometry(new THREE.Shape(pts),24), y0=floorY(X(px),Z(pz))+0.015;
+  for(let i=0;i<N;i++){
+    const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({map:tex,alphaTest:0.1+0.82*i/N,roughness:1,envMapIntensity:0.3}));
+    m.material.color.setScalar(0.5+0.4*i/(N-1));
+    const sc=1-0.035*i/N; m.scale.set(sc,sc,1);
+    m.rotation.x=-Math.PI/2; m.position.set(X(px),y0+0.0035*i,Z(pz)); m.receiveShadow=true;
+    place(m,{group:furn,cast:false,pick:false,detail:i>0});
+  }
 }
 function artTex(w,h,variant){                  // crisp flat-colour abstract print (arches, sun, waves) in the room's palette
   const W=Math.round(1024*Math.min(1,w/h)), H=Math.round(1024*Math.min(1,h/w)), c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d');
@@ -833,7 +848,7 @@ function wallColorAt(px,py){                   // colour role of the room that c
   if(px>=470&&px<XP&&py>=1020&&py<1100) return 'wc';
   if(px>=406&&px<XP&&py>=805&&py<1048) return 'utility';
   if(px>=406&&px<XP&&py>=1100&&py<1310.6) return 'peach';
-  if(px>=406&&px<XR&&py>=1310.6&&py<1330) return 'mist';           // wall behind the bed head
+  if(px>=406&&px<430&&py>=1310.6&&py<=YB) return 'mist';           // wall behind the bed head (west wall)
   if(px>=406&&px<XR&&py>=1310.6&&py<=YB) return 'oat';
   if(px>=XP&&px<XC&&py>=800&&py<1027) return 'hall';
   if(px>=601&&px<=800&&py>=713&&py<806) return 'genkan';
@@ -1137,7 +1152,7 @@ plant(845,1240,1.0);
   rb(x-0.12/S,y+0.45/S,0.16,0.4,0.36,0.07,M.cushB,0.44,false).rotation.z=0.2;
   sofaG=new THREE.Group(); { const mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); sofaG.add(o); }); furn.add(sofaG); }
   sofaCols0=furnCols.slice(c0); sofaCols0.forEach(function(c){ c.lay=1; });
-  lb(1,function(){ roundRug(772,1510,0.95,'plain',24,0.0); });
+  lb(1,function(){ roundRug(772,1510,0.95,'plain',24,0.0); shagLayers(772,1510,0.95); });
   lb(1,function(){
   rb(772,1510,0.5,0.9,0.03,0.015,M.oak,0.4,true);                           // coffee table, long side parallel to the sofa
   legs(772,1510,0.2,0.38,0.4,0.022,0.014,M.oakD);
@@ -1182,7 +1197,7 @@ plant(845,1240,1.0);
 })();
 picture(X(XE)-0.1,Z(1360),0.6,0.45,1.5,-Math.PI/2);
 (function(){                                   // room 1: Japanese queen bed 160 x 195, bedside table and lamp, print, plant
-  const cx=487, top=1316, cy=top+0.995/S;
+  const cx=487, top=1316, cy=top+0.995/S, a0=furn.children.length, c0=furnCols.length;
   rb(cx,cy,1.64,1.99,0.2,0.02,M.oakD,0.08,true);                          // frame on short legs
   legs(cx,cy,0.76,0.94,0.08,0.03,0.025,M.oakD);
   rb(cx,cy,1.6,1.95,0.2,0.08,M.bedA,0.28,false);                           // mattress
@@ -1197,6 +1212,10 @@ picture(X(XE)-0.1,Z(1360),0.6,0.45,1.5,-Math.PI/2);
   fb(575,1340-0.2/S,0.34,0.01,0.12,M.oakD,0.3,false);                       // drawer seam
   cyl(X(575),Z(1340),0.05,0.05,0.45,0.6,M.steel,{group:furn,cast:false},10);
   shade(X(575),Z(1340),0.13,0.1,0.58,0.75);
+  { const bedG=new THREE.Group(), mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); bedG.add(o); }); furn.add(bedG);   // bed + bedside table rotate together: head on the west wall
+    const p=[X(cx),X(0)*0+Z(top),X(414.5),Z(1450)], c=0, sn=1, ox=p[2]-p[1], oz=p[3]+p[0];
+    bedG.rotation.y=Math.PI/2; bedG.position.set(p[2]-(p[0]*c+p[1]*sn),0,p[3]-(-p[0]*sn+p[1]*c));
+    furnCols.slice(c0).forEach(function(k){ const x0=k.z0+ox, x1=k.z1+ox, z0=-k.x1+oz, z1=-k.x0+oz; k.x0=x0; k.x1=x1; k.z0=z0; k.z1=z1; }); }
   picture(X(XW)+0.1,Z(1450),0.5,0.7,1.5,Math.PI/2);
   plant(430,1570,0.8);
 })();
@@ -1257,7 +1276,7 @@ lb(2,function(){
   furnCols.push({x0:sx0,x1:sx1,z0:sz0,z1:sz1,kind:'f'});
   roundRug(505,1218,0.7,'sun',12,0.045);                                              // petal-edged round rug
   plant(580,1290,0.8);
-  roundRug(765,1375,0.95,'plain',24,0.0);                                          // round rug under the table
+  roundRug(765,1375,0.95,'plain',24,0.0); shagLayers(765,1375,0.95);                                          // round rug under the table
   /* lift-top table in the living room: a coffee table that rises to dining height while two leaves slide apart and a centre leaf pops up */
   const G=new THREE.Group(); G.position.set(X(765),0,Z(1360)); G.rotation.y=Math.PI/2; scene.add(G);   // long side parallel to the sofa
   const lg=function(w,h,d){ const g=new THREE.BoxGeometry(w,h,d); fitUV(g,w,h,d); return g; };
