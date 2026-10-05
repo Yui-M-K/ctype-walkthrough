@@ -729,12 +729,14 @@ box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.black,{pick:false});
   solid(vx0,vy0,vx1,vy1,0,0.78,M.cab,'x');                                        // cabinet
   box(X(vx0),X(vx1)+0.01,Z(vy0),Z(vy1),0.78,0.81,M.top,{pick:false});              // counter top
   box(X(vx0)+0.02,X(vx1)-0.02,Z(vy0)+0.02,Z(vy1)-0.02,0.4,0.42,M.frame,{pick:false});
-  const b=cyl(X(590),Z(872),0.2,0.15,0.81,0.93,M.ceramic,{pick:false},24); b.scale.z=0.8;   // vessel basin
-  cyl(X(590),Z(872),0.17,0.17,0.925,0.931,M.tubIn,{pick:false},24).scale.z=0.8;
+  const bx0=X(vx0)+0.11, bx1=X(vx1)-0.02, bz0=Z(836), bz1=Z(912), bw=0.04, bt=0.93;   // large square basin
+  rbox(bx0,bx1,bz0,bz1,0.81,bt,0.02,M.ceramic,{pick:false});
+  box(bx0+bw,bx1-bw,bz0+bw,bz1-bw,0.86,bt+0.002,M.tubIn,{pick:false,cast:false});
+  cyl((bx0+bx1)/2,(bz0+bz1)/2,0.025,0.025,0.862,0.866,M.steel,{pick:false,cast:false},12);   // drain
   box(X(vx0),X(vx0)+0.16,Z(vy0),Z(vy1),1.05,1.95,M.cab,{pick:false});               // mirror cabinet on the back wall
   mirror(X(vx0)+0.162,(Z(vy0)+Z(vy1))/2,Z(vy1)-Z(vy0)-0.04,0.86,1.5,Math.PI/2);
-  cyl(X(574),Z(872),0.013,0.013,0.81,1.05,M.steel,{pick:false},10);
-  const sp=rotBox(X(574)+0.07,Z(872),0.14,0.02,1.03,1.05,0,M.steel,{pick:false,cast:false});
+  cyl(X(vx0)+0.06,Z(874),0.013,0.013,0.81,1.0,M.steel,{pick:false},10);
+  box(X(vx0)+0.04,X(vx0)+0.17,Z(874)-0.01,Z(874)+0.01,0.99,1.01,M.steel,{pick:false,cast:false});
 })();
 /* bathtub (rim, cavity, water), shower bar and mirror */
 (function(){
