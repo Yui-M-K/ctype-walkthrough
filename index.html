@@ -160,6 +160,12 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
       <button id="tTv" class="tog" type="button" aria-pressed="false">電視開機</button>
     </div>
+    <h3>家具配置</h3>
+    <div id="layBtns" class="seg" style="grid-template-columns:repeat(2,1fr)">
+      <button type="button" class="tog" data-l="1" aria-pressed="true">配置一</button>
+      <button type="button" class="tog" data-l="2" aria-pressed="false">配置二（書房＋折疊桌）</button>
+    </div>
+    <div class="toggles" id="foldRow" hidden><button id="tFold" class="tog" type="button" aria-pressed="false">折疊桌：展開中</button></div>
     <h3>配色</h3>
     <div id="themeBtns" class="seg">
       <button type="button" class="tog" data-t="A" aria-pressed="true">暖色北歐</button>
@@ -369,6 +375,16 @@ const shoeMats=[0x2a2a2e,0x6b4a35,0xe8e6e0,0x1f2c44,0x8a8d90,0xa5714a].map(funct
 const furn=new THREE.Group(); scene.add(furn);
 const partG=new THREE.Group(); scene.add(partG);
 const furnMeshes=[], furnCols=[], picks=[], colliders=[], ceilings=[], floorRects=[], floorTris=[], detailMeshes=[];
+let curLayout=1, foldT=0, foldTarget=0, foldApply=function(){};
+const layObjs=[];
+function lb(lay,fn){                           // run fn and tag everything it adds to the furniture group / scene as belonging to layout `lay`
+  const a=furn.children.length, b=scene.children.length, c=furnCols.length;
+  fn();
+  for(let i=a;i<furn.children.length;i++){ furn.children[i].userData.lay=lay; layObjs.push(furn.children[i]); }
+  for(let i=b;i<scene.children.length;i++){ scene.children[i].userData.lay=lay; layObjs.push(scene.children[i]); }
+  for(let i=c;i<furnCols.length;i++) furnCols[i].lay=lay;
+}
+function visibleChain(o){ while(o){ if(!o.visible) return false; o=o.parent; } return true; }
 let partMeshes=[], partCols=[], allCols=[];
 
 function addCol(x0,x1,z0,z1,kind){ colliders.push({x0:x0,x1:x1,z0:z0,z1:z1,kind:kind}); }
@@ -1066,7 +1082,7 @@ function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:f
   box(X(821)-0.345,X(821)-0.325,Z(1038)+0.2,Z(1038)+0.23,0.5,0.9,M.steel,{group:furn,cast:false});
   box(X(821)-0.345,X(821)-0.325,Z(1038)+0.2,Z(1038)+0.23,1.05,1.5,M.steel,{group:furn,cast:false});
 })();
-(function(){                                   // dining table 140 x 80, four chairs, pendant lamp
+lb(1,function(){                               // dining table 140 x 80, four chairs, pendant lamp
   const cx=770, cy=1330, w=1.4, d=0.8;
   rb(cx,cy,w,d,0.035,0.015,M.oak,0.685,true);
   rb(cx,cy,w-0.18,d-0.18,0.07,0.01,M.oakD,0.615,false);                  // apron under the top
@@ -1075,8 +1091,8 @@ function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:f
   cyl(X(cx),Z(cy),0.004,0.004,1.75,H,M.dark,{group:furn,cast:false},6);
   shade(X(cx),Z(cy),0.2,0.09,1.6,1.76);
   cyl(X(cx),Z(cy),0.17,0.17,1.605,1.61,lampMat,{group:furn,cast:false},20);
-  plant(845,1240,1.0);
-})();
+});
+plant(845,1240,1.0);
 (function(){                                   // sofa 160 cm facing the TV, rug, coffee table, floor lamp
   const x=690, y=1510, fx=X(x), fz=Z(y);
   rb(x,y,0.8,1.6,0.26,0.07,M.sofaD,0.1,true);                              // frame
@@ -1091,11 +1107,13 @@ function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:f
   rb(x-0.12/S,y-0.4/S,0.16,0.42,0.4,0.07,M.cushA,0.44,false).rotation.z=0.2;
   rb(x-0.12/S,y+0.45/S,0.16,0.4,0.36,0.07,M.cushB,0.44,false).rotation.z=0.2;
   rb(775,1510,1.2,2.0,0.012,0.006,M.rug,0,false);
+  lb(1,function(){
   rb(772,1510,0.5,0.9,0.03,0.015,M.oak,0.4,true);                           // coffee table, long side parallel to the sofa
   legs(772,1510,0.2,0.38,0.4,0.022,0.014,M.oakD);
   rb(772,1510,0.4,0.8,0.02,0.008,M.oakD,0.12,false);
   rb(772,1510-0.2/S,0.22,0.3,0.03,0.006,lam(0x8a9a86),0.43,false);           // magazine
   fcyl(772+0.04/S,1510+0.25/S,0.04,0.035,0.43,0.09,M.ceramic,false);         // mug
+  });
   cyl(X(650),Z(1430),0.14,0.14,0,0.02,M.dark,{group:furn,cast:false},16);
   cyl(X(650),Z(1430),0.011,0.011,0.02,1.45,M.steel,{group:furn,cast:false},8);
   shade(X(650),Z(1430),0.17,0.14,1.3,1.58);
@@ -1148,7 +1166,7 @@ picture(X(XE)-0.1,Z(1360),0.6,0.45,1.5,-Math.PI/2);
   picture(X(XW)+0.1,Z(1450),0.5,0.7,1.5,Math.PI/2);
   plant(430,1570,0.8);
 })();
-(function(){                                   // room 2: single bed 97 x 195, desk with lamp and books, chair
+lb(1,function(){                               // room 2: single bed 97 x 195, desk with lamp and books, chair
   const cx=456, top=1106, cy=top+0.975/S;
   rb(cx,cy,0.99,1.97,0.2,0.02,M.oakD,0.08,true);
   legs(cx,cy,0.42,0.92,0.08,0.03,0.025,M.oakD);
@@ -1166,9 +1184,68 @@ picture(X(XE)-0.1,Z(1360),0.6,0.45,1.5,-Math.PI/2);
   shade(X(578),Z(1118),0.09,0.06,0.97,1.09);
   [[0x8d6a47,0.05],[0x5f6f82,0.04],[0xb26b5a,0.035]].forEach(function(b,i){ fb(515+i*0.045/S,1122,0.04,0.22,0.3-i*0.04,lam(b[0]),0.72,false); });
   chair(545,1166,1);
-})();
+});
 curtains(500,609,YB,-1); curtains(624,770,YB,-1);
 rb(650,770,0.6,0.4,0.012,0.006,M.rug,-0.15,false);   // doormat
+
+/* ---------- furniture layout 2: study in the small room, folding table in the living room, no dining table ---------- */
+lb(2,function(){
+  const cx=500, cy=1133, bookMats=[0x8d6a47,0x5f6f82,0xb26b5a,0xd8d2c6,0x3f4a58,0x8a9a86,0xc9b27f,0xe7e4de].map(function(c){return lam(c,{roughness:0.8});});
+  rb(cx,cy,2.0,0.65,0.035,0.01,M.oak,0.685,true);                                  // 2.0 m desk along the north wall
+  fb(cx-0.97/S,cy,0.04,0.6,0.685,M.oakD,0,false); fb(cx+0.97/S,cy,0.04,0.6,0.685,M.oakD,0,false);
+  fb(cx,cy-0.27/S,1.9,0.02,0.4,M.oakD,0.28,false);
+  rb(cx+0.62/S,cy,0.4,0.52,0.5,0.01,M.oakD,0.13,false);                             // drawer pedestal
+  fb(cx+0.62/S,cy+0.27/S,0.38,0.012,0.14,M.oak,0.15,false); fb(cx+0.62/S,cy+0.27/S,0.38,0.012,0.14,M.oak,0.32,false); fb(cx+0.62/S,cy+0.27/S,0.38,0.012,0.14,M.oak,0.49,false);
+  const sm=lam(0x0c1118,{roughness:0.12,metalness:0.3,envMapIntensity:1.2});
+  fb(cx-0.3/S,cy-0.2/S,0.04,0.04,0.14,M.black,0.72,false); fb(cx-0.3/S,cy-0.2/S,0.24,0.16,0.012,M.black,0.72,false);   // 27-inch monitor on a stand
+  fb(cx-0.3/S,cy-0.23/S,0.62,0.03,0.37,M.black,0.82,false); fb(cx-0.3/S,cy-0.214/S,0.6,0.004,0.35,sm,0.83,false);
+  fb(cx-0.3/S,cy+0.1/S,0.43,0.14,0.018,M.black,0.72,false); fb(cx+0.02/S,cy+0.1/S,0.06,0.1,0.03,M.black,0.72,false);   // keyboard, mouse
+  cyl(X(cx+0.8/S),Z(cy-0.12/S),0.06,0.06,0.72,0.735,M.dark,{group:furn,cast:false},12);   // desk lamp
+  cyl(X(cx+0.8/S),Z(cy-0.12/S),0.008,0.008,0.735,1.07,M.dark,{group:furn,cast:false},6);
+  shade(X(cx+0.8/S),Z(cy-0.12/S),0.09,0.06,0.97,1.09);
+  [0,1,2,3].forEach(function(i){ fb(cx-0.88/S,cy+0.1/S-i*0.01/S,0.2,0.26,0.035,bookMats[i+1],0.72+i*0.035,false); });   // book stack
+  fcyl(cx+0.1/S,cy-0.1/S,0.04,0.035,0.72,0.09,M.ceramic,false);
+  picture(X(cx),Z(1105.6),1.0,0.5,1.55,0);
+  const ox=470, oz=1188, oc=Z(oz), oxx=X(ox);                                        // office chair, back to the south
+  rb(ox,oz,0.5,0.48,0.08,0.035,M.sofaD,0.44,true);
+  rb(ox,oz+0.22/S,0.46,0.07,0.52,0.03,M.sofaD,0.52,false);
+  cyl(oxx,oc,0.03,0.03,0.08,0.44,M.steel,{group:furn,cast:false},10);
+  for(let k=0;k<5;k++){ const a=k*TAU/5+0.3; rotBox(oxx+Math.cos(a)*0.15,oc-Math.sin(a)*0.15,0.3,0.04,0.05,0.08,a,M.steel,{group:furn,pick:false,cast:false}); cyl(oxx+Math.cos(a)*0.29,oc-Math.sin(a)*0.29,0.025,0.025,0.0,0.05,M.black,{group:furn,cast:false},8); }
+  const sx0=X(415), sx1=X(441), sz0=Z(1176), sz1=Z(1296), hh=1.9;                    // bookshelf on the west wall
+  box(sx0,sx1,sz0,sz1,0,0.1,M.oakD,{group:furn,pick:false});
+  box(sx0,sx0+0.015,sz0,sz1,0.1,hh,M.oakD,{group:furn,pick:false,cast:false});
+  [sz0,(sz0+sz1)/2-0.01,sz1-0.02].forEach(function(z){ box(sx0,sx1,z,z+0.02,0.1,hh,M.oakD,{group:furn,pick:false}); });
+  [0.1,0.5,0.9,1.3,1.7,hh-0.02].forEach(function(y,k){
+    box(sx0,sx1,sz0,sz1,y,y+0.02,M.oak,{group:furn,pick:false});
+    if(k<5){ let z=sz0+0.04; while(z<sz1-0.07){ const bw=0.018+rnd()*0.035, bh=0.2+rnd()*0.17; if(rnd()<0.1){ z+=0.12; continue; }
+      box(sx0+0.02,sx0+0.02+0.2,z,z+bw,y+0.02,y+0.02+bh,bookMats[Math.floor(rnd()*bookMats.length)],{group:furn,pick:false,cast:false}); z+=bw+0.004; } }
+  });
+  furnCols.push({x0:sx0,x1:sx1,z0:sz0,z1:sz1,kind:'f'});
+  rb(500,1245,1.5,1.0,0.012,0.006,M.rug,0,false);                                    // floor rug
+  plant(580,1290,0.8);
+  /* folding table in the living room: two leaves hinged at the middle, legs fold flat, stack drops to the floor */
+  const G=new THREE.Group(); G.position.set(X(772),0,Z(1510)); scene.add(G);
+  const topG=new THREE.BoxGeometry(0.65,0.03,0.6); fitUV(topG,0.65,0.03,0.6);
+  const legG=new THREE.BoxGeometry(0.04,0.34,0.04);
+  const mk=function(geo,mat,x,y,z,par){ const m=new THREE.Mesh(geo,mat); m.position.set(x,y,z); m.castShadow=true; m.receiveShadow=true; par.add(m); return m; };
+  mk(topG,M.oak,0,0.365,-0.3,G);
+  const legsA=[], legsB=[], B=new THREE.Group(); B.position.set(0,0.38,0); G.add(B);
+  mk(topG,M.oak,0,-0.015,0.3,B);
+  [-0.26,0.26].forEach(function(x){
+    const pa=new THREE.Group(); pa.position.set(x,0.35,-0.55); G.add(pa); mk(legG,M.oakD,0,-0.17,0,pa); legsA.push(pa);
+    const pb=new THREE.Group(); pb.position.set(x,-0.03,0.55); B.add(pb); mk(legG,M.oakD,0,-0.17,0,pb); legsB.push(pb);
+  });
+  const col={x0:X(772)-0.35,x1:X(772)+0.35,z0:Z(1510)-0.6,z1:Z(1510)+0.6,kind:'f'}; furnCols.push(col);
+  const book=mk(new THREE.BoxGeometry(0.1,0.06,0.1),M.cushB,0.2,0.41,-0.3,G);   // a book on the table
+  foldApply=function(t){
+    const f1=clamp(t/0.3,0,1), f2=clamp((t-0.3)/0.4,0,1), f3=clamp((t-0.7)/0.3,0,1);
+    legsA.forEach(function(l){ l.rotation.x=-Math.PI/2*f1; }); legsB.forEach(function(l){ l.rotation.x=Math.PI/2*f1; });
+    B.rotation.x=-Math.PI*f2; G.position.y=-0.31*f3; book.visible=f2<0.05;
+    const folded=f2>0.5;
+    col.z0=Z(1510)-0.6; col.z1=folded?Z(1510):Z(1510)+0.6;
+    renderer.shadowMap.needsUpdate=true;
+  };
+});
 
 /* ---------- ceiling lights: flush domes, the main rooms also get a warm point light ---------- */
 const lampGeo=new THREE.SphereGeometry(0.14,18,8,0,TAU,Math.PI/2,Math.PI/2);
@@ -1225,17 +1302,21 @@ const avatar=new THREE.Group();
 const labels=new THREE.Group(); labels.visible=false; scene.add(labels);
 function addLabel(text,sub,px,py){
   const c=document.createElement('canvas'); c.width=320; c.height=96; const g=c.getContext('2d');
+  const draw=function(text,sub){ g.clearRect(0,0,320,96);
   g.fillStyle='rgba(20,30,40,.84)'; g.fillRect(0,0,320,96);
   g.fillStyle='#ffffff'; g.textAlign='center'; g.textBaseline='middle';
   g.font='700 34px "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif'; g.fillText(text,160,sub?34:48);
   if(sub){ g.fillStyle='#9fd0f0'; g.font='500 24px "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif'; g.fillText(sub,160,71); }
+  }; draw(text,sub);
   const t=new THREE.CanvasTexture(c); t.minFilter=THREE.LinearFilter; t.generateMipmaps=false;
   const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,depthTest:false,transparent:true}));
   sp.scale.set(1.8,0.54,1); sp.position.set(X(px),1.4,Z(py)); sp.renderOrder=10; labels.add(sp);
+  return function(text,sub){ draw(text,sub); t.needsUpdate=true; };
 }
+const labelRedraw={};
 [['玄關','',650,752],['走廊','',650,905],['多功能間','約3.6疊',495,900],['廁所','',540,1060],['浴室','',770,868],
  ['脫衣室','',745,962],['洋室 (2)','約4.0疊',505,1200],['洋室 (1)','約5.5疊',505,1450],['LDK','約13.6疊',740,1420],
- ['陽台','11.20㎡',640,1670]].forEach(function(l){ addLabel(l[0],l[1],l[2],l[3]); });
+ ['陽台','11.20㎡',640,1670]].forEach(function(l){ labelRedraw[l[0]]=addLabel(l[0],l[1],l[2],l[3]); });
 
 /* ---------- sliding partition between room 1 and the LDK ---------- */
 let partState=1;
@@ -1300,7 +1381,7 @@ let userH=165, fovH=100, mode='walk', furnOn=true, shadowOn=true, hour=15;
 const orb={yaw:0,pitch:1.12,dist:15.5};
 const R=0.22, SPEED=1.5;
 function rebuild(){
-  allCols=colliders.concat(partCols,doors.filter(function(d){return !d.open;}).map(function(d){return d.col;}),furnOn?furnCols:[]);
+  allCols=colliders.concat(partCols,doors.filter(function(d){return !d.open;}).map(function(d){return d.col;}),furnOn?furnCols.filter(function(c){return !c.lay||c.lay===curLayout;}):[]);
   furn.visible=furnOn;
   renderer.shadowMap.needsUpdate=true;
 }
@@ -1584,6 +1665,7 @@ function setDoor(d,open,quiet){
 const things=doors.map(function(d){
   return {pt:d.mid, label:function(){ return d.kind==='slide'?(d.open?'拉上拉門':'拉開拉門'):(d.open?'關門':'開門'); }, act:function(){ setDoor(d,!d.open); }};
 });
+things.push({pt:[772,1510], on:function(){return curLayout===2;}, label:function(){ return foldTarget?'展開桌子':'折起桌子'; }, act:function(){ foldTarget=foldTarget?0:1; syncFold(); }});
 things.push({seg:[X(XR),Z(1315),X(XR),Z(1550)], label:function(){ return ['拉開一扇','全部拉開','拉上拉門'][partState]; }, act:function(){ setPart((partState+1)%3); }});
 function thingVec(t){
   if(!t.seg) return [t.pt[0]-player.x,t.pt[1]-player.z];
@@ -1595,6 +1677,7 @@ function updateAct(){
   if(mode==='walk'){
     const fx=-Math.sin(player.yaw), fz=-Math.cos(player.yaw);
     things.forEach(function(t){
+      if(t.on&&!t.on()) return;
       const v=thingVec(t), d=Math.hypot(v[0],v[1]);
       if(d<bd&&(d<0.6||(v[0]*fx+v[1]*fz)/d>0.45)){ bd=d; best=t; }
     });
@@ -1623,6 +1706,7 @@ function teleport(s){
   const p=resolve(player.x,player.z); player.x=p[0]; player.z=p[1];
   player.camY=floorY(player.x,player.z);
 }
+const spotBtns={};
 SPOTS.forEach(function(s){
   const b=document.createElement('button'); b.type='button'; b.textContent=s[0];
   b.addEventListener('click',function(){
@@ -1630,7 +1714,7 @@ SPOTS.forEach(function(s){
     if(mode!=='walk') setMode('walk');
     sheet.hidden=true;
   });
-  spotsEl.appendChild(b);
+  spotsEl.appendChild(b); spotBtns[s[0]]=b;
 });
 
 /* ---------- minimap ---------- */
@@ -1667,7 +1751,7 @@ const ray=new THREE.Raycaster(); ray.far=40;
 function updateDist(){
   camera.updateMatrixWorld();
   ray.setFromCamera({x:0,y:0},camera);
-  const list=picks.concat(partMeshes,furnOn?furnMeshes:[]);
+  const list=picks.concat(partMeshes,furnOn?furnMeshes.filter(visibleChain):[]);
   const hit=ray.intersectObjects(list,false)[0];
   distEl.textContent=hit?('前方 '+hit.distance.toFixed(2)+' m'):'前方 —';
 }
@@ -1695,6 +1779,7 @@ function tick(now){
   requestAnimationFrame(tick);
   const t=now||last, dt=Math.min(0.05,(t-last)/1000)||0.016; last=t; frame++;
   updateDoors(dt);
+  if(foldT!==foldTarget){ foldT=foldTarget>foldT?Math.min(foldTarget,foldT+dt/1.4):Math.max(foldTarget,foldT-dt/1.4); foldApply(foldT); }
   stepPlayer(dt);
   player.camY+=(floorY(player.x,player.z)-player.camY)*Math.min(1,dt*9);
   updateCamera();
@@ -1711,6 +1796,29 @@ function tick(now){
     }
   }
 }
+/* ---------- furniture layouts ---------- */
+const ROOM2=ROOMS.filter(function(r){return r.n==='洋室 (2)';})[0], layBtns=Array.prototype.slice.call($('layBtns').querySelectorAll('button')), foldBtn=$('tFold');
+function syncFold(){ foldBtn.textContent=foldTarget?'折疊桌：已收合':'折疊桌：展開中'; foldBtn.setAttribute('aria-pressed',String(!!foldTarget)); updateAct(); }
+function setLayout(n){
+  curLayout=n;
+  layObjs.forEach(function(o){ o.visible=(o.userData.lay===n); });
+  rebuild();
+  const study=(n===2);
+  ROOM2.n=study?'書房':'洋室 (2)'; ROOM2.j=study?'書房（洋室(2)改）· 約4.0疊':'洋室(2) · 約4.0疊'; curRoom=null; updateRoom();
+  labelRedraw['洋室 (2)'](ROOM2.n,'約4.0疊'); spotBtns['洋室 (2)'].textContent=ROOM2.n;
+  $('foldRow').hidden=!study;
+  layBtns.forEach(function(b){ b.setAttribute('aria-pressed',String(+b.getAttribute('data-l')===n)); });
+  const p=resolve(player.x,player.z); player.x=p[0]; player.z=p[1];
+  try{ localStorage.setItem('ctypeLayout',String(n)); }catch(_){}
+  updateAct();
+}
+layBtns.forEach(function(b){ b.addEventListener('click',function(){ setLayout(+b.getAttribute('data-l')); }); });
+foldBtn.addEventListener('click',function(){ foldTarget=foldTarget?0:1; syncFold(); });
+(function(){
+  let n=1;
+  try{ n=+(new URLSearchParams(location.search).get('layout')||localStorage.getItem('ctypeLayout')||1); }catch(_){}
+  setLayout(n===2?2:1);
+})();
 setMode('walk');
 updateRoom(); drawMini();
 requestAnimationFrame(tick);
@@ -1718,7 +1826,7 @@ requestAnimationFrame(tick);
 if(location.hash==='#debug'){
   window.__walk={player:player,resolve:resolve,cols:function(){return allCols;},setFurn:function(v){furnOn=v;rebuild();},setPart:setPart,
     X:X,Z:Z,S:S,OX:OX,OY:OY,SPOTS:SPOTS,R:R,floorY:floorY,roomAt:roomAt,setMode:setMode,stepPlayer:stepPlayer,joy:joy,keys:keys,
-    teleport:teleport,applyTheme:applyTheme,doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
+    teleport:teleport,applyTheme:applyTheme,setLayout:setLayout,setFold:function(v){foldTarget=v;foldT=v;foldApply(v);syncFold();},doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
 }
 }
 })();
