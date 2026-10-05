@@ -1275,28 +1275,36 @@ plant(845,1240,1.0);
     add(G,bx(0.2,0.02,W*0.9),cwood,D+0.1,0.01,0);                                       // doorstep ledge
     return G;
   };
-  const makeCat=function(G,col,white,stripe){                                            // sleeping tabby curled in a ear bed, breathing slowly
-    const C=new THREE.Group(); C.position.set(0.2,0.055,0); C.rotation.y=0.5; C.scale.setScalar(0.9); G.add(C);
-    const cv=document.createElement('canvas'); cv.width=256; cv.height=64; const g=cv.getContext('2d');
-    const hex='#'+('000000'+col.toString(16)).slice(-6);
-    g.fillStyle='#'+('000000'+white.toString(16)).slice(-6); g.fillRect(0,0,256,64);                   // white base
-    g.fillStyle=hex; g.beginPath(); g.moveTo(0,0); g.lineTo(256,0); for(let x=256;x>=0;x-=16) g.lineTo(x,26+Math.sin(x*0.13)*8+Math.random()*10); g.closePath(); g.fill();   // tabby saddle over the back
-    g.fillStyle=stripe; for(let i=0;i<10;i++){ g.fillRect(i*26+3+Math.random()*4,0,7+Math.random()*5,22+Math.random()*8); }
+  const makeCat=function(G,col,white,stripe){                                            // sleeping tabby loaf: long body, small head resting on white paws, ringed tail, breathing slowly
+    const C=new THREE.Group(); C.position.set(0.17,0.05,0); C.rotation.y=Math.PI/2+0.35; C.scale.setScalar(0.62); G.add(C);
+    const hx=function(c){ return '#'+('000000'+c.toString(16)).slice(-6); };
+    const cv=document.createElement('canvas'); cv.width=256; cv.height=128; const g=cv.getContext('2d');
+    g.fillStyle=hx(white); g.fillRect(0,0,256,128);
+    g.fillStyle=hx(col); g.beginPath(); g.moveTo(0,0); g.lineTo(256,0); for(let x=256;x>=0;x-=8) g.lineTo(x,62+Math.sin(x*0.09)*8+Math.random()*8); g.closePath(); g.fill();      // tabby saddle reaching down the flanks
+    g.fillStyle=stripe; for(let i=0;i<14;i++){ const x=i*18+Math.random()*6, w=6+Math.random()*4; g.fillRect(x,0,w,52+Math.random()*18); }
     const tex=new THREE.CanvasTexture(cv); tex.encoding=THREE.sRGBEncoding; tex.wrapS=THREE.RepeatWrapping;
-    const fur=new THREE.MeshStandardMaterial({map:tex,roughness:1}), furP=lam(col,{roughness:1}), wh=lam(white,{roughness:1}), pink=lam(0xe9a5a5,{roughness:0.8}), dk=lam(0x2a2018,{roughness:0.8});
+    const tc2=document.createElement('canvas'); tc2.width=128; tc2.height=8; const tg=tc2.getContext('2d');
+    tg.fillStyle=hx(col); tg.fillRect(0,0,128,8); tg.fillStyle=stripe; for(let i=0;i<8;i++) tg.fillRect(i*16+4,0,6,8);
+    const ttex=new THREE.CanvasTexture(tc2); ttex.encoding=THREE.sRGBEncoding;
+    const fur=new THREE.MeshStandardMaterial({map:tex,roughness:1}), tailM=new THREE.MeshStandardMaterial({map:ttex,roughness:1}), furP=lam(col,{roughness:1}), wh=lam(white,{roughness:1}), pink=lam(0xe9a5a5,{roughness:0.8}), dk=lam(0x2a2018,{roughness:0.8}), sk=lam(stripe.length===7?parseInt(stripe.slice(1),16):0x444444,{roughness:1});
     const sp=function(r,mat,x,y,z,sx,sy,sz){ const m=new THREE.Mesh(new THREE.SphereGeometry(r,20,14),mat); m.position.set(x,y,z); m.scale.set(sx||1,sy||1,sz||1); m.castShadow=true; m.receiveShadow=true; C.add(m); return m; };
-    const body=sp(1,fur,0,0.085,0,0.17,0.085,0.1);
-    sp(0.07,furP,0.16,0.09,0,1,0.92,1.05);                                               // head
-    sp(0.032,wh,0.215,0.075,0,1,0.8,1.15); sp(0.009,pink,0.243,0.085,0);                 // muzzle, nose
+    const body=sp(1,fur,0,0.09,0,0.2,0.09,0.11);
+    [-1,1].forEach(function(sd){ sp(0.06,fur,-0.1,0.07,sd*0.07,1.3,1,0.9); });          // haunches
+    sp(0.058,furP,0.205,0.085,0,1,0.9,1.1);                                              // small head
+    sp(0.026,wh,0.255,0.072,0,1,0.8,1.2); sp(0.008,pink,0.28,0.082,0);                  // muzzle, nose
+    sp(0.05,wh,0.23,0.075,0,0.9,0.8,1.2);                                                // white cheeks / chin
     [-1,1].forEach(function(sd){
-      const ear=new THREE.Mesh(new THREE.ConeGeometry(0.03,0.055,4),furP); ear.position.set(0.15,0.16,sd*0.045); ear.rotation.x=-sd*0.35; ear.castShadow=true; C.add(ear);
-      const e2=new THREE.Mesh(new THREE.ConeGeometry(0.016,0.035,4),pink); e2.position.set(0.153,0.158,sd*0.043); e2.rotation.x=-sd*0.35; C.add(e2);
-      const eye=new THREE.Mesh(new THREE.BoxGeometry(0.004,0.003,0.022),dk); eye.position.set(0.215,0.105,sd*0.03); C.add(eye);   // closed eyes
-      sp(0.025,wh,0.2,0.028,sd*0.05,1.3,0.7,0.9);                                          // front paws
+      const ear=new THREE.Mesh(new THREE.ConeGeometry(0.03,0.065,3),furP); ear.position.set(0.19,0.148,sd*0.034); ear.rotation.x=-sd*0.22; ear.rotation.z=-0.12; ear.castShadow=true; C.add(ear);
+      const e2=new THREE.Mesh(new THREE.ConeGeometry(0.016,0.04,3),pink); e2.position.set(0.196,0.142,sd*0.033); e2.rotation.x=-sd*0.22; e2.rotation.z=-0.12; C.add(e2);
+      const eg=new THREE.Group(); eg.position.set(0.248,0.098,sd*0.026); eg.rotation.y=Math.PI/2; C.add(eg);           // closed eye: little downward arc
+      const eye=new THREE.Mesh(new THREE.TorusGeometry(0.011,0.0022,6,12,Math.PI),dk); eye.rotation.z=Math.PI; eg.add(eye);
+      for(let k=0;k<3;k++){ const w=new THREE.Mesh(new THREE.BoxGeometry(0.0015,0.0015,0.06),lam(0xf4f2ee,{roughness:1})); w.position.set(0.268,0.07-k*0.005,sd*0.04); w.rotation.y=sd*(0.35+k*0.15); C.add(w); }   // whiskers
+      sp(0.024,wh,0.255,0.026,sd*0.05,1.6,0.65,0.9);                                      // front paws stretched forward
     });
-    const tc=new THREE.CatmullRomCurve3([new THREE.Vector3(-0.15,0.06,0.03),new THREE.Vector3(-0.19,0.045,0.1),new THREE.Vector3(-0.1,0.035,0.16),new THREE.Vector3(0.02,0.035,0.15),new THREE.Vector3(0.12,0.04,0.12)]);
-    const tail=new THREE.Mesh(new THREE.TubeGeometry(tc,24,0.02,8,false),furP); tail.castShadow=true; C.add(tail); sp(0.02,wh,0.12,0.04,0.12);
-    catAnim.push(function(t){ const b=1+0.05*Math.sin(t*2.1); body.scale.y=0.085*b; C.position.y=0.055+0.002*Math.sin(t*2.1); });
+    [-0.014,0,0.014].forEach(function(z,i){ sp(0.01,sk,0.235,0.136-(i===1?0:0.003),z,2.2,0.3,0.4); });          // forehead stripes
+    const tc=new THREE.CatmullRomCurve3([new THREE.Vector3(-0.19,0.06,0.04),new THREE.Vector3(-0.23,0.045,0.12),new THREE.Vector3(-0.14,0.03,0.2),new THREE.Vector3(0.0,0.03,0.18),new THREE.Vector3(0.12,0.035,0.14)]);
+    const tail=new THREE.Mesh(new THREE.TubeGeometry(tc,32,0.017,8,false),tailM); tail.castShadow=true; C.add(tail); sp(0.017,wh,0.12,0.035,0.14);
+    catAnim.push(function(t){ const b=1+0.05*Math.sin(t*2.1); body.scale.y=0.09*b; C.position.y=0.05+0.002*Math.sin(t*2.1); });
     return C;
   };
   const catStep=function(py,yb){                                                        // T-shaped step: plate + vertical fin
