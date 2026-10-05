@@ -992,8 +992,9 @@ clothes(423,872,457,942,1.75,0.5,1.0,6);
 clothes(524,833,554,948,1.75,0.5,1.0,10);
 
 /* ---------- reference furniture (can be switched off) ---------- */
-const lampMat=new THREE.MeshBasicMaterial({color:0xfff3dc});
-function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.linen,{group:furn,cast:false,open:true},20); }
+const lampMat=new THREE.MeshBasicMaterial({color:0xffdc96});
+M.shade=lam(0xf2d9a6,{emissive:0x8a6428,side:THREE.DoubleSide,roughness:0.9});
+function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:furn,cast:false,open:true},20); }
 (function(){                                   // fridge with a door seam and handles, facing the kitchen aisle
   rb(821,1038,0.65,0.7,1.75,0.03,M.fridge,0,true);
   box(X(821)-0.326,X(821)-0.32,Z(1038)-0.33,Z(1038)+0.33,0.95,0.965,M.dark,{group:furn,cast:false});
@@ -1046,22 +1047,22 @@ function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.linen,{group:f
   fb(841.5,1510,0.005,0.94,0.54,new THREE.MeshStandardMaterial({color:0x0a0d12,roughness:0.1,metalness:0.4,emissive:new THREE.Color(0x101624)}),0.59,false);
 })();
 picture(X(XE)-0.1,Z(1360),0.6,0.45,1.5,-Math.PI/2);
-(function(){                                   // room 1: double bed 140 x 200, bedside table and lamp, print, plant
-  const cx=475, top=1316, cy=top+1.0/S;
-  rb(cx,cy,1.42,2.02,0.2,0.02,M.oakD,0.08,true);                          // frame on short legs
-  legs(cx,cy,0.65,0.95,0.08,0.03,0.025,M.oakD);
-  rb(cx,cy,1.38,1.98,0.2,0.08,M.bedA,0.28,false);                          // mattress
-  rb(cx,top+0.03/S,1.46,0.06,0.9,0.02,M.oakD,0,false);                     // headboard with an upholstered panel
-  rb(cx,top+0.085/S,1.3,0.05,0.42,0.05,M.sofaD,0.46,false);
-  rb(cx,top+1.32/S,1.42,1.3,0.1,0.06,M.bedB,0.46,false);                   // duvet, draped over both sides
-  fb(cx-0.71/S,top+1.32/S,0.025,1.3,0.22,M.bedB,0.28,false); fb(cx+0.71/S,top+1.32/S,0.025,1.3,0.22,M.bedB,0.28,false);
-  rb(cx,top+0.68/S,1.4,0.2,0.13,0.06,M.bedB,0.47,false);                   // folded top edge
-  rb(cx-0.33/S,top+0.3/S,0.55,0.38,0.15,0.07,M.pillow,0.48,false);
-  rb(cx+0.33/S,top+0.3/S,0.55,0.38,0.15,0.07,M.pillow,0.48,false);
-  rb(560,1340,0.4,0.4,0.45,0.02,M.oak,0,true);
-  fb(560,1340-0.2/S,0.34,0.01,0.12,M.oakD,0.3,false);                       // drawer seam
-  cyl(X(560),Z(1340),0.05,0.05,0.45,0.6,M.steel,{group:furn,cast:false},10);
-  shade(X(560),Z(1340),0.13,0.1,0.58,0.75);
+(function(){                                   // room 1: Japanese queen bed 160 x 195, bedside table and lamp, print, plant
+  const cx=487, top=1316, cy=top+0.995/S;
+  rb(cx,cy,1.64,1.99,0.2,0.02,M.oakD,0.08,true);                          // frame on short legs
+  legs(cx,cy,0.76,0.94,0.08,0.03,0.025,M.oakD);
+  rb(cx,cy,1.6,1.95,0.2,0.08,M.bedA,0.28,false);                           // mattress
+  rb(cx,top+0.03/S,1.68,0.06,0.9,0.02,M.oakD,0,false);                     // headboard with an upholstered panel
+  rb(cx,top+0.085/S,1.5,0.05,0.42,0.05,M.sofaD,0.46,false);
+  rb(cx,top+1.32/S,1.64,1.3,0.1,0.06,M.bedB,0.46,false);                   // duvet, draped over both sides
+  fb(cx-0.82/S,top+1.32/S,0.025,1.3,0.22,M.bedB,0.28,false); fb(cx+0.82/S,top+1.32/S,0.025,1.3,0.22,M.bedB,0.28,false);
+  rb(cx,top+0.68/S,1.62,0.2,0.13,0.06,M.bedB,0.47,false);                  // folded top edge
+  rb(cx-0.38/S,top+0.3/S,0.6,0.38,0.15,0.07,M.pillow,0.48,false);
+  rb(cx+0.38/S,top+0.3/S,0.6,0.38,0.15,0.07,M.pillow,0.48,false);
+  rb(575,1340,0.4,0.4,0.45,0.02,M.oak,0,true);
+  fb(575,1340-0.2/S,0.34,0.01,0.12,M.oakD,0.3,false);                       // drawer seam
+  cyl(X(575),Z(1340),0.05,0.05,0.45,0.6,M.steel,{group:furn,cast:false},10);
+  shade(X(575),Z(1340),0.13,0.1,0.58,0.75);
   picture(X(XW)+0.1,Z(1450),0.5,0.7,1.5,Math.PI/2);
   plant(430,1570,0.8);
 })();
@@ -1089,9 +1090,11 @@ rb(650,770,0.6,0.4,0.012,0.006,M.rug,-0.15,false);   // doormat
 
 /* ---------- ceiling lights: flush domes, the main rooms also get a warm point light ---------- */
 const lampGeo=new THREE.SphereGeometry(0.14,18,8,0,TAU,Math.PI/2,Math.PI/2);
+M.lampRim=lam(0x4a4034,{metalness:0.6,roughness:0.35});
 const pointLights=[];
 [[655,757],[650,905],[500,900],[540,1060],[770,900],[730,1130,1],[730,1420,1],[505,1210,1],[505,1450,1],[636,1680]].forEach(function(l){
   const m=new THREE.Mesh(lampGeo,lampMat); m.position.set(X(l[0]),H+0.02,Z(l[1])); m.scale.y=0.6; scene.add(m);
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(0.15,0.014,8,28),M.lampRim); ring.rotation.x=Math.PI/2; ring.position.set(X(l[0]),H-0.006,Z(l[1])); scene.add(ring);
   if(l[2]){ const p=new THREE.PointLight(0xffe2bd,0.35,6,2); p.position.set(X(l[0]),H-0.3,Z(l[1])); scene.add(p); pointLights.push(p); }
 });
 
@@ -1388,15 +1391,15 @@ const THEMES={
   A:{ wall:{oat:0xdcceb7,sage:0xa3b39d,mist:0xb3bfca,peach:0xe2c0a8,hall:0xd8caB2,genkan:0xd0c3ad,utility:0xe0d4bf,wc:0xd9dcd8,bath:0xdfe8ec,dress:0xe7e2d8,outside:0xd8d3c8},
       ceil:[0xf5f0e6,0x2b2720], trim:0xfbfaf7, frame:0xe9e5dc, floor:0xc4aa88, floorD:0xb39a78, exposure:1.0, amb:0.48,
       mat:{oak:0xd6b88e,oakD:0x8f6a49,oakChair:0xcfa77c,chairBack:0xc9a074,sofa:0x7f90a5,sofaD:0x6b7b8f,bedA:0xe9eef3,bedB:0xb8c4d2,cushA:0xc9b27f,cushB:0x5f6f82,
-           linen:0xe9dfcd,rug:0xb9b0a3,door:0xe4d2b4,cab:0xe9e5dc,cabF:0xf4f1ea,top:0xc4c6c8,panel:0xf1efe9} },
+           linen:0xb98368,rug:0xb9b0a3,door:0xe4d2b4,cab:0xe9e5dc,cabF:0xf4f1ea,top:0xc4c6c8,panel:0xf1efe9} },
   B:{ wall:{oat:0xbfb4a1,sage:0x5e4330,mist:0x6f6053,peach:0xb9aa90,hall:0xb3a894,genkan:0xa89c88,utility:0xc2b8a5,wc:0xaeb0a8,bath:0xb7c1c1,dress:0xc0b9ac,outside:0xb5afa3},
       ceil:[0xe2dbcd,0x211e19], trim:0xd6cebf, frame:0xb9b09d, floor:0x7f6c5a, floorD:0x6a5a4a, exposure:1.05, amb:0.5,
       mat:{oak:0x8a6a4a,oakD:0x4f3a2a,oakChair:0x7a5c40,chairBack:0x72563c,sofa:0x5b5a56,sofaD:0x484743,bedA:0xd6d2c8,bedB:0x6a6a64,cushA:0xb5895a,cushB:0x4a4f4a,
-           linen:0xcfc6b4,rug:0x8d867a,door:0x6b513b,cab:0x4a4036,cabF:0x6a5645,top:0xcfcac0,panel:0xd2c9b8} },
+           linen:0x4a423a,rug:0x8d867a,door:0x6b513b,cab:0x4a4036,cabF:0x6a5645,top:0xcfcac0,panel:0xd2c9b8} },
   C:{ wall:{oat:0xf2e6dc,sage:0xaabdcc,mist:0xdfbdb7,peach:0xe2d9e6,hall:0xf4ece4,genkan:0xeadfd2,utility:0xf3ebe0,wc:0xe6e9e6,bath:0xe3edf0,dress:0xf0e6df,outside:0xe0dbd0},
       ceil:[0xfdf9f3,0x2e2a24], trim:0xffffff, frame:0xf6f2ea, floor:0xe3c9a2, floorD:0xd2b88f, exposure:1.0, amb:0.5,
       mat:{oak:0xe6d4b6,oakD:0xbfa98a,oakChair:0xe9d9bf,chairBack:0xe4d3b8,sofa:0xcf9d99,sofaD:0xb98582,bedA:0xf6f1ea,bedB:0xd7c4cc,cushA:0xe6c46f,cushB:0x9fb4c6,
-           linen:0xf3ede2,rug:0xd9ccc2,door:0xf2ebe0,cab:0xf1ece2,cabF:0xf9f6f0,top:0xe4e0d8,panel:0xfaf6ef} }
+           linen:0xb4c4d2,rug:0xd9ccc2,door:0xf2ebe0,cab:0xf1ece2,cabF:0xf9f6f0,top:0xe4e0d8,panel:0xfaf6ef} }
 };
 function paint(m,hex){ m.color.setHex(hex).convertSRGBToLinear(); }
 let themeId='A';
