@@ -145,8 +145,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
   <div id="cross"></div>
   <div id="dist">前方 —</div>
   <button id="bAct" class="fab primary" type="button" hidden>開門</button>
-  <div id="toast" hidden></div>
-  <div id="joy" aria-label="移動搖桿"><div id="knob"></div></div>
+  <div id="toast" hidden></div>  <div id="joy" aria-label="移動搖桿"><div id="knob"></div></div>
   <div id="fab">
     <button id="bView" class="fab primary" type="button">俯瞰</button>
     <button id="bMenu" class="fab" type="button">選單</button>
@@ -178,7 +177,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
     </div>
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
-    <p class="help"><b>操作：</b>左下搖桿移動，手指拖曳畫面轉向，右下「俯瞰」可看整體格局（電腦可用 WASD 與方向鍵，Shift 加速）。走近門並面向它，畫面下方會出現開關按鈕（電腦可按 F）。畫面下方數字是視線正前方到牆或家具的距離。手機橫向握持時視野較寬。</p>
+    <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿（往哪個方向拖就往哪走），兩指一起拖曳可轉向與抬頭低頭，左下搖桿也能用；電腦：滑鼠拖曳轉向，右下「俯瞰」可看整體格局（電腦可用 WASD 與方向鍵，Shift 加速）。走近門並面向它，畫面下方會出現開關按鈕（電腦可按 F）。畫面下方數字是視線正前方到牆或家具的距離。手機橫向握持時視野較寬。</p>
     <p class="help"><b>比例參考：</b>沙發 160 cm、餐桌 140 × 80 cm、雙人床 140 × 200 cm、單人床 97 × 195 cm、天花板 2.40 m。</p>
     <p class="help"><b>注意：</b>牆、門、窗、浴室與廚房設備的位置依圖面尺寸換算，天花板高度、門的寬度、家具與日照方向是推測，可能與實際不同。走廊旁的檯面在圖面上標為「上部カウンター／下部物入」，此處依其輪廓畫成洗面檯與鏡櫃，屬推測。簽約前請以建商的正式圖面與現場為準。</p>
   </div>
@@ -1323,23 +1322,41 @@ function look(dx,dy){
   if(mode==='walk'){ player.yaw-=dx*0.0055; player.pitch=clamp(player.pitch-dy*0.0055,-1.25,1.25); }
   else { orb.yaw-=dx*0.006; orb.pitch=clamp(orb.pitch+dy*0.005,0.2,1.52); }
 }
+/* touch in walk mode: one finger drags to walk (distance = speed), two fingers drag to turn and tilt; mouse and overview keep drag-to-look */
+let tmove=null;
+function setStick(dx,dy){                      // drag direction drives the on-screen joystick at a fixed speed
+  const d=Math.hypot(dx,dy);
+  if(d<8){ releaseStick(); return; }
+  joy.x=dx/d; joy.y=dy/d;
+  knob.style.transform='translate(calc(-50% + '+(joy.x*46)+'px), calc(-50% + '+(joy.y*46)+'px))';
+}
+function releaseStick(){ joy.x=0; joy.y=0; knob.style.transform='translate(-50%,-50%)'; }
 canvas.addEventListener('pointerdown',function(e){
   try{canvas.setPointerCapture(e.pointerId);}catch(_){}
   ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
-  if(ptrs.size===2) pinch0=pdist();
+  if(ptrs.size===1&&e.pointerType==='touch'&&mode==='walk'&&joy.id===null){ tmove={id:e.pointerId,sx:e.clientX,sy:e.clientY}; }
+  else if(ptrs.size===2){ if(tmove){ tmove=null; releaseStick(); } pinch0=pdist(); }
   if(!sheet.hidden) sheet.hidden=true;
 });
 canvas.addEventListener('pointermove',function(e){
   const p=ptrs.get(e.pointerId); if(!p) return;
   const dx=e.clientX-p.x, dy=e.clientY-p.y; p.x=e.clientX; p.y=e.clientY;
-  if(ptrs.size===1) look(dx,dy);
+  if(tmove&&tmove.id===e.pointerId){ setStick(e.clientX-tmove.sx,e.clientY-tmove.sy); return; }
+  const touchWalk=e.pointerType==='touch'&&mode==='walk';
+  if(ptrs.size===1){ if(!touchWalk||joy.id!==null) look(dx,dy); }
   else if(ptrs.size===2){
-    const d=pdist();
-    if(pinch0>0&&d>0&&mode==='over') orb.dist=clamp(orb.dist*pinch0/d,6,40);
-    pinch0=d;
+    if(touchWalk) look(dx*0.5,dy*0.5);
+    else {
+      const d=pdist();
+      if(pinch0>0&&d>0&&mode==='over') orb.dist=clamp(orb.dist*pinch0/d,6,40);
+      pinch0=d;
+    }
   }
 });
-function upPtr(e){ ptrs.delete(e.pointerId); pinch0=0; }
+function upPtr(e){
+  ptrs.delete(e.pointerId); pinch0=0;
+  if(tmove&&tmove.id===e.pointerId){ tmove=null; releaseStick(); }
+}
 canvas.addEventListener('pointerup',upPtr);
 canvas.addEventListener('pointercancel',upPtr);
 canvas.addEventListener('wheel',function(e){
@@ -1505,8 +1522,7 @@ function updateDist(){
 
 /* ---------- loop ---------- */
 function stepPlayer(dt){
-  let mx=joy.x, mz=-joy.y;
-  if(keys.KeyW||keys.ArrowUp) mz+=1;
+  let mx=joy.x, mz=-joy.y;  if(keys.KeyW||keys.ArrowUp) mz+=1;
   if(keys.KeyS||keys.ArrowDown) mz-=1;
   if(keys.KeyD) mx+=1;
   if(keys.KeyA) mx-=1;
