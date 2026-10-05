@@ -66,6 +66,14 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
   font-family:var(--font-num); font-variant-numeric:tabular-nums; font-size:13px; padding:6px 10px;
   background:var(--card); border:1px solid var(--line); border-radius:999px; white-space:nowrap;
 }
+#bAct{
+  position:absolute; left:50%; transform:translateX(-50%); bottom:calc(76px + env(safe-area-inset-bottom, 0px));
+  pointer-events:auto; min-width:104px; box-shadow:0 4px 16px rgba(0,0,0,.25);
+}
+#toast{
+  position:absolute; left:50%; transform:translateX(-50%); bottom:calc(132px + env(safe-area-inset-bottom, 0px));
+  font-size:13px; padding:6px 12px; background:var(--card); border:1px solid var(--line); border-radius:999px; white-space:nowrap;
+}
 #joy{
   position:absolute; left:16px; bottom:calc(20px + env(safe-area-inset-bottom, 0px));
   width:128px; height:128px; border-radius:50%; background:var(--card); border:1px solid var(--line);
@@ -136,6 +144,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
   <canvas id="mini" width="220" height="470" aria-hidden="true"></canvas>
   <div id="cross"></div>
   <div id="dist">前方 —</div>
+  <button id="bAct" class="fab primary" type="button" hidden>開門</button>
+  <div id="toast" hidden></div>
   <div id="joy" aria-label="移動搖桿"><div id="knob"></div></div>
   <div id="fab">
     <button id="bView" class="fab primary" type="button">俯瞰</button>
@@ -155,9 +165,14 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
       <button type="button" class="tog" data-s="1" aria-pressed="true">開一扇</button>
       <button type="button" class="tog" data-s="2" aria-pressed="false">全開</button>
     </div>
+    <h3>所有門</h3>
+    <div class="seg" style="grid-template-columns:repeat(2,1fr)">
+      <button type="button" class="tog" id="dOpen">全部打開</button>
+      <button type="button" class="tog" id="dClose">全部關上</button>
+    </div>
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
-    <p class="help"><b>操作：</b>左下搖桿移動，手指拖曳畫面轉向，右下「俯瞰」可看整體格局（電腦可用 WASD 與方向鍵，Shift 加速）。畫面下方數字是視線正前方到牆或家具的距離。手機橫向握持時視野較寬。</p>
+    <p class="help"><b>操作：</b>左下搖桿移動，手指拖曳畫面轉向，右下「俯瞰」可看整體格局（電腦可用 WASD 與方向鍵，Shift 加速）。走近門並面向它，畫面下方會出現開關按鈕（電腦可按 F）。畫面下方數字是視線正前方到牆或家具的距離。手機橫向握持時視野較寬。</p>
     <p class="help"><b>比例參考：</b>沙發 160 cm、餐桌 140 × 80 cm、雙人床 140 × 200 cm、單人床 97 × 195 cm、天花板 2.40 m。</p>
     <p class="help"><b>注意：</b>牆、門、窗、浴室與廚房設備的位置依圖面尺寸換算，天花板高度、門的寬度、家具與日照方向是推測，可能與實際不同。走廊旁的檯面在圖面上標為「上部カウンター／下部物入」，此處依其輪廓畫成洗面檯與鏡櫃，屬推測。簽約前請以建商的正式圖面與現場為準。</p>
   </div>
@@ -469,19 +484,36 @@ function mirror(cx,cz,w,h,yc,rotY){           // planar reflection (after three.
   };
   return place(m,{pick:false,cast:false,recv:false});
 }
-function slide(xc,a,b,side,h){                 // sliding door standing open: panel parked on the wall just north of the opening, floor track across it
-  const len=(b-a)*S+0.04, x=X(xc)+side*0.065, z1=Z(a)+0.02, z0=z1-len, opt={pick:false};
-  box(x-0.02,x+0.02,z0,z1,0,h,M.door,opt);
-  box(x-0.035,x+0.035,z0,Z(b),0,0.01,M.steel,{pick:false,cast:false});
-  box(x+side*0.025-0.008,x+side*0.025+0.008,z1-0.14,z1-0.04,0.9,1.1,M.steel,{pick:false,cast:false});
+const doors=[];                                // operable doors; open=true is the pose drawn in the plan
+function lbox(g,w,h,d,x,y,z,mat,cast){
+  const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+  m.position.set(x,y,z); m.castShadow=cast!==false; m.receiveShadow=true; g.add(m); return m;
 }
-function door(hx,hy,len,ang,h,y0,mat){        // leaf hinged at plan point (hx,hy), swung to direction ang, with a lever handle
+function applyDoor(d){
+  const s=d.t*d.t*(3-2*d.t);
+  if(d.kind==='swing') d.g.rotation.y=d.closed+(d.openAng-d.closed)*s;
+  else d.g.position.z=(1-s)*d.shift;
+}
+function slide(xc,a,b,side,h,mid){             // sliding door: parked on the wall north of the opening when open, floor track across it
+  const shift=(b-a)*S, len=shift+0.04, x=X(xc)+side*0.065, z1=Z(a)+0.02, z0=z1-len;
+  const g=new THREE.Group(); scene.add(g);
+  lbox(g,0.04,h,len,x,h/2,(z0+z1)/2,M.door);
+  lbox(g,0.016,0.2,0.1,x+side*0.025,1.0,z1-0.09,M.steel,false);
+  box(x-0.035,x+0.035,z0,Z(b),0,0.01,M.steel,{pick:false,cast:false});
+  const d={kind:'slide',g:g,open:true,t:1,shift:shift,mid:[X(mid[0]),Z(mid[1])],col:{x0:x-0.05,x1:x+0.05,z0:Z(a),z1:Z(b),kind:'d'}};
+  doors.push(d); return d;
+}
+function door(hx,hy,len,closedAng,openAng,h,y0,mat,mid){   // leaf hinged at plan point (hx,hy); angles measured as rotation.y
   y0=y0||0;
-  const ux=Math.cos(ang), uz=-Math.sin(ang), nx=-uz, nz=ux;
-  rotBox(X(hx)+ux*len/2,Z(hy)+uz*len/2,len,0.04,y0,y0+h,ang,mat||M.door,{pick:false});
-  const px=X(hx)+ux*(len-0.07), pz=Z(hy)+uz*(len-0.07), hy0=y0+0.98;
-  rotBox(px,pz,0.02,0.1,hy0,hy0+0.02,ang,M.steel,{pick:false,cast:false});
-  [1,-1].forEach(function(s){ rotBox(px-ux*0.05+nx*s*0.045,pz-uz*0.05+nz*s*0.045,0.12,0.015,hy0,hy0+0.018,ang,M.steel,{pick:false,cast:false}); });
+  const g=new THREE.Group(); g.position.set(X(hx),y0,Z(hy)); scene.add(g);
+  lbox(g,len,h,0.04,len/2,h/2,0,mat||M.door);
+  const px=len-0.07;
+  lbox(g,0.02,0.02,0.1,px,0.99,0,M.steel,false);
+  [1,-1].forEach(function(s){ lbox(g,0.12,0.018,0.015,px-0.05,0.989,s*0.045,M.steel,false); });
+  const x0=g.position.x, z0=g.position.z, x1=x0+Math.cos(closedAng)*len, z1=z0-Math.sin(closedAng)*len;
+  const d={kind:'swing',g:g,open:true,t:1,closed:closedAng,openAng:openAng,mid:[X(mid[0]),Z(mid[1])],
+    col:{x0:Math.min(x0,x1)-0.03,x1:Math.max(x0,x1)+0.03,z0:Math.min(z0,z1)-0.03,z1:Math.max(z0,z1)+0.03,kind:'d'}};
+  doors.push(d); applyDoor(d); return d;
 }
 function floor(x0,y0,x1,y1,mat,tile,y,mini){
   const w=(x1-x0)*S, d=(y1-y0)*S;
@@ -667,13 +699,13 @@ solid(840,945,858,982,BASE,H,M.wall,'w');        // pipe shaft in the changing r
 solid(560,921,587,957,BASE,H,M.wall,'w');        // pipe shaft (PS) beside the washbasin
 solid(587,921,608.6,956,0,0.95,M.cab,'x');       // counter with storage below
 /* door leaves: the plan's fully open ones as drawn, the rest left ajar */
-door(696,713,0.82,Math.PI/2,2.05,-0.15,M.entry); // entrance door, hinged on the SIC side, swings out to the corridor
-door(690,1027,0.82,-Math.PI/2,2.0);              // hallway -> LDK
-door(551,1020,0.6,Math.PI/2,2.0);                // toilet, opens into the utility room
-door(700,727,0.66,Math.PI,2.0,-0.15);            // shoe-in closet, hinged on the north end, swings open into the genkan
-door(716,928,0.68,1.42,1.9);                     // bath
-slide(XP,1208,1290,-1,2.0);                      // room 2: sliding door retracted over the wall on the room side
-slide(XC,934,996,-1,1.95);                       // changing room: sliding door retracted over the wall on the hallway side
+door(696,713,0.82,Math.PI,Math.PI/2,2.05,-0.15,M.entry,[662,713]);   // entrance door, hinged on the SIC side, swings out to the corridor
+door(690,1027,0.82,Math.PI,3*Math.PI/2,2.0,0,null,[656,1027]);        // hallway -> LDK
+door(551,1020,0.6,0,Math.PI/2,2.0,0,null,[575.5,1020]);               // toilet, opens into the utility room
+door(700,727,0.66,-Math.PI/2,-Math.PI,2.0,-0.15,null,[700,754.5]);    // shoe-in closet, hinged on the north end, swings open into the genkan
+door(716,928,0.68,0,1.42,1.9,0,null,[744,928]);                       // bath
+slide(XP,1208,1290,-1,2.0,[XP,1249]);            // room 2: parks on the wall on the room side
+slide(XC,934,996,-1,1.95,[XC,965]);              // changing room: parks on the wall on the hallway side
 
 /* ---------- ceilings ---------- */
 slab(397,797,875,1597);
@@ -982,7 +1014,7 @@ let userH=165, mode='walk', furnOn=true, shadowOn=true, hour=15;
 const orb={yaw:0,pitch:1.12,dist:15.5};
 const R=0.22, SPEED=1.5;
 function rebuild(){
-  allCols=colliders.concat(partCols,furnOn?furnCols:[]);
+  allCols=colliders.concat(partCols,doors.filter(function(d){return !d.open;}).map(function(d){return d.col;}),furnOn?furnCols:[]);
   furn.visible=furnOn;
   renderer.shadowMap.needsUpdate=true;
 }
@@ -1062,6 +1094,7 @@ const keys={};
 window.addEventListener('keydown',function(e){
   keys[e.code]=true;
   if(e.target&&e.target.tagName==='INPUT') return;
+  if(e.code==='KeyF'&&!e.repeat) actNow();
   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].indexOf(e.code)>=0) e.preventDefault();
 });
 window.addEventListener('keyup',function(e){ keys[e.code]=false; });
@@ -1131,6 +1164,53 @@ function setPart(s){
   const p=resolve(player.x,player.z); player.x=p[0]; player.z=p[1];
 }
 partBtns.forEach(function(b){ b.addEventListener('click',function(){ setPart(+b.getAttribute('data-s')); }); });
+
+/* ---------- operable doors ---------- */
+const bAct=$('bAct'), toastEl=$('toast'); let toastT=0, curThing=null;
+function toast(t){ toastEl.textContent=t; toastEl.hidden=false; clearTimeout(toastT); toastT=setTimeout(function(){ toastEl.hidden=true; },1800); }
+function setDoor(d,open,quiet){
+  if(!open){
+    const c=d.col, nx=clamp(player.x,c.x0,c.x1), nz=clamp(player.z,c.z0,c.z1);
+    if(Math.hypot(player.x-nx,player.z-nz)<R+0.15){ if(!quiet) toast('人站在門口，無法關上'); return false; }
+  }
+  d.open=open; rebuild(); return true;
+}
+const things=doors.map(function(d){
+  return {pt:d.mid, label:function(){ return d.kind==='slide'?(d.open?'拉上拉門':'拉開拉門'):(d.open?'關門':'開門'); }, act:function(){ setDoor(d,!d.open); }};
+});
+things.push({seg:[X(XR),Z(1315),X(XR),Z(1550)], label:function(){ return ['拉開一扇','全部拉開','拉上拉門'][partState]; }, act:function(){ setPart((partState+1)%3); }});
+function thingVec(t){
+  if(!t.seg) return [t.pt[0]-player.x,t.pt[1]-player.z];
+  const s=t.seg, k=clamp(((player.x-s[0])*(s[2]-s[0])+(player.z-s[1])*(s[3]-s[1]))/((s[2]-s[0])*(s[2]-s[0])+(s[3]-s[1])*(s[3]-s[1])),0,1);
+  return [s[0]+(s[2]-s[0])*k-player.x,s[1]+(s[3]-s[1])*k-player.z];
+}
+function updateAct(){
+  let best=null, bd=1.35;
+  if(mode==='walk'){
+    const fx=-Math.sin(player.yaw), fz=-Math.cos(player.yaw);
+    things.forEach(function(t){
+      const v=thingVec(t), d=Math.hypot(v[0],v[1]);
+      if(d<bd&&(d<0.6||(v[0]*fx+v[1]*fz)/d>0.45)){ bd=d; best=t; }
+    });
+  }
+  curThing=best;
+  if(best){ bAct.textContent=best.label(); bAct.hidden=false; } else bAct.hidden=true;
+}
+function actNow(){ if(curThing){ curThing.act(); updateAct(); } }
+bAct.addEventListener('click',actNow);
+$('dOpen').addEventListener('click',function(){ doors.forEach(function(d){ setDoor(d,true,true); }); setPart(2); updateAct(); });
+$('dClose').addEventListener('click',function(){
+  let blocked=0; doors.forEach(function(d){ if(!setDoor(d,false,true)) blocked++; });
+  setPart(0); updateAct(); if(blocked) toast('有 '+blocked+' 扇門因為有人站著而沒關上');
+});
+function updateDoors(dt){
+  let moved=false;
+  doors.forEach(function(d){
+    const tt=d.open?1:0;
+    if(d.t!==tt){ d.t=tt?Math.min(1,d.t+dt/0.45):Math.max(0,d.t-dt/0.45); applyDoor(d); moved=true; }
+  });
+  if(moved) renderer.shadowMap.needsUpdate=true;
+}
 const spotsEl=$('spots');
 function teleport(s){
   player.x=X(s[1]); player.z=Z(s[2]); player.yaw=s[3]; player.pitch=s[4]||0;
@@ -1151,7 +1231,7 @@ SPOTS.forEach(function(s){
 const mini=$('mini'), mg=mini.getContext('2d');
 const MS=32, MX0=-0.65, MZ0=-1.9;
 const mxp=function(x){return (x-MX0)*MS;}, mzp=function(z){return (z-MZ0)*MS;};
-const KC={w:'#39404a',s:'#7f8c9b',x:'#8fa3b8',f:'#c9a47a'};
+const KC={w:'#39404a',s:'#7f8c9b',x:'#8fa3b8',f:'#c9a47a',d:'#a0714f'};
 function drawMini(){
   mg.clearRect(0,0,mini.width,mini.height);
   floorRects.forEach(function(f){
@@ -1209,10 +1289,11 @@ let last=performance.now(), frame=0, first=true, aqT=0, aqN=0, aqDone=false;
 function tick(now){
   requestAnimationFrame(tick);
   const t=now||last, dt=Math.min(0.05,(t-last)/1000)||0.016; last=t; frame++;
+  updateDoors(dt);
   stepPlayer(dt);
   player.camY+=(floorY(player.x,player.z)-player.camY)*Math.min(1,dt*9);
   updateCamera();
-  if(frame%4===0) updateRoom();
+  if(frame%4===0){ updateRoom(); updateAct(); }
   if(mode==='walk'&&frame%6===0) updateDist();
   if(frame%2===0) drawMini();
   renderer.render(scene,camera);
@@ -1232,7 +1313,7 @@ requestAnimationFrame(tick);
 if(location.hash==='#debug'){
   window.__walk={player:player,resolve:resolve,cols:function(){return allCols;},setFurn:function(v){furnOn=v;rebuild();},setPart:setPart,
     X:X,Z:Z,S:S,OX:OX,OY:OY,SPOTS:SPOTS,R:R,floorY:floorY,roomAt:roomAt,setMode:setMode,stepPlayer:stepPlayer,joy:joy,keys:keys,
-    teleport:teleport,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
+    teleport:teleport,doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
 }
 }
 })();
