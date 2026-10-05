@@ -360,6 +360,7 @@ const clothMats=[0x6d7f99,0xc9b8a0,0x3f4a58,0xd8d2c6,0x8a9a86,0xb26b5a,0xe7e4de]
 M.cabF=lam(0xf4f1ea,{roughness:0.4});
 M.hob=lam(0x14171a,{roughness:0.1,metalness:0.3,envMapIntensity:0.9});
 M.washGlass=lam(0x1d2a35,{metalness:0.5,roughness:0.08,envMapIntensity:1});
+M.bathWall=lam(0xffffff,{roughness:0.25}); M.wcTile=lam(0xf1ede6,{roughness:0.3}); M.kTile=lam(0xffffff,{roughness:0.3});
 M.display=lam(0x9fd6ff,{emissive:0x4aa8e8});
 const shoeMats=[0x2a2a2e,0x6b4a35,0xe8e6e0,0x1f2c44,0x8a8d90,0xa5714a].map(function(c){return lam(c,{roughness:0.7});});
 
@@ -988,7 +989,7 @@ box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.hob,{pick:false});
   mirror(X(742),Z(806)+0.084,0.48,0.7,1.35,0);
 })();
 (function(){                                   // light blue-grey wall panels inside the bath
-  const lm=lam(0xc9d9df), t=0.012, h=2.1;
+  const lm=M.bathWall, t=0.012, h=2.1;
   const nx0=X(XC)+0.05, nx1=X(XE)-0.1, nz0=Z(806)+0.06, nz1=Z(928)-0.05;
   box(nx0,nx1,nz0,nz0+t,0,h,lm,{pick:false});
   box(nx0,nx0+t,nz0,nz1,0,h,lm,{pick:false});
@@ -996,6 +997,14 @@ box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.hob,{pick:false});
   box(nx0,X(716),nz1-t,nz1,0,h,lm,{pick:false});
   box(X(772),nx1,nz1-t,nz1,0,h,lm,{pick:false});
 })();
+(function(){                                   // toilet: 1.2 m tile wainscot on the back, side and tank walls (the door wall stays plain)
+  const x0=X(470)+0.05, x1=X(XP)-0.05, z0=Z(1020)+0.05, z1=Z(1100)-0.06, t=0.012, h=1.2, o={pick:false};
+  box(x0,x0+t,z0,z1,0,h,M.wcTile,o);
+  box(x0,x1,z1-t,z1,0,h,M.wcTile,o);
+  box(x1-t,x1,z0,z1,0,h,M.wcTile,o);
+  box(x0,x0+t+0.006,z0,z1,h,h+0.025,M.trim,{pick:false,cast:false}); box(x0,x1,z1-t-0.006,z1,h,h+0.025,M.trim,{pick:false,cast:false}); box(x1-t-0.006,x1,z0,z1,h,h+0.025,M.trim,{pick:false,cast:false});
+})();
+box(X(XE)-0.112,X(XE)-0.1,Z(1122),Z(1220),0.88,1.5,M.kTile,{pick:false});   // kitchen wall panel between the worktop and the wall cabinet
 /* washing machine */
 solid(780,934,832,986,0,0.98,M.white,'x');
 (function(){                                   // front-loader: chrome door ring, dark glass, control strip with dial and display
@@ -1482,6 +1491,9 @@ mapMat(FL.corr,'corrconc',2.0); paint(FL.corr,0xdedcd8);
 mapMat(FL.wc,'balctile',2.4); paint(FL.wc,0xe8e8e6);
 mapMat(FL.cf,'balctile',2.4); paint(FL.cf,0xe2d8c6);
 mapMat(M.top,'counter',1.2,true);
+mapMat(M.bathWall,'wtbath',2.4,true);          // bath wall: pale aqua gloss tile, about 16 cm
+mapMat(M.wcTile,'wttoilet',1.6,true);          // toilet wainscot: white tile, about 11 cm
+mapMat(M.kTile,'wtkitchen',0.9,true);          // kitchen panel: white hexagon mosaic
 mapMat(M.conc,'pilaster',2.0); paint(M.conc,0xdcdad4);
 const woodTexCache={};
 function useWoodTex(th){                       // veneer on tables, chairs, bed frames, doors: warm oak or pale oak

@@ -5,6 +5,6 @@
 ## 貼圖出處（`textures/`）
 
 - [Poly Haven](https://polyhaven.com/)（CC0）: laminate_floor_02, wood_floor, white_planks_clean, plastered_wall, jogging_melange, oak_veneer_01, oak_veneer_03
-- [ambientCG](https://ambientcg.com/)（CC0）: Tiles107, Tiles141, Tiles040, Concrete031, Concrete008, Marble021
+- [ambientCG](https://ambientcg.com/)（CC0）: Tiles107, Tiles141, Tiles040, Tiles133A, Tiles105, Tiles071, Concrete031, Concrete008, Marble021
 
 直接用 `file://` 開啟時瀏覽器不允許載入貼圖，會自動改用程式繪製的材質；請用網址（http/https）開啟以看到完整質感。
