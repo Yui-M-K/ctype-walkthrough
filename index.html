@@ -159,6 +159,12 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
       <button id="tFurn" class="tog" type="button" aria-pressed="true">參考家具與衣物</button>
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
     </div>
+    <h3>配色</h3>
+    <div id="themeBtns" class="seg">
+      <button type="button" class="tog" data-t="A" aria-pressed="true">暖色北歐</button>
+      <button type="button" class="tog" data-t="B" aria-pressed="false">現代日式</button>
+      <button type="button" class="tog" data-t="C" aria-pressed="false">明亮法式</button>
+    </div>
     <h3>洋室(1) 與客廳之間的拉門</h3>
     <div id="partBtns" class="seg">
       <button type="button" class="tog" data-s="0" aria-pressed="false">全關</button>
@@ -241,7 +247,7 @@ camera.rotation.order='YXZ';
 scene.add(camera);
 
 /* ---------- lights ---------- */
-scene.add(new THREE.AmbientLight(0xffffff,0.55));
+const amb=new THREE.AmbientLight(0xffffff,0.55); scene.add(amb);
 scene.add(new THREE.HemisphereLight(0xeaf4ff,0xcfc4b0,0.5));
 (function(){                                   // soft fill lights give each wall direction its own shade
   const a=new THREE.DirectionalLight(0xffffff,0.3); a.position.set(6,9,-7); scene.add(a);
@@ -715,27 +721,28 @@ const BAY={ax:457,ay:756,cx:535,cy:805};       // utility room: angled window ba
 function inBay(px,py){ return px>=BAY.ax&&py<=BAY.cy&&py>=BAY.ay+(px-BAY.ax)*(BAY.cy-BAY.ay)/(BAY.cx-BAY.ax); }
 
 /* ---------- wall palette: warm Scandinavian, one accent wall per main room ---------- */
-const WC={oat:0xe6dccb, sage:0xa9b8a3, mist:0xb9c4cf, peach:0xe6c7b0, hall:0xe2d8c6, genkan:0xd9cdb9, utility:0xe9e0d1, wc:0xd9dcd8, bath:0xdfe8ec, dress:0xe7e2d8, outside:0xd8d3c8};
-const wallMatCache={};
-function wallMat(c){ return wallMatCache[c]||(wallMatCache[c]=lam(c,{map:wallTex,bumpMap:wallTex,bumpScale:0.0015,roughness:0.9})); }
-M.wall=wallMat(WC.oat);
-function wallColorAt(px,py){                   // colour of the room that contains this plan point
-  if(px>=XC&&px<XE&&py>=806&&py<928) return WC.bath;
-  if(px>=XC&&px<XE&&py>=928&&py<999) return WC.dress;
-  if(px>=470&&px<XP&&py>=1020&&py<1100) return WC.wc;
-  if(px>=406&&px<XP&&py>=805&&py<1048) return WC.utility;
-  if(px>=406&&px<XP&&py>=1100&&py<1310.6) return WC.peach;
-  if(px>=406&&px<XR&&py>=1310.6&&py<1330) return WC.mist;          // wall behind the bed head
-  if(px>=406&&px<XR&&py>=1310.6&&py<=YB) return WC.oat;
-  if(px>=XP&&px<XC&&py>=800&&py<1027) return WC.hall;
-  if(px>=601&&px<=800&&py>=713&&py<806) return WC.genkan;
-  if(px>XE-30&&px<XE&&py>=1230&&py<=YB) return WC.sage;            // TV wall in the living area
-  if(px>=XP&&px<XE&&py>=999&&py<=YB) return WC.oat;
-  return WC.outside;
+const WM={};                                   // one wall material per colour role, recoloured when the palette changes
+['oat','sage','mist','peach','hall','genkan','utility','wc','bath','dress','outside'].forEach(function(k){
+  WM[k]=lam(0xffffff,{map:wallTex,bumpMap:wallTex,bumpScale:0.0015,roughness:0.9});
+});
+M.wall=WM.oat;
+function wallColorAt(px,py){                   // colour role of the room that contains this plan point
+  if(px>=XC&&px<XE&&py>=806&&py<928) return 'bath';
+  if(px>=XC&&px<XE&&py>=928&&py<999) return 'dress';
+  if(px>=470&&px<XP&&py>=1020&&py<1100) return 'wc';
+  if(px>=406&&px<XP&&py>=805&&py<1048) return 'utility';
+  if(px>=406&&px<XP&&py>=1100&&py<1310.6) return 'peach';
+  if(px>=406&&px<XR&&py>=1310.6&&py<1330) return 'mist';           // wall behind the bed head
+  if(px>=406&&px<XR&&py>=1310.6&&py<=YB) return 'oat';
+  if(px>=XP&&px<XC&&py>=800&&py<1027) return 'hall';
+  if(px>=601&&px<=800&&py>=713&&py<806) return 'genkan';
+  if(px>XE-30&&px<XE&&py>=1230&&py<=YB) return 'sage';             // TV wall in the living area
+  if(px>=XP&&px<XE&&py>=999&&py<=YB) return 'oat';
+  return 'outside';
 }
 function wallFaces(horiz,c,t,p){               // BoxGeometry face order: +x -x +y -y +z -z
-  const mid=(p.s+p.e)/2, off=t/2/S+5, e=wallMat(WC.outside);
-  const neg=wallMat(wallColorAt(horiz?mid:c-off,horiz?c-off:mid)), pos=wallMat(wallColorAt(horiz?mid:c+off,horiz?c+off:mid));
+  const mid=(p.s+p.e)/2, off=t/2/S+5, e=WM.outside;
+  const neg=WM[wallColorAt(horiz?mid:c-off,horiz?c-off:mid)], pos=WM[wallColorAt(horiz?mid:c+off,horiz?c+off:mid)];
   return horiz?[e,e,e,e,pos,neg]:[pos,neg,e,e,e,e];
 }
 
@@ -1359,6 +1366,42 @@ function setPart(s){
 }
 partBtns.forEach(function(b){ b.addEventListener('click',function(){ setPart(+b.getAttribute('data-s')); }); });
 
+/* ---------- colour schemes ---------- */
+const THEMES={
+  A:{ wall:{oat:0xe6dccb,sage:0xa9b8a3,mist:0xb9c4cf,peach:0xe6c7b0,hall:0xe2d8c6,genkan:0xd9cdb9,utility:0xe9e0d1,wc:0xd9dcd8,bath:0xdfe8ec,dress:0xe7e2d8,outside:0xd8d3c8},
+      ceil:[0xf2ece0,0x2b2720], trim:0xfbfaf7, frame:0xe9e5dc, floor:0xffffff, floorD:0xd2bb9a, exposure:1.0, amb:0.55,
+      mat:{oak:0xd6b88e,oakD:0x8f6a49,oakChair:0xcfa77c,chairBack:0xc9a074,sofa:0x7f90a5,sofaD:0x6b7b8f,bedA:0xe9eef3,bedB:0xb8c4d2,cushA:0xc9b27f,cushB:0x5f6f82,
+           linen:0xe9dfcd,rug:0xb9b0a3,door:0xe4d2b4,cab:0xe9e5dc,cabF:0xf4f1ea,top:0xc4c6c8,panel:0xf1efe9} },
+  B:{ wall:{oat:0xbfb4a1,sage:0x5e4330,mist:0x6f6053,peach:0xb9aa90,hall:0xb3a894,genkan:0xa89c88,utility:0xc2b8a5,wc:0xaeb0a8,bath:0xb7c1c1,dress:0xc0b9ac,outside:0xb5afa3},
+      ceil:[0xd6cebf,0x211e19], trim:0xc9c0ae, frame:0xb9b09d, floor:0xa4835f, floorD:0x8a6e4e, exposure:1.05, amb:0.56,
+      mat:{oak:0x8a6a4a,oakD:0x4f3a2a,oakChair:0x7a5c40,chairBack:0x72563c,sofa:0x5b5a56,sofaD:0x484743,bedA:0xd6d2c8,bedB:0x6a6a64,cushA:0xb5895a,cushB:0x4a4f4a,
+           linen:0xcfc6b4,rug:0x8d867a,door:0x6b513b,cab:0x4a4036,cabF:0x6a5645,top:0xcfcac0,panel:0xd2c9b8} },
+  C:{ wall:{oat:0xf2e6dc,sage:0xaabdcc,mist:0xdfbdb7,peach:0xe2d9e6,hall:0xf4ece4,genkan:0xeadfd2,utility:0xf3ebe0,wc:0xe6e9e6,bath:0xe3edf0,dress:0xf0e6df,outside:0xe0dbd0},
+      ceil:[0xfaf5ee,0x2e2a24], trim:0xffffff, frame:0xf6f2ea, floor:0xfaf2e6, floorD:0xeadcc4, exposure:1.05, amb:0.58,
+      mat:{oak:0xe6d4b6,oakD:0xbfa98a,oakChair:0xe9d9bf,chairBack:0xe4d3b8,sofa:0xcf9d99,sofaD:0xb98582,bedA:0xf6f1ea,bedB:0xd7c4cc,cushA:0xe6c46f,cushB:0x9fb4c6,
+           linen:0xf3ede2,rug:0xd9ccc2,door:0xf2ebe0,cab:0xf1ece2,cabF:0xf9f6f0,top:0xe4e0d8,panel:0xfaf6ef} }
+};
+function paint(m,hex){ m.color.setHex(hex).convertSRGBToLinear(); }
+let themeId='A';
+const themeBtns=Array.prototype.slice.call($('themeBtns').querySelectorAll('button'));
+function applyTheme(id){
+  const th=THEMES[id]; if(!th) return;
+  themeId=id;
+  Object.keys(th.wall).forEach(function(k){ paint(WM[k],th.wall[k]); });
+  Object.keys(th.mat).forEach(function(k){ paint(M[k],th.mat[k]); });
+  paint(M.ceil,th.ceil[0]); M.ceil.emissive.setHex(th.ceil[1]).convertSRGBToLinear();
+  paint(M.trim,th.trim); paint(M.frame,th.frame); paint(FL.wood,th.floor); paint(FL.woodD,th.floorD);
+  renderer.toneMappingExposure=th.exposure; amb.intensity=th.amb;
+  themeBtns.forEach(function(b){ b.setAttribute('aria-pressed',String(b.getAttribute('data-t')===id)); });
+  try{ localStorage.setItem('ctypeTheme',id); }catch(_){}
+}
+themeBtns.forEach(function(b){ b.addEventListener('click',function(){ applyTheme(b.getAttribute('data-t')); }); });
+(function(){
+  let id='A';
+  try{ id=new URLSearchParams(location.search).get('theme')||localStorage.getItem('ctypeTheme')||'A'; }catch(_){}
+  applyTheme(THEMES[id]?id:'A');
+})();
+
 /* ---------- operable doors ---------- */
 const bAct=$('bAct'), toastEl=$('toast'); let toastT=0, curThing=null;
 function toast(t){ toastEl.textContent=t; toastEl.hidden=false; clearTimeout(toastT); toastT=setTimeout(function(){ toastEl.hidden=true; },1800); }
@@ -1507,7 +1550,7 @@ requestAnimationFrame(tick);
 if(location.hash==='#debug'){
   window.__walk={player:player,resolve:resolve,cols:function(){return allCols;},setFurn:function(v){furnOn=v;rebuild();},setPart:setPart,
     X:X,Z:Z,S:S,OX:OX,OY:OY,SPOTS:SPOTS,R:R,floorY:floorY,roomAt:roomAt,setMode:setMode,stepPlayer:stepPlayer,joy:joy,keys:keys,
-    teleport:teleport,doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
+    teleport:teleport,applyTheme:applyTheme,doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
 }
 }
 })();
