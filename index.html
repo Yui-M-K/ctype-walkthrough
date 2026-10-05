@@ -320,7 +320,8 @@ const FL={
   cf:lam(0xcfc8ba), wc:lam(0xd4d4d0,{roughness:0.5}), corr:lam(0xb8b7b2)
 };
 const WT=[1.818,0.909], T06=[0.6,0.6], T1=[1,1];
-const fab=function(c,o){ return lam(c,Object.assign({bumpMap:fabricTex,bumpScale:0.004,roughness:1},o||{})); };
+const fabMats=[];
+const fab=function(c,o){ const m=lam(c,Object.assign({bumpMap:fabricTex,bumpScale:0.004,roughness:1},o||{})); fabMats.push(m); return m; };
 const M={
   wall:lam(0xf3f0ea,{map:wallTex,bumpMap:wallTex,bumpScale:0.0015,roughness:0.9}), ceil:lam(0xf2ece0,{emissive:0x2b2720}),
   frame:lam(0xe9e5dc,{roughness:0.5}), conc:lam(0xb4b1aa), white:lam(0xf6f6f4,{roughness:0.3}), trim:lam(0xfbfaf7,{roughness:0.5}),
@@ -679,7 +680,7 @@ function wallAO(horiz,x0,x1,z0,z1,s,base,top,h){   // one wall face: dark band a
 function contactShadow(x0,x1,z0,z1,y,grp){     // blurred footprint on the floor, a little larger than the object
   const sp=0.18, W=(x1-x0)+2*sp, D=(z1-z0)+2*sp, c=document.createElement('canvas'); c.width=c.height=64; const g=c.getContext('2d');
   const ix=64*sp/W, iz=64*sp/D;
-  g.shadowColor='rgba(0,0,0,0.8)'; g.shadowBlur=Math.max(3,Math.min(ix,iz)*0.9); g.shadowOffsetX=200; g.fillStyle='#000';
+  g.shadowColor='rgba(0,0,0,0.5)'; g.shadowBlur=Math.max(3,Math.min(ix,iz)*0.9); g.shadowOffsetX=200; g.fillStyle='#000';
   g.fillRect(ix-200,iz,64-2*ix,64-2*iz);
   const m=new THREE.Mesh(new THREE.PlaneGeometry(W,D),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2}));
   m.rotation.x=-Math.PI/2; m.position.set((x0+x1)/2,y+0.004,(z0+z1)/2); m.renderOrder=1;
@@ -1061,7 +1062,7 @@ function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:f
     const bk=rb(x-0.27/S,y+s*0.34/S,0.17,0.62,0.4,0.075,M.sofa,0.5,false); bk.rotation.z=0.13;   // leaning back cushions
     rb(x,y+s*0.73/S,0.78,0.14,0.36,0.065,M.sofa,0.1,false);                 // arm rests
   });
-  fb(x+0.1/S,y,0.6,0.01,0.06,M.sofaD,0.4,false);                            // seam between the seat cushions
+  fb(x+0.1/S,y,0.56,0.01,0.06,M.sofaD,0.4,false);                           // seam between the seat cushions
   rb(x-0.12/S,y-0.4/S,0.16,0.42,0.4,0.07,M.cushA,0.5,false).rotation.z=0.2;
   rb(x-0.12/S,y+0.45/S,0.16,0.4,0.36,0.07,M.cushB,0.5,false).rotation.z=0.2;
   rb(775,1510,1.2,2.0,0.012,0.006,M.rug,0,false);
@@ -1428,20 +1429,50 @@ partBtns.forEach(function(b){ b.addEventListener('click',function(){ setPart(+b.
 /* ---------- colour schemes ---------- */
 const THEMES={
   A:{ wall:{oat:0xdcceb7,sage:0xa3b39d,mist:0xb3bfca,peach:0xe2c0a8,hall:0xd8caB2,genkan:0xd0c3ad,utility:0xe0d4bf,wc:0xd9dcd8,bath:0xdfe8ec,dress:0xe7e2d8,outside:0xd8d3c8},
-      ceil:[0xf5f0e6,0x2b2720], trim:0xfbfaf7, frame:0xe9e5dc, floor:0xc4aa88, floorD:0xb39a78, exposure:1.0, amb:0.48,
+      ceil:[0xf5f0e6,0x2b2720], trim:0xfbfaf7, frame:0xe9e5dc, floor:0xc4aa88, floorD:0xb39a78, ft:'A', ftint:0xffffff, ftintD:0xe8e0d6, exposure:1.0, amb:0.48,
       mat:{oak:0xd6b88e,oakD:0x8f6a49,oakChair:0xcfa77c,chairBack:0xc9a074,sofa:0x7f90a5,sofaD:0x6b7b8f,bedA:0xe9eef3,bedB:0xb8c4d2,cushA:0xc9b27f,cushB:0x5f6f82,
            linen:0xb98368,rug:0xb9b0a3,door:0xe4d2b4,cab:0xe9e5dc,cabF:0xf4f1ea,top:0xc4c6c8,panel:0xf1efe9} },
   B:{ wall:{oat:0xbfb4a1,sage:0x5e4330,mist:0x6f6053,peach:0xb9aa90,hall:0xb3a894,genkan:0xa89c88,utility:0xc2b8a5,wc:0xaeb0a8,bath:0xb7c1c1,dress:0xc0b9ac,outside:0xb5afa3},
-      ceil:[0xe2dbcd,0x211e19], trim:0xd6cebf, frame:0xb9b09d, floor:0x7f6c5a, floorD:0x6a5a4a, exposure:1.05, amb:0.5,
+      ceil:[0xe2dbcd,0x211e19], trim:0xd6cebf, frame:0xb9b09d, floor:0x7f6c5a, floorD:0x6a5a4a, ft:'B', ftint:0xa89888, ftintD:0x8e8070, exposure:1.05, amb:0.5,
       mat:{oak:0x8a6a4a,oakD:0x4f3a2a,oakChair:0x7a5c40,chairBack:0x72563c,sofa:0x5b5a56,sofaD:0x484743,bedA:0xd6d2c8,bedB:0x6a6a64,cushA:0xb5895a,cushB:0x4a4f4a,
            linen:0x4a423a,rug:0x8d867a,door:0x6b513b,cab:0x4a4036,cabF:0x6a5645,top:0xcfcac0,panel:0xd2c9b8} },
   C:{ wall:{oat:0xf2e6dc,sage:0xaabdcc,mist:0xdfbdb7,peach:0xe2d9e6,hall:0xf4ece4,genkan:0xeadfd2,utility:0xf3ebe0,wc:0xe6e9e6,bath:0xe3edf0,dress:0xf0e6df,outside:0xe0dbd0},
-      ceil:[0xfdf9f3,0x2e2a24], trim:0xffffff, frame:0xf6f2ea, floor:0xe3c9a2, floorD:0xd2b88f, exposure:1.0, amb:0.5,
+      ceil:[0xfdf9f3,0x2e2a24], trim:0xffffff, frame:0xf6f2ea, floor:0xe3c9a2, floorD:0xd2b88f, ft:'C', ftint:0xfff2e0, ftintD:0xeee4d2, exposure:1.0, amb:0.5,
       mat:{oak:0xe6d4b6,oakD:0xbfa98a,oakChair:0xe9d9bf,chairBack:0xe4d3b8,sofa:0xcf9d99,sofaD:0xb98582,bedA:0xf6f1ea,bedB:0xd7c4cc,cushA:0xe6c46f,cushB:0x9fb4c6,
            linen:0xb4c4d2,rug:0xd9ccc2,door:0xf2ebe0,cab:0xf1ece2,cabF:0xf9f6f0,top:0xe4e0d8,panel:0xfaf6ef} }
 };
 function paint(m,hex){ m.color.setHex(hex).convertSRGBToLinear(); }
 let themeId='A';
+
+/* ---------- photographic textures (Poly Haven, CC0), loaded from textures/; the procedural look stays if they cannot load ---------- */
+const texLoader=new THREE.TextureLoader();
+function loadTex(file,srgb,rx,ry,rot,done){
+  const t=texLoader.load('textures/'+file,function(){ if(done) done(t); },undefined,function(){});
+  t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=ANISO; if(srgb) t.encoding=THREE.sRGBEncoding;
+  t.repeat.set(rx,ry); if(rot){ t.center.set(0.5,0.5); t.rotation=rot; }
+  return t;
+}
+const floorTexCache={};
+function useFloorTex(th){                      // floor planes map 1.818 x 0.909 m per uv unit; the photo tiles are 1.7 m square, planks laid along x
+  const ft=th.ft, rot=ft==='A'?0:Math.PI/2;
+  const apply=function(c){
+    FL.wood.map=c.d; FL.wood.normalMap=c.n; FL.wood.normalScale.set(0.8,0.8); FL.wood.roughness=0.55;
+    FL.woodD.map=c.d; FL.woodD.normalMap=c.n; FL.woodD.normalScale.set(0.8,0.8);
+    paint(FL.wood,th.ftint); paint(FL.woodD,th.ftintD); FL.wood.needsUpdate=true; FL.woodD.needsUpdate=true;
+  };
+  let c=floorTexCache[ft];
+  if(c){ if(c.ready) apply(c); return; }
+  c=floorTexCache[ft]={ready:false}; let n=0;
+  const done=function(){ if(++n===2){ c.ready=true; if(THEMES[themeId].ft===ft) apply(c); } };
+  c.d=loadTex('floor'+ft+'_diff.jpg',true,1.818/1.7,0.909/1.7,rot,done);
+  c.n=loadTex('floor'+ft+'_nor.jpg',false,1.818/1.7,0.909/1.7,rot,done);
+}
+loadTex('wall_nor.jpg',false,0.5,0.5,0,function(t){            // plaster grain on every wall colour
+  Object.keys(WM).forEach(function(k){ const m=WM[k]; m.bumpMap=null; m.normalMap=t; m.normalScale.set(0.55,0.55); m.needsUpdate=true; });
+});
+loadTex('fabric_nor.jpg',false,3.66,3.66,0,function(t){        // knit / weave on sofa, bedding, curtains, cushions
+  fabMats.forEach(function(m){ m.bumpMap=null; m.normalMap=t; m.normalScale.set(0.9,0.9); m.needsUpdate=true; });
+});
 const themeBtns=Array.prototype.slice.call($('themeBtns').querySelectorAll('button'));
 function applyTheme(id){
   const th=THEMES[id]; if(!th) return;
@@ -1450,6 +1481,7 @@ function applyTheme(id){
   Object.keys(th.mat).forEach(function(k){ paint(M[k],th.mat[k]); });
   paint(M.ceil,th.ceil[0]); M.ceil.emissive.setHex(th.ceil[1]).convertSRGBToLinear();
   paint(M.trim,th.trim); paint(M.frame,th.frame); paint(FL.wood,th.floor); paint(FL.woodD,th.floorD);
+  useFloorTex(th);
   renderer.toneMappingExposure=th.exposure; amb.intensity=th.amb;
   themeBtns.forEach(function(b){ b.setAttribute('aria-pressed',String(b.getAttribute('data-t')===id)); });
   try{ localStorage.setItem('ctypeTheme',id); }catch(_){}
