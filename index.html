@@ -529,6 +529,32 @@ function shelfItems(x0,x1,z0,z1,boards,kind){  // shoes or storage boxes on the 
     }
   });
 }
+function rugTex(style){                        // flat-colour woven look: concentric rings + sunburst (living room) or petals (study)
+  const c=document.createElement('canvas'); c.width=c.height=1024; const g=c.getContext('2d'), K=512;
+  const cream='#f1e8d8', terra='#c8714f', sage='#8fa58e', navy='#35506b', blush='#e0b184', ring=function(r0,r1,col){ g.strokeStyle=col; g.lineWidth=(r1-r0)*K; g.beginPath(); g.arc(K,K,(r0+r1)/2*K,0,TAU); g.stroke(); };
+  const dots=function(r,n,rad,col){ g.fillStyle=col; for(let i=0;i<n;i++){ const a=i/n*TAU; g.beginPath(); g.arc(K+Math.cos(a)*r*K,K+Math.sin(a)*r*K,rad*K,0,TAU); g.fill(); } };
+  if(style==='rings'){
+    g.fillStyle=cream; g.fillRect(0,0,1024,1024);
+    ring(0.9,1.1,terra); ring(0.84,0.87,navy); dots(0.78,40,0.013,navy); ring(0.68,0.72,sage); ring(0.6,0.62,terra);
+    for(let i=0;i<16;i++){ g.fillStyle=i%2?blush:terra; g.beginPath(); g.moveTo(K,K); g.arc(K,K,0.54*K,i/16*TAU,(i+1)/16*TAU); g.closePath(); g.fill(); }
+    ring(0.0,0.14,cream); ring(0.0,0.06,terra);
+  } else {
+    g.fillStyle='#a9bba3'; g.fillRect(0,0,1024,1024);
+    ring(0.92,1.1,cream); dots(0.82,36,0.014,terra);
+    for(let i=0;i<12;i++){ const a=(i+0.5)/12*TAU; g.fillStyle=i%2?cream:blush; g.beginPath(); g.ellipse(K+Math.cos(a)*0.5*K,K+Math.sin(a)*0.5*K,0.2*K,0.085*K,a,0,TAU); g.fill(); }
+    ring(0.0,0.24,terra); ring(0.0,0.14,cream); ring(0.0,0.06,sage);
+  }
+  for(let i=0;i<5000;i++){ g.fillStyle='rgba('+(rnd()<0.5?'255,255,255':'60,40,20')+','+(0.03+rnd()*0.05)+')'; g.fillRect(rnd()*1024,rnd()*1024,2+rnd()*3,2+rnd()*3); }   // yarn speckle
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.anisotropy=ANISO; return t;
+}
+function roundRug(px,pz,R,style,lobes,amp){    // round rug with a gently scalloped edge, 1.4 cm pile, centred on plan point (px,pz)
+  const pts=[]; for(let i=0;i<240;i++){ const th=i/240*TAU, r=R*(1+amp*Math.cos(lobes*th)); pts.push(new THREE.Vector2(Math.cos(th)*r,Math.sin(th)*r)); }
+  const geo=new THREE.ExtrudeGeometry(new THREE.Shape(pts),{depth:0.014,bevelEnabled:false,curveSegments:1,steps:1});
+  const t=rugTex(style); t.repeat.set(1/(2*R*(1+amp)),1/(2*R*(1+amp))); t.offset.set(0.5,0.5);
+  const m=new THREE.Mesh(geo,[new THREE.MeshStandardMaterial({map:t,roughness:1}),lam(0xcdbfa6,{roughness:1})]);
+  m.rotation.x=-Math.PI/2; m.position.set(X(px),floorY(X(px),Z(pz))+0.001,Z(pz)); m.receiveShadow=true;
+  return place(m,{group:furn,cast:false,pick:false});
+}
 function artTex(w,h,variant){                  // crisp flat-colour abstract print (arches, sun, waves) in the room's palette
   const W=Math.round(1024*Math.min(1,w/h)), H=Math.round(1024*Math.min(1,h/w)), c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d');
   g.fillStyle='#f3ecdf'; g.fillRect(0,0,W,H);
@@ -1106,7 +1132,7 @@ plant(845,1240,1.0);
   fb(x+0.1/S,y,0.56,0.01,0.06,M.sofaD,0.38,false);                           // seam between the seat cushions
   rb(x-0.12/S,y-0.4/S,0.16,0.42,0.4,0.07,M.cushA,0.44,false).rotation.z=0.2;
   rb(x-0.12/S,y+0.45/S,0.16,0.4,0.36,0.07,M.cushB,0.44,false).rotation.z=0.2;
-  rb(775,1510,1.2,2.0,0.012,0.006,M.rug,0,false);
+  roundRug(772,1510,0.95,'rings',24,0.012);
   lb(1,function(){
   rb(772,1510,0.5,0.9,0.03,0.015,M.oak,0.4,true);                           // coffee table, long side parallel to the sofa
   legs(772,1510,0.2,0.38,0.4,0.022,0.014,M.oakD);
@@ -1222,7 +1248,7 @@ lb(2,function(){
       box(sx0+0.02,sx0+0.02+0.2,z,z+bw,y+0.02,y+0.02+bh,bookMats[Math.floor(rnd()*bookMats.length)],{group:furn,pick:false,cast:false}); z+=bw+0.004; } }
   });
   furnCols.push({x0:sx0,x1:sx1,z0:sz0,z1:sz1,kind:'f'});
-  rb(500,1245,1.5,1.0,0.012,0.006,M.rug,0,false);                                    // floor rug
+  roundRug(505,1218,0.7,'sun',12,0.045);                                              // petal-edged round rug
   plant(580,1290,0.8);
   /* lift-top table in the living room: a coffee table that rises to dining height while two leaves slide apart and a centre leaf pops up */
   const G=new THREE.Group(); G.position.set(X(772),0,Z(1510)); scene.add(G);
