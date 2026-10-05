@@ -376,6 +376,7 @@ const furn=new THREE.Group(); scene.add(furn);
 const partG=new THREE.Group(); scene.add(partG);
 const furnMeshes=[], furnCols=[], picks=[], colliders=[], ceilings=[], floorRects=[], floorTris=[], detailMeshes=[];
 let curLayout=1, foldT=0, foldTarget=0, foldApply=function(){};
+let sofaG=null, tvG=null, sofaCols0=[], tvCols0=[];   // sofa and TV sets are moved as groups in layout 2
 const layObjs=[];
 function lb(lay,fn){                           // run fn and tag everything it adds to the furniture group / scene as belonging to layout `lay`
   const a=furn.children.length, b=scene.children.length, c=furnCols.length;
@@ -1122,7 +1123,7 @@ lb(1,function(){                               // dining table 140 x 80, four ch
 });
 plant(845,1240,1.0);
 (function(){                                   // sofa 160 cm facing the TV, rug, coffee table, floor lamp
-  const x=690, y=1510, fx=X(x), fz=Z(y);
+  const x=690, y=1510, fx=X(x), fz=Z(y), a0=furn.children.length, c0=furnCols.length;
   rb(x,y,0.8,1.6,0.26,0.07,M.sofaD,0.1,true);                              // frame
   legs(x,y,0.34,0.74,0.1,0.03,0.02,M.oakD);
   rb(x-0.35/S,y,0.1,1.6,0.52,0.05,M.sofaD,0.1,false);                       // back frame
@@ -1134,7 +1135,9 @@ plant(845,1240,1.0);
   fb(x+0.1/S,y,0.56,0.01,0.06,M.sofaD,0.38,false);                           // seam between the seat cushions
   rb(x-0.12/S,y-0.4/S,0.16,0.42,0.4,0.07,M.cushA,0.44,false).rotation.z=0.2;
   rb(x-0.12/S,y+0.45/S,0.16,0.4,0.36,0.07,M.cushB,0.44,false).rotation.z=0.2;
-  roundRug(772,1510,0.95,'plain',24,0.0);
+  sofaG=new THREE.Group(); { const mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); sofaG.add(o); }); furn.add(sofaG); }
+  sofaCols0=furnCols.slice(c0); sofaCols0.forEach(function(c){ c.lay=1; });
+  lb(1,function(){ roundRug(772,1510,0.95,'plain',24,0.0); });
   lb(1,function(){
   rb(772,1510,0.5,0.9,0.03,0.015,M.oak,0.4,true);                           // coffee table, long side parallel to the sofa
   legs(772,1510,0.2,0.38,0.4,0.022,0.014,M.oakD);
@@ -1149,7 +1152,7 @@ plant(845,1240,1.0);
   cyl(lx,lz,0.12,0.12,fy+1.56,fy+1.565,lampMat,{group:furn,cast:false},16);
 })();
 (function(){                                   // TV board on short legs with three doors, TV on a stand
-  const x=840, y=1510;
+  const x=840, y=1510, a0=furn.children.length, c0=furnCols.length;
   rb(x,y,0.4,1.4,0.36,0.015,M.oak,0.08,true);
   legs(x,y,0.15,0.62,0.08,0.03,0.02,M.oakD);
   cabDoors('z',Z(y)-0.68,Z(y)+0.68,X(x)-0.2,-1,0.1,0.42,3,false,M.oakD,furn);
@@ -1174,6 +1177,8 @@ plant(845,1240,1.0);
   const st=new THREE.CanvasTexture(sc); st.encoding=THREE.sRGBEncoding;
   const tvOn=function(on){ if(on){ sm.emissive.setHex(0xffffff); sm.emissiveMap=st; sm.emissiveIntensity=0.85; sm.color.setHex(0x000000); } else { sm.emissive.setHex(0x000000); sm.emissiveMap=null; sm.color.setHex(0x04060a); } sm.needsUpdate=true; };
   tvOn(false); window.__tvOn=tvOn;
+  tvG=new THREE.Group(); { const mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); tvG.add(o); }); furn.add(tvG); }
+  tvCols0=furnCols.slice(c0); tvCols0.forEach(function(c){ c.lay=1; });
 })();
 picture(X(XE)-0.1,Z(1360),0.6,0.45,1.5,-Math.PI/2);
 (function(){                                   // room 1: Japanese queen bed 160 x 195, bedside table and lamp, print, plant
@@ -1252,8 +1257,9 @@ lb(2,function(){
   furnCols.push({x0:sx0,x1:sx1,z0:sz0,z1:sz1,kind:'f'});
   roundRug(505,1218,0.7,'sun',12,0.045);                                              // petal-edged round rug
   plant(580,1290,0.8);
+  roundRug(765,1375,0.95,'plain',24,0.0);                                          // round rug under the table
   /* lift-top table in the living room: a coffee table that rises to dining height while two leaves slide apart and a centre leaf pops up */
-  const G=new THREE.Group(); G.position.set(X(772),0,Z(1510)); scene.add(G);
+  const G=new THREE.Group(); G.position.set(X(765),0,Z(1360)); G.rotation.y=Math.PI/2; scene.add(G);   // long side parallel to the sofa
   const lg=function(w,h,d){ const g=new THREE.BoxGeometry(w,h,d); fitUV(g,w,h,d); return g; };
   const mkm=function(geo,mat,par){ const m=new THREE.Mesh(geo,mat); m.castShadow=true; m.receiveShadow=true; par.add(m); return m; };
   const LA=new THREE.Group(), LB=new THREE.Group(); G.add(LA); G.add(LB);
@@ -1270,7 +1276,7 @@ lb(2,function(){
     const rise=ss((e2-0.55)/0.35); mC.visible=e2>0.02; mC.position.set(0,topY-0.015-0.05*(1-rise),0);
     const h=topY-0.03;
     legs4.forEach(function(l){ const c=l.userData.c; l.scale.y=h; l.position.set(c[0]*(half-0.05),h/2,c[1]*(0.5+gap/2-0.05)); });
-    col.x0=X(772)-half; col.x1=X(772)+half; col.z0=Z(1510)-0.5-gap/2; col.z1=Z(1510)+0.5+gap/2;
+    col.x0=X(765)-0.5-gap/2; col.x1=X(765)+0.5+gap/2; col.z0=Z(1360)-half; col.z1=Z(1360)+half;
     renderer.shadowMap.needsUpdate=true;
   };
   foldApply(0);
@@ -1694,7 +1700,7 @@ function setDoor(d,open,quiet){
 const things=doors.map(function(d){
   return {pt:d.mid, label:function(){ return d.kind==='slide'?(d.open?'拉上拉門':'拉開拉門'):(d.open?'關門':'開門'); }, act:function(){ setDoor(d,!d.open); }};
 });
-things.push({pt:[772,1510], on:function(){return curLayout===2;}, label:function(){ return foldTarget?'降成茶几':'升成餐桌'; }, act:function(){ foldTarget=foldTarget?0:1; syncFold(); }});
+things.push({pt:[765,1360], on:function(){return curLayout===2;}, label:function(){ return foldTarget?'降成茶几':'升成餐桌'; }, act:function(){ foldTarget=foldTarget?0:1; syncFold(); }});
 things.push({seg:[X(XR),Z(1315),X(XR),Z(1550)], label:function(){ return ['拉開一扇','全部拉開','拉上拉門'][partState]; }, act:function(){ setPart((partState+1)%3); }});
 function thingVec(t){
   if(!t.seg) return [t.pt[0]-player.x,t.pt[1]-player.z];
@@ -1828,8 +1834,18 @@ function tick(now){
 /* ---------- furniture layouts ---------- */
 const ROOM2=ROOMS.filter(function(r){return r.n==='洋室 (2)';})[0], layBtns=Array.prototype.slice.call($('layBtns').querySelectorAll('button')), foldBtn=$('tFold');
 function syncFold(){ foldBtn.textContent=foldTarget?'升降桌：餐桌模式':'升降桌：茶几模式'; foldBtn.setAttribute('aria-pressed',String(!!foldTarget)); updateAct(); }
+const POSE2={sofa:[X(690),Z(1510),X(765),Z(1500)], tv:[X(840),Z(1510),X(765),Z(1232)]};   // layout 2: TV in front of the kitchen island, sofa faces it with its back to the balcony
+function poseSet(G,p,on){
+  if(!on){ G.rotation.y=0; G.position.set(0,0,0); return; }
+  const th=Math.PI/2, c=Math.cos(th), sn=Math.sin(th);
+  G.rotation.y=th; G.position.set(p[2]-(p[0]*c+p[1]*sn),0,p[3]-(-p[0]*sn+p[1]*c));
+}
+function mapCols(cols,p){
+  const ox=p[2]-p[1], oz=p[3]+p[0];
+  return cols.map(function(c){ return {x0:c.z0+ox,x1:c.z1+ox,z0:-c.x1+oz,z1:-c.x0+oz,kind:'f',lay:2}; });
+}
 function setLayout(n){
-  curLayout=n;
+  curLayout=n; poseSet(sofaG,POSE2.sofa,n===2); poseSet(tvG,POSE2.tv,n===2);
   layObjs.forEach(function(o){ o.visible=(o.userData.lay===n); });
   rebuild();
   const study=(n===2);
@@ -1843,6 +1859,7 @@ function setLayout(n){
 }
 layBtns.forEach(function(b){ b.addEventListener('click',function(){ setLayout(+b.getAttribute('data-l')); }); });
 foldBtn.addEventListener('click',function(){ foldTarget=foldTarget?0:1; syncFold(); });
+furnCols.push.apply(furnCols,mapCols(sofaCols0,POSE2.sofa).concat(mapCols(tvCols0,POSE2.tv)));
 (function(){
   let n=1;
   try{ n=+(new URLSearchParams(location.search).get('layout')||localStorage.getItem('ctypeLayout')||1); }catch(_){}
