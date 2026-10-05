@@ -153,6 +153,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
   <div id="sheet" hidden role="dialog" aria-label="設定與傳送">
     <div class="sheet-head"><h2>設定</h2><button id="bClose" class="x" type="button" aria-label="關閉">×</button></div>
     <div class="row"><label for="rHeight">身高</label><input id="rHeight" type="range" min="145" max="195" step="1" value="165"><output id="oHeight" for="rHeight">165 cm</output></div>
+    <div class="row"><label for="rFov">視野</label><input id="rFov" type="range" min="70" max="120" step="1" value="100"><output id="oFov" for="rFov">100°</output></div>
     <div class="row"><label for="rHour">日照時間</label><input id="rHour" type="range" min="7" max="17" step="0.25" value="15"><output id="oHour" for="rHour">15:00</output></div>
     <div class="toggles">
       <button id="tFurn" class="tog" type="button" aria-pressed="true">參考家具與衣物</button>
@@ -1254,7 +1255,7 @@ const SPOTS=[
   ['浴室',740,865,-Math.PI/2],['脫衣室',735,962,-Math.PI/2],['陽台',640,1650,Math.PI]
 ];
 const player={x:X(650),z:Z(752),yaw:Math.PI,pitch:0,camY:-0.15};
-let userH=165, mode='walk', furnOn=true, shadowOn=true, hour=15;
+let userH=165, fovH=100, mode='walk', furnOn=true, shadowOn=true, hour=15;
 const orb={yaw:0,pitch:1.12,dist:15.5};
 const R=0.22, SPEED=1.5;
 function rebuild(){
@@ -1304,7 +1305,7 @@ function resize(){
   const w=Math.max(1,window.innerWidth), h=Math.max(1,window.innerHeight), a=w/h;
   renderer.setSize(w,h,false);
   camera.aspect=a;
-  if(mode==='walk') camera.fov=clamp(2*Math.atan(Math.tan(80*Math.PI/360)/a)*180/Math.PI,45,100);
+  if(mode==='walk') camera.fov=clamp(2*Math.atan(Math.tan(fovH*Math.PI/360)/a)*180/Math.PI,40,105);
   else camera.fov=clamp(2*Math.atan(Math.tan(50*Math.PI/360)/a)*180/Math.PI,35,65);
   camera.updateProjectionMatrix();
 }
@@ -1414,6 +1415,7 @@ $('bClose').addEventListener('click',function(){ sheet.hidden=true; });
 bView.addEventListener('click',function(){ setMode(mode==='walk'?'over':'walk'); });
 const rH=$('rHeight'), oH=$('oHeight'), rT=$('rHour'), oT=$('oHour');
 rH.addEventListener('input',function(){ userH=+rH.value; oH.textContent=userH+' cm'; });
+$('rFov').addEventListener('input',function(){ fovH=+this.value; $('oFov').textContent=fovH+'°'; resize(); });
 function fmtHour(h){ const hh=Math.floor(h), mm=Math.round((h-hh)*60); return hh+':'+(mm<10?'0':'')+mm; }
 rT.addEventListener('input',function(){ setSun(+rT.value); oT.textContent=fmtHour(+rT.value); });
 const tF=$('tFurn'), tS=$('tShadow');
