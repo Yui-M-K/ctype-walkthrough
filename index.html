@@ -513,19 +513,33 @@ function shelfItems(x0,x1,z0,z1,boards,kind){  // shoes or storage boxes on the 
     }
   });
 }
-function artTex(){
-  const c=document.createElement('canvas'); c.width=256; c.height=192; const g=c.getContext('2d');
-  g.fillStyle='#f4efe6'; g.fillRect(0,0,256,192);
-  ['rgba(95,120,150,.95)','rgba(200,150,95,.9)','rgba(70,100,85,.85)','rgba(60,70,80,.7)'].forEach(function(col){
-    const x=30+rnd()*196, y=24+rnd()*144, r=55+rnd()*70, gr=g.createRadialGradient(x,y,r*0.15,x,y,r);
-    gr.addColorStop(0,col); gr.addColorStop(1,'rgba(255,255,255,0)'); g.fillStyle=gr; g.fillRect(0,0,256,192);
-  });
-  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; return t;
+function artTex(w,h,variant){                  // crisp flat-colour abstract print (arches, sun, waves) in the room's palette
+  const W=Math.round(1024*Math.min(1,w/h)), H=Math.round(1024*Math.min(1,h/w)), c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d');
+  g.fillStyle='#f3ecdf'; g.fillRect(0,0,W,H);
+  const pal=['#c8714f','#e0b184','#7f9a86','#35506b','#d9a3a0'];
+  if(variant===0){                              // landscape: rising sun over layered hills and a wave line
+    g.fillStyle=pal[4]; g.beginPath(); g.arc(W*0.62,H*0.52,H*0.24,0,TAU); g.fill();
+    [[pal[2],0.62,0.12],[pal[3],0.74,0.1],[pal[0],0.86,0.08]].forEach(function(l,i){
+      g.fillStyle=l[0]; g.beginPath(); g.moveTo(0,H);
+      for(let x=0;x<=W;x+=8) g.lineTo(x,H*l[1]+Math.sin(x/W*Math.PI*(2+i)+i*1.7)*H*l[2]*0.5);
+      g.lineTo(W,H); g.closePath(); g.fill();
+    });
+    g.strokeStyle='#35506b'; g.lineWidth=H*0.012; g.beginPath();
+    for(let x=0;x<=W;x+=6){ const y=H*0.2+Math.sin(x/W*Math.PI*6)*H*0.025; if(x) g.lineTo(x,y); else g.moveTo(x,y); } g.stroke();
+  } else {                                      // portrait: stacked arches with a small sun
+    const aw=W*0.56, ax=(W-aw)/2;
+    [[pal[0],0.12],[pal[1],0.3],[pal[2],0.48]].forEach(function(l,i){
+      const top=H*l[1], r=aw/2-i*aw*0.12; g.fillStyle=l[0]; g.beginPath(); g.moveTo(W/2-r,H*0.92); g.lineTo(W/2-r,top+r); g.arc(W/2,top+r,r,Math.PI,0); g.lineTo(W/2+r,H*0.92); g.closePath(); g.fill();
+    });
+    g.fillStyle=pal[3]; g.beginPath(); g.arc(W*0.5,H*0.7,aw*0.13,0,TAU); g.fill();
+    g.fillStyle=pal[4]; g.beginPath(); g.arc(W*0.8,H*0.12,W*0.06,0,TAU); g.fill();
+  }
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.anisotropy=ANISO; return t;
 }
 function picture(cx,cz,w,h,yc,ang){           // framed print hanging on a wall; ang = wall normal direction (rotation.y)
   const d=0.025, nx=Math.sin(ang), nz=Math.cos(ang);
   rotBox(cx+nx*d/2,cz+nz*d/2,w,d,yc-h/2,yc+h/2,ang,M.woodD,{group:furn,cast:false});
-  const art=new THREE.Mesh(new THREE.PlaneGeometry(w-0.08,h-0.08),new THREE.MeshStandardMaterial({map:artTex(),roughness:0.8}));
+  const art=new THREE.Mesh(new THREE.PlaneGeometry(w-0.08,h-0.08),new THREE.MeshStandardMaterial({map:artTex(w-0.08,h-0.08,w>=h?0:1),roughness:0.8}));
   art.position.set(cx+nx*(d+0.002),yc,cz+nz*(d+0.002)); art.rotation.y=ang; place(art,{group:furn,cast:false});
 }
 function curtains(a,b,zc,inside){             // rail over a south window plus a gathered panel at each end
