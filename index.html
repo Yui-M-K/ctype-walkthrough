@@ -377,7 +377,7 @@ const partG=new THREE.Group(); scene.add(partG);
 const furnMeshes=[], furnCols=[], picks=[], colliders=[], ceilings=[], floorRects=[], floorTris=[], detailMeshes=[];
 let curLayout=1, foldT=0, foldTarget=0, foldApply=function(){};
 let sofaG=null, tvG=null, sofaCols0=[], tvCols0=[];   // sofa and TV sets are moved as groups in layout 2
-const layObjs=[];
+const layObjs=[], catAnim=[];
 function lb(lay,fn){                           // run fn and tag everything it adds to the furniture group / scene as belonging to layout `lay`
   const a=furn.children.length, b=scene.children.length, c=furnCols.length;
   fn();
@@ -1275,6 +1275,30 @@ plant(845,1240,1.0);
     add(G,bx(0.2,0.02,W*0.9),cwood,D+0.1,0.01,0);                                       // doorstep ledge
     return G;
   };
+  const makeCat=function(G,col,white,stripe){                                            // sleeping tabby curled in a ear bed, breathing slowly
+    const C=new THREE.Group(); C.position.set(0.2,0.055,0); C.rotation.y=0.5; C.scale.setScalar(0.9); G.add(C);
+    const cv=document.createElement('canvas'); cv.width=256; cv.height=64; const g=cv.getContext('2d');
+    const hex='#'+('000000'+col.toString(16)).slice(-6);
+    g.fillStyle='#'+('000000'+white.toString(16)).slice(-6); g.fillRect(0,0,256,64);                   // white base
+    g.fillStyle=hex; g.beginPath(); g.moveTo(0,0); g.lineTo(256,0); for(let x=256;x>=0;x-=16) g.lineTo(x,26+Math.sin(x*0.13)*8+Math.random()*10); g.closePath(); g.fill();   // tabby saddle over the back
+    g.fillStyle=stripe; for(let i=0;i<10;i++){ g.fillRect(i*26+3+Math.random()*4,0,7+Math.random()*5,22+Math.random()*8); }
+    const tex=new THREE.CanvasTexture(cv); tex.encoding=THREE.sRGBEncoding; tex.wrapS=THREE.RepeatWrapping;
+    const fur=new THREE.MeshStandardMaterial({map:tex,roughness:1}), furP=lam(col,{roughness:1}), wh=lam(white,{roughness:1}), pink=lam(0xe9a5a5,{roughness:0.8}), dk=lam(0x2a2018,{roughness:0.8});
+    const sp=function(r,mat,x,y,z,sx,sy,sz){ const m=new THREE.Mesh(new THREE.SphereGeometry(r,20,14),mat); m.position.set(x,y,z); m.scale.set(sx||1,sy||1,sz||1); m.castShadow=true; m.receiveShadow=true; C.add(m); return m; };
+    const body=sp(1,fur,0,0.085,0,0.17,0.085,0.1);
+    sp(0.07,furP,0.16,0.09,0,1,0.92,1.05);                                               // head
+    sp(0.032,wh,0.215,0.075,0,1,0.8,1.15); sp(0.009,pink,0.243,0.085,0);                 // muzzle, nose
+    [-1,1].forEach(function(sd){
+      const ear=new THREE.Mesh(new THREE.ConeGeometry(0.03,0.055,4),furP); ear.position.set(0.15,0.16,sd*0.045); ear.rotation.x=-sd*0.35; ear.castShadow=true; C.add(ear);
+      const e2=new THREE.Mesh(new THREE.ConeGeometry(0.016,0.035,4),pink); e2.position.set(0.153,0.158,sd*0.043); e2.rotation.x=-sd*0.35; C.add(e2);
+      const eye=new THREE.Mesh(new THREE.BoxGeometry(0.004,0.003,0.022),dk); eye.position.set(0.215,0.105,sd*0.03); C.add(eye);   // closed eyes
+      sp(0.025,wh,0.2,0.028,sd*0.05,1.3,0.7,0.9);                                          // front paws
+    });
+    const tc=new THREE.CatmullRomCurve3([new THREE.Vector3(-0.15,0.06,0.03),new THREE.Vector3(-0.19,0.045,0.1),new THREE.Vector3(-0.1,0.035,0.16),new THREE.Vector3(0.02,0.035,0.15),new THREE.Vector3(0.12,0.04,0.12)]);
+    const tail=new THREE.Mesh(new THREE.TubeGeometry(tc,24,0.02,8,false),furP); tail.castShadow=true; C.add(tail); sp(0.02,wh,0.12,0.04,0.12);
+    catAnim.push(function(t){ const b=1+0.05*Math.sin(t*2.1); body.scale.y=0.085*b; C.position.y=0.055+0.002*Math.sin(t*2.1); });
+    return C;
+  };
   const catStep=function(py,yb){                                                        // T-shaped step: plate + vertical fin
     const G=grp(py,yb); add(G,bx(0.24,0.025,0.32),cwood,0.12,0,0); add(G,bx(0.22,0.007,0.28),post,0.12,0.016,0); add(G,bx(0.2,0.2,0.02),cwood,0.1,-0.11,0); return G;
   };
@@ -1302,10 +1326,10 @@ plant(845,1240,1.0);
   const lay1=function(){                                                                // layout 1: staggered boxes, steps and a rope bridge across the whole wall (steps above the TV, 1.4 m +)
     earBed(1248,1.85); catHouse(1275,0.95); catStep(1322,1.55); bridge(1298,1.05,1380,1.1); catStep(1388,1.1);
     catHouse(1425,1.55); catColumn(1425,0.95,1.55,[]); catStep(1425,0.9);
-    earBed(1472,1.95); catStep(1500,1.72); catColumn(1578,0.5,1.95,[0.95,1.4]); earBed(1578,1.95);
+    makeCat(earBed(1472,1.95),0xa07a55,0xf6f2ec,'#4a3626'); catStep(1500,1.72); catColumn(1578,0.5,1.95,[0.95,1.4]); earBed(1578,1.95);
   };
   const lay2=function(){                                                                // layout 2: tall post at the north end, low steps climbing to a long bridge, boxes above the sofa
-    catColumn(1243,0.4,1.9,[0.85,1.35]); earBed(1243,1.9); catHouse(1290,1.0); bridge(1312,1.05,1428,1.5);
+    catColumn(1243,0.4,1.9,[0.85,1.35]); makeCat(earBed(1243,1.9),0x8f959b,0xf6f4f0,'#44484d'); catHouse(1290,1.0); bridge(1312,1.05,1428,1.5);
     catStep(1345,0.45); catStep(1375,0.75); catStep(1405,1.05);
     catHouse(1450,1.45); catStep(1500,1.7); catStep(1525,1.35); catColumn(1578,0.5,1.6,[1.0]); earBed(1578,1.6);
   };
@@ -1943,6 +1967,7 @@ function tick(now){
   requestAnimationFrame(tick);
   const t=now||last, dt=Math.min(0.05,(t-last)/1000)||0.016; last=t; frame++;
   updateDoors(dt);
+  for(let i=0;i<catAnim.length;i++) catAnim[i](t/1000);
   if(foldT!==foldTarget){ foldT=foldTarget>foldT?Math.min(foldTarget,foldT+dt/2.2):Math.max(foldTarget,foldT-dt/2.2); foldApply(foldT); }
   stepPlayer(dt);
   player.camY+=(floorY(player.x,player.z)-player.camY)*Math.min(1,dt*9);
