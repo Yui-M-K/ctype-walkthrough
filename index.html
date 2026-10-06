@@ -160,6 +160,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
       <button id="tTv" class="tog" type="button" aria-pressed="false">電視開機</button>
       <button id="tDaily" class="tog" type="button" aria-pressed="false">日常模式（他工作、她看電視）</button>
+      <button id="tCurt" class="tog" type="button" aria-pressed="false">窗簾全部拉上</button>
       <button id="tSleep" class="tog" type="button" aria-pressed="false">睡覺模式（只開小夜燈）</button>
       <button id="tSport" class="tog" type="button" aria-pressed="false">運動模式（Switch）</button>
       <button id="tReal" class="tog" type="button" aria-pressed="false" hidden>沙發：真實模型（試作）</button>
@@ -381,8 +382,9 @@ const shoeMats=[0x2a2a2e,0x6b4a35,0xe8e6e0,0x1f2c44,0x8a8d90,0xa5714a].map(funct
 /* ---------- containers ---------- */
 const furn=new THREE.Group(); scene.add(furn);
 const partG=new THREE.Group(); scene.add(partG);
+const curtainSets=[], applThings=[];
 const furnMeshes=[], furnCols=[], picks=[], colliders=[], ceilings=[], floorRects=[], floorTris=[], detailMeshes=[];
-const applThings=[]; let realOn=false, realCol=null; let sportMode=false; const sportCols=[], sportHide=[];
+let realOn=false, realCol=null; let sportMode=false; const sportCols=[], sportHide=[];
 let curLayout=1, foldT=0, foldTarget=0, foldApply=function(){};
 let sofaG=null, tvG=null, sofaCols0=[], tvCols0=[];   // sofa and TV sets are moved as groups in layout 2
 const layObjs=[], catAnim=[];
@@ -614,12 +616,19 @@ function curtains(a,b,zc,inside){             // rail over a south window plus a
   const x0=X(a), x1=X(b), z=Z(zc)+inside*0.17, top=2.12;
   box(x0-0.1,x1+0.1,z-0.012,z+0.012,top,top+0.025,M.frame,{group:furn,cast:false});
   const pw=0.42, ph=top-0.03;
+  const set={x0:x0,x1:x1,pw:pw,meshes:[],t:0,target:0,name:a<615?'洋室(1)':'客廳'};
   [x0+pw/2-0.05,x1-pw/2+0.05].forEach(function(cx){
     const g=new THREE.PlaneGeometry(pw,ph,28,1), p=g.attributes.position;
     for(let i=0;i<p.count;i++){ const u=p.getX(i)/pw; p.setZ(i,Math.sin(u*Math.PI*8)*0.045); }
     g.computeVertexNormals();
-    const m=new THREE.Mesh(g,M.linen); m.position.set(cx,0.015+ph/2,z); place(m,{group:furn});
+    const m=new THREE.Mesh(g,M.linen); m.position.set(cx,0.015+ph/2,z); place(m,{group:furn}); set.meshes.push(m);
   });
+  set.z=z; curtainSets.push(set);
+}
+function applyCurtain(c){                      // t = 0 gathered at both ends, 1 drawn closed (the two panels meet in the middle)
+  const e=c.t*c.t*(3-2*c.t), W=(c.x1-c.x0)/2+0.08, w=c.pw+(W-c.pw)*e;
+  c.meshes[0].scale.set(w/c.pw,1,1-0.45*e); c.meshes[0].position.x=c.x0-0.05+w/2;
+  c.meshes[1].scale.set(w/c.pw,1,1-0.45*e); c.meshes[1].position.x=c.x1+0.05-w/2;
 }
 function mirror(cx,cz,w,h,yc,rotY){           // planar reflection (after three.js Reflector), rendered only when the viewer is near and in front
   const rt=new THREE.WebGLRenderTarget(384,384); rt.texture.encoding=renderer.outputEncoding;
@@ -1162,16 +1171,53 @@ clothes(524,833,554,948,1.75,0.5,1.0,10);
 const lampMat=new THREE.MeshBasicMaterial({color:0xffdc96});
 M.shade=lam(0xf2d9a6,{emissive:0x8a6428,side:THREE.DoubleSide,roughness:0.9});
 function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:furn,cast:false,open:true},20); }
-(function(){                                   // fridge with a door seam and handles, back to the north wall, door facing south
-  const a0=furn.children.length, c0=furnCols.length;
-  rb(821,1038,0.65,0.7,1.75,0.03,M.fridge,0,true);
-  box(X(821)-0.326,X(821)-0.32,Z(1038)-0.33,Z(1038)+0.33,0.95,0.965,M.dark,{group:furn,cast:false});
-  box(X(821)-0.345,X(821)-0.325,Z(1038)+0.2,Z(1038)+0.23,0.5,0.9,M.steel,{group:furn,cast:false});
-  box(X(821)-0.345,X(821)-0.325,Z(1038)+0.2,Z(1038)+0.23,1.05,1.5,M.steel,{group:furn,cast:false});
-  { const G=new THREE.Group(), mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); G.add(o); }); furn.add(G);
-    const p=[X(821),Z(1038),X(821),Z(1030)], ox=p[2]-p[1], oz=p[3]+p[0];
-    G.rotation.y=Math.PI/2; G.position.set(p[2]-p[1],0,p[3]+p[0]);
-    furnCols.slice(c0).forEach(function(k){ const x0=k.z0+ox, x1=k.z1+ox, z0=-k.x1+oz, z1=-k.x0+oz; k.x0=x0; k.x1=x1; k.z0=z0; k.z1=z1; }); }
+let fridgeOpen=false, fridgeT=0, fridgeDoor=null, fridgeLight=null;
+(function(){                                   // fridge (70 w x 65 d x 175 h), back to the north wall, door facing south: hollow upper compartment with food, swing door with milk in the pocket
+  const o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
+  const cx=X(821), x0=cx-0.35, x1=cx+0.35, zb=Z(1030)-0.325, zf=Z(1030)+0.325, T=0.035;
+  const shell=M.fridge, liner=lam(0xf3f6f8,{roughness:0.4}), glass=lam(0xd6e6ee,{transparent:true,opacity:0.45,roughness:0.05,depthWrite:false});
+  box(x0,x1,zb,zb+T,0,1.75,shell,o); box(x0,x0+T,zb,zf,0,1.75,shell,o); box(x1-T,x1,zb,zf,0,1.75,shell,o);   // back and sides
+  rbox(x0,x1,zb,zf,1.72,1.75,0.01,shell,o); box(x0,x1,zb,zf,0,0.06,M.dark,oc);                        // top, plinth
+  box(x0+T,x1-T,zb+T,zf-0.01,0.06,0.93,shell,o);                                                       // freezer drawer block (closed)
+  box(x0+0.004,x1-0.004,zf-0.01,zf+0.004,0.065,0.925,shell,oc); box(cx-0.2,cx+0.2,zf+0.004,zf+0.024,0.82,0.84,M.steel,oc);   // drawer front + handle
+  box(x0+T,x1-T,zb+T,zb+T+0.004,0.93,1.72,liner,oc); box(x0+T,x0+T+0.004,zb+T,zf-0.01,0.93,1.72,liner,oc); box(x1-T-0.004,x1-T,zb+T,zf-0.01,0.93,1.72,liner,oc);
+  box(x0+T,x1-T,zb+T,zf-0.01,0.93,0.95,liner,oc);                                                      // compartment floor
+  [1.17,1.4].forEach(function(y){ box(x0+T,x1-T,zb+T,zf-0.03,y,y+0.008,glass,oc); });                  // glass shelves
+  const iz=function(f){ return zb+T+0.03+f*(zf-zb-T-0.09); };                                          // depth helper: 0 back .. 1 front
+  /* bottom shelf: crisper with vegetables and fruit */
+  rbox(x0+T+0.01,x1-T-0.01,iz(0.0),iz(1.0),0.95,1.1,0.01,glass,oc);
+  [[0.15,0.3,0x6fa84a],[0.32,0.55,0x8fc05b]].forEach(function(v){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.07,14,10),lam(v[2],{roughness:0.8})); m.scale.set(1,0.8,1); m.position.set(x0+0.06+v[0],1.02,iz(v[1])); place(m,oc); });   // lettuce, cabbage
+  [[0.48,0.3],[0.55,0.55],[0.5,0.75]].forEach(function(v){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.035,14,10),lam(0xc23a2e,{roughness:0.4})); m.position.set(x0+v[0],0.99,iz(v[1])); place(m,oc); });   // apples
+  /* middle shelf: egg tray, yogurt cups, a container of leftovers */
+  rbox(x0+0.06,x0+0.26,iz(0.35),iz(0.75),1.178,1.2,0.005,lam(0xe9e3d6,{roughness:0.7}),oc);
+  for(let i=0;i<4;i++) for(let j=0;j<2;j++){ const e=new THREE.Mesh(new THREE.SphereGeometry(0.019,10,8),lam(0xf1e3cc,{roughness:0.6})); e.scale.y=1.25; e.position.set(x0+0.085+i*0.045,1.215,iz(0.45+j*0.22)); place(e,oc); }
+  [0,1,2].forEach(function(i){ cyl(x0+0.33+i*0.065,iz(0.6),0.028,0.024,1.178,1.24,lam(0xf7f4ee,{roughness:0.4}),oc,14); cyl(x0+0.33+i*0.065,iz(0.6),0.029,0.029,1.24,1.244,lam([0xd8566a,0x5f8fc9,0xf2c46b][i],{roughness:0.4}),oc,14); });
+  rbox(x1-0.24,x1-0.06,iz(0.2),iz(0.8),1.178,1.27,0.01,lam(0xeef2f4,{transparent:true,opacity:0.7,roughness:0.2}),oc); rbox(x1-0.235,x1-0.065,iz(0.22),iz(0.78),1.27,1.285,0.008,lam(0x5f8fc9,{roughness:0.4}),oc);   // leftovers box
+  /* top shelf: drinks */
+  [[0.08,0x2b7a3a],[0.16,0x8a3a1c]].forEach(function(b){ cyl(x0+b[0],iz(0.4),0.035,0.035,1.408,1.65,lam(b[1],{transparent:true,opacity:0.85,roughness:0.08}),oc,16); cyl(x0+b[0],iz(0.4),0.014,0.014,1.65,1.7,lam(b[1]),oc,10); });   // tea bottles
+  for(let i=0;i<4;i++) cyl(x0+0.3+i*0.07,iz(0.55),0.033,0.033,1.408,1.53,lam([0xc9a24a,0x4a6fa5,0xc9a24a,0xd8dde2][i],{metalness:0.8,roughness:0.3}),oc,16);   // cans
+  fridgeLight=new THREE.PointLight(0xeaf6ff,0,1.4,2); fridgeLight.position.set(cx,1.6,iz(0.4)); scene.add(fridgeLight);
+  /* swing door, hinged on the east edge */
+  const D=new THREE.Group(); D.position.set(x1,0,zf); furn.add(D); fridgeDoor=D;
+  const dm=function(geo,mat,x,y,z){ const m=new THREE.Mesh(geo,mat); m.position.set(x,y,z); m.castShadow=true; m.receiveShadow=true; D.add(m); return m; };
+  dm(new THREE.BoxGeometry(0.7,0.79,0.05),shell,-0.35,1.33,0.015); dm(new THREE.BoxGeometry(0.62,0.72,0.004),liner,-0.35,1.33,-0.012);
+  dm(new THREE.BoxGeometry(0.02,0.42,0.03),M.steel,-0.66,1.25,0.055);                                   // handle on the free (west) edge
+  [1.03,1.3,1.55].forEach(function(y){ dm(new THREE.BoxGeometry(0.6,0.006,0.09),liner,-0.35,y,-0.06); dm(new THREE.BoxGeometry(0.6,0.06,0.006),glass,-0.35,y+0.03,-0.103); });   // door pockets
+  /* milk (Japanese 1 L gable-top carton, 7 x 7 x 19.5 cm) in the bottom pocket, with a printed label */
+  const lc=document.createElement('canvas'); lc.width=128; lc.height=256; const lg=lc.getContext('2d');
+  lg.fillStyle='#ffffff'; lg.fillRect(0,0,128,256); lg.fillStyle='#2f6db5'; lg.fillRect(0,180,128,76);
+  lg.fillStyle='#1f3f7a'; lg.font='700 46px "Noto Sans TC","Hiragino Sans",sans-serif'; lg.textAlign='center'; lg.fillText('牛乳',64,110);
+  lg.fillStyle='#2f6db5'; lg.font='500 18px sans-serif'; lg.fillText('1000ml',64,150);
+  lg.fillStyle='#222'; [[24,40,10],[96,58,8],[40,200,9],[100,215,11]].forEach(function(c){ lg.beginPath(); lg.ellipse(c[0],c[1],c[2],c[2]*0.7,0.3,0,TAU); lg.fill(); });   // cow spots
+  const lt=new THREE.CanvasTexture(lc); lt.encoding=THREE.sRGBEncoding;
+  const white=lam(0xffffff,{roughness:0.5}), milkM=[white,white,white,white,new THREE.MeshStandardMaterial({map:lt,roughness:0.5}),white];
+  const milk=dm(new THREE.BoxGeometry(0.07,0.165,0.07),milkM,-0.2,1.03+0.006+0.0825,-0.06); milk.rotation.y=Math.PI;   // label faces into the fridge, toward you when the door opens
+  const roof=dm(new THREE.CylinderGeometry(0.0,0.05,0.03,4,1),white,-0.2,1.03+0.006+0.165+0.015,-0.06); roof.rotation.y=Math.PI/4; roof.scale.set(1,1,0.4);   // gable top
+  dm(new THREE.BoxGeometry(0.07,0.012,0.004),white,-0.2,1.03+0.006+0.186,-0.06);                         // sealed ridge
+  [[-0.08,0xe8c84a],[-0.5,0xd9533c]].forEach(function(b){ dm(new THREE.CylinderGeometry(0.025,0.025,0.16,14),lam(b[1],{roughness:0.3}),b[0],1.3+0.006+0.08,-0.06); });   // sauces in the middle pocket
+  dm(new THREE.CylinderGeometry(0.03,0.03,0.2,14),lam(0xdfe9f2,{transparent:true,opacity:0.8,roughness:0.05}),-0.33,1.03+0.006+0.1,-0.06);   // water bottle
+  furnCols.push({x0:x0,x1:x1,z0:zb,z1:zf+0.06,kind:'f'}); contactShadow(x0,x1,zb,zf,0,furn);
+  applThings.push({pt:[cx-0.1,zf+0.25],label:function(){ return fridgeOpen?'關上冰箱':'打開冰箱'; },act:function(){ fridgeOpen=!fridgeOpen; }});
 })();
 (function(){                                   // appliance cabinet west of the fridge, back to the north wall: base cupboard, worktop with small appliances, two open shelves
   const o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
@@ -2077,6 +2123,8 @@ function applyDaily(){
 }
 $('tDaily').addEventListener('click',function(){ dailyOn=!dailyOn; this.setAttribute('aria-pressed',String(dailyOn)); applyDaily(); });
 
+
+$('tCurt').addEventListener('click',function(){ const close=this.getAttribute('aria-pressed')!=='true'; this.setAttribute('aria-pressed',String(close)); curtainSets.forEach(function(c){ c.target=close?1:0; }); });
 const partBtns=Array.prototype.slice.call($('partBtns').querySelectorAll('button'));
 function setPart(s){
   partState=s; buildPart(); rebuild();
@@ -2199,6 +2247,7 @@ const things=doors.map(function(d){
   return {pt:d.mid, label:function(){ return d.kind==='slide'?(d.open?'拉上拉門':'拉開拉門'):(d.open?'關門':'開門'); }, act:function(){ setDoor(d,!d.open); }};
 });
 applThings.forEach(function(t){ things.push(t); });
+curtainSets.forEach(function(c){ things.push({pt:[(c.x0+c.x1)/2,c.z-0.4],label:function(){ return c.target?'拉開窗簾':'拉上窗簾'; },act:function(){ c.target=c.target?0:1; }}); });
 things.push({pt:[765,1360], on:function(){return curLayout===2;}, label:function(){ return foldTarget?'降成茶几':'升成餐桌'; }, act:function(){ foldTarget=foldTarget?0:1; syncFold(); }});
 things.push({seg:[X(XR),Z(1315),X(XR),Z(1550)], label:function(){ return ['拉開一扇','全部拉開','拉上拉門'][partState]; }, act:function(){ setPart((partState+1)%3); }});
 function thingVec(t){
@@ -2313,6 +2362,8 @@ function tick(now){
   requestAnimationFrame(tick);
   const t=now||last, dt=Math.min(0.05,(t-last)/1000)||0.016; last=t; frame++;
   updateDoors(dt);
+  curtainSets.forEach(function(c){ if(c.t!==c.target){ c.t=c.target>c.t?Math.min(1,c.t+dt/1.6):Math.max(0,c.t-dt/1.6); applyCurtain(c); renderer.shadowMap.needsUpdate=true; } });
+  if(fridgeDoor){ const ft=fridgeOpen?1:0; if(fridgeT!==ft){ fridgeT=ft?Math.min(1,fridgeT+dt/0.8):Math.max(0,fridgeT-dt/0.8); const e=fridgeT*fridgeT*(3-2*fridgeT); fridgeDoor.rotation.y=1.85*e; fridgeLight.intensity=0.7*e; renderer.shadowMap.needsUpdate=true; } }
   for(let i=0;i<catAnim.length;i++) catAnim[i](t/1000);
   if(foldT!==foldTarget){ foldT=foldTarget>foldT?Math.min(foldTarget,foldT+dt/2.2):Math.max(foldTarget,foldT-dt/2.2); foldApply(foldT); }
   stepPlayer(dt);
@@ -2377,7 +2428,7 @@ requestAnimationFrame(tick);
 if(location.hash==='#debug'){
   window.__walk={player:player,resolve:resolve,cols:function(){return allCols;},setFurn:function(v){furnOn=v;rebuild();},setPart:setPart,
     X:X,Z:Z,S:S,OX:OX,OY:OY,SPOTS:SPOTS,R:R,floorY:floorY,roomAt:roomAt,setMode:setMode,stepPlayer:stepPlayer,joy:joy,keys:keys,
-    teleport:teleport,applyTheme:applyTheme,setDaily:function(v){ dailyOn=v; $('tDaily').setAttribute('aria-pressed',String(v)); applyDaily(); },setSleep:function(v){ sleepOn=v; $('tSleep').setAttribute('aria-pressed',String(v)); applySleep(); },setReal:function(v){ realOn=v; $('tReal').setAttribute('aria-pressed',String(v)); applyReal(); },real:function(){return realSofa;},setLayout:setLayout,setFold:function(v){foldTarget=v;foldT=v;foldApply(v);syncFold();},doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
+    teleport:teleport,applyTheme:applyTheme,curtains:curtainSets,setFridge:function(v){ fridgeOpen=v; },setDaily:function(v){ dailyOn=v; $('tDaily').setAttribute('aria-pressed',String(v)); applyDaily(); },setSleep:function(v){ sleepOn=v; $('tSleep').setAttribute('aria-pressed',String(v)); applySleep(); },setReal:function(v){ realOn=v; $('tReal').setAttribute('aria-pressed',String(v)); applyReal(); },real:function(){return realSofa;},setLayout:setLayout,setFold:function(v){foldTarget=v;foldT=v;foldApply(v);syncFold();},doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
 }
 }
 })();
