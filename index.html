@@ -1503,7 +1503,7 @@ const BED_DX=0.09;                             // bed pulled off the west wall b
 (function(){                                   // cat corner: wall steps + perch (living room east wall), feeding nook (east wall, per layout), automatic litter box (utility room north end)
   const o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
   const wf=X(XE)-0.1, sis=lam(0xc9b48b,{roughness:1}), brk=M.steel;
-  const cwood=lam(0xd2b27d,{roughness:0.6}), cdark=lam(0x3a2616,{roughness:0.9}), rope=lam(0xb69a6c,{roughness:1}), bedM=fab(0xd7cfc2), post=lam(0xc9b48b,{roughness:1});
+  const cwood=lam(0xd2b27d,{roughness:0.6}), cdark=lam(0x3a2616,{roughness:0.9}), bedM=fab(0xd7cfc2), post=lam(0xc9b48b,{roughness:1});
   const grp=function(py,yb){ const G=new THREE.Group(); G.position.set(wf,yb,Z(py)); G.rotation.y=Math.PI; scene.add(G); return G; };      // local +x = away from wall, local z = -world z
   const add=function(G,geo,mat,x,y,z){ const m=new THREE.Mesh(geo,mat); m.position.set(x,y,z); m.castShadow=true; m.receiveShadow=true; G.add(m); return m; };
   const bx=function(dx,dy,dz){ return new THREE.BoxGeometry(dx,dy,dz); };
@@ -1552,8 +1552,14 @@ const BED_DX=0.09;                             // bed pulled off the west wall b
     return C;
   };
   window.__makeCat=makeCat;
-  const catStep=function(py,yb){                                                        // T-shaped step: plate + vertical fin
-    const G=grp(py,yb); add(G,bx(0.24,0.025,0.32),cwood,0.12,0,0); add(G,bx(0.22,0.007,0.28),post,0.12,0.016,0); add(G,bx(0.2,0.2,0.02),cwood,0.1,-0.11,0); return G;
+  const catStep=function(py,yb){                                                        // 25 x 40 cm step with rounded front corners, sisal top and a triangular bracket
+    const G=grp(py,yb), d=0.25, hw=0.2, r=0.04, sh=new THREE.Shape();
+    sh.moveTo(0,-hw); sh.lineTo(d-r,-hw); sh.quadraticCurveTo(d,-hw,d,-hw+r); sh.lineTo(d,hw-r); sh.quadraticCurveTo(d,hw,d-r,hw); sh.lineTo(0,hw); sh.closePath();
+    add(G,new THREE.ExtrudeGeometry(sh,{depth:0.03,bevelEnabled:false,curveSegments:6}),cwood,0,0,0).rotation.x=-Math.PI/2;
+    add(G,bx(0.21,0.005,0.34),post,0.115,0.032,0);
+    const tri=new THREE.Shape([new THREE.Vector2(0,0),new THREE.Vector2(0.17,0),new THREE.Vector2(0,-0.15)]);
+    add(G,new THREE.ExtrudeGeometry(tri,{depth:0.018,bevelEnabled:false}),cwood,0,0,-0.009);
+    return G;
   };
   const earBed=function(py,yb){                                                         // cat-ear hammock tray
     const G=grp(py,yb); add(G,bx(0.36,0.025,0.34),cwood,0.18,0,0);
@@ -1568,20 +1574,14 @@ const BED_DX=0.09;                             // bed pulled off the west wall b
     (plats||[]).forEach(function(h,i){ const m=add(G,bx(0.3,0.025,0.3),cwood,0.15,h-yb,0); m.rotation.y=(i%2?0.35:-0.3); });
     return G;
   };
-  const bridge=function(py1,y1,py2,y2){                                                 // sagging plank bridge between two wall points
-    const n=11, x=wf-0.12;
-    for(let k=0;k<=n;k++){
-      const t=k/n, z=Z(py1+(py2-py1)*t), y=y1+(y2-y1)*t-0.1*Math.sin(Math.PI*t), dz=Z(py2)-Z(py1), sl=((y2-y1)-0.1*Math.PI*Math.cos(Math.PI*t))/dz;
-      const pl=new THREE.Mesh(bx(0.16,0.015,0.05),cwood); pl.position.set(x,y,z); pl.rotation.x=-Math.atan(sl); pl.castShadow=true; scene.add(pl);
-    }
-    [-0.08,0.08].forEach(function(dx){ const m=new THREE.Mesh(bx(0.012,0.012,Math.abs(Z(py2)-Z(py1))*1.03),rope); m.position.set(x+dx,(y1+y2)/2-0.035,(Z(py1)+Z(py2))/2); m.rotation.x=-Math.atan((y2-y1)/(Z(py2)-Z(py1))); scene.add(m); });
+  const lay1=function(){                                                                // layout 1: two small groups north of the TV with blank wall between, nothing above the TV
+    catHouse(1262,0.95); catStep(1310,1.38);                                           // group off the dining table
+    catStep(1425,0.85); catStep(1380,1.22); makeCat(earBed(1425,1.6),0xa07a55,0xf6f2ec,'#4a3626');   // group off the TV board, zigzag up to the bed
   };
-  const lay1=function(){                                                                // layout 1: a sparse rising diagonal, lots of empty wall (nothing above the TV except the cat bed)
-    catHouse(1272,1.0); catStep(1322,1.42); catStep(1368,1.82); makeCat(earBed(1432,1.95),0xa07a55,0xf6f2ec,'#4a3626');
-  };
-  const lay2=function(){                                                                // layout 2: tall post with the cat bed at the north end, one box and a single long bridge, then a lone step
+  const lay2=function(){                                                                // layout 2: post + box in the north corner; steps and bed off the sofa arm in the south; blank wall between
     catColumn(1243,0.4,1.9,[0.9]); makeCat(earBed(1243,1.9),0x8f959b,0xf6f4f0,'#44484d');
-    catHouse(1318,0.95); bridge(1340,1.0,1440,1.45); catStep(1452,1.5);
+    catHouse(1318,0.95);
+    catStep(1445,0.95); catStep(1495,1.32); earBed(1545,1.7);
   };
   lb(1,lay1); lb(2,lay2);
   const bowl=function(x,z,r,h,col,fill,fillCol,fy){
