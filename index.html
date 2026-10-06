@@ -172,7 +172,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
   <div id="sheet" hidden role="dialog" aria-label="設定與傳送">
     <div class="sheet-head"><h2>設定</h2><button id="bClose" class="x" type="button" aria-label="關閉">×</button></div>
     <div class="row"><label for="rHeight">身高</label><input id="rHeight" type="range" min="145" max="195" step="1" value="165"><output id="oHeight" for="rHeight">165 cm</output></div>
-    <div class="row"><label for="rFov">視野</label><input id="rFov" type="range" min="70" max="120" step="1" value="100"><output id="oFov" for="rFov">100°</output></div>
+    <div class="row"><label for="rFov">視野</label><input id="rFov" type="range" min="70" max="120" step="1" value="85"><output id="oFov" for="rFov">85°</output></div>
     <div class="row"><label for="rHour">日照時間</label><input id="rHour" type="range" min="7" max="17" step="0.25" value="15"><output id="oHour" for="rHour">15:00</output></div>
     <div class="toggles">
       <button id="tEdit" class="tog" type="button" aria-pressed="false">擺放家具（拖曳移動、旋轉）</button>
@@ -212,7 +212,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
     <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿（往哪個方向拖就往哪走），兩指一起拖曳可轉向與抬頭低頭，左下搖桿也能用；電腦：滑鼠拖曳轉向，右下「俯瞰」可看整體格局（電腦可用 WASD 與方向鍵，Shift 加速）。走近門並面向它，畫面下方會出現開關按鈕（電腦可按 F）。畫面下方數字是視線正前方到牆或家具的距離。手機橫向握持時視野較寬。</p>
-    <p class="help"><b>比例參考：</b>沙發 160 cm、餐桌 140 × 80 cm、Queen 床 160 × 195 cm、單人床 97 × 195 cm、電視 56 吋（約 124 × 70 cm）、天花板 2.40 m。</p>
+    <p class="help"><b>比例參考：</b>沙發 155 × 77 cm（座面高 40 cm）、餐桌 140 × 80 cm、Queen 床 160 × 195 cm、單人床 97 × 195 cm、電視 56 吋（約 124 × 70 cm）、天花板 2.40 m。</p>
     <p class="help"><b>注意：</b>牆、門、窗、浴室與廚房設備的位置依圖面尺寸換算，天花板高度、門的寬度、家具與日照方向是推測，可能與實際不同。走廊旁的檯面在圖面上標為「上部カウンター／下部物入」，此處依其輪廓畫成洗面檯與鏡櫃，屬推測。簽約前請以建商的正式圖面與現場為準。</p>
   </div>
 </div>
@@ -1483,20 +1483,20 @@ lb(1,function(){                               // dining table 140 x 80, four ch
   mvEnd('dining','餐桌與椅子');
 });
 lb(2,function(){ mvBegin(); plant(632,1562,0.9); mvEnd('plantL2','植物'); });
-(function(){                                   // sofa 160 cm facing the TV, rug, coffee table, floor lamp
+(function(){                                   // 2.5-seat sofa W155 x D77 x H73 cm, seat height 40 cm, facing the TV
   const x=690, y=1510, fx=X(x), fz=Z(y), a0=furn.children.length, c0=furnCols.length;
-  rb(x,y,0.8,1.6,0.26,0.07,M.sofaD,0.1,true);                              // frame
-  legs(x,y,0.34,0.74,0.1,0.03,0.02,M.oakD);
-  rb(x-0.35/S,y,0.1,1.6,0.52,0.05,M.sofaD,0.1,false);                       // back frame
+  rb(x,y,0.77,1.55,0.22,0.07,M.sofaD,0.1,true);                              // frame
+  legs(x,y,0.32,0.71,0.1,0.03,0.02,M.oakD);
+  rb(x-0.335/S,y,0.1,1.55,0.45,0.05,M.sofaD,0.1,false);                      // back frame
   [-1,1].forEach(function(s){
-    rb(x+0.1/S,y+s*0.34/S,0.62,0.62,0.10,0.05,M.sofa,0.34,false);          // seat cushions
-    const bk=rb(x-0.27/S,y+s*0.34/S,0.17,0.62,0.42,0.075,M.sofa,0.40,false); bk.rotation.z=0.13;   // leaning back cushions
-    rb(x,y+s*0.71/S,0.78,0.18,0.45,0.07,M.sofa,0.1,false);                  // tall arm rests (top at 64 cm, rolled), comfortable to lie against
-    { const roll=new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,0.78,20),M.sofa); roll.rotation.z=Math.PI/2; roll.position.set(X(x),0.55,Z(y+s*0.71/S)); roll.castShadow=true; roll.receiveShadow=true; place(roll,{group:furn,cast:true,pick:false}); }
+    rb(x+0.095/S,y+s*0.30/S,0.58,0.60,0.10,0.05,M.sofa,0.30,false);         // seat cushions, top at 40 cm
+    const bk=rb(x-0.25/S,y+s*0.30/S,0.17,0.60,0.37,0.075,M.sofa,0.36,false); bk.rotation.z=0.13;   // back cushions, top at 73 cm
+    rb(x,y+s*0.69/S,0.75,0.17,0.40,0.07,M.sofa,0.1,false);                   // arm rests, rolled top at 58 cm
+    { const roll=new THREE.Mesh(new THREE.CylinderGeometry(0.085,0.085,0.75,20),M.sofa); roll.rotation.z=Math.PI/2; roll.position.set(X(x),0.50,Z(y+s*0.69/S)); roll.castShadow=true; roll.receiveShadow=true; place(roll,{group:furn,cast:true,pick:false}); }
   });
-  fb(x+0.1/S,y,0.56,0.01,0.06,M.sofaD,0.38,false);                           // seam between the seat cushions
-  rb(x-0.12/S,y-0.4/S,0.16,0.42,0.4,0.07,M.cushA,0.44,false).rotation.z=0.2;
-  rb(x-0.12/S,y+0.45/S,0.16,0.4,0.36,0.07,M.cushB,0.44,false).rotation.z=0.2;
+  fb(x+0.095/S,y,0.54,0.01,0.06,M.sofaD,0.34,false);                         // seam between the seat cushions
+  rb(x-0.12/S,y-0.38/S,0.16,0.40,0.36,0.07,M.cushA,0.40,false).rotation.z=0.2;
+  rb(x-0.12/S,y+0.42/S,0.16,0.38,0.33,0.07,M.cushB,0.40,false).rotation.z=0.2;
   sofaG=new THREE.Group(); { const mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); sofaG.add(o); }); furn.add(sofaG); }
   sofaCols0=furnCols.slice(c0); sofaCols0.forEach(function(c){ c.lay=1; });
   lb(1,function(){ mvBegin(); roundRug(772,1510,0.95,'plain',24,0.0); shagLayers(772,1510,0.95); mvEnd('rugL1','圓地毯'); });
@@ -1980,7 +1980,7 @@ const SPOTS=[
   ['浴室',740,865,-Math.PI/2],['脫衣室',735,962,-Math.PI/2],['陽台',640,1650,Math.PI]
 ];
 const player={x:X(650),z:Z(752),yaw:Math.PI,pitch:0,camY:-0.15};
-let userH=165, fovH=100, mode='walk', furnOn=true, shadowOn=true, hour=15;
+let userH=165, fovH=85, mode='walk', furnOn=true, shadowOn=true, hour=15;
 const orb={yaw:0,pitch:1.12,dist:15.5,tx:X(636),tz:Z(1160)};
 const R=0.22, SPEED=1.5;
 function rebuild(){
@@ -2289,7 +2289,7 @@ const HB=(function(){
     const P=female?[[0.001,0],[0.112,0],[0.122,0.03],[0.112,0.13],[0.13,0.21],[0.136,0.27],[0.112,0.31],[0.05,0.33],[0.001,0.335]]
                   :[[0.001,0],[0.118,0],[0.128,0.03],[0.13,0.13],[0.145,0.22],[0.152,0.28],[0.122,0.318],[0.055,0.335],[0.001,0.34]];
     const T=new THREE.Group(); T.position.set(x,y0,0); T.rotation.z=tilt||0; G.add(T);
-    mk(T,new THREE.LatheGeometry(P.map(function(q){ return new THREE.Vector2(q[0]*u,q[1]*u); }),30),M.top,0,0,0).scale.x=0.52;
+    mk(T,new THREE.LatheGeometry(P.map(function(q){ return new THREE.Vector2(q[0]*u,q[1]*u); }),30),M.top,0,0,0).scale.set(0.52,1,0.9);
     const col=mk(T,new THREE.TorusGeometry(0.046*u,0.007*u,8,26),M.collar,0,0.328*u,0); col.rotation.x=Math.PI/2; col.scale.x=0.62;
     return T;
   };
@@ -2309,13 +2309,13 @@ const sportG=new THREE.Group(); sportG.visible=false; furn.add(sportG);
 (function(){
   const person=function(u,skin,topC,botC,hairC,longHair,jcA,jcB,arms){
     const G=new THREE.Group(), M=HB.mats({skin:skin,top:topC,bot:botC,hair:hairC,female:longHair});
-    HB.ell(G,M.bot,-0.004*u,0.535*u,0,0.064*u,0.07*u,longHair?0.122*u:0.118*u);
+    HB.ell(G,M.bot,-0.004*u,0.535*u,0,0.064*u,0.07*u,longHair?0.105*u:0.106*u);
     [-1,1].forEach(function(sd){ HB.leg(G,u,[0,0.5*u,sd*0.062*u],[0.012*u,0.275*u,sd*0.06*u],[0,0.05*u,sd*0.056*u],M); HB.shoe(G,u,[0.03*u,0,sd*0.056*u],M); });
     HB.torso(G,u,0,0.53*u,M,longHair,0);
     HB.limb(G,[0,0.84*u,0],[0.004*u,0.89*u,0],0.022*u,0.021*u,M.sk);
     HB.head(G,u,[0.005*u,0.92*u,0],M,longHair); HB.hair(G,u,[0.005*u,0.92*u,0],M,longHair);
     [-1,1].forEach(function(sd){
-      const S=[0,0.83*u,sd*0.15*u], E=arms?arms.e(sd,u):[0.06*u,0.68*u,sd*0.17*u], Hd=arms?arms.h(sd,u):[0.17*u,0.75*u,sd*0.12*u];   // default: boxing-style guard holding Joy-Cons
+      const S=[0,0.83*u,sd*0.138*u], E=arms?arms.e(sd,u):[0.06*u,0.68*u,sd*0.17*u], Hd=arms?arms.h(sd,u):[0.17*u,0.75*u,sd*0.12*u];   // default: boxing-style guard holding Joy-Cons
       HB.arm(G,u,S,E,Hd,M);
       if(jcA===undefined) return;
       const jc=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.1,0.016),lam(sd<0?jcA:jcB,{roughness:0.5})); jc.position.set(Hd[0]+0.012,Hd[1],Hd[2]); jc.castShadow=true; G.add(jc); (G.userData.jcs=G.userData.jcs||[]).push(jc);
@@ -2351,7 +2351,7 @@ $('tSport').addEventListener('click',function(){ sportMode=!sportMode; this.setA
 
 /* ---------- real sofa model (glTF): Wayfair "GlamVelvetSofa" via Khronos glTF-Sample-Assets, CC-BY 4.0; falls back to the built sofa if it cannot load ---------- */
 let realSofa=null;
-const REAL_LEN=1.8;                            // metres along the long side after scaling
+const REAL_LEN=1.55;                           // metres along the long side after scaling
 const REAL_FRONT_YAW=Math.PI/2;                        // model rotation about y so that its front faces +x (east) in layout 1
 (function(){
   if(!THREE.GLTFLoader) return;
@@ -2429,7 +2429,7 @@ const seated=(function(){
   /* origin = seat surface under the hips, facing +x; seatH = seat height above the floor */
   return function(u,seatH,skin,topC,botC,hairC,longHair,arms){
     const G=new THREE.Group(), M=HB.mats({skin:skin,top:topC,bot:botC,hair:hairC,female:longHair});
-    HB.ell(G,M.bot,0.0,0.06*u,0,0.085*u,0.06*u,longHair?0.122*u:0.118*u);
+    HB.ell(G,M.bot,0.0,0.06*u,0,0.085*u,0.06*u,longHair?0.105*u:0.106*u);
     HB.torso(G,u,-0.01*u,0.1*u,M,longHair,0.06);
     HB.limb(G,[-0.02*u,0.42*u,0],[0,0.47*u,0],0.022*u,0.021*u,M.sk);
     HB.head(G,u,[0.01*u,0.51*u,0],M,longHair); HB.hair(G,u,[0.01*u,0.51*u,0],M,longHair);
@@ -2437,7 +2437,7 @@ const seated=(function(){
       const K=[0.25*u,0.06*u,sd*0.065*u], F=[0.27*u,-seatH+0.05*u,sd*0.07*u];
       HB.leg(G,u,[0.02*u,0.05*u,sd*0.06*u],K,F,M); HB.shoe(G,u,[F[0]+0.03*u,-seatH,F[2]],M);
       if(arms.skip&&arms.skip(sd)) return;
-      HB.arm(G,u,[-0.01*u,0.4*u,sd*0.15*u],arms.e(sd,u),arms.h(sd,u),M);
+      HB.arm(G,u,[-0.01*u,0.4*u,sd*0.138*u],arms.e(sd,u),arms.h(sd,u),M);
     });
     return G;
   };
@@ -2445,7 +2445,7 @@ const seated=(function(){
 const typing={e:function(sd,u){return [0.08*u,0.2*u,sd*0.17*u];}, h:function(sd,u){return [0.25*u,0.23*u,sd*0.1*u];}};
 const lapArms={e:function(sd,u){return [0.06*u,0.22*u,sd*0.17*u];}, h:function(sd,u){return [0.2*u,0.12*u,sd*0.05*u];}};
 const workerM=seated(1.69,0.52,0xe2b890,0x3c4a5c,0x2f3a4a,0x1f1a16,false,typing); dailyG.add(workerM);
-const viewerF=seated(1.63,0.44,0xf1c9a5,0xf4f1ec,0x7f8fa8,0x3a2a22,true,lapArms); dailyG.add(viewerF);
+const viewerF=seated(1.63,0.40,0xf1c9a5,0xf4f1ec,0x7f8fa8,0x3a2a22,true,lapArms); dailyG.add(viewerF);
 (function(){ const H=new THREE.Group(); H.position.set(-0.05,0.13,0); viewerF.add(H); if(window.__makeCat) window.__makeCat(H,0xa07a55,0xf6f2ec,'#4a3626'); })();
 function applyDaily(){
   dailyG.visible=dailyOn;
@@ -2454,7 +2454,7 @@ function applyDaily(){
     if(sportMode){ sportMode=false; $('tSport').setAttribute('aria-pressed','false'); applySport(); }
     if(cookOn) offCook();
     { const w=mvXf('chairS',X(475),Z(1188)); workerM.position.set(w[0],0.52,w[1]); workerM.rotation.y=Math.PI/2+w[2]; }
-    { const b=curLayout===1?[X(690)+SOFA1_DX-0.08,Z(1510)+0.3,0]:[X(765)+0.3,Z(1500)+0.08,Math.PI/2], q=mvXf('sofa',b[0],b[1]); viewerF.position.set(q[0],0.44,q[1]); viewerF.rotation.y=b[2]+q[2]; }
+    { const b=curLayout===1?[X(690)+SOFA1_DX-0.08,Z(1510)+0.3,0]:[X(765)+0.3,Z(1500)+0.08,Math.PI/2], q=mvXf('sofa',b[0],b[1]); viewerF.position.set(q[0],0.40,q[1]); viewerF.rotation.y=b[2]+q[2]; }
     toast('日常模式：他在書房工作，她在沙發看電視');
   }
   window.__tvOn(dailyOn); $('tTv').setAttribute('aria-pressed',String(dailyOn));
@@ -2522,7 +2522,7 @@ let cookMan=null;
   const man=seated(U,seatH,0xe2b890,0x3c4a5c,0x2f3a4a,0x1f1a16,false,restArms); cookG.add(man); cookMan=man;
   const sleeve=fab(0x3c4a5c), skin=lam(0xe2b890,{roughness:0.8});
   const upper=seg(man,V(0,0,0),V(0,1,0),0.019*U,skin), slv=seg(man,V(0,0,0),V(0,1,0),0.025*U,sleeve), fore=seg(man,V(0,0,0),V(0,1,0),0.016*U,skin);
-  add(man,new THREE.SphereGeometry(0.027*U,16,12),sleeve,-0.01*U,0.396*U,0.144*U);
+  add(man,new THREE.SphereGeometry(0.027*U,16,12),sleeve,-0.01*U,0.396*U,0.132*U);
   const fist=add(man,new THREE.SphereGeometry(0.021*U,14,10),skin,0,0,0);
   const canMat=lam(0xd8dde2,{metalness:0.8,roughness:0.3,envMapIntensity:1}), canBand=lam(0xd9a83a,{metalness:0.6,roughness:0.35});
   const mkCan=function(par){ const g=new THREE.Group(); par.add(g);
@@ -2533,7 +2533,7 @@ let cookMan=null;
   const can2=mkCan(man); can2.position.set(0.5,tableY+0.061,0.24);
   const plate=add(man,new THREE.CylinderGeometry(0.085,0.07,0.015,24),M.ceramic,0.46,tableY+0.008,-0.02);
   for(let i=0;i<9;i++){ const e=add(man,new THREE.SphereGeometry(0.012,10,8),lam(0x7fb04f,{roughness:0.6}),0.46+Math.cos(i*2.1)*0.04,tableY+0.022,-0.02+Math.sin(i*2.1)*0.04); e.scale.set(2.2,1,1); e.rotation.y=i; }
-  const Sh=V(-0.01*U,0.4*U,0.15*U), LU=0.2*U, LF=0.18*U, hint=V(-0.2,-1,0.6).normalize();
+  const Sh=V(-0.01*U,0.4*U,0.138*U), LU=0.2*U, LF=0.18*U, hint=V(-0.2,-1,0.6).normalize();
   const H0=V(0.2*U,tableY+0.061,0.12*U), H1=V(0.125*U,0.47*U,0.05*U);
   const elbowOf=function(H){ const d=H.clone().sub(Sh), len=Math.min(d.length(),LU+LF-1e-3); d.normalize();
     const a=(LU*LU-LF*LF+len*len)/(2*len), h=Math.sqrt(Math.max(0,LU*LU-a*a)), pr=hint.clone().addScaledVector(d,-hint.dot(d)).normalize();
