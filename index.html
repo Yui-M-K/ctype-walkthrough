@@ -160,6 +160,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
       <button id="tTv" class="tog" type="button" aria-pressed="false">電視開機</button>
       <button id="tSport" class="tog" type="button" aria-pressed="false">運動模式（Switch）</button>
+      <button id="tReal" class="tog" type="button" aria-pressed="false" hidden>沙發：真實模型（試作）</button>
     </div>
     <h3>家具配置</h3>
     <div id="layBtns" class="seg" style="grid-template-columns:repeat(2,1fr)">
@@ -196,6 +197,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
 <div id="err" hidden role="alert"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script>
 (function(){
 'use strict';
@@ -376,7 +378,7 @@ const shoeMats=[0x2a2a2e,0x6b4a35,0xe8e6e0,0x1f2c44,0x8a8d90,0xa5714a].map(funct
 const furn=new THREE.Group(); scene.add(furn);
 const partG=new THREE.Group(); scene.add(partG);
 const furnMeshes=[], furnCols=[], picks=[], colliders=[], ceilings=[], floorRects=[], floorTris=[], detailMeshes=[];
-let sportMode=false; const sportCols=[], sportHide=[];
+let realOn=false, realCol=null; let sportMode=false; const sportCols=[], sportHide=[];
 let curLayout=1, foldT=0, foldTarget=0, foldApply=function(){};
 let sofaG=null, tvG=null, sofaCols0=[], tvCols0=[];   // sofa and TV sets are moved as groups in layout 2
 const layObjs=[], catAnim=[];
@@ -1561,7 +1563,7 @@ let userH=165, fovH=100, mode='walk', furnOn=true, shadowOn=true, hour=15;
 const orb={yaw:0,pitch:1.12,dist:15.5};
 const R=0.22, SPEED=1.5;
 function rebuild(){
-  allCols=colliders.concat(partCols,doors.filter(function(d){return !d.open;}).map(function(d){return d.col;}),furnOn?furnCols.filter(function(c){return (!c.lay||c.lay===curLayout)&&!(sportMode&&sportCols.indexOf(c)>=0);}):[]);
+  allCols=colliders.concat(partCols,doors.filter(function(d){return !d.open;}).map(function(d){return d.col;}),furnOn?furnCols.filter(function(c){ if(c===realCol) return realOn; if(realOn&&c.sofa) return false; return (!c.lay||c.lay===curLayout)&&!(sportMode&&sportCols.indexOf(c)>=0); }):[]);
   furn.visible=furnOn;
   renderer.shadowMap.needsUpdate=true;
 }
@@ -1769,6 +1771,40 @@ function applySport(){
   rebuild(); renderer.shadowMap.needsUpdate=true;
 }
 $('tSport').addEventListener('click',function(){ sportMode=!sportMode; this.setAttribute('aria-pressed',String(sportMode)); applySport(); });
+
+
+/* ---------- real sofa model (glTF): Wayfair "GlamVelvetSofa" via Khronos glTF-Sample-Assets, CC-BY 4.0; falls back to the built sofa if it cannot load ---------- */
+let realSofa=null;
+const REAL_LEN=1.8;                            // metres along the long side after scaling
+const REAL_FRONT_YAW=Math.PI/2;                        // model rotation about y so that its front faces +x (east) in layout 1
+(function(){
+  if(!THREE.GLTFLoader) return;
+  new THREE.GLTFLoader().load('models/GlamVelvetSofa.glb',function(gltf){
+    const m=gltf.scene, box=new THREE.Box3().setFromObject(m), size=new THREE.Vector3(), ctr=new THREE.Vector3(); box.getSize(size); box.getCenter(ctr);
+    const k=REAL_LEN/Math.max(size.x,size.z);
+    m.traverse(function(o){ if(o.isMesh){ o.castShadow=true; o.receiveShadow=true; if(o.material&&o.material.envMapIntensity!==undefined) o.material.envMapIntensity=0.6;
+      if(o.material&&/fabric/i.test(o.material.name)){ o.material.color.setHex(0x3f6aa8).convertSRGBToLinear(); o.material.roughness=0.85; }   // navy velvet: the model's base colour is near black
+    } });
+    m.position.set(-ctr.x,-box.min.y,-ctr.z);
+    const inner=new THREE.Group(); inner.add(m); inner.rotation.y=REAL_FRONT_YAW; inner.scale.setScalar(k);
+    realSofa=new THREE.Group(); realSofa.add(inner); realSofa.visible=false; furn.add(realSofa);
+    realSofa.userData.size=new THREE.Vector3(size.x*k,size.y*k,size.z*k);
+    realCol={x0:0,x1:0,z0:0,z1:0,kind:'f'}; furnCols.push(realCol);
+    $('tReal').hidden=false; applyReal();
+  },undefined,function(){});
+})();
+function applyReal(){
+  if(!realSofa) return;
+  const show=realOn&&furnOn;
+  realSofa.visible=show; sofaG.visible=!realOn;
+  if(!realOn){ rebuild(); return; }
+  const c1=curLayout===1, cx=c1?X(690)+SOFA1_DX:X(765), cz=c1?Z(1510):Z(1500), yaw=c1?0:Math.PI/2;
+  realSofa.position.set(cx,0,cz); realSofa.rotation.y=yaw;
+  const sz=realSofa.userData.size, hx=c1?Math.min(sz.x,sz.z)/2:Math.max(sz.x,sz.z)/2, hz=c1?Math.max(sz.x,sz.z)/2:Math.min(sz.x,sz.z)/2;
+  realCol.x0=cx-hx; realCol.x1=cx+hx; realCol.z0=cz-hz; realCol.z1=cz+hz;
+  rebuild(); renderer.shadowMap.needsUpdate=true;
+}
+$('tReal').addEventListener('click',function(){ realOn=!realOn; this.setAttribute('aria-pressed',String(realOn)); applyReal(); });
 
 const partBtns=Array.prototype.slice.call($('partBtns').querySelectorAll('button'));
 function setPart(s){
@@ -2049,12 +2085,13 @@ function setLayout(n){
   layBtns.forEach(function(b){ b.setAttribute('aria-pressed',String(+b.getAttribute('data-l')===n)); });
   const p=resolve(player.x,player.z); player.x=p[0]; player.z=p[1];
   try{ localStorage.setItem('ctypeLayout',String(n)); }catch(_){}
-  applySport();
+  applySport(); applyReal();
   updateAct();
 }
 layBtns.forEach(function(b){ b.addEventListener('click',function(){ setLayout(+b.getAttribute('data-l')); }); });
 foldBtn.addEventListener('click',function(){ foldTarget=foldTarget?0:1; syncFold(); });
-furnCols.push.apply(furnCols,mapCols(sofaCols0,POSE2.sofa).concat(mapCols(tvCols0,POSE2.tv)));
+const sofaCols2=mapCols(sofaCols0,POSE2.sofa); sofaCols2.forEach(function(c){ c.sofa=true; }); sofaCols0.forEach(function(c){ c.sofa=true; });
+furnCols.push.apply(furnCols,sofaCols2.concat(mapCols(tvCols0,POSE2.tv)));
 sofaCols0.forEach(function(c){ c.x0+=SOFA1_DX; c.x1+=SOFA1_DX; });
 (function(){
   let n=1;
@@ -2068,7 +2105,7 @@ requestAnimationFrame(tick);
 if(location.hash==='#debug'){
   window.__walk={player:player,resolve:resolve,cols:function(){return allCols;},setFurn:function(v){furnOn=v;rebuild();},setPart:setPart,
     X:X,Z:Z,S:S,OX:OX,OY:OY,SPOTS:SPOTS,R:R,floorY:floorY,roomAt:roomAt,setMode:setMode,stepPlayer:stepPlayer,joy:joy,keys:keys,
-    teleport:teleport,applyTheme:applyTheme,setLayout:setLayout,setFold:function(v){foldTarget=v;foldT=v;foldApply(v);syncFold();},doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
+    teleport:teleport,applyTheme:applyTheme,setReal:function(v){ realOn=v; $('tReal').setAttribute('aria-pressed',String(v)); applyReal(); },real:function(){return realSofa;},setLayout:setLayout,setFold:function(v){foldTarget=v;foldT=v;foldApply(v);syncFold();},doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
 }
 }
 })();
