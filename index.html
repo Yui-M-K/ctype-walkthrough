@@ -1859,6 +1859,7 @@ const sportG=new THREE.Group(); sportG.visible=false; furn.add(sportG);
   sportG.userData={f:f,m:m};
 })();
 function applySport(){
+  [sportG.userData.f,sportG.userData.m].forEach(function(q){ q.rotation.order='XYZ'; q.rotation.set(0,0,0); });
   const L1=(curLayout===1);
   sportHide.forEach(function(o){ o.visible=L1&&!sportMode; });
   if(sportMode&&curLayout===2){ foldTarget=0; syncFold(); }
@@ -1920,6 +1921,15 @@ const nightBg=(function(){ const c=document.createElement('canvas'); c.width=4; 
   gr.addColorStop(0,'#05080f'); gr.addColorStop(0.6,'#0d1626'); gr.addColorStop(1,'#1a2438'); g.fillStyle=gr; g.fillRect(0,0,4,256);
   const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; return t; })();
 let dayEnv=scene.environment, dayRim=null;
+const blanket=(function(){ const b=rbox(X(515),X(580),Z(1450)-0.5,Z(1450)+0.5,0.5,1.0,0.16,fab(0xd9d2c4),{group:furn,pick:false}); b.visible=false; return b; })();
+function placeSleepers(on){
+  const F=sportG.userData.f, M=sportG.userData.m, bz=Z(1450);
+  blanket.visible=on&&furnOn;
+  if(!on){ if(!sportMode) sportG.visible=false; applySport(); return; }
+  sportG.visible=true;
+  [[F,1.63,-1,0.15],[M,1.69,1,0.0]].forEach(function(a){ const q=a[0]; q.rotation.order='ZYX'; q.rotation.set(0,a[2]>0?Math.PI/2:-Math.PI/2,Math.PI/2);   // lying on the side, head west, front toward the partner
+    q.position.set(X(430)+a[1]*0.98+a[3], 0.8, bz+a[2]*0.11); });
+}
 function applySleep(){
   const on=sleepOn;
   sun.intensity=on?0:(shadowOn?SUN_I:SUN_I*0.3); sun.castShadow=on?false:shadowOn;
@@ -1927,8 +1937,9 @@ function applySleep(){
   pointLights.forEach(function(p){ p.intensity=on?0:0.35; });
   lampMat.color.setHex(on?0x1a1712:0xffdc96); M.shade.emissive.setHex(on?0x000000:0x8a6428);
   scene.background=on?nightBg:window.__dayBg; scene.fog.color.setHex(on?0x0a1220:0xdde9f3); scene.environment=on?null:dayEnv;
-  nightMat.color.setHex(on?0xffd9a8:0x6a4a30); nightPt.intensity=on?0.9:0;
-  renderer.toneMappingExposure=on?1.35:THEMES[themeId].exposure;
+  nightMat.color.setHex(on?0xffd9a8:0x6a4a30); nightPt.intensity=on?1.4:0;
+  renderer.toneMappingExposure=on?1.7:THEMES[themeId].exposure;
+  placeSleepers(on);
   renderer.shadowMap.needsUpdate=true; scene.traverse(function(o){ if(o.material&&!Array.isArray(o.material)) o.material.needsUpdate=true; });
 }
 $('tSleep').addEventListener('click',function(){ sleepOn=!sleepOn; this.setAttribute('aria-pressed',String(sleepOn)); applySleep(); });
