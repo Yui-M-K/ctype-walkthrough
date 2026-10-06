@@ -378,7 +378,7 @@ const shoeMats=[0x2a2a2e,0x6b4a35,0xe8e6e0,0x1f2c44,0x8a8d90,0xa5714a].map(funct
 const furn=new THREE.Group(); scene.add(furn);
 const partG=new THREE.Group(); scene.add(partG);
 const furnMeshes=[], furnCols=[], picks=[], colliders=[], ceilings=[], floorRects=[], floorTris=[], detailMeshes=[];
-let realOn=false, realCol=null; let sportMode=false; const sportCols=[], sportHide=[];
+const applThings=[]; let realOn=false, realCol=null; let sportMode=false; const sportCols=[], sportHide=[];
 let curLayout=1, foldT=0, foldTarget=0, foldApply=function(){};
 let sofaG=null, tvG=null, sofaCols0=[], tvCols0=[];   // sofa and TV sets are moved as groups in layout 2
 const layObjs=[], catAnim=[];
@@ -1169,43 +1169,69 @@ function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:f
     box(cx-0.08,cx+0.08,f+0.002,f+0.006,y+0.26,y+0.32,glass,oc); box(cx-0.06,cx+0.0,f+0.006,f+0.008,y+0.28,y+0.3,led,oc);   // display
     for(let i=0;i<6;i++) box(cx-0.12+i*0.04,cx-0.095+i*0.04,az+0.09,az+0.27,y+0.358,y+0.364,lam(0x0a0b0d),oc);   // top vents
   })();
-  /* hot water dispenser (air pot) and electric kettle and rice cooker on the worktop */
-  (function(){ const y=0.88;
-    const cx=x0+0.17, cz=az+0.14;
-    cyl(cx,cz,0.125,0.14,y,y+0.34,cream,o,28); cyl(cx,cz,0.12,0.12,y+0.34,y+0.37,silver,oc,28);                 // 熱水瓶 body + lid
-    const sp=box(cx-0.015,cx+0.015,cz+0.1,cz+0.16,y+0.28,y+0.3,silver,oc);                                      // spout
-    box(cx-0.03,cx+0.03,cz+0.118,cz+0.124,y+0.24,y+0.26,led,oc);                                                // power light
-    box(cx+0.09,cx+0.112,cz-0.02,cz+0.02,y+0.12,y+0.3,glass,oc);                                                // water-level window
-    const kx=x0+0.43, kz=az+0.12;                                                                              // 電熱水壺
-    cyl(kx,kz,0.1,0.075,y,y+0.03,blk,oc,24); cyl(kx,kz,0.085,0.07,y+0.03,y+0.24,silver,o,24); cyl(kx,kz,0.05,0.07,y+0.24,y+0.275,blk,oc,24);
-    const sp2=cyl(kx-0.06,kz+0.08,0.012,0.022,y+0.2,y+0.255,silver,oc,10); sp2.rotation.z=0.5;
-    const hd=new THREE.Mesh(new THREE.TorusGeometry(0.075,0.011,8,18,Math.PI),blk); hd.position.set(kx+0.065,y+0.13,kz); hd.rotation.set(0,0,-Math.PI/2); hd.rotation.z=-Math.PI/2; place(hd,oc);
-    const rx=x0+0.6, rz=az+0.15;                                                                               // 電子鍋
-    cyl(rx,rz,0.15,0.16,y,y+0.22,cream,o,28); cyl(rx,rz,0.14,0.15,y+0.22,y+0.27,lam(0xe4e0d6,{roughness:0.3}),oc,28); box(rx-0.05,rx+0.05,rz+0.13,rz+0.15,y+0.1,y+0.16,led,oc);
+  /* hot water dispenser (air pot) on the worktop */
+  (function(){ const y=0.88, cx=x0+0.17, cz=az+0.14;
+    cyl(cx,cz,0.125,0.14,y,y+0.34,cream,o,28); cyl(cx,cz,0.12,0.12,y+0.34,y+0.37,silver,oc,28);
+    box(cx-0.015,cx+0.015,cz+0.1,cz+0.16,y+0.28,y+0.3,silver,oc);
+    box(cx-0.03,cx+0.03,cz+0.118,cz+0.124,y+0.24,y+0.26,led,oc);
+    box(cx+0.09,cx+0.112,cz-0.02,cz+0.02,y+0.12,y+0.3,glass,oc);
   })();
-  /* top shelf: storage boxes, bread box and a plant */
+  /* bean-to-cup coffee machine on the worktop: 26 x 40 cm, with a cup under the nozzle and a brewing animation */
+  const cxm=x0+0.48, y0c=0.88, Wc=0.26, Dc=0.4, fz=az+Dc, ledM=new THREE.MeshBasicMaterial({color:0x76ffb2});
+  const cmBody=(function(){
+    rbox(cxm-Wc/2,cxm+Wc/2,az+0.02,fz+0.02,y0c,y0c+0.04,0.008,blk,o);
+    const body=rbox(cxm-Wc/2+0.005,cxm+Wc/2-0.005,az,fz-0.02,y0c+0.04,y0c+0.31,0.02,silver,o);
+    cyl(cxm-0.03,az+0.12,0.055,0.045,1.19,1.26,lam(0x4a2f1c,{roughness:0.5,transparent:true,opacity:0.8}),oc,18); cyl(cxm-0.03,az+0.12,0.058,0.058,1.26,1.272,blk,oc,18);
+    box(cxm-0.1,cxm+0.1,fz-0.026,fz-0.02,y0c+0.2,y0c+0.285,blk,oc); box(cxm-0.07,cxm+0.07,fz-0.02,fz-0.016,y0c+0.225,y0c+0.255,ledM,oc);
+    [-1,1].forEach(function(sd){ const k=cyl(0,0,0.014,0.014,0,0.012,silver,oc,12); k.rotation.x=Math.PI/2; k.position.set(cxm+sd*0.075,y0c+0.17,fz-0.024); });
+    box(cxm-0.03,cxm+0.03,fz-0.05,fz+0.012,y0c+0.17,y0c+0.2,blk,oc);
+    cyl(cxm,fz-0.004,0.036,0.03,y0c+0.04,y0c+0.11,M.ceramic,{group:furn,pick:false,open:true},22); cyl(cxm,fz-0.004,0.03,0.03,y0c+0.04,y0c+0.045,M.ceramic,oc,22);
+    return body;
+  })();
+  const liquid=cyl(cxm,fz-0.004,0.029,0.029,y0c+0.045,y0c+0.1,lam(0x3a2412,{roughness:0.2,envMapIntensity:0.9}),oc,20); liquid.visible=false;
+  const stream=new THREE.Mesh(new THREE.CylinderGeometry(0.0035,0.0035,1,8),lam(0x3a2412,{roughness:0.2})); place(stream,oc); stream.visible=false;
+  const steam=[0,1,2,3,4].map(function(){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.014,10,8),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,depthWrite:false})); place(m,oc); m.visible=false; return m; });
+  const bx0=cmBody.position.x; let brewT0=null;
+  const cupTop=y0c+0.11, noz=y0c+0.17;
+  catAnim.push(function(t){
+    if(brewT0===null) return;
+    const e=t-brewT0;
+    cmBody.position.x=bx0+(e<2.2?0.0016*Math.sin(e*70):0);
+    ledM.color.setHex(e<9.5?0xffb25b:0x76ffb2);
+    const fill=clamp((e-3)/6.5,0,1)*0.85;
+    liquid.visible=e>=3; liquid.scale.y=Math.max(0.001,fill); liquid.position.y=y0c+0.045+0.0275*fill;
+    const top=y0c+0.045+0.055*fill;
+    stream.visible=(e>3&&e<9.5); if(stream.visible){ const h=noz-top; stream.scale.y=h; stream.position.set(cxm,(noz+top)/2,fz-0.004); }
+    const fade=e<16?1:clamp(1-(e-16)/4,0,1);
+    steam.forEach(function(m,i){ const ph=(((e-4.5)+i*0.8)%4)/4; const on=e>4.5&&fade>0&&ph>=0;
+      m.visible=on; if(on){ m.position.set(cxm+Math.sin(ph*6+i)*0.012,cupTop+0.02+ph*0.2,fz-0.004); m.material.opacity=(1-ph)*0.35*fade; m.scale.setScalar(0.8+ph*1.8); } });
+  });
+  applThings.push({pt:[cxm,fz],label:function(){ return '沖煮咖啡'; },act:function(){
+    const now=performance.now()/1000;
+    if(brewT0!==null&&now-brewT0<9.5){ toast('沖煮中…'); return; }
+    brewT0=now; toast('咖啡機：磨豆、沖煮中');
+  }});
+  window.__brew=function(){ brewT0=performance.now()/1000; };
   (function(){ const y=1.73;
-    [[0.15,0.28,0x8a9a86],[0.43,0.28,0xc9b27f]].forEach(function(b){ rbox(x0+b[0]-b[1]/2,x0+b[0]+b[1]/2,z0+0.05,z0+0.4,y,y+0.22,0.015,fab(b[2]),o); });
+    [[0.15,0.28,0x8a9a86],[0.43,0.28,0xc9b27f]].forEach(function(b){ rbox(x0+b[0]-b[1]/2,x0+b[0]+b[1]/2,z0+0.05,z0+0.4,y,y+0.18,0.015,fab(b[2]),o); });
     rbox(x0+0.68,x0+0.95,z0+0.06,z0+0.4,y,y+0.18,0.02,lam(0xb98368,{roughness:0.7}),o);
     cyl(x1-0.1,z0+0.2,0.05,0.04,y+0.18,y+0.24,M.pot,oc,14);
   })();
+  /* sockets and cords: three double sockets on the back panel, every appliance plugged in */
+  (function(){
+    const plate=lam(0xf4f2ec,{roughness:0.5}), hole=lam(0x1a1a1a), cw=lam(0xe8e8e4,{roughness:0.8}), cb=lam(0x242424,{roughness:0.8});
+    const sock=function(px,py){ rbox(px-0.022,px+0.022,z0+0.015,z0+0.022,py-0.045,py+0.045,0.004,plate,oc); [-0.02,0.02].forEach(function(dy){ box(px-0.009,px+0.009,z0+0.022,z0+0.0235,py+dy-0.006,py+dy+0.006,hole,oc); }); };
+    const cord=function(a,b,mat){ const pts=[a,[a[0]+(b[0]-a[0])*0.3,a[1]-0.045,a[2]-0.012],[b[0]-(b[0]-a[0])*0.2,b[1]-0.06,z0+0.032],[b[0],b[1]-0.03,z0+0.025]].map(function(q){ return new THREE.Vector3(q[0],q[1],q[2]); });
+      const m=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),20,0.0035,6,false),mat); m.castShadow=false; place(m,oc); };
+    const P1=[x0+0.335,1.02], P2=[x0+0.64,1.02], P3=[x0+0.535,1.44];
+    [P1,P2,P3].forEach(function(q){ sock(q[0],q[1]); });
+    cord([x0+0.19,0.93,az],[P1[0],P1[1],0],cw);
+    cord([cxm-0.06,0.93,az],[P1[0],P1[1],0],cb);
+    cord([x0+0.85,0.93,az],[P2[0],P2[1],0],cb);
+    cord([x0+0.33,1.34,az],[P3[0],P3[1],0],cw);
+    cord([x0+0.71,1.34,az],[P3[0],P3[1],0],cb);
+  })();
   furnCols.push({x0:x0,x1:x1,z0:z0,z1:z1+0.025,kind:'f'}); contactShadow(x0,x1,z0,z1,0,furn);
-})();
-(function(){                                   // coffee corner on the south strip of the kitchen island, next to the sink: espresso machine, grinder, two cups
-  const o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false}, y=0.88;
-  const silver=lam(0xbfc4ca,{metalness:0.9,roughness:0.25,envMapIntensity:1}), blk=lam(0x1b1d20,{roughness:0.4}), led=new THREE.MeshBasicMaterial({color:0xffb25b});
-  const cx=X(785), cz=Z(1203), W=0.3, Dp=0.36, Hh=0.34;
-  rbox(cx-W/2,cx+W/2,cz-Dp/2,cz+Dp/2,y,y+0.03,0.01,blk,o);                                       // drip tray
-  rbox(cx-W/2+0.01,cx+W/2-0.01,cz-Dp/2,cz+0.06,y+0.03,y+Hh,0.02,silver,o);                       // body
-  rbox(cx-W/2+0.01,cx+W/2-0.01,cz-0.04,cz+Dp/2-0.01,y+0.24,y+0.3,0.015,silver,o);                // head over the group
-  const grp=cyl(cx,cz+0.15,0.032,0.032,y+0.2,y+0.24,blk,oc,16);                                  // group head
-  const pf=cyl(cx,cz+0.15,0.03,0.03,y+0.15,y+0.2,silver,o,16); const hd=cyl(cx,cz+0.23,0.012,0.012,y+0.16,y+0.17,blk,o,10); hd.rotation.x=Math.PI/2; hd.position.y=y+0.175; hd.scale.y=7; hd.position.z=cz+0.2;
-  [-1,1].forEach(function(sd){ const k=cyl(cx+sd*0.07,cz+0.17,0.016,0.016,0,0.02,blk,oc,12); k.rotation.x=Math.PI/2; k.position.set(cx+sd*0.07,y+0.28,cz+0.178); });   // buttons
-  box(cx-0.09,cx+0.09,cz+Dp/2-0.012,cz+Dp/2-0.006,y+0.26,y+0.285,led,oc);                        // glowing strip
-  const gx=X(762), gz=Z(1198);                                                                    // bean grinder with a hopper
-  rbox(gx-0.05,gx+0.05,gz-0.07,gz+0.07,y,y+0.22,0.02,blk,o); const hop=cyl(gx,gz,0.05,0.035,y+0.22,y+0.34,lam(0x6a4a2e,{roughness:0.5,transparent:true,opacity:0.8}),oc,16);
-  [X(805),X(815)].forEach(function(x){ cyl(x,Z(1210),0.036,0.028,y,y+0.075,M.ceramic,o,16); });  // two cups
-  furnCols.push({x0:gx-0.06,x1:cx+W/2,z0:cz-Dp/2,z1:cz+Dp/2+0.04,kind:'f'});
 })();
 lb(1,function(){                               // dining table 140 x 80, four chairs, pendant lamp
   const cx=770, cy=1330, w=1.4, d=0.8;
@@ -1999,6 +2025,7 @@ function setDoor(d,open,quiet){
 const things=doors.map(function(d){
   return {pt:d.mid, label:function(){ return d.kind==='slide'?(d.open?'拉上拉門':'拉開拉門'):(d.open?'關門':'開門'); }, act:function(){ setDoor(d,!d.open); }};
 });
+applThings.forEach(function(t){ things.push(t); });
 things.push({pt:[765,1360], on:function(){return curLayout===2;}, label:function(){ return foldTarget?'降成茶几':'升成餐桌'; }, act:function(){ foldTarget=foldTarget?0:1; syncFold(); }});
 things.push({seg:[X(XR),Z(1315),X(XR),Z(1550)], label:function(){ return ['拉開一扇','全部拉開','拉上拉門'][partState]; }, act:function(){ setPart((partState+1)%3); }});
 function thingVec(t){
