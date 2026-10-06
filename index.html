@@ -1500,7 +1500,7 @@ const BED_DX=0.09;                             // bed pulled off the west wall b
   box(mx,mx+0.03,mz-0.28,mz+0.28,0.12,1.8,M.woodD,{group:furn,pick:false});
   mirror(mx+0.032,mz,0.5,1.6,0.96,Math.PI/2);
 })();
-(function(){                                   // cat corner: wall steps + perch (living room east wall), feeding nook (by the fridge), automatic litter box (utility room north end)
+(function(){                                   // cat corner: wall steps + perch (living room east wall), feeding nook (east wall, per layout), automatic litter box (utility room north end)
   const o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
   const wf=X(XE)-0.1, sis=lam(0xc9b48b,{roughness:1}), brk=M.steel;
   const cwood=lam(0xd2b27d,{roughness:0.6}), cdark=lam(0x3a2616,{roughness:0.9}), rope=lam(0xb69a6c,{roughness:1}), bedM=fab(0xd7cfc2), post=lam(0xc9b48b,{roughness:1});
@@ -1584,14 +1584,17 @@ const BED_DX=0.09;                             // bed pulled off the west wall b
     catHouse(1318,0.95); bridge(1340,1.0,1440,1.45); catStep(1452,1.5);
   };
   lb(1,lay1); lb(2,lay2);
-  const mat=rbox(X(836.3),X(857.2),Z(1072),Z(1122),0,0.006,0.008,lam(0x4a5560,{roughness:0.8}),oc);   // feeding mat, 21 x 50 cm
   const bowl=function(x,z,r,h,col,fill,fillCol,fy){
     const pts=[[0.001,0],[r*0.72,0],[r,h],[r-0.007,h],[r*0.72-0.007,0.007],[0.001,0.007]].map(function(q){ return new THREE.Vector2(q[0],q[1]); });
     const m=new THREE.Mesh(new THREE.LatheGeometry(pts,28),lam(col,{roughness:0.25,side:THREE.DoubleSide,envMapIntensity:0.8})); m.position.set(x,0.006,z); place(m,o);
     cyl(x,z,r-0.012,r-0.012,0.006+fy,0.006+fy+0.004,fill?fillCol:fillCol,oc,24);
   };
-  bowl(X(847),Z(1088),0.065,0.045,0xe6d9c6,true,lam(0x6b4a35,{roughness:1}),0.022);    // food bowl 13 cm
-  bowl(X(847),Z(1112),0.075,0.055,0xdfe7ea,true,lam(0x9fd3ee,{roughness:0.05,transparent:true,opacity:0.6}),0.038);   // water bowl 15 cm
+  const feeding=function(z0){                                                            // feeding mat 21 x 50 cm against the east wall, clear of the freezer drawer
+    rbox(X(836.3),X(857.2),Z(z0),Z(z0+50),0,0.006,0.008,lam(0x4a5560,{roughness:0.8}),oc);
+    bowl(X(847),Z(z0+16),0.065,0.045,0xe6d9c6,true,lam(0x6b4a35,{roughness:1}),0.022);    // food bowl 13 cm
+    bowl(X(847),Z(z0+40),0.075,0.055,0xdfe7ea,true,lam(0x9fd3ee,{roughness:0.05,transparent:true,opacity:0.6}),0.038);   // water bowl 15 cm
+  };
+  lb(1,function(){ feeding(1220); }); lb(2,function(){ feeding(1290); });
   const cx=X(490), cz=Z(840), W=0.58, D=0.65;                                         // automatic litter box, 58 x 65 x 65 cm, opening faces south
   const wh=lam(0xf4f4f1,{roughness:0.25,envMapIntensity:0.8}), gr=lam(0xc8ccd0,{roughness:0.35});
   rbox(cx-W/2,cx+W/2,cz-D/2,cz+D/2,0,0.2,0.05,gr,o);
