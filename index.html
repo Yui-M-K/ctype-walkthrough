@@ -159,6 +159,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
       <button id="tFurn" class="tog" type="button" aria-pressed="true">參考家具與衣物</button>
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
       <button id="tTv" class="tog" type="button" aria-pressed="false">電視開機</button>
+      <button id="tSport" class="tog" type="button" aria-pressed="false">運動模式（Switch）</button>
     </div>
     <h3>家具配置</h3>
     <div id="layBtns" class="seg" style="grid-template-columns:repeat(2,1fr)">
@@ -375,6 +376,7 @@ const shoeMats=[0x2a2a2e,0x6b4a35,0xe8e6e0,0x1f2c44,0x8a8d90,0xa5714a].map(funct
 const furn=new THREE.Group(); scene.add(furn);
 const partG=new THREE.Group(); scene.add(partG);
 const furnMeshes=[], furnCols=[], picks=[], colliders=[], ceilings=[], floorRects=[], floorTris=[], detailMeshes=[];
+let sportMode=false; const sportCols=[], sportHide=[];
 let curLayout=1, foldT=0, foldTarget=0, foldApply=function(){};
 let sofaG=null, tvG=null, sofaCols0=[], tvCols0=[];   // sofa and TV sets are moved as groups in layout 2
 const layObjs=[], catAnim=[];
@@ -1160,11 +1162,13 @@ lb(2,function(){ plant(632,1562,0.9); });
   sofaCols0=furnCols.slice(c0); sofaCols0.forEach(function(c){ c.lay=1; });
   lb(1,function(){ roundRug(772,1510,0.95,'plain',24,0.0); shagLayers(772,1510,0.95); });
   lb(1,function(){
+  const sa=furn.children.length, sc=furnCols.length;
   rb(772,1510,0.5,0.9,0.03,0.015,M.oak,0.4,true);                           // coffee table, long side parallel to the sofa
   legs(772,1510,0.2,0.38,0.4,0.022,0.014,M.oakD);
   rb(772,1510,0.4,0.8,0.02,0.008,M.oakD,0.12,false);
   rb(772,1510-0.2/S,0.22,0.3,0.03,0.006,lam(0x8a9a86),0.43,false);           // magazine
   fcyl(772+0.04/S,1510+0.25/S,0.04,0.035,0.43,0.09,M.ceramic,false);         // mug
+  furn.children.slice(sa).forEach(function(o){ sportHide.push(o); }); furnCols.slice(sc).forEach(function(c){ sportCols.push(c); });
   });
   const lx=X(780), lz=Z(1705), fy=-0.05;                                    // floor lamp moved out to the balcony (floor level -5 cm)
   cyl(lx,lz,0.14,0.14,fy,fy+0.02,M.dark,{group:furn,cast:false},16);
@@ -1557,7 +1561,7 @@ let userH=165, fovH=100, mode='walk', furnOn=true, shadowOn=true, hour=15;
 const orb={yaw:0,pitch:1.12,dist:15.5};
 const R=0.22, SPEED=1.5;
 function rebuild(){
-  allCols=colliders.concat(partCols,doors.filter(function(d){return !d.open;}).map(function(d){return d.col;}),furnOn?furnCols.filter(function(c){return !c.lay||c.lay===curLayout;}):[]);
+  allCols=colliders.concat(partCols,doors.filter(function(d){return !d.open;}).map(function(d){return d.col;}),furnOn?furnCols.filter(function(c){return (!c.lay||c.lay===curLayout)&&!(sportMode&&sportCols.indexOf(c)>=0);}):[]);
   furn.visible=furnOn;
   renderer.shadowMap.needsUpdate=true;
 }
@@ -1720,6 +1724,52 @@ const tF=$('tFurn'), tS=$('tShadow');
 tF.addEventListener('click',function(){ furnOn=!furnOn; tF.setAttribute('aria-pressed',String(furnOn)); rebuild(); });
 tS.addEventListener('click',function(){ shadowOn=!shadowOn; tS.setAttribute('aria-pressed',String(shadowOn)); setSun(hour); });
 $('tTv').addEventListener('click',function(){ const on=this.getAttribute('aria-pressed')!=='true'; this.setAttribute('aria-pressed',String(on)); window.__tvOn(on); });
+
+/* ---------- sport mode: coffee table away, two players (F 163 cm, M 169 cm) swinging Joy-Cons in front of the TV ---------- */
+const sportG=new THREE.Group(); sportG.visible=false; furn.add(sportG);
+(function(){
+  const limb=function(G,a,b,r,mat){ const d=new THREE.Vector3(b[0]-a[0],b[1]-a[1],b[2]-a[2]), len=d.length(); const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,len,10),mat);
+    m.position.set((a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2); m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize()); m.castShadow=true; m.receiveShadow=true; G.add(m); return m; };
+  const ball=function(G,r,mat,x,y,z,sx,sy,sz){ const m=new THREE.Mesh(new THREE.SphereGeometry(r,16,12),mat); m.position.set(x,y,z); m.scale.set(sx||1,sy||1,sz||1); m.castShadow=true; G.add(m); return m; };
+  const person=function(u,skin,topC,botC,hairC,longHair,jcA,jcB){
+    const G=new THREE.Group(), sk=lam(skin,{roughness:0.8}), top=fab(topC), bot=fab(botC), hr=lam(hairC,{roughness:0.9}), shoe=lam(0x2a2a2e,{roughness:0.7}), dk=lam(0x222222,{roughness:0.8});
+    [-1,1].forEach(function(sd){
+      limb(G,[0,0.04*u,sd*0.055*u],[0.01*u,0.5*u,sd*0.06*u],0.036*u,bot);
+      const f=new THREE.Mesh(new THREE.BoxGeometry(0.14*u,0.04*u,0.058*u),shoe); f.position.set(0.04*u,0.02*u,sd*0.055*u); f.castShadow=true; G.add(f);
+    });
+    const hips=new THREE.Mesh(new THREE.BoxGeometry(0.13*u,0.1*u,0.22*u),bot); hips.position.set(0,0.52*u,0); hips.castShadow=true; G.add(hips);
+    const tor=new THREE.Mesh(new THREE.BoxGeometry(0.14*u,0.32*u,0.28*u),top); tor.position.set(0,0.69*u,0); tor.castShadow=true; G.add(tor);
+    limb(G,[0,0.82*u,0],[0,0.88*u,0],0.02*u,sk); ball(G,0.062*u,sk,0.005*u,0.92*u,0,1,1.1,0.95);
+    ball(G,0.066*u,hr,-0.008*u,0.935*u,0,1,0.95,1);
+    if(longHair){ const lh=new THREE.Mesh(new THREE.BoxGeometry(0.045*u,0.17*u,0.13*u),hr); lh.position.set(-0.045*u,0.86*u,0); lh.castShadow=true; G.add(lh); }
+    [-1,1].forEach(function(sd){ ball(G,0.006*u,dk,0.055*u,0.925*u,sd*0.024*u);
+      const S=[0,0.83*u,sd*0.15*u], E=[0.06*u,0.68*u,sd*0.17*u], Hd=[0.17*u,0.75*u,sd*0.12*u];        // boxing-style guard: forearms forward, Joy-Cons in the fists
+      limb(G,S,E,0.021*u,top); limb(G,E,Hd,0.017*u,sk); ball(G,0.021*u,sk,Hd[0],Hd[1],Hd[2]);
+      const jc=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.1,0.016),lam(sd<0?jcA:jcB,{roughness:0.5})); jc.position.set(Hd[0]+0.012,Hd[1],Hd[2]); jc.castShadow=true; G.add(jc);
+    });
+    return G;
+  };
+  const f=person(1.63,0xf1c9a5,0xf4f1ec,0x7f8fa8,0x3a2a22,true,0x2ec4ea,0xff5a5f);
+  const m=person(1.69,0xe2b890,0x3c4a5c,0x2f3a4a,0x1f1a16,false,0x2ec4ea,0xff5a5f);
+  f.userData.who='f'; m.userData.who='m'; sportG.add(f); sportG.add(m);
+  sportG.userData={f:f,m:m};
+})();
+function applySport(){
+  const L1=(curLayout===1);
+  sportHide.forEach(function(o){ o.visible=L1&&!sportMode; });
+  if(sportMode&&curLayout===2){ foldTarget=0; syncFold(); }
+  sportG.visible=sportMode;
+  if(sportMode){
+    const sp=curLayout===1?{rot:0,f:[X(738),Z(1476)],m:[X(738),Z(1545)],tv:X(824)}:{rot:-Math.PI/2,f:[X(738),Z(1318)],m:[X(792),Z(1318)],tv:Z(1248)};
+    sportG.userData.f.position.set(sp.f[0],0,sp.f[1]); sportG.userData.m.position.set(sp.m[0],0,sp.m[1]);
+    sportG.userData.f.rotation.y=sp.rot; sportG.userData.m.rotation.y=sp.rot;
+    const dist=curLayout===1?sp.tv-sp.f[0]:Z(1318)-sp.tv;
+    toast('運動模式：站位離電視約 '+dist.toFixed(2)+' m（'+(curLayout===1?'茶几已收起':'升降桌已降成茶几')+'）');
+  }
+  rebuild(); renderer.shadowMap.needsUpdate=true;
+}
+$('tSport').addEventListener('click',function(){ sportMode=!sportMode; this.setAttribute('aria-pressed',String(sportMode)); applySport(); });
+
 const partBtns=Array.prototype.slice.call($('partBtns').querySelectorAll('button'));
 function setPart(s){
   partState=s; buildPart(); rebuild();
@@ -1999,6 +2049,7 @@ function setLayout(n){
   layBtns.forEach(function(b){ b.setAttribute('aria-pressed',String(+b.getAttribute('data-l')===n)); });
   const p=resolve(player.x,player.z); player.x=p[0]; player.z=p[1];
   try{ localStorage.setItem('ctypeLayout',String(n)); }catch(_){}
+  applySport();
   updateAct();
 }
 layBtns.forEach(function(b){ b.addEventListener('click',function(){ setLayout(+b.getAttribute('data-l')); }); });
