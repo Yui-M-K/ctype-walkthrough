@@ -1141,7 +1141,7 @@ lb(1,function(){                               // dining table 140 x 80, four ch
   shade(X(cx),Z(cy),0.2,0.09,1.6,1.76);
   cyl(X(cx),Z(cy),0.17,0.17,1.605,1.61,lampMat,{group:furn,cast:false},20);
 });
-plant(845,1240,1.0);
+plant(632,1562,0.9);
 (function(){                                   // sofa 160 cm facing the TV, rug, coffee table, floor lamp
   const x=690, y=1510, fx=X(x), fz=Z(y), a0=furn.children.length, c0=furnCols.length;
   rb(x,y,0.8,1.6,0.26,0.07,M.sofaD,0.1,true);                              // frame
@@ -1331,15 +1331,12 @@ plant(845,1240,1.0);
     }
     [-0.08,0.08].forEach(function(dx){ const m=new THREE.Mesh(bx(0.012,0.012,Math.abs(Z(py2)-Z(py1))*1.03),rope); m.position.set(x+dx,(y1+y2)/2-0.035,(Z(py1)+Z(py2))/2); m.rotation.x=-Math.atan((y2-y1)/(Z(py2)-Z(py1))); scene.add(m); });
   };
-  const lay1=function(){                                                                // layout 1: staggered boxes, steps and a rope bridge across the whole wall (steps above the TV, 1.4 m +)
-    earBed(1248,1.85); catHouse(1275,0.95); catStep(1322,1.55); bridge(1298,1.05,1380,1.1); catStep(1388,1.1);
-    catHouse(1425,1.55); catColumn(1425,0.95,1.55,[]); catStep(1425,0.9);
-    makeCat(earBed(1472,1.95),0xa07a55,0xf6f2ec,'#4a3626'); catStep(1500,1.72); catColumn(1578,0.5,1.95,[0.95,1.4]); earBed(1578,1.95);
+  const lay1=function(){                                                                // layout 1: a sparse rising diagonal, lots of empty wall (nothing above the TV except the cat bed)
+    catHouse(1272,1.0); catStep(1322,1.42); catStep(1368,1.82); makeCat(earBed(1432,1.95),0xa07a55,0xf6f2ec,'#4a3626');
   };
-  const lay2=function(){                                                                // layout 2: tall post at the north end, low steps climbing to a long bridge, boxes above the sofa
-    catColumn(1243,0.4,1.9,[0.85,1.35]); makeCat(earBed(1243,1.9),0x8f959b,0xf6f4f0,'#44484d'); catHouse(1290,1.0); bridge(1312,1.05,1428,1.5);
-    catStep(1345,0.45); catStep(1375,0.75); catStep(1405,1.05);
-    catHouse(1450,1.45); catStep(1500,1.7); catStep(1525,1.35); catColumn(1578,0.5,1.6,[1.0]); earBed(1578,1.6);
+  const lay2=function(){                                                                // layout 2: tall post with the cat bed at the north end, one box and a single long bridge, then a lone step
+    catColumn(1243,0.4,1.9,[0.9]); makeCat(earBed(1243,1.9),0x8f959b,0xf6f4f0,'#44484d');
+    catHouse(1318,0.95); bridge(1340,1.0,1440,1.45); catStep(1452,1.5);
   };
   lb(1,lay1); lb(2,lay2);
   const mat=rbox(X(836.3),X(857.2),Z(1072),Z(1122),0,0.006,0.008,lam(0x4a5560,{roughness:0.8}),oc);   // feeding mat, 21 x 50 cm
