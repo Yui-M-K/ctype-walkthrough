@@ -2182,7 +2182,7 @@ window.addEventListener('keydown',function(e){
   if(e.code==='Escape'){ mvSel=null; mvUpdateHelper(); mvUi(); }
 });
 $('tEdit').addEventListener('click',function(){ mvSetEdit(!mvEdit); });
-$('eDone').addEventListener('click',function(){ mvSetEdit(false); });
+$('eDone').addEventListener('click',function(){ mvSetEdit(false); setMode('walk'); });
 $('eRot').addEventListener('click',mvRotate);
 $('eReset').addEventListener('click',function(){ if(!mvSel) return; delete mvSaved[mvKey(mvSel)]; mvApply(mvSel); mvUpdateHelper(); mvSave(); mvSyncPeople(); });
 $('eAll').addEventListener('click',function(){ mvSaved={}; movers.forEach(mvApply); mvUpdateHelper(); mvSave(); mvSyncPeople(); toast('家具已全部還原'); });
@@ -2807,7 +2807,7 @@ function setLayout(n){
   curLayout=n; poseSet(sofaG,POSE2.sofa,n===2); poseSet(tvG,POSE2.tv,n===2);
   if(n===1) sofaG.position.x=SOFA1_DX;
   layObjs.forEach(function(o){ o.visible=(o.userData.lay===0||o.userData.lay===n); });
-  mvSel=null; mvUpdateHelper(); movers.forEach(mvApply);
+  mvSel=null; mvUpdateHelper(); mvUi(); movers.forEach(mvApply);
   rebuild();
   const study=true;
   ROOM2.n=study?'書房':'洋室 (2)'; ROOM2.j=study?'書房（洋室(2)改）· 約4.0疊':'洋室(2) · 約4.0疊'; curRoom=null; updateRoom();
