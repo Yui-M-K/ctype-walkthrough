@@ -159,6 +159,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
       <button id="tFurn" class="tog" type="button" aria-pressed="true">參考家具與衣物</button>
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
       <button id="tTv" class="tog" type="button" aria-pressed="false">電視開機</button>
+      <button id="tDaily" class="tog" type="button" aria-pressed="false">日常模式（他工作、她看電視）</button>
       <button id="tSleep" class="tog" type="button" aria-pressed="false">睡覺模式（只開小夜燈）</button>
       <button id="tSport" class="tog" type="button" aria-pressed="false">運動模式（Switch）</button>
       <button id="tReal" class="tog" type="button" aria-pressed="false" hidden>沙發：真實模型（試作）</button>
@@ -259,7 +260,7 @@ scene.add(camera);
 
 /* ---------- lights ---------- */
 const amb=new THREE.AmbientLight(0xffffff,0.55); scene.add(amb);
-let sleepOn=false;
+let sleepOn=false, dailyOn=false;
 const hemi=new THREE.HemisphereLight(0xeaf4ff,0xcfc4b0,0.4); scene.add(hemi);
 const fills=[];
 (function(){                                   // soft fill lights give each wall direction its own shade
@@ -1415,6 +1416,7 @@ lb(2,function(){ plant(632,1562,0.9); });
     catAnim.push(function(t){ const b=1+0.05*Math.sin(t*2.1); body.scale.y=0.09*b; C.position.y=0.05+0.002*Math.sin(t*2.1); });
     return C;
   };
+  window.__makeCat=makeCat;
   const catStep=function(py,yb){                                                        // T-shaped step: plate + vertical fin
     const G=grp(py,yb); add(G,bx(0.24,0.025,0.32),cwood,0.12,0,0); add(G,bx(0.22,0.007,0.28),post,0.12,0.016,0); add(G,bx(0.2,0.2,0.02),cwood,0.1,-0.11,0); return G;
   };
@@ -1481,9 +1483,34 @@ lb(0,function(){                               // study (small room): shared by 
   fb(cx-0.3/S,cy-0.2/S,0.04,0.04,0.14,M.black,0.72,false); fb(cx-0.3/S,cy-0.2/S,0.24,0.16,0.012,M.black,0.72,false);   // 27-inch monitor on a stand
   fb(cx-0.3/S,cy-0.23/S,0.62,0.03,0.37,M.black,0.82,false); fb(cx-0.3/S,cy-0.214/S,0.6,0.004,0.35,sm,0.83,false);
   fb(cx-0.3/S,cy+0.1/S,0.43,0.14,0.018,M.black,0.72,false); fb(cx+0.02/S,cy+0.1/S,0.06,0.1,0.03,M.black,0.72,false);   // keyboard, mouse
-  cyl(X(cx+0.8/S),Z(cy-0.12/S),0.06,0.06,0.72,0.735,M.dark,{group:furn,cast:false},12);   // desk lamp
-  cyl(X(cx+0.8/S),Z(cy-0.12/S),0.008,0.008,0.735,1.07,M.dark,{group:furn,cast:false},6);
-  shade(X(cx+0.8/S),Z(cy-0.12/S),0.09,0.06,0.97,1.09);
+  cyl(X(cx+0.38/S),Z(cy-0.2/S),0.06,0.06,0.72,0.735,M.dark,{group:furn,cast:false},12);   // desk lamp
+  cyl(X(cx+0.38/S),Z(cy-0.2/S),0.008,0.008,0.735,1.07,M.dark,{group:furn,cast:false},6);
+  shade(X(cx+0.38/S),Z(cy-0.2/S),0.09,0.06,0.97,1.09);
+  (function(){                                 // enclosed 3D printer at the right end of the desk (38 x 38 x 46 cm), animated while somebody works in the study
+    const px=X(cx+0.76/S), pz=Z(cy-0.03/S), w=0.38, d=0.38, h=0.46, y=0.72, o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
+    const frame=lam(0x1c1e21,{roughness:0.45}), gl=lam(0x9fb2bf,{transparent:true,opacity:0.22,roughness:0.05,metalness:0.1,envMapIntensity:1,side:THREE.DoubleSide,depthWrite:false});
+    box(px-w/2,px+w/2,pz-d/2,pz+d/2,y,y+0.06,frame,o); box(px-w/2,px+w/2,pz-d/2,pz+d/2,y+h-0.02,y+h,frame,o);   // base and top
+    [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(c){ box(px+c[0]*(w/2-0.012)-0.012,px+c[0]*(w/2-0.012)+0.012,pz+c[1]*(d/2-0.012)-0.012,pz+c[1]*(d/2-0.012)+0.012,y,y+h,frame,o); });
+    box(px-w/2,px-w/2+0.006,pz-d/2,pz+d/2,y+0.06,y+h-0.02,frame,o); box(px+w/2-0.006,px+w/2,pz-d/2,pz+d/2,y+0.06,y+h-0.02,frame,o); box(px-w/2,px+w/2,pz-d/2,pz-d/2+0.006,y+0.06,y+h-0.02,frame,o);
+    box(px-w/2+0.01,px+w/2-0.01,pz+d/2-0.004,pz+d/2,y+0.06,y+h-0.02,gl,oc);                         // glass door
+    box(px+0.08,px+0.16,pz+d/2,pz+d/2+0.004,y+0.012,y+0.05,new THREE.MeshBasicMaterial({color:0x7fd6ff}),oc);   // small screen
+    box(px-0.15,px+0.15,pz-0.15,pz+0.15,y+0.07,y+0.078,lam(0x3a3f45,{roughness:0.3,metalness:0.5}),oc);   // build plate
+    const rail=box(px-0.17,px+0.17,pz-0.012,pz+0.012,y+0.3,y+0.32,lam(0x8d949c,{metalness:0.8,roughness:0.3}),oc);
+    const head=box(px-0.03,px+0.03,pz-0.035,pz+0.035,y+0.25,y+0.31,lam(0xd8dde2,{roughness:0.4}),oc);
+    const nozzle=cyl(px,pz,0.004,0.002,y+0.23,y+0.25,M.steel,oc,8);
+    const model=cyl(px-0.03,pz+0.02,0.045,0.035,y+0.078,y+0.079,lam(0xe8672a,{roughness:0.6}),oc,24);   // the print, grows layer by layer
+    const sp=new THREE.Mesh(new THREE.TorusGeometry(0.08,0.03,10,24),lam(0x2e9e8f,{roughness:0.6})); sp.position.set(px,y+0.2,pz-d/2-0.035); place(sp,oc);   // filament spool on the back
+    const hx0=head.position.x, rz0=rail.position.z, hy0=head.position.y, ry0=rail.position.y, ny0=nozzle.position.y;
+    let prog=0.35;
+    catAnim.push(function(t){
+      const active=dailyOn;
+      if(active) prog=Math.min(1,prog+0.0004);
+      const hgt=0.002+0.1*prog; model.scale.y=hgt/0.001; model.position.y=y+0.078+hgt/2;
+      const lift=hgt; head.position.y=hy0-0.07+lift; rail.position.y=ry0-0.07+lift; nozzle.position.y=ny0-0.07+lift;
+      const mx=active?Math.sin(t*3.1)*0.045:0, mz=active?Math.cos(t*2.3)*0.04:0;
+      head.position.x=hx0-0.03+mx; nozzle.position.x=px-0.03+mx; head.position.z=pz+0.02+mz; nozzle.position.z=pz+0.02+mz; rail.position.z=rz0+0.02+mz;
+    });
+  })();
   [0,1,2,3].forEach(function(i){ fb(cx-0.88/S,cy+0.1/S-i*0.01/S,0.2,0.26,0.035,bookMats[i+1],0.72+i*0.035,false); });   // book stack
   fcyl(cx+0.1/S,cy-0.1/S,0.04,0.035,0.72,0.09,M.ceramic,false);
   picture(X(cx),Z(1105.6),1.0,0.5,1.55,0);
@@ -1859,6 +1886,7 @@ const sportG=new THREE.Group(); sportG.visible=false; furn.add(sportG);
   sportG.userData={f:f,m:m};
 })();
 function applySport(){
+  if(sportMode&&dailyOn){ dailyOn=false; $('tDaily').setAttribute('aria-pressed','false'); applyDaily(); }
   [sportG.userData.f,sportG.userData.m].forEach(function(q){ q.rotation.order='XYZ'; q.rotation.set(0,0,0); });
   const L1=(curLayout===1);
   sportHide.forEach(function(o){ o.visible=L1&&!sportMode; });
@@ -1931,6 +1959,7 @@ function placeSleepers(on){
     q.position.set(X(430)+a[1]*0.98+a[3], 0.8, bz+a[2]*0.11); });
 }
 function applySleep(){
+  if(sleepOn&&dailyOn){ dailyOn=false; $('tDaily').setAttribute('aria-pressed','false'); applyDaily(); }
   const on=sleepOn;
   sun.intensity=on?0:(shadowOn?SUN_I:SUN_I*0.3); sun.castShadow=on?false:shadowOn;
   amb.intensity=on?0.035:THEMES[themeId].amb; hemi.intensity=on?0.02:0.4; fills.forEach(function(l){ l.intensity=on?0:(l===fills[0]?0.3:0.25); });
@@ -1943,6 +1972,51 @@ function applySleep(){
   renderer.shadowMap.needsUpdate=true; scene.traverse(function(o){ if(o.material&&!Array.isArray(o.material)) o.material.needsUpdate=true; });
 }
 $('tSleep').addEventListener('click',function(){ sleepOn=!sleepOn; this.setAttribute('aria-pressed',String(sleepOn)); applySleep(); });
+
+
+/* ---------- daily mode: he works at the study desk, she watches TV on the sofa with the cat on her lap ---------- */
+const dailyG=new THREE.Group(); dailyG.visible=false; furn.add(dailyG);
+const seated=(function(){
+  const mk=function(G,geo,mat,x,y,z){ const m=new THREE.Mesh(geo,mat); m.position.set(x,y,z); m.castShadow=true; m.receiveShadow=true; G.add(m); return m; };
+  const limb=function(G,a,b,r,mat){ const d=new THREE.Vector3(b[0]-a[0],b[1]-a[1],b[2]-a[2]), len=d.length(); const m=mk(G,new THREE.CylinderGeometry(r,r,len,10),mat,(a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2); m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize()); return m; };
+  const ball=function(G,r,mat,x,y,z,sx,sy,sz){ const m=mk(G,new THREE.SphereGeometry(r,16,12),mat,x,y,z); m.scale.set(sx||1,sy||1,sz||1); return m; };
+  /* origin = seat surface under the hips, facing +x; seatH = seat height above the floor */
+  return function(u,seatH,skin,topC,botC,hairC,longHair,arms){
+    const G=new THREE.Group(), sk=lam(skin,{roughness:0.8}), top=fab(topC), bot=fab(botC), hr=lam(hairC,{roughness:0.9}), shoe=lam(0x2a2a2e,{roughness:0.7}), dk=lam(0x222222,{roughness:0.8});
+    mk(G,new THREE.BoxGeometry(0.15*u,0.1*u,0.23*u),bot,0.02*u,0.05*u,0);                         // hips on the seat
+    const tor=mk(G,new THREE.BoxGeometry(0.14*u,0.32*u,0.28*u),top,-0.01*u,0.26*u,0); tor.rotation.z=0.06;
+    limb(G,[-0.01*u,0.42*u,0],[0,0.47*u,0],0.02*u,sk); ball(G,0.062*u,sk,0.01*u,0.51*u,0,1,1.1,0.95); ball(G,0.066*u,hr,-0.004*u,0.525*u,0,1,0.95,1);
+    if(longHair) mk(G,new THREE.BoxGeometry(0.045*u,0.17*u,0.13*u),hr,-0.045*u,0.45*u,0);
+    [-1,1].forEach(function(sd){
+      ball(G,0.006*u,dk,0.065*u,0.515*u,sd*0.024*u);
+      const K=[0.25*u,0.06*u,sd*0.065*u], F=[0.27*u,-seatH+0.04,sd*0.07*u];
+      limb(G,[0.02*u,0.05*u,sd*0.06*u],K,0.038*u,bot); limb(G,K,F,0.032*u,bot);
+      mk(G,new THREE.BoxGeometry(0.14*u,0.04*u,0.058*u),shoe,F[0]+0.04*u,-seatH+0.02*u,F[2]);
+      const Sh=[-0.01*u,0.4*u,sd*0.15*u], E=arms.e(sd,u), Hd=arms.h(sd,u);
+      limb(G,Sh,E,0.021*u,top); limb(G,E,Hd,0.017*u,sk); ball(G,0.021*u,sk,Hd[0],Hd[1],Hd[2]);
+    });
+    return G;
+  };
+})();
+const typing={e:function(sd,u){return [0.08*u,0.2*u,sd*0.17*u];}, h:function(sd,u){return [0.25*u,0.23*u,sd*0.1*u];}};
+const lapArms={e:function(sd,u){return [0.06*u,0.22*u,sd*0.17*u];}, h:function(sd,u){return [0.2*u,0.12*u,sd*0.05*u];}};
+const workerM=seated(1.69,0.52,0xe2b890,0x3c4a5c,0x2f3a4a,0x1f1a16,false,typing); dailyG.add(workerM);
+const viewerF=seated(1.63,0.44,0xf1c9a5,0xf4f1ec,0x7f8fa8,0x3a2a22,true,lapArms); dailyG.add(viewerF);
+(function(){ const H=new THREE.Group(); H.position.set(-0.05,0.13,0); viewerF.add(H); if(window.__makeCat) window.__makeCat(H,0xa07a55,0xf6f2ec,'#4a3626'); })();
+function applyDaily(){
+  dailyG.visible=dailyOn;
+  if(dailyOn){
+    if(sleepOn){ sleepOn=false; $('tSleep').setAttribute('aria-pressed','false'); applySleep(); }
+    if(sportMode){ sportMode=false; $('tSport').setAttribute('aria-pressed','false'); applySport(); }
+    workerM.position.set(X(475),0.52,Z(1188)); workerM.rotation.y=Math.PI/2;
+    if(curLayout===1){ viewerF.position.set(X(690)+SOFA1_DX-0.08,0.44,Z(1510)+0.3); viewerF.rotation.y=0; }
+    else { viewerF.position.set(X(765)+0.3,0.44,Z(1500)+0.08); viewerF.rotation.y=Math.PI/2; }
+    toast('日常模式：他在書房工作，她在沙發看電視');
+  }
+  window.__tvOn(dailyOn); $('tTv').setAttribute('aria-pressed',String(dailyOn));
+  renderer.shadowMap.needsUpdate=true;
+}
+$('tDaily').addEventListener('click',function(){ dailyOn=!dailyOn; this.setAttribute('aria-pressed',String(dailyOn)); applyDaily(); });
 
 const partBtns=Array.prototype.slice.call($('partBtns').querySelectorAll('button'));
 function setPart(s){
@@ -2224,7 +2298,7 @@ function setLayout(n){
   layBtns.forEach(function(b){ b.setAttribute('aria-pressed',String(+b.getAttribute('data-l')===n)); });
   const p=resolve(player.x,player.z); player.x=p[0]; player.z=p[1];
   try{ localStorage.setItem('ctypeLayout',String(n)); }catch(_){}
-  applySport(); applyReal();
+  applySport(); applyReal(); if(dailyOn) applyDaily();
   updateAct();
 }
 layBtns.forEach(function(b){ b.addEventListener('click',function(){ setLayout(+b.getAttribute('data-l')); }); });
@@ -2244,7 +2318,7 @@ requestAnimationFrame(tick);
 if(location.hash==='#debug'){
   window.__walk={player:player,resolve:resolve,cols:function(){return allCols;},setFurn:function(v){furnOn=v;rebuild();},setPart:setPart,
     X:X,Z:Z,S:S,OX:OX,OY:OY,SPOTS:SPOTS,R:R,floorY:floorY,roomAt:roomAt,setMode:setMode,stepPlayer:stepPlayer,joy:joy,keys:keys,
-    teleport:teleport,applyTheme:applyTheme,setSleep:function(v){ sleepOn=v; $('tSleep').setAttribute('aria-pressed',String(v)); applySleep(); },setReal:function(v){ realOn=v; $('tReal').setAttribute('aria-pressed',String(v)); applyReal(); },real:function(){return realSofa;},setLayout:setLayout,setFold:function(v){foldTarget=v;foldT=v;foldApply(v);syncFold();},doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
+    teleport:teleport,applyTheme:applyTheme,setDaily:function(v){ dailyOn=v; $('tDaily').setAttribute('aria-pressed',String(v)); applyDaily(); },setSleep:function(v){ sleepOn=v; $('tSleep').setAttribute('aria-pressed',String(v)); applySleep(); },setReal:function(v){ realOn=v; $('tReal').setAttribute('aria-pressed',String(v)); applyReal(); },real:function(){return realSofa;},setLayout:setLayout,setFold:function(v){foldTarget=v;foldT=v;foldApply(v);syncFold();},doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
 }
 }
 })();
