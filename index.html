@@ -1496,19 +1496,30 @@ lb(0,function(){                               // study (small room): shared by 
     box(px+0.08,px+0.16,pz+d/2,pz+d/2+0.004,y+0.012,y+0.05,new THREE.MeshBasicMaterial({color:0x7fd6ff}),oc);   // small screen
     box(px-0.15,px+0.15,pz-0.15,pz+0.15,y+0.07,y+0.078,lam(0x3a3f45,{roughness:0.3,metalness:0.5}),oc);   // build plate
     const rail=box(px-0.17,px+0.17,pz-0.012,pz+0.012,y+0.3,y+0.32,lam(0x8d949c,{metalness:0.8,roughness:0.3}),oc);
-    const head=box(px-0.03,px+0.03,pz-0.035,pz+0.035,y+0.25,y+0.31,lam(0xd8dde2,{roughness:0.4}),oc);
-    const nozzle=cyl(px,pz,0.004,0.002,y+0.23,y+0.25,M.steel,oc,8);
-    const model=cyl(px-0.03,pz+0.02,0.045,0.035,y+0.078,y+0.079,lam(0xe8672a,{roughness:0.6}),oc,24);   // the print, grows layer by layer
-    const sp=new THREE.Mesh(new THREE.TorusGeometry(0.08,0.03,10,24),lam(0x2e9e8f,{roughness:0.6})); sp.position.set(px,y+0.2,pz-d/2-0.035); place(sp,oc);   // filament spool on the back
-    const hx0=head.position.x, rz0=rail.position.z, hy0=head.position.y, ry0=rail.position.y, ny0=nozzle.position.y;
+    const head=new THREE.Group(); head.position.set(px,y+0.28,pz); furn.add(head);                  // toolhead: shroud, front fan, heatsink fins, brass hotend + nozzle, PTFE tube
+    const hm=function(geo,mat,x,yy,z){ const m=new THREE.Mesh(geo,mat); m.position.set(x,yy,z); m.castShadow=true; head.add(m); return m; };
+    const shroud=lam(0xe9ecef,{roughness:0.35}), dark=lam(0x1d1f22,{roughness:0.5}), brass=lam(0xc9a24a,{metalness:0.9,roughness:0.3,envMapIntensity:1});
+    hm(new THREE.BoxGeometry(0.06,0.065,0.05),shroud,0,0,0);
+    const fan=hm(new THREE.CylinderGeometry(0.02,0.02,0.004,20),dark,0,0.002,0.027); fan.rotation.x=Math.PI/2;
+    const hub=hm(new THREE.CylinderGeometry(0.007,0.007,0.006,12),shroud,0,0.002,0.029); hub.rotation.x=Math.PI/2;
+    for(let i=0;i<4;i++){ const bl=hm(new THREE.BoxGeometry(0.03,0.004,0.002),lam(0x3a3d42),0,0.002,0.03); bl.rotation.z=i*Math.PI/4; }
+    for(let i=0;i<5;i++) hm(new THREE.BoxGeometry(0.004,0.05,0.04),lam(0x9aa1a8,{metalness:0.8,roughness:0.35}),-0.033-i*0.0,-0.002+0*i,-0.002).position.x=-0.033;   // side heatsink
+    [-0.012,0,0.012].forEach(function(z){ hm(new THREE.BoxGeometry(0.006,0.045,0.003),lam(0x9aa1a8,{metalness:0.8,roughness:0.35}),0.034,0,z); });
+    hm(new THREE.BoxGeometry(0.018,0.012,0.018),brass,0,-0.04,0);                                       // heater block
+    const nz=hm(new THREE.ConeGeometry(0.006,0.012,10),brass,0,-0.052,0); nz.rotation.x=Math.PI;        // nozzle tip
+    hm(new THREE.CylinderGeometry(0.005,0.005,0.12,8),lam(0xf4f4f0,{roughness:0.4,transparent:true,opacity:0.85}),0.0,0.09,-0.01);   // PTFE feed tube
+    const nozzle=head;
+    const model=cyl(px-0.03,pz+0.02,0.045,0.035,y+0.078,y+0.079,lam(0xf4f2ee,{roughness:0.55}),oc,24);   // the print (white PLA), grows layer by layer
+    const sp=new THREE.Mesh(new THREE.TorusGeometry(0.08,0.03,10,24),lam(0xf1efea,{roughness:0.55})); sp.position.set(px,y+0.2,pz-d/2-0.035); place(sp,oc);   // white filament spool on the back
+    const rz0=rail.position.z, hy0=head.position.y, ry0=rail.position.y;
     let prog=0.35;
     catAnim.push(function(t){
       const active=dailyOn;
       if(active) prog=Math.min(1,prog+0.0004);
       const hgt=0.002+0.1*prog; model.scale.y=hgt/0.001; model.position.y=y+0.078+hgt/2;
-      const lift=hgt; head.position.y=hy0-0.07+lift; rail.position.y=ry0-0.07+lift; nozzle.position.y=ny0-0.07+lift;
+      const lift=hgt; head.position.y=hy0-0.12+lift; rail.position.y=ry0-0.07+lift;
       const mx=active?Math.sin(t*3.1)*0.045:0, mz=active?Math.cos(t*2.3)*0.04:0;
-      head.position.x=hx0-0.03+mx; nozzle.position.x=px-0.03+mx; head.position.z=pz+0.02+mz; nozzle.position.z=pz+0.02+mz; rail.position.z=rz0+0.02+mz;
+      head.position.x=px-0.03+mx; head.position.z=pz+0.02+mz; rail.position.z=rz0+0.02+mz;
     });
   })();
   [0,1,2,3].forEach(function(i){ fb(cx-0.88/S,cy+0.1/S-i*0.01/S,0.2,0.26,0.035,bookMats[i+1],0.72+i*0.035,false); });   // book stack
