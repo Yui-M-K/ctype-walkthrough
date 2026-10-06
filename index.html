@@ -1071,6 +1071,40 @@ box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.hob,{pick:false});
   box(X(722)-0.01,X(762)+0.01,Z(806)+0.074,Z(806)+0.082,0.99,1.71,M.frame,{pick:false});
   mirror(X(742),Z(806)+0.084,0.48,0.7,1.35,0);
 })();
+(function(){                                   // bath toiletries: wall shelf with pump bottles, face wash and soap; bath stool and wash bowl on the floor; sponge on the tub rim
+  const o={pick:false}, oc={pick:false,cast:false};
+  const wz=Z(806)+0.072, sy=0.88;
+  const steelM=lam(0xd6dade,{metalness:0.85,roughness:0.25,envMapIntensity:1});
+  box(X(748),X(784),wz,wz+0.13,sy,sy+0.012,steelM,o);                                            // stainless wall shelf (44 x 13 cm)
+  box(X(748),X(784),wz+0.125,wz+0.13,sy+0.012,sy+0.03,steelM,oc);                                // front lip
+  const pump=function(x,col,label,h){                                                            // 480 ml pump bottle
+    const z=wz+0.06, m=lam(col,{roughness:0.25,envMapIntensity:0.8});
+    cyl(x,z,0.034,0.036,sy+0.012,sy+0.012+h,m,o,20);
+    cyl(x,z,0.0345,0.0365,sy+0.05,sy+0.09,lam(label,{roughness:0.6}),oc,20);                       // label band
+    cyl(x,z,0.016,0.02,sy+0.012+h,sy+0.03+h,m,oc,14);                                           // shoulder
+    cyl(x,z,0.006,0.006,sy+0.03+h,sy+0.06+h,lam(0xf2f2f2,{roughness:0.4}),oc,10);               // pump stem
+    box(x-0.012,x+0.03,z-0.009,z+0.009,sy+0.06+h,sy+0.072+h,lam(0xf2f2f2,{roughness:0.4}),oc);   // pump head + nozzle
+  };
+  pump(X(752)+0.01,0xf4f1ea,0x8a9a86,0.15);                                                     // shampoo
+  pump(X(752)+0.09,0xe6dccb,0xb98368,0.15);                                                     // conditioner
+  pump(X(752)+0.17,0x9fb4c6,0xf4f1ea,0.16);                                                     // body wash
+  (function(){ const x=X(752)+0.245, z=wz+0.06;                                                  // face wash tube standing on its cap
+    cyl(x,z,0.014,0.014,sy+0.012,sy+0.03,lam(0x2e9e8f,{roughness:0.4}),oc,12);
+    const t=rbox(x-0.022,x+0.022,z-0.011,z+0.011,sy+0.03,sy+0.17,0.008,lam(0xf7f7f4,{roughness:0.3}),o); })();
+  rbox(X(752)+0.28,X(752)+0.36,wz+0.03,wz+0.11,sy+0.012,sy+0.022,0.006,lam(0xd8e2e6,{roughness:0.2}),oc);   // soap dish
+  rbox(X(752)+0.29,X(752)+0.35,wz+0.045,wz+0.095,sy+0.022,sy+0.042,0.012,lam(0xf3e9d2,{roughness:0.5}),oc); // soap bar
+  /* bath stool (風呂椅子, 30 cm high) and wash bowl (風呂桶) on the floor */
+  const plast=lam(0xf4f5f3,{roughness:0.3}), grey=lam(0xb8c4cc,{roughness:0.35});
+  const sx=X(748), sz=Z(880);
+  rbox(sx-0.15,sx+0.15,sz-0.12,sz+0.12,0.27,0.3,0.03,plast,o);                                   // seat
+  [-1,1].forEach(function(sd){ box(sx+sd*0.13-0.015,sx+sd*0.13+0.015,sz-0.11,sz+0.11,0,0.27,plast,o); });   // side legs
+  box(sx-0.03,sx+0.03,sz-0.12,sz+0.12,0.27,0.272,grey,oc);
+  const bowl=new THREE.Mesh(new THREE.LatheGeometry([[0.001,0],[0.11,0],[0.13,0.11],[0.123,0.11],[0.104,0.007],[0.001,0.007]].map(function(q){ return new THREE.Vector2(q[0],q[1]); }),28),lam(0xb8c4cc,{roughness:0.3,side:THREE.DoubleSide}));
+  bowl.position.set(X(772),0,Z(905)); bowl.castShadow=true; bowl.receiveShadow=true; place(bowl,o);
+  addCol(sx-0.15,sx+0.15,sz-0.12,sz+0.12,'x'); contactShadow(sx-0.15,sx+0.15,sz-0.12,sz+0.12,0);
+  /* sponge on the tub rim */
+  rbox(X(787)+0.005,X(787)+0.055,Z(905)-0.07,Z(905)+0.0,0.55,0.585,0.012,lam(0xf2c46b,{roughness:1,bumpMap:fabricTex,bumpScale:0.006}),o);
+})();
 (function(){                                   // light blue-grey wall panels inside the bath
   const lm=M.bathWall, t=0.012, h=2.1;
   const nx0=X(XC)+0.05, nx1=X(XE)-0.1, nz0=Z(806)+0.06, nz1=Z(928)-0.05;
