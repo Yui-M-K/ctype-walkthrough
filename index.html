@@ -1141,7 +1141,7 @@ lb(1,function(){                               // dining table 140 x 80, four ch
   shade(X(cx),Z(cy),0.2,0.09,1.6,1.76);
   cyl(X(cx),Z(cy),0.17,0.17,1.605,1.61,lampMat,{group:furn,cast:false},20);
 });
-plant(632,1562,0.9);
+lb(2,function(){ plant(632,1562,0.9); });
 (function(){                                   // sofa 160 cm facing the TV, rug, coffee table, floor lamp
   const x=690, y=1510, fx=X(x), fz=Z(y), a0=furn.children.length, c0=furnCols.length;
   rb(x,y,0.8,1.6,0.26,0.07,M.sofaD,0.1,true);                              // frame
@@ -2003,8 +2003,10 @@ function mapCols(cols,p){
   const ox=p[2]-p[1], oz=p[3]+p[0];
   return cols.map(function(c){ return {x0:c.z0+ox,x1:c.z1+ox,z0:-c.x1+oz,z1:-c.x0+oz,kind:'f',lay:2}; });
 }
+const SOFA1_DX=-0.4;                           // layout 1: sofa pushed back (west) until it almost touches the bedroom sliding door
 function setLayout(n){
   curLayout=n; poseSet(sofaG,POSE2.sofa,n===2); poseSet(tvG,POSE2.tv,n===2);
+  if(n===1) sofaG.position.x=SOFA1_DX;
   layObjs.forEach(function(o){ o.visible=(o.userData.lay===n); });
   rebuild();
   const study=(n===2);
@@ -2019,6 +2021,7 @@ function setLayout(n){
 layBtns.forEach(function(b){ b.addEventListener('click',function(){ setLayout(+b.getAttribute('data-l')); }); });
 foldBtn.addEventListener('click',function(){ foldTarget=foldTarget?0:1; syncFold(); });
 furnCols.push.apply(furnCols,mapCols(sofaCols0,POSE2.sofa).concat(mapCols(tvCols0,POSE2.tv)));
+sofaCols0.forEach(function(c){ c.x0+=SOFA1_DX; c.x1+=SOFA1_DX; });
 (function(){
   let n=1;
   try{ n=+(new URLSearchParams(location.search).get('layout')||localStorage.getItem('ctypeLayout')||1); }catch(_){}
