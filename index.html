@@ -159,6 +159,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
       <button id="tFurn" class="tog" type="button" aria-pressed="true">參考家具與衣物</button>
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
       <button id="tTv" class="tog" type="button" aria-pressed="false">電視開機</button>
+      <button id="tSleep" class="tog" type="button" aria-pressed="false">睡覺模式（只開小夜燈）</button>
       <button id="tSport" class="tog" type="button" aria-pressed="false">運動模式（Switch）</button>
       <button id="tReal" class="tog" type="button" aria-pressed="false" hidden>沙發：真實模型（試作）</button>
     </div>
@@ -241,7 +242,7 @@ const scene=new THREE.Scene();
   gr.addColorStop(0,'#78aee0'); gr.addColorStop(0.55,'#b9d8ef'); gr.addColorStop(1,'#e9f1f7');
   g.fillStyle=gr; g.fillRect(0,0,4,256);
   const t=new THREE.CanvasTexture(c); t.minFilter=THREE.LinearFilter; t.magFilter=THREE.LinearFilter; t.generateMipmaps=false; t.encoding=THREE.sRGBEncoding;
-  scene.background=t;
+  scene.background=t; window.__dayBg=t;
 })();
 (function(){                                   // sky-above / warm-floor-below environment for reflections on glass, mirrors and taps
   const c=document.createElement('canvas'); c.width=128; c.height=64; const g=c.getContext('2d');
@@ -258,10 +259,12 @@ scene.add(camera);
 
 /* ---------- lights ---------- */
 const amb=new THREE.AmbientLight(0xffffff,0.55); scene.add(amb);
-scene.add(new THREE.HemisphereLight(0xeaf4ff,0xcfc4b0,0.4));
+let sleepOn=false;
+const hemi=new THREE.HemisphereLight(0xeaf4ff,0xcfc4b0,0.4); scene.add(hemi);
+const fills=[];
 (function(){                                   // soft fill lights give each wall direction its own shade
-  const a=new THREE.DirectionalLight(0xffffff,0.3); a.position.set(6,9,-7); scene.add(a);
-  const b=new THREE.DirectionalLight(0xffffff,0.25); b.position.set(-7,6,8); scene.add(b);
+  const a=new THREE.DirectionalLight(0xffffff,0.3); a.position.set(6,9,-7); scene.add(a); fills.push(a);
+  const b=new THREE.DirectionalLight(0xffffff,0.25); b.position.set(-7,6,8); scene.add(b); fills.push(b);
 })();
 const SUN_I=1.1;
 const sun=new THREE.DirectionalLight(0xfff1dc,SUN_I);
@@ -1342,6 +1345,7 @@ lb(2,function(){ plant(632,1562,0.9); });
   const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.anisotropy=ANISO; t.repeat.set(1/rw,1/rd); t.offset.set(0.5,0.5);
   const rug=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:0.012,bevelEnabled:false,curveSegments:6}),[new THREE.MeshStandardMaterial({map:t,roughness:1}),lam(0xcdbfa6,{roughness:1})]);
   rug.rotation.x=-Math.PI/2; rug.position.set(X(rcx),0.001,Z(rcz)); rug.receiveShadow=true; place(rug,{group:furn,cast:false,pick:false});
+  const nlx=X(432)-0.02, nlz=Z(1537)+0.1;
   rb(432,1537,0.4,0.4,0.45,0.02,M.oak,0,true);                                         // second bedside table + lamp + small things
   fb(432+0.2/S,1537,0.01,0.34,0.12,M.oakD,0.3,false);
   cyl(X(432),Z(1537),0.05,0.05,0.45,0.6,M.steel,{group:furn,cast:false},10);
@@ -1696,7 +1700,7 @@ function setSun(h){
   sun.position.set(SUNT.x+dx*70,SUNT.y+dy*70,SUNT.z+dz*70);
   const k=Math.sin(alt);
   sun.color.setRGB(1,0.72+0.26*k,0.52+0.42*k);
-  sun.intensity=shadowOn?SUN_I:SUN_I*0.3;
+  sun.intensity=sleepOn?0:(shadowOn?SUN_I:SUN_I*0.3);
   sun.castShadow=shadowOn;
   renderer.shadowMap.needsUpdate=true;
 }
@@ -1903,6 +1907,31 @@ function applyReal(){
   rebuild(); renderer.shadowMap.needsUpdate=true;
 }
 $('tReal').addEventListener('click',function(){ realOn=!realOn; this.setAttribute('aria-pressed',String(realOn)); applyReal(); });
+
+
+/* ---------- sleep mode: everything off except a small warm night light on the master bedroom's bedside table ---------- */
+const nightMat=new THREE.MeshBasicMaterial({color:0x6a4a30}), nightPt=new THREE.PointLight(0xffa860,0,3.2,2);
+(function(){
+  const g=new THREE.Group(); const dome=new THREE.Mesh(new THREE.SphereGeometry(0.035,16,10,0,TAU,0,Math.PI/2),nightMat); g.add(dome);
+  const base=new THREE.Mesh(new THREE.CylinderGeometry(0.036,0.04,0.012,16),M.white); base.position.y=-0.006; g.add(base);
+  g.position.set(X(432)-0.02,0.463,Z(1537)+0.1); furn.add(g); nightPt.position.set(X(432)-0.02,0.58,Z(1537)+0.1); scene.add(nightPt);
+})();
+const nightBg=(function(){ const c=document.createElement('canvas'); c.width=4; c.height=256; const g=c.getContext('2d'), gr=g.createLinearGradient(0,0,0,256);
+  gr.addColorStop(0,'#05080f'); gr.addColorStop(0.6,'#0d1626'); gr.addColorStop(1,'#1a2438'); g.fillStyle=gr; g.fillRect(0,0,4,256);
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; return t; })();
+let dayEnv=scene.environment, dayRim=null;
+function applySleep(){
+  const on=sleepOn;
+  sun.intensity=on?0:(shadowOn?SUN_I:SUN_I*0.3); sun.castShadow=on?false:shadowOn;
+  amb.intensity=on?0.035:THEMES[themeId].amb; hemi.intensity=on?0.02:0.4; fills.forEach(function(l){ l.intensity=on?0:(l===fills[0]?0.3:0.25); });
+  pointLights.forEach(function(p){ p.intensity=on?0:0.35; });
+  lampMat.color.setHex(on?0x1a1712:0xffdc96); M.shade.emissive.setHex(on?0x000000:0x8a6428);
+  scene.background=on?nightBg:window.__dayBg; scene.fog.color.setHex(on?0x0a1220:0xdde9f3); scene.environment=on?null:dayEnv;
+  nightMat.color.setHex(on?0xffd9a8:0x6a4a30); nightPt.intensity=on?0.9:0;
+  renderer.toneMappingExposure=on?1.35:THEMES[themeId].exposure;
+  renderer.shadowMap.needsUpdate=true; scene.traverse(function(o){ if(o.material&&!Array.isArray(o.material)) o.material.needsUpdate=true; });
+}
+$('tSleep').addEventListener('click',function(){ sleepOn=!sleepOn; this.setAttribute('aria-pressed',String(sleepOn)); applySleep(); });
 
 const partBtns=Array.prototype.slice.call($('partBtns').querySelectorAll('button'));
 function setPart(s){
@@ -2204,7 +2233,7 @@ requestAnimationFrame(tick);
 if(location.hash==='#debug'){
   window.__walk={player:player,resolve:resolve,cols:function(){return allCols;},setFurn:function(v){furnOn=v;rebuild();},setPart:setPart,
     X:X,Z:Z,S:S,OX:OX,OY:OY,SPOTS:SPOTS,R:R,floorY:floorY,roomAt:roomAt,setMode:setMode,stepPlayer:stepPlayer,joy:joy,keys:keys,
-    teleport:teleport,applyTheme:applyTheme,setReal:function(v){ realOn=v; $('tReal').setAttribute('aria-pressed',String(v)); applyReal(); },real:function(){return realSofa;},setLayout:setLayout,setFold:function(v){foldTarget=v;foldT=v;foldApply(v);syncFold();},doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
+    teleport:teleport,applyTheme:applyTheme,setSleep:function(v){ sleepOn=v; $('tSleep').setAttribute('aria-pressed',String(v)); applySleep(); },setReal:function(v){ realOn=v; $('tReal').setAttribute('aria-pressed',String(v)); applyReal(); },real:function(){return realSofa;},setLayout:setLayout,setFold:function(v){foldTarget=v;foldT=v;foldApply(v);syncFold();},doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
 }
 }
 })();
