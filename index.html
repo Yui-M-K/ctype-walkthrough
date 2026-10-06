@@ -1499,15 +1499,15 @@ lb(0,function(){                               // study (small room): shared by 
     const head=new THREE.Group(); head.position.set(px,y+0.28,pz); furn.add(head);                  // toolhead: shroud, front fan, heatsink fins, brass hotend + nozzle, PTFE tube
     const hm=function(geo,mat,x,yy,z){ const m=new THREE.Mesh(geo,mat); m.position.set(x,yy,z); m.castShadow=true; head.add(m); return m; };
     const shroud=lam(0xe9ecef,{roughness:0.35}), dark=lam(0x1d1f22,{roughness:0.5}), brass=lam(0xc9a24a,{metalness:0.9,roughness:0.3,envMapIntensity:1});
-    hm(new THREE.BoxGeometry(0.06,0.065,0.05),shroud,0,0,0);
-    const fan=hm(new THREE.CylinderGeometry(0.02,0.02,0.004,20),dark,0,0.002,0.027); fan.rotation.x=Math.PI/2;
-    const hub=hm(new THREE.CylinderGeometry(0.007,0.007,0.006,12),shroud,0,0.002,0.029); hub.rotation.x=Math.PI/2;
-    for(let i=0;i<4;i++){ const bl=hm(new THREE.BoxGeometry(0.03,0.004,0.002),lam(0x3a3d42),0,0.002,0.03); bl.rotation.z=i*Math.PI/4; }
-    for(let i=0;i<5;i++) hm(new THREE.BoxGeometry(0.004,0.05,0.04),lam(0x9aa1a8,{metalness:0.8,roughness:0.35}),-0.033-i*0.0,-0.002+0*i,-0.002).position.x=-0.033;   // side heatsink
-    [-0.012,0,0.012].forEach(function(z){ hm(new THREE.BoxGeometry(0.006,0.045,0.003),lam(0x9aa1a8,{metalness:0.8,roughness:0.35}),0.034,0,z); });
-    hm(new THREE.BoxGeometry(0.018,0.012,0.018),brass,0,-0.04,0);                                       // heater block
-    const nz=hm(new THREE.ConeGeometry(0.006,0.012,10),brass,0,-0.052,0); nz.rotation.x=Math.PI;        // nozzle tip
-    hm(new THREE.CylinderGeometry(0.005,0.005,0.12,8),lam(0xf4f4f0,{roughness:0.4,transparent:true,opacity:0.85}),0.0,0.09,-0.01);   // PTFE feed tube
+    hm(new THREE.BoxGeometry(0.075,0.026,0.032),dark,0,0.045,-0.008);                                  // carriage riding on the X rail
+    rbox(-0.03,0.03,-0.032,0.03,-0.035,0.035,0.008,shroud,{group:head,pick:false});                  // main shroud, flat front
+    const duct=hm(new THREE.BoxGeometry(0.056,0.004,0.024),dark,0,-0.03,0.026); duct.rotation.x=0.6;   // slanted part-cooling duct at the lower front
+    hm(new THREE.BoxGeometry(0.03,0.004,0.002),dark,0,0.018,0.0305);                                    // small status strip
+    const grille=hm(new THREE.BoxGeometry(0.002,0.04,0.04),dark,-0.031,0.002,0);                       // side fan grille (fan faces sideways)
+    for(let i=0;i<5;i++) hm(new THREE.BoxGeometry(0.003,0.002,0.034),lam(0x6a6f75),-0.0322,-0.014+i*0.008,0);
+    hm(new THREE.BoxGeometry(0.016,0.012,0.016),brass,0,-0.043,0);                                     // heater block
+    const nz=hm(new THREE.ConeGeometry(0.0055,0.011,10),brass,0,-0.054,0); nz.rotation.x=Math.PI;       // nozzle tip
+    hm(new THREE.CylinderGeometry(0.0045,0.0045,0.1,8),lam(0xf4f4f0,{roughness:0.4,transparent:true,opacity:0.85}),0.012,0.1,-0.012);   // PTFE feed tube
     const nozzle=head;
     const model=cyl(px-0.03,pz+0.02,0.045,0.035,y+0.078,y+0.079,lam(0xf4f2ee,{roughness:0.55}),oc,24);   // the print (white PLA), grows layer by layer
     const sp=new THREE.Mesh(new THREE.TorusGeometry(0.08,0.03,10,24),lam(0xf1efea,{roughness:0.55})); sp.position.set(px,y+0.2,pz-d/2-0.035); place(sp,oc);   // white filament spool on the back
