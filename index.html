@@ -1135,6 +1135,78 @@ function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:f
     G.rotation.y=Math.PI/2; G.position.set(p[2]-p[1],0,p[3]+p[0]);
     furnCols.slice(c0).forEach(function(k){ const x0=k.z0+ox, x1=k.z1+ox, z0=-k.x1+oz, z1=-k.x0+oz; k.x0=x0; k.x1=x1; k.z0=z0; k.z1=z1; }); }
 })();
+(function(){                                   // appliance cabinet west of the fridge, back to the north wall: base cupboard, worktop with small appliances, two open shelves
+  const o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
+  const x0=X(701), W=1.0, x1=x0+W, z0=Z(999)+0.052, D=0.45, z1=z0+D, T=0.02;
+  const silver=lam(0xb9bec4,{metalness:0.85,roughness:0.3,envMapIntensity:1}), glass=lam(0x0d1114,{roughness:0.1,metalness:0.2,envMapIntensity:1}), cream=lam(0xf3efe6,{roughness:0.35}), blk=lam(0x1b1d20,{roughness:0.4}), led=new THREE.MeshBasicMaterial({color:0x76ffb2});
+  box(x0,x1,z0,z0+0.015,0.1,1.96,M.cabF,o);                                            // back panel
+  box(x0,x0+T,z0,z1,0.1,1.96,M.cabF,o); box(x1-T,x1,z0,z1,0.1,1.96,M.cabF,o);          // side panels
+  box(x0,x1,z0,z1,0.1,0.85,M.cabF,o); box(x0+0.02,x1-0.02,z1-0.012,z1,0,0.1,M.dark,oc);   // base cupboard + plinth
+  box(x0-0.005,x1+0.005,z0,z1+0.025,0.85,0.88,M.top,o);                                 // worktop with a small overhang
+  [1.3,1.7].forEach(function(y){ box(x0,x1,z0,z1,y,y+0.03,M.oak,o); });                 // open shelves
+  box(x0,x1,z0,z1,1.93,1.96,M.oak,o);                                                   // top
+  cabDoors('x',x0,x1,z1,1,0.1,0.85,2,false,M.cabF,furn);
+  const az=z0+0.04;                                                                     // appliances sit near the back wall
+  const body=function(cx,w,d,h,y,mat,r){ return rbox(cx-w/2,cx+w/2,az,az+d,y,y+h,r||0.012,mat,o); };
+  /* microwave on the middle shelf (46 x 34 x 27 cm) */
+  (function(){ const cx=x0+0.28, y=1.33, f=az+0.34;
+    body(cx,0.46,0.34,0.27,y,cream); box(cx-0.21,cx+0.05,f,f+0.004,y+0.03,y+0.24,glass,oc);
+    box(cx+0.08,cx+0.2,f,f+0.004,y+0.03,y+0.24,silver,oc); box(cx+0.1,cx+0.18,f+0.004,f+0.006,y+0.18,y+0.215,led,oc);
+    [0.07,0.12].forEach(function(dy){ cyl(cx+0.14,f+0.012,0.016,0.016,0,0,silver,oc,12); const k=cyl(cx+0.14,0,0.014,0.014,0,0.012,silver,oc,12); k.rotation.x=Math.PI/2; k.position.set(cx+0.14,y+dy,f+0.01); });
+    box(cx+0.215,cx+0.222,f+0.002,f+0.012,y+0.05,y+0.22,silver,oc);
+  })();
+  /* toaster oven (40 x 30 x 23 cm) */
+  (function(){ const cx=x0+0.76, y=1.33, f=az+0.3;
+    body(cx,0.4,0.3,0.23,y,silver,0.01); box(cx-0.17,cx+0.06,f,f+0.004,y+0.035,y+0.195,glass,oc);
+    [0.1,0.17].forEach(function(dx){ [0.065,0.15].forEach(function(dy){ const k=cyl(0,0,0.016,0.016,0,0.02,blk,oc,14); k.rotation.x=Math.PI/2; k.position.set(cx+dx,y+dy,f+0.01); }); });
+    box(cx-0.16,cx+0.05,f+0.004,f+0.03,y+0.205,y+0.215,silver,oc);                      // door handle bar
+    [-0.15,0.15].forEach(function(dx){ box(cx+dx-0.02,cx+dx+0.02,az+0.02,az+0.28,y-0.012,y,blk,oc); });   // feet
+  })();
+  /* air fryer on the worktop (30 x 36 x 36 cm) */
+  (function(){ const cx=x0+0.8, y=0.88, f=az+0.36;
+    body(cx,0.3,0.36,0.36,y,blk,0.04); box(cx-0.12,cx+0.12,f,f+0.01,y+0.07,y+0.2,lam(0x2c2f33,{roughness:0.5}),oc);
+    box(cx-0.09,cx+0.09,f+0.004,f+0.022,y+0.16,y+0.18,silver,oc);                       // drawer handle
+    box(cx-0.08,cx+0.08,f+0.002,f+0.006,y+0.26,y+0.32,glass,oc); box(cx-0.06,cx+0.0,f+0.006,f+0.008,y+0.28,y+0.3,led,oc);   // display
+    for(let i=0;i<6;i++) box(cx-0.12+i*0.04,cx-0.095+i*0.04,az+0.09,az+0.27,y+0.358,y+0.364,lam(0x0a0b0d),oc);   // top vents
+  })();
+  /* hot water dispenser (air pot) and electric kettle and rice cooker on the worktop */
+  (function(){ const y=0.88;
+    const cx=x0+0.17, cz=az+0.14;
+    cyl(cx,cz,0.125,0.14,y,y+0.34,cream,o,28); cyl(cx,cz,0.12,0.12,y+0.34,y+0.37,silver,oc,28);                 // 熱水瓶 body + lid
+    const sp=box(cx-0.015,cx+0.015,cz+0.1,cz+0.16,y+0.28,y+0.3,silver,oc);                                      // spout
+    box(cx-0.03,cx+0.03,cz+0.118,cz+0.124,y+0.24,y+0.26,led,oc);                                                // power light
+    box(cx+0.09,cx+0.112,cz-0.02,cz+0.02,y+0.12,y+0.3,glass,oc);                                                // water-level window
+    const kx=x0+0.43, kz=az+0.12;                                                                              // 電熱水壺
+    cyl(kx,kz,0.1,0.075,y,y+0.03,blk,oc,24); cyl(kx,kz,0.085,0.07,y+0.03,y+0.24,silver,o,24); cyl(kx,kz,0.05,0.07,y+0.24,y+0.275,blk,oc,24);
+    const sp2=cyl(kx-0.06,kz+0.08,0.012,0.022,y+0.2,y+0.255,silver,oc,10); sp2.rotation.z=0.5;
+    const hd=new THREE.Mesh(new THREE.TorusGeometry(0.075,0.011,8,18,Math.PI),blk); hd.position.set(kx+0.065,y+0.13,kz); hd.rotation.set(0,0,-Math.PI/2); hd.rotation.z=-Math.PI/2; place(hd,oc);
+    const rx=x0+0.6, rz=az+0.15;                                                                               // 電子鍋
+    cyl(rx,rz,0.15,0.16,y,y+0.22,cream,o,28); cyl(rx,rz,0.14,0.15,y+0.22,y+0.27,lam(0xe4e0d6,{roughness:0.3}),oc,28); box(rx-0.05,rx+0.05,rz+0.13,rz+0.15,y+0.1,y+0.16,led,oc);
+  })();
+  /* top shelf: storage boxes, bread box and a plant */
+  (function(){ const y=1.73;
+    [[0.15,0.28,0x8a9a86],[0.43,0.28,0xc9b27f]].forEach(function(b){ rbox(x0+b[0]-b[1]/2,x0+b[0]+b[1]/2,z0+0.05,z0+0.4,y,y+0.22,0.015,fab(b[2]),o); });
+    rbox(x0+0.68,x0+0.95,z0+0.06,z0+0.4,y,y+0.18,0.02,lam(0xb98368,{roughness:0.7}),o);
+    cyl(x1-0.1,z0+0.2,0.05,0.04,y+0.18,y+0.24,M.pot,oc,14);
+  })();
+  furnCols.push({x0:x0,x1:x1,z0:z0,z1:z1+0.025,kind:'f'}); contactShadow(x0,x1,z0,z1,0,furn);
+})();
+(function(){                                   // coffee corner on the south strip of the kitchen island, next to the sink: espresso machine, grinder, two cups
+  const o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false}, y=0.88;
+  const silver=lam(0xbfc4ca,{metalness:0.9,roughness:0.25,envMapIntensity:1}), blk=lam(0x1b1d20,{roughness:0.4}), led=new THREE.MeshBasicMaterial({color:0xffb25b});
+  const cx=X(785), cz=Z(1203), W=0.3, Dp=0.36, Hh=0.34;
+  rbox(cx-W/2,cx+W/2,cz-Dp/2,cz+Dp/2,y,y+0.03,0.01,blk,o);                                       // drip tray
+  rbox(cx-W/2+0.01,cx+W/2-0.01,cz-Dp/2,cz+0.06,y+0.03,y+Hh,0.02,silver,o);                       // body
+  rbox(cx-W/2+0.01,cx+W/2-0.01,cz-0.04,cz+Dp/2-0.01,y+0.24,y+0.3,0.015,silver,o);                // head over the group
+  const grp=cyl(cx,cz+0.15,0.032,0.032,y+0.2,y+0.24,blk,oc,16);                                  // group head
+  const pf=cyl(cx,cz+0.15,0.03,0.03,y+0.15,y+0.2,silver,o,16); const hd=cyl(cx,cz+0.23,0.012,0.012,y+0.16,y+0.17,blk,o,10); hd.rotation.x=Math.PI/2; hd.position.y=y+0.175; hd.scale.y=7; hd.position.z=cz+0.2;
+  [-1,1].forEach(function(sd){ const k=cyl(cx+sd*0.07,cz+0.17,0.016,0.016,0,0.02,blk,oc,12); k.rotation.x=Math.PI/2; k.position.set(cx+sd*0.07,y+0.28,cz+0.178); });   // buttons
+  box(cx-0.09,cx+0.09,cz+Dp/2-0.012,cz+Dp/2-0.006,y+0.26,y+0.285,led,oc);                        // glowing strip
+  const gx=X(762), gz=Z(1198);                                                                    // bean grinder with a hopper
+  rbox(gx-0.05,gx+0.05,gz-0.07,gz+0.07,y,y+0.22,0.02,blk,o); const hop=cyl(gx,gz,0.05,0.035,y+0.22,y+0.34,lam(0x6a4a2e,{roughness:0.5,transparent:true,opacity:0.8}),oc,16);
+  [X(805),X(815)].forEach(function(x){ cyl(x,Z(1210),0.036,0.028,y,y+0.075,M.ceramic,o,16); });  // two cups
+  furnCols.push({x0:gx-0.06,x1:cx+W/2,z0:cz-Dp/2,z1:cz+Dp/2+0.04,kind:'f'});
+})();
 lb(1,function(){                               // dining table 140 x 80, four chairs, pendant lamp
   const cx=770, cy=1330, w=1.4, d=0.8;
   rb(cx,cy,w,d,0.035,0.015,M.oak,0.685,true);
