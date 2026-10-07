@@ -2,6 +2,12 @@
 
 3D 看房頁面（three.js）。
 
+## 結構
+
+- `index.html`: 房子切換外殼。每棟房子是獨立頁面，用 iframe 載入（第一次切換時才載入，之後保留，切換即時）。清單在檔案內的 `HOUSES`。
+- `ctype.html`: Ctype 這一棟，可單獨開啟。選單裡的「房子」區塊在被外殼載入時才會出現。
+- 新增房子：放一個獨立的 `xxx.html`（貼圖、模型沿用 `textures/`、`models/`），在 `HOUSES` 加一筆；localStorage 的 key 要用各自的前綴（Ctype 用 `ctypeFurn.v1`、`ctypeLayout`）。
+
 ## 貼圖出處（`textures/`）
 
 - [Poly Haven](https://polyhaven.com/)（CC0）: laminate_floor_02, wood_floor, white_planks_clean, plastered_wall, jogging_melange（法線・色）, rough_linen（色）, oak_veneer_01, oak_veneer_03
