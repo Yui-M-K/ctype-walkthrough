@@ -61,7 +61,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   <div id="sheet" hidden role="dialog" aria-label="設定與傳送">
     <div class="sheet-head"><h2>設定</h2><button id="bClose" class="x" type="button" aria-label="關閉">×</button></div>
     <div class="row"><label for="rHeight">身高</label><input id="rHeight" type="range" min="145" max="195" step="1" value="165"><output id="oHeight">165 cm</output></div>
-    <div class="row"><label for="rFov">視野</label><input id="rFov" type="range" min="70" max="120" step="1" value="85"><output id="oFov">85°</output></div>
+    <div class="row"><label for="rFov">視野</label><input id="rFov" type="range" min="70" max="120" step="1" value="75"><output id="oFov">75°</output></div>
     <div class="row"><label for="rHour">日照時間</label><input id="rHour" type="range" min="7" max="17" step="0.25" value="14"><output id="oHour">14:00</output></div>
     <div class="seg" style="margin-top:12px">
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
@@ -503,8 +503,8 @@ function levelOf(py){ return clamp(Math.round((py+0.05)/SH),0,2); }
 /* ---------- state ---------- */
 const SPOTS=[['玄關',200,950,0,0,0],['車庫',490,1000,0,0,Math.PI],['洋室1',520,500,0,0,Math.PI],['LDK',1000,950,1,1,Math.PI/2],['廚房',1100,720,1,1,0],['浴室',1150,280,1,1,Math.PI],['陽台',990,1150,1,1,0],['洋室2',1700,500,2,2,Math.PI],['洋室3',1600,920,2,2,Math.PI],['走廊 3F',1485,520,2,2,0]];
 const player={x:WX(0,200),z:WZ(0,960),py:0,camY:0,yaw:0,pitch:0};
-let userH=165, fovH=85, mode='walk', hour=14, viewLevel=3;
-const orb={yaw:0.5,pitch:1.0,dist:17,tx:2.4,tz:4.6};
+let userH=165, fovH=75, mode='walk', hour=14, viewLevel=3;
+const orb={yaw:0.5,pitch:1.0,dist:26,tx:2.4,tz:4.6};
 const R=0.22, SPEED=1.5;
 let allCols=[];
 function rebuild(){
@@ -537,15 +537,18 @@ function applyLevelVis(){
 }
 function resize(){
   const w=window.innerWidth, h=window.innerHeight; renderer.setSize(w,h,false); post.setSize(w,h);
-  camera.aspect=w/h; const v=fovH*Math.PI/180; camera.fov=(w/h<1)?2*Math.atan(Math.tan(v/2)/(w/h))*180/Math.PI*0.62:fovH*0.7; if(camera.fov>110) camera.fov=110; camera.updateProjectionMatrix();
+  const a=w/h; camera.aspect=a;
+  if(mode==='walk') camera.fov=clamp(2*Math.atan(Math.tan(fovH*Math.PI/360)/a)*180/Math.PI,40,105);   // fovH = horizontal angle, same as Ctype
+  else camera.fov=clamp(2*Math.atan(Math.tan(50*Math.PI/360)/a)*180/Math.PI,35,65);
+  camera.updateProjectionMatrix();
 }
 window.addEventListener('resize',resize); resize();
 function setMode(m){
   mode=m; $('bView').textContent=m==='walk'?'俯瞰':'走進去'; $('cross').hidden=m!=='walk'; $('dist').hidden=m!=='walk'; $('lv').hidden=m==='walk';
-  applyLevelVis();
+  applyLevelVis(); resize();
 }
 function updateCamera(){
-  if(mode==='walk'){ camera.position.set(player.x,player.camY+(userH-10)/100,player.z); camera.rotation.set(player.pitch,player.yaw,0); }
+  if(mode==='walk'){ camera.position.set(player.x,player.camY+userH*0.936/100,player.z); camera.rotation.set(player.pitch,player.yaw,0); }
   else { const cp=Math.cos(orb.pitch), ty=viewLevel>=3?3:base(Math.max(0,viewLevel-1))+0.8; camera.position.set(orb.tx+Math.sin(orb.yaw)*cp*orb.dist,ty+Math.sin(orb.pitch)*orb.dist,orb.tz+Math.cos(orb.yaw)*cp*orb.dist); camera.lookAt(orb.tx,ty,orb.tz); }
 }
 const avatar=new THREE.Group(); (function(){ const m=lam(0xe8672a); const b=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.2,1.2,16),m); b.position.y=0.65; avatar.add(b); const h=new THREE.Mesh(new THREE.SphereGeometry(0.16,16,12),lam(0xf0c8a0)); h.position.y=1.42; avatar.add(h); scene.add(avatar); })();
@@ -683,7 +686,7 @@ const FSU=FS.initUI({
   allCols:function(lv){ return allCols.filter(function(c){ return c.l===lv; }); },rebuild:rebuild,toast:toast,
   inside:function(x,z,lv){ const r=roomAt(lv,x,z); return r!==OUT&&r.n!=='階梯'; },
   getMode:function(){ return mode; },setMode:setMode,closeMenu:function(){ sheet.hidden=true; },pointerCount:function(){ return ptrs.size; },
-  onEditToggle:function(on){ if(on){ viewLevel=levelOf(player.py)+1; roofOn(false); applyLevelVis(); orb.yaw=0; orb.pitch=1.42; orb.dist=12; orb.tx=2.4; orb.tz=4.4; } },
+  onEditToggle:function(on){ if(on){ viewLevel=levelOf(player.py)+1; roofOn(false); applyLevelVis(); orb.yaw=0; orb.pitch=1.42; orb.dist=19; orb.tx=2.4; orb.tz=4.4; } },
   onChange:function(){},
   types:function(){ return Catalog.TYPES; },preview:function(t){ return Catalog.make(t).group; },
   wallSnap:function(x,z,lv){ const b=base(lv); return Walk.snapToWalls(walls.filter(function(c){ return c.l===lv&&c.kind==='w'&&c.y0<=b+1.0&&c.y1>=b+1.8&&Math.min(c.x1-c.x0,c.z1-c.z0)>=0.085; }),x,z,1.0); },

@@ -153,7 +153,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
   <div id="sheet" hidden role="dialog" aria-label="設定與傳送">
     <div class="sheet-head"><h2>設定</h2><button id="bClose" class="x" type="button" aria-label="關閉">×</button></div>
     <div class="row"><label for="rHeight">身高</label><input id="rHeight" type="range" min="145" max="195" step="1" value="165"><output id="oHeight" for="rHeight">165 cm</output></div>
-    <div class="row"><label for="rFov">視野</label><input id="rFov" type="range" min="70" max="120" step="1" value="85"><output id="oFov" for="rFov">85°</output></div>
+    <div class="row"><label for="rFov">視野</label><input id="rFov" type="range" min="70" max="120" step="1" value="75"><output id="oFov" for="rFov">75°</output></div>
     <div class="row"><label for="rHour">日照時間</label><input id="rHour" type="range" min="7" max="17" step="0.25" value="15"><output id="oHour" for="rHour">15:00</output></div>
     <div class="toggles">
       <button id="tEdit" class="tog" type="button" aria-pressed="false">擺放家具（拖曳移動、旋轉）</button>
@@ -1630,7 +1630,7 @@ const SPOTS=[
   ['浴室',740,865,-Math.PI/2],['脫衣室',735,962,-Math.PI/2],['陽台',640,1650,Math.PI]
 ];
 const player={x:X(650),z:Z(752),yaw:Math.PI,pitch:0,camY:-0.15};
-let userH=165, fovH=85, mode='walk', furnOn=true, shadowOn=true, hour=15;
+let userH=165, fovH=75, mode='walk', furnOn=true, shadowOn=true, hour=15;
 const orb={yaw:0,pitch:1.12,dist:15.5,tx:X(636),tz:Z(1160)};
 const R=0.22, SPEED=1.5;
 function rebuild(){
@@ -1698,7 +1698,7 @@ function setMode(m){
 }
 function updateCamera(){
   if(mode==='walk'){
-    camera.position.set(player.x,player.camY+(userH-10)/100,player.z);
+    camera.position.set(player.x,player.camY+userH*0.936/100,player.z);
     camera.rotation.set(player.pitch,player.yaw,0);
   } else {
     const tx=orb.tx, ty=0.6, tz=orb.tz, cp=Math.cos(orb.pitch);
