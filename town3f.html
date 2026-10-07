@@ -411,9 +411,9 @@ function floorAt(x,z,py){
 })();
 
 /* ---------- catalogue furniture ---------- */
-const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,fab:fab,get lampMat(){ return lampMat; },rnd:rnd,rugTex:function(){ return null; },contactShadow:contactShadow,ceilingH:CH,anisotropy:ANISO,enableLocalClipping:function(){ renderer.localClippingEnabled=true; }});
+const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,fab:fab,get lampMat(){ return lampMat; },rnd:rnd,contactShadow:contactShadow,ceilingH:CH,anisotropy:ANISO,enableLocalClipping:function(){ renderer.localClippingEnabled=true; }});
 const furnG=[0,1,2].map(function(l){ const g=new THREE.Group(); LG[l].add(g); return g; });
-const tvList=[];
+const tvList=[], furnThings=[], furnAnims=[];
 /* furniture system (lib/furniture.js): every placed item is one catalogue object wrapped as a movable set on its storey */
 const FS=Walk.FurnitureSystem({THREE:THREE,furn:furnG[0],furnCols:furnCols,storageKey:'town3fFurn.v1',variant:function(){ return 1; },refreshShadows:function(){ renderer.shadowMap.needsUpdate=true; },
   setLevel:function(m,lv){
@@ -436,12 +436,18 @@ function placeItem(id,t,l,wx,wz,rotQ){         // build catalogue type t at worl
   });
   furnCols.push.apply(furnCols,cols);
   const m=FS.wrap(id,Catalog.info(t).name,[Rg],cols,{parent:furnG[l],lv:l}); m.lvCur=l; m.y=base(l);
+  const live=function(){ return !!m.W.parent&&!FS.isStored(id); }, c=Math.cos(rotQ*Math.PI/2), sn=Math.sin(rotQ*Math.PI/2);
+  p.anims.forEach(function(f){ furnAnims.push({live:live,f:f}); });
+  (p.actions||[]).forEach(function(a){                       // piece-local point -> default world point -> wherever the user moved it
+    const dx=wx+a.x*c+a.z*sn, dz=wz-a.x*sn+a.z*c;
+    furnThings.push({get pt(){ const q=FS.xf(id,dx,dz); return [q[0],q[1]]; },get l(){ return m.lvCur; },on:live,label:a.label,act:a.act});
+  });
   return m;
 }
 /* default furnishing: [id, type, storey, plan x, plan y, facing N/E/S/W] */
 const LAYOUT=[
   ['tv','tvBoard',1,732,945,'E'],['sofa','sofa',1,892,945,'W'],['coffee','coffeeTable',1,805,947,'E'],['dining','diningSet',1,1110,810,'E'],
-  ['plantL','plant',1,1235,1055,'W'],['lampL','floorLamp',1,760,1065,'E'],['fridge','fridge',1,1224,428,'W'],
+  ['plantL','plant',1,1235,1055,'W'],['lampL','floorLamp',1,760,1065,'E'],['fridge','fridge70',1,1225,436,'W'],['cat','catTabby',1,960,1040,'W'],['catBowls','catBowls',1,1240,1000,'E'],
   ['tub','bathtub',1,1217,277,'W'],['vanity','vanity',1,873,201,'S'],['washer','washer',1,985,205,'S'],['wc2','toilet',1,762,213,'S'],
   ['wc1','toilet',0,142,232,'E'],['shoes','shoeCabinet',0,117,940,'E'],['car','car',0,490,890,'S'],
   ['bed1','bed',0,470,290,'S'],['side1','bedside',0,599,190,'S'],['rug1','rugBed',0,470,330,'E'],
@@ -595,7 +601,7 @@ function updateAct(){
   let best=null, bd=1.35;
   if(mode==='walk'){
     const fxv=-Math.sin(player.yaw), fzv=-Math.cos(player.yaw), pl=levelOf(player.py);
-    things.forEach(function(t){ if(t.l!==pl) return; const vx=t.pt[0]-player.x, vz=t.pt[1]-player.z, d=Math.hypot(vx,vz); if(d<bd&&(d<0.6||(vx*fxv+vz*fzv)/d>0.45)){ bd=d; best=t; } });
+    things.concat(furnThings).forEach(function(t){ if(t.l!==pl||(t.on&&!t.on())) return; const vx=t.pt[0]-player.x, vz=t.pt[1]-player.z, d=Math.hypot(vx,vz); if(d<bd&&(d<0.6||(vx*fxv+vz*fzv)/d>0.45)){ bd=d; best=t; } });
   }
   curThing=best; if(best){ bAct.textContent=best.label(); bAct.hidden=false; } else bAct.hidden=true;
 }
@@ -642,6 +648,7 @@ function tick(now){
   requestAnimationFrame(tick);
   const t=now||last, dt=Math.min(0.05,(t-last)/1000)||0.016; last=t; frame++;
   updateDoors(dt); stepPlayer(dt);
+  for(let i=0;i<furnAnims.length;i++){ const a=furnAnims[i]; if(a.live()&&a.f(t/1000,{})) renderer.shadowMap.needsUpdate=true; }
   const fy=floorAt(player.x,player.z,player.py);
   player.camY+=(fy-player.camY)*Math.min(1,dt*9); player.py=fy;
   avatar.visible=mode==='over'; avatar.position.set(player.x,player.camY,player.z); avatar.rotation.y=player.yaw;
