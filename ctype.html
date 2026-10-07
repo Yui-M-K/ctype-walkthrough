@@ -477,7 +477,14 @@ function fcyl(cx,cy,r0,r1,y0,h,mat,col){
   return m;
 }
 /* ---------- movable furniture: shared system (lib/furniture.js); the UI half is attached further down once the canvas exists ---------- */
-const FS=Walk.FurnitureSystem({THREE:THREE,furn:furn,furnCols:furnCols,storageKey:'ctypeFurn.v1',variant:function(){ return curLayout; },refreshShadows:function(){ renderer.shadowMap.needsUpdate=true; }});
+const FS=Walk.FurnitureSystem({THREE:THREE,furn:furn,furnCols:furnCols,storageKey:'ctypeFurn.v1',variant:function(){ return curLayout; },refreshShadows:function(){ renderer.shadowMap.needsUpdate=true; },
+  spawn:function(t,id){                        // an extra copy from the catalogue, built at the origin on the main floor level
+    const p=Catalog.make(t), G=new THREE.Group(); G.add(p.group); furn.add(G);
+    p.group.traverse(function(o){ if(o.isMesh) furnMeshes.push(o); });
+    const cols=p.cols.map(function(c){ return {x0:c.x0,x1:c.x1,z0:c.z0,z1:c.z1,kind:'f'}; }); furnCols.push.apply(furnCols,cols);
+    return mvWrap(id,Catalog.info(t).name,[G],cols);
+  },
+  onRemove:function(m){ m.W.traverse(function(o){ const i=furnMeshes.indexOf(o); if(i>=0) furnMeshes.splice(i,1); }); }});
 const movers=FS.movers, mvBegin=FS.begin, mvEnd=FS.end, mvWrap=FS.wrap, mvApply=FS.apply, mvXf=FS.xf, mvIsStored=FS.isStored, mvGet=FS.get;
 let mvSofa=null, mvLiftThing=null, mvQuiet=false;
 function legs(cx,cy,hw,hd,h,r0,r1,mat){
@@ -1998,7 +2005,8 @@ const FSU=FS.initUI({
     if(on){ orb.yaw=0; orb.pitch=1.42; orb.dist=10.5; orb.tx=X(636); orb.tz=Z(1390); }
     else { orb.pitch=1.12; orb.dist=15.5; orb.tx=X(636); orb.tz=Z(1160); }
   },
-  onChange:syncPeopleToFurniture
+  onChange:syncPeopleToFurniture,
+  types:function(){ return Catalog.TYPES; },preview:function(t){ return Catalog.make(t).group; }
 });
 
 /* ---------- sheet ---------- */
@@ -2562,6 +2570,7 @@ mvWrap('tv','電視櫃與電視',[tvG],[],{pose:true,pivotFn:function(){ return 
 (function(){
   let n=1;
   try{ n=+(new URLSearchParams(location.search).get('layout')||localStorage.getItem('ctypeLayout')||1); }catch(_){}
+  FS.restoreExtras();
   setLayout(n===2?2:1);
 })();
 setMode('walk');
