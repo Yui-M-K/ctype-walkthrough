@@ -65,6 +65,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     <div class="row"><label for="rHour">日照時間</label><input id="rHour" type="range" min="7" max="17" step="0.25" value="14"><output id="oHour">14:00</output></div>
     <div class="seg" style="margin-top:12px">
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
+      <button id="tAO" class="tog" style="grid-column:1/-1" type="button" aria-pressed="false">環境光遮蔽（角落與接縫的陰影，較耗效能）</button>
       <button id="tFurn" class="tog" type="button" aria-pressed="true">參考家具</button>
       <button id="tEdit" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">擺放家具（拖曳移動、旋轉、從型錄拿新的）</button>
     </div>
@@ -82,10 +83,19 @@ button{font:inherit;color:inherit;cursor:pointer}
 <div id="msg" hidden></div>
 <div id="err" hidden role="alert"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
+<script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
 <script src="lib/furniture.js"></script>
 <script src="lib/catalog.js"></script>
-<script>
+<script src="lib/look.js"></script>
+<script type="module">
+import * as THREE from 'three';
+import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
+import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
+window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 (function(){
 'use strict';
 var $=function(id){return document.getElementById(id);};
@@ -95,7 +105,6 @@ var errShown=false;
 function showErr(t){ if(errShown) return; errShown=true; errEl.textContent='發生錯誤：'+t+'（點一下關閉）'; errEl.hidden=false; }
 errEl.addEventListener('click',function(){ errEl.hidden=true; });
 window.addEventListener('error',function(e){ showErr(e.message||'未知錯誤'); });
-if(!window.THREE){ showMsg('3D 引擎載入失敗，請確認網路後重新開啟。'); return; }
 try{ main(); }catch(e){ console.error(e); showMsg('場景建立失敗：'+(e&&e.message?e.message:e)); }
 
 function main(){
@@ -113,8 +122,8 @@ try{ renderer=new THREE.WebGLRenderer({canvas:$('c'),antialias:true}); }
 catch(e){ showMsg('這個瀏覽器無法啟動 3D 繪圖（WebGL）。請改用 Safari 或 Chrome 開啟。'); return; }
 let pixelRatio=Math.min(window.devicePixelRatio||1,1.75);
 renderer.setPixelRatio(pixelRatio);
-renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap; renderer.shadowMap.autoUpdate=false; renderer.shadowMap.needsUpdate=true;
-renderer.outputEncoding=THREE.sRGBEncoding; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.0;
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFShadowMap; renderer.shadowMap.autoUpdate=false; renderer.shadowMap.needsUpdate=true;
+renderer.outputColorSpace=THREE.SRGBColorSpace; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.0;
 const ANISO=Math.min(8,renderer.capabilities.getMaxAnisotropy?renderer.capabilities.getMaxAnisotropy():1);
 
 const scene=new THREE.Scene();
@@ -122,33 +131,34 @@ const scene=new THREE.Scene();
   const c=document.createElement('canvas'); c.width=4; c.height=256; const g=c.getContext('2d');
   const gr=g.createLinearGradient(0,0,0,256); gr.addColorStop(0,'#78aee0'); gr.addColorStop(0.55,'#b9d8ef'); gr.addColorStop(1,'#e9f1f7');
   g.fillStyle=gr; g.fillRect(0,0,4,256);
-  const t=new THREE.CanvasTexture(c); t.minFilter=THREE.LinearFilter; t.magFilter=THREE.LinearFilter; t.generateMipmaps=false; t.encoding=THREE.sRGBEncoding; scene.background=t;
+  const t=new THREE.CanvasTexture(c); t.minFilter=THREE.LinearFilter; t.magFilter=THREE.LinearFilter; t.generateMipmaps=false; t.colorSpace=THREE.SRGBColorSpace; scene.background=t;
 })();
 (function(){
   const c=document.createElement('canvas'); c.width=128; c.height=64; const g=c.getContext('2d');
   const gr=g.createLinearGradient(0,0,0,64); gr.addColorStop(0,'#9cc4e6'); gr.addColorStop(0.48,'#f2efe8'); gr.addColorStop(0.55,'#c2b49d'); gr.addColorStop(1,'#6f6456');
   g.fillStyle=gr; g.fillRect(0,0,128,64);
-  const t=new THREE.CanvasTexture(c); t.mapping=THREE.EquirectangularReflectionMapping; t.encoding=THREE.sRGBEncoding;
+  const t=new THREE.CanvasTexture(c); t.mapping=THREE.EquirectangularReflectionMapping; t.colorSpace=THREE.SRGBColorSpace;
   const pm=new THREE.PMREMGenerator(renderer); scene.environment=pm.fromEquirectangular(t).texture; pm.dispose(); t.dispose();
 })();
 scene.fog=new THREE.Fog(0xdde9f3,60,300);
 const camera=new THREE.PerspectiveCamera(70,1,0.05,600); camera.rotation.order='YXZ'; scene.add(camera);
+const post=Walk.Look({THREE:THREE,renderer:renderer,scene:scene,camera:camera,EffectComposer:EffectComposer,RenderPass:RenderPass,GTAOPass:GTAOPass,OutputPass:OutputPass,HDRLoader:HDRLoader,envUrl:'textures/env_lebombo_1k.hdr',aoWhen:function(){ return mode==='walk'; }});
 
-const amb=new THREE.AmbientLight(0xffffff,0.6); scene.add(amb);
-scene.add(new THREE.HemisphereLight(0xeaf4ff,0xcfc4b0,0.45));
-(function(){ const a=new THREE.DirectionalLight(0xffffff,0.3); a.position.set(6,9,-7); scene.add(a); const b=new THREE.DirectionalLight(0xffffff,0.25); b.position.set(-7,6,8); scene.add(b); })();
-const sun=new THREE.DirectionalLight(0xfff1dc,1.1);
+const LI=Math.PI, PLI=5;                       // light units since three.js r155: ambient/directional x pi, ceiling point lights also lose the legacy falloff
+const amb=new THREE.AmbientLight(0xffffff,0.6*LI); scene.add(amb);
+scene.add(new THREE.HemisphereLight(0xeaf4ff,0xcfc4b0,0.45*LI));
+(function(){ const a=new THREE.DirectionalLight(0xffffff,0.3*LI); a.position.set(6,9,-7); scene.add(a); const b=new THREE.DirectionalLight(0xffffff,0.25*LI); b.position.set(-7,6,8); scene.add(b); })();
+const sun=new THREE.DirectionalLight(0xfff1dc,1.1*LI);
 sun.castShadow=true; sun.shadow.mapSize.set(2048,2048);
 sun.shadow.camera.left=-9; sun.shadow.camera.right=9; sun.shadow.camera.top=9; sun.shadow.camera.bottom=-9; sun.shadow.camera.near=1; sun.shadow.camera.far=120;
-sun.shadow.bias=-0.0005; sun.shadow.normalBias=0.03;
+sun.shadow.bias=-0.0005; sun.shadow.normalBias=0.03; sun.shadow.radius=3;
 scene.add(sun); scene.add(sun.target);
 const CEN=new THREE.Vector3(2.4,3,4.2); sun.target.position.copy(CEN);
 
 /* ---------- materials ---------- */
 function lam(c,o){
   const m=new THREE.MeshStandardMaterial(Object.assign({roughness:0.85,metalness:0,envMapIntensity:0.45},o||{}));
-  m.color.setHex(c).convertSRGBToLinear();
-  if(o&&o.emissive!==undefined) m.emissive.convertSRGBToLinear();
+  m.color.setHex(c);
   return m;
 }
 function noiseTex(size,base0,amp,streak){
@@ -161,7 +171,7 @@ function noiseTex(size,base0,amp,streak){
   g.putImageData(img,0,0);
   const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=ANISO; return t;
 }
-const wallTex=noiseTex(256,247,10,true); wallTex.encoding=THREE.sRGBEncoding;
+const wallTex=noiseTex(256,247,10,true); wallTex.colorSpace=THREE.SRGBColorSpace;
 const fabricTex=noiseTex(128,128,90,false);
 function makeWood(){
   const c=document.createElement('canvas'); c.width=1024; c.height=512; const g=c.getContext('2d');
@@ -173,13 +183,13 @@ function makeWood(){
     for(let k=0;k<70;k++){ g.strokeStyle='rgba(90,60,30,'+(0.03+rnd()*0.05)+')'; g.lineWidth=1; const yy=y+rnd()*rh, x0=rnd()*1024; g.beginPath(); g.moveTo(x0,yy); g.lineTo(x0+60+rnd()*240,yy+(rnd()-0.5)*2); g.stroke(); }
     g.fillStyle='rgba(70,45,20,.5)'; g.fillRect(0,y,1024,2); g.fillRect(o,y,2,rh); g.fillRect(0,y,2,rh);
   }
-  const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=ANISO; t.encoding=THREE.sRGBEncoding; return t;
+  const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=ANISO; t.colorSpace=THREE.SRGBColorSpace; return t;
 }
 function tileTex(base0,grout,n,jit){
   const c=document.createElement('canvas'); c.width=c.height=256; const g=c.getContext('2d');
   g.fillStyle=grout; g.fillRect(0,0,256,256); const s=256/n;
   for(let i=0;i<n;i++) for(let j=0;j<n;j++){ const v=(rnd()-0.5)*jit; g.fillStyle='rgb('+Math.round(clamp(base0[0]+v,0,255))+','+Math.round(clamp(base0[1]+v,0,255))+','+Math.round(clamp(base0[2]+v,0,255))+')'; g.fillRect(i*s+2,j*s+2,s-4,s-4); }
-  const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=ANISO; t.encoding=THREE.sRGBEncoding; return t;
+  const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=ANISO; t.colorSpace=THREE.SRGBColorSpace; return t;
 }
 const woodTex=makeWood();
 const FL={
@@ -188,7 +198,7 @@ const FL={
   stone:lam(0xffffff,{map:tileTex([154,154,150],'#7f7f7b',2,22),roughness:0.7}),
   conc:lam(0xa9a9a5,{roughness:0.9}), balc:lam(0xffffff,{map:tileTex([165,168,166],'#8a8d8b',2,18)})
 };
-const fab=function(c,o){ return lam(c,Object.assign({bumpMap:fabricTex,bumpScale:0.004,roughness:1},o||{})); };
+const fab=function(c,o){ return Walk.fabricMaterial(THREE,c,Object.assign({bumpMap:fabricTex,bumpScale:0.004},o||{})); };
 const M={
   wall:lam(0xf3f0ea,{map:wallTex,bumpMap:wallTex,bumpScale:0.0015,roughness:0.9}),
   wallW:lam(0xe8e2d8,{map:wallTex,roughness:0.9}),
@@ -208,7 +218,7 @@ const M={
   const c=document.createElement('canvas'); c.width=512; c.height=256; const g=c.getContext('2d');
   g.fillStyle='#ffffff'; g.fillRect(0,0,512,256);
   for(let k=0;k<520;k++){ g.strokeStyle='rgba('+(70+rnd()*30)+','+(45+rnd()*20)+',25,'+(0.025+rnd()*0.06)+')'; g.lineWidth=0.6+rnd()*1.2; const y=rnd()*256, x=rnd()*512, l=60+rnd()*260; g.beginPath(); g.moveTo(x,y); g.bezierCurveTo(x+l*0.3,y+(rnd()-0.5)*5,x+l*0.7,y+(rnd()-0.5)*5,x+l,y+(rnd()-0.5)*3); g.stroke(); }
-  const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=ANISO; t.encoding=THREE.sRGBEncoding;
+  const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=ANISO; t.colorSpace=THREE.SRGBColorSpace;
   M.oak=lam(0xd6b88e,{map:t,roughness:0.55}); M.oakD=lam(0x8f6a49,{map:t,roughness:0.55}); M.oakChair=lam(0xcfa77c,{map:t,roughness:0.55}); M.chairBack=lam(0xc9a074,{roughness:0.55,side:THREE.DoubleSide});
 })();
 const lampMat=new THREE.MeshBasicMaterial({color:0xffdc96});
@@ -469,7 +479,7 @@ builtin(1,950,568,1160,660,0,0.86,M.cabF,true); builtin(1,950,568,1160,660,0.86,
 builtin(1,1160,580,1255,655,0,0.86,M.cabF,true); builtin(1,1160,580,1255,655,0.86,0.04,M.top,false);
 builtin(1,985,590,1100,640,0.87,0.012,M.sink,false); builtin(1,1180,595,1240,640,0.9,0.012,M.hob,false);
 function light(l,px,py,col,int,dist){
-  const p=new THREE.PointLight(col||0xffe2b8,int,dist||6,1.6); p.position.set(WX(l,px),base(l)+CH-0.25,WZ(l,py)); LG[l].add(p); pointLights.push(p);
+  const p=new THREE.PointLight(col||0xffe2b8,int*PLI,dist||6,2); p.position.set(WX(l,px),base(l)+CH-0.25,WZ(l,py)); LG[l].add(p); pointLights.push(p);
   const d=new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.16,0.02,16),lampMat); d.position.set(WX(l,px),base(l)+CH-0.01,WZ(l,py)); LG[l].add(d);
 }
 [[470,290,0],[760,260,0],[480,900,0],[330,780,0],[1000,500,1],[1130,800,1],[920,260,1],[1160,280,1],[760,300,1],[1050,960,1],[1580,300,2],[1700,330,2],[1650,900,2],[1480,550,2],[1750,660,2]].forEach(function(p){ light(p[2],p[0],p[1],0xffe2b8,0.55,7); });
@@ -517,7 +527,7 @@ function setSun(h){
   hour=h; const a=(h-7)/10*Math.PI, el=0.35+0.75*Math.sin(a);
   sun.position.set(CEN.x+Math.cos(a)*16*-1,CEN.y+16*el+4,CEN.z-8+Math.sin(a)*2-6);
   sun.position.set(CEN.x-Math.cos(a)*18,CEN.y+10+8*Math.sin(a),CEN.z+Math.sin(a)*-4+6);
-  sun.castShadow=shadowOn; sun.intensity=shadowOn?1.1:0.55; renderer.shadowMap.needsUpdate=true;
+  sun.castShadow=shadowOn; sun.intensity=(shadowOn?1.1:0.55)*LI; renderer.shadowMap.needsUpdate=true;
 }
 function applyLevelVis(){
   const all=mode==='walk';
@@ -526,7 +536,7 @@ function applyLevelVis(){
   renderer.shadowMap.needsUpdate=true;
 }
 function resize(){
-  const w=window.innerWidth, h=window.innerHeight; renderer.setSize(w,h,false);
+  const w=window.innerWidth, h=window.innerHeight; renderer.setSize(w,h,false); post.setSize(w,h);
   camera.aspect=w/h; const v=fovH*Math.PI/180; camera.fov=(w/h<1)?2*Math.atan(Math.tan(v/2)/(w/h))*180/Math.PI*0.62:fovH*0.7; if(camera.fov>110) camera.fov=110; camera.updateProjectionMatrix();
 }
 window.addEventListener('resize',resize); resize();
@@ -579,6 +589,14 @@ window.addEventListener('contextmenu',function(e){ e.preventDefault(); });
 /* ---------- sheet / doors / spots ---------- */
 const toastEl=$('toast'), bAct=$('bAct'); let toastT=0, curThing=null;
 function toast(t){ toastEl.textContent=t; toastEl.hidden=false; clearTimeout(toastT); toastT=setTimeout(function(){ toastEl.hidden=true; },1800); }
+(function(){                                   // ambient occlusion: on by default except on touch devices; remembered per device
+  const b=$('tAO'); let on=!(window.matchMedia&&matchMedia('(pointer: coarse)').matches);
+  try{ const v=localStorage.getItem('walkAO'); if(v!==null) on=v==='1'; }catch(_){}
+  const set=function(v){ post.setAO(v); b.setAttribute('aria-pressed',String(v)); };
+  set(on);
+  b.addEventListener('click',function(){ const v=!post.aoOn; set(v); try{ localStorage.setItem('walkAO',v?'1':'0'); }catch(_){} });
+  window.__aoOff=function(){ set(false); };
+})();
 $('bMenu').addEventListener('click',function(){ sheet.hidden=!sheet.hidden; });
 $('bClose').addEventListener('click',function(){ sheet.hidden=true; });
 $('bView').addEventListener('click',function(){ setMode(mode==='walk'?'over':'walk'); });
@@ -656,9 +674,9 @@ function tick(now){
   if(frame%4===0){ updateRoom(); updateAct(); }
   if(mode==='walk'&&frame%6===0) updateDist();
   if(frame%2===0) drawMini();
-  renderer.render(scene,camera);
+  post.render();
   if(first){ first=false; loadEl.hidden=true; }
-  if(!aqDone&&frame>30){ aqT+=dt; aqN++; if(aqN>=120){ aqDone=true; if(aqN/aqT<26){ pointLights.forEach(function(p){ p.visible=false; }); if(pixelRatio>1){ pixelRatio=1; renderer.setPixelRatio(1); resize(); } } } }
+  if(!aqDone&&frame>30){ aqT+=dt; aqN++; if(aqN>=120){ aqDone=true; if(aqN/aqT<26){ window.__aoOff(); pointLights.forEach(function(p){ p.visible=false; }); if(pixelRatio>1){ pixelRatio=1; renderer.setPixelRatio(1); resize(); } } } }
 }
 const FSU=FS.initUI({
   scene:scene,camera:camera,canvas:canvas,orb:orb,uiRoot:$('hud'),toggleButton:$('tEdit'),
