@@ -75,6 +75,12 @@ button{font:inherit;color:inherit;cursor:pointer}
       <button id="tSleep" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">睡覺模式（3F 洋室2，只開小夜燈）</button>
       <button id="tSport" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">運動模式（Switch）</button>
     </div>
+    <h3>家具配置</h3>
+    <div id="layBtns" class="seg">
+      <button type="button" class="tog" data-l="1" aria-pressed="true">配置一（餐桌）</button>
+      <button type="button" class="tog" data-l="2" aria-pressed="false">配置二（升降桌＋工作角）</button>
+    </div>
+    <div class="seg" id="foldRow" style="margin-top:8px" hidden><button id="tFold" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">升降桌：茶几模式</button></div>
     <h3 id="houseH" hidden>房子</h3>
     <div id="houseBtns" class="seg" hidden></div>
     <h3>所有門</h3>
@@ -246,7 +252,7 @@ FIN.applyPalette(Walk.THEMES.A);                // warm Scandinavian only for th
 const LG=[0,1,2].map(function(){ const g=new THREE.Group(); scene.add(g); return g; });
 const ground=new THREE.Group(); scene.add(ground);
 const walls=[], doors=[], furnCols=[], floorRects=[], ramps=[], furnMeshes=[], pointLights=[];
-let furnOn=true, shadowOn=true, sleepOn=false, dailyOn=false, cookOn=false, sportOn=false, FS_onChange=function(){};
+let curLayout=1, furnOn=true, shadowOn=true, sleepOn=false, dailyOn=false, cookOn=false, sportOn=false, FS_onChange=function(){};
 function fitUV(g,w,h,d){ const uv=g.attributes.uv, dims=[[d,h],[d,h],[w,d],[w,d],[w,h],[w,h]]; for(let f=0;f<6;f++){ const s=dims[f]; for(let i=f*4;i<f*4+4;i++) uv.setXY(i,uv.getX(i)*s[0],uv.getY(i)*s[1]); } }
 function bx(grp,x0,x1,z0,z1,y0,y1,mat,o){
   o=o||{}; const g=new THREE.BoxGeometry(x1-x0,y1-y0,z1-z0); fitUV(g,x1-x0,y1-y0,z1-z0);
@@ -485,7 +491,7 @@ const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,fab:fab,get lampMat(){ retur
 const furnG=[0,1,2].map(function(l){ const g=new THREE.Group(); LG[l].add(g); return g; });
 const tvList=[], furnThings=[], furnAnims=[];
 /* furniture system (lib/furniture.js): every placed item is one catalogue object wrapped as a movable set on its storey */
-const FS=Walk.FurnitureSystem({THREE:THREE,furn:furnG[0],furnCols:furnCols,storageKey:'town3fFurn.v1',variant:function(){ return 1; },refreshShadows:function(){ renderer.shadowMap.needsUpdate=true; },
+const FS=Walk.FurnitureSystem({THREE:THREE,furn:furnG[0],furnCols:furnCols,storageKey:'town3fFurn.v1',variant:function(){ return curLayout; },refreshShadows:function(){ renderer.shadowMap.needsUpdate=true; },
   setLevel:function(m,lv){
     if(m.lvCur===lv) return;
     furnG[lv].add(m.W); m.lvCur=lv; m.y=base(lv);
@@ -494,7 +500,7 @@ const FS=Walk.FurnitureSystem({THREE:THREE,furn:furnG[0],furnCols:furnCols,stora
   spawn:function(t,id,lv){ return placeItem(id,t,lv===undefined?0:lv,0,0,0); },
   onRemove:function(m){ m.W.traverse(function(o){ const i=furnMeshes.indexOf(o); if(i>=0) furnMeshes.splice(i,1); }); }
 });
-function placeItem(id,t,l,wx,wz,rotQ,piece){   // build catalogue type t (or a ready-made piece of that type) at world (wx,wz) of storey l, turned rotQ quarter turns
+function placeItem(id,t,l,wx,wz,rotQ,piece,lay){   // build catalogue type t (or a ready-made piece of that type) at world (wx,wz) of storey l, turned rotQ quarter turns
   const p=piece||Catalog.make(t), Rg=new THREE.Group();
   Rg.position.set(wx,0,wz); Rg.rotation.y=rotQ*Math.PI/2; Rg.add(p.group);
   p.group.traverse(function(o){ if(o.isMesh) furnMeshes.push(o); });
@@ -502,15 +508,16 @@ function placeItem(id,t,l,wx,wz,rotQ,piece){   // build catalogue type t (or a r
   const cols=p.cols.map(function(c){
     let x0=c.x0,x1=c.x1,z0=c.z0,z1=c.z1;
     for(let k=0;k<rotQ;k++){ const a=z0,b2=z1,d=-x1,e=-x0; x0=a; x1=b2; z0=d; z1=e; }
-    return {x0:x0+wx,x1:x1+wx,z0:z0+wz,z1:z1+wz,y0:base(l),y1:base(l)+1.2,kind:'f',l:l};
+    return {x0:x0+wx,x1:x1+wx,z0:z0+wz,z1:z1+wz,y0:base(l),y1:base(l)+1.2,kind:'f',l:l,lay:lay};
   });
   furnCols.push.apply(furnCols,cols);
-  const info=Catalog.info(t), m=FS.wrap(id,info.name,[Rg],cols,{parent:furnG[l],lv:l,wall:!!info.wall,pivot:info.wall?[wx,wz]:null,face0:(Catalog.faceIndex(t)+rotQ)%4}); m.lvCur=l; m.y=base(l);
-  const live=function(){ return !!m.W.parent&&!FS.isStored(id); }, c=Math.cos(rotQ*Math.PI/2), sn=Math.sin(rotQ*Math.PI/2);
+  const info=Catalog.info(t), m=FS.wrap(id,info.name,[Rg],cols,{parent:furnG[l],lv:l,wall:!!info.wall,pivot:info.wall?[wx,wz]:null,face0:(Catalog.faceIndex(t)+rotQ)%4}); m.lvCur=l; m.y=base(l); m.piece=p;
+  if(lay){ m.W.userData.lay=lay; FS.apply(m); }
+  const live=function(){ return !!m.W.parent&&!FS.isStored(id)&&(!lay||lay===curLayout); }, c=Math.cos(rotQ*Math.PI/2), sn=Math.sin(rotQ*Math.PI/2);
   p.anims.forEach(function(f){ furnAnims.push({live:live,f:f}); });
   (p.actions||[]).forEach(function(a){                       // piece-local point -> default world point -> wherever the user moved it
     const dx=wx+a.x*c+a.z*sn, dz=wz-a.x*sn+a.z*c;
-    furnThings.push({get pt(){ const q=FS.xf(id,dx,dz); return [q[0],q[1]]; },get l(){ return m.lvCur; },on:live,label:a.label,act:a.act});
+    furnThings.push({get pt(){ const q=FS.xf(id,dx,dz); return [q[0],q[1]]; },get l(){ return m.lvCur; },on:live,label:a.label,act:function(){ a.act(); syncFold(); }});
   });
   return m;
 }
@@ -530,7 +537,11 @@ const LAYOUT=[
   ['catBed','catBed',1,745,1082.2,'N'],['catStepB','catStep',1,800,1082.2,'N',function(){ return Catalog.catStep(1.38); }],
   ['catHouse','catHouse',1,860,1082.2,'N'],['catStepA','catStep',1,915,1082.2,'N',function(){ return Catalog.catStep(1.22); }],['litter','litterBox',1,1000,320,'W'],['art1','artLand',0,470,168,'S'],['art2','artLand',2,1700,168,'S'],['art3','artPortrait',2,1874,1030,'W'],['art4','artSmall',0,317,550,'W'],['sideT3','sideTable',2,1840,790,'E'],['plant3','plantS',2,1340,1060,'E']
 ];
-LAYOUT.forEach(function(e){ const pc=e[6]?e[6]():null; if(pc) pc.type=e[1]; placeItem(e[0],e[1],e[2],WX(e[2],e[3]),WZ(e[2],e[4]),Catalog.turnsToFace(e[1],e[5]),pc); });
+const LAY1={dining:1,coffee:1};                 // only in layout 1
+/* layout 2: lift-top table in front of the sofa instead of the coffee table, a work corner where the dining table was */
+const LAYOUT2=[['lift','liftTable',1,810,947,'E'],['deskL','desk',1,1110,800,'N'],['chairL','officeChair',1,1110,718,'S'],['rugL','rugRoundSun',1,1110,760,'E']];
+LAYOUT.forEach(function(e){ const pc=e[6]?e[6]():null; if(pc) pc.type=e[1]; placeItem(e[0],e[1],e[2],WX(e[2],e[3]),WZ(e[2],e[4]),Catalog.turnsToFace(e[1],e[5]),pc,LAY1[e[0]]); });
+LAYOUT2.forEach(function(e){ placeItem(e[0],e[1],e[2],WX(e[2],e[3]),WZ(e[2],e[4]),Catalog.turnsToFace(e[1],e[5]),null,2); });
 FS.restoreExtras();
 FS.movers.forEach(FS.apply);
 /* built-in kitchen and bath (part of the building, not furniture): shared fixtures from lib/catalog.js */
@@ -589,7 +600,7 @@ const orb={yaw:0.5,pitch:1.0,dist:26,tx:2.4,tz:4.6};
 const R=0.22, SPEED=1.5;
 let allCols=[];
 function rebuild(){
-  allCols=walls.filter(function(c){ return !(c.door&&c.door.open); }).concat(furnOn?furnCols.filter(function(c){ return !c.mvOff&&!c.modeOff; }):[]);
+  allCols=walls.filter(function(c){ return !(c.door&&c.door.open); }).concat(furnOn?furnCols.filter(function(c){ return !c.mvOff&&!c.modeOff&&(!c.lay||c.lay===curLayout); }):[]);
 }
 rebuild();
 function active(c,py){ return c.y0<py+1.4&&c.y1>py+0.35; }
@@ -785,7 +796,7 @@ function tick(now){
 const People=Walk.People(THREE,lam,fab), S1=0.01213, modeAnims=[];
 const modeGroup=function(l){ const g=new THREE.Group(); g.visible=false; g.position.y=base(l); LG[l].add(g); return g; };
 const mover=function(id){ return FS.movers.find(function(m){ return m.id===id; }); };
-const usable=function(id){ const m=mover(id); return !!m&&!FS.isStored(id); };
+const usable=function(id){ const m=mover(id); return !!m&&!FS.isStored(id)&&(!m.W.userData.lay||m.W.userData.lay===curLayout); };
 const at=function(id,l,px,py){ return FS.xf(id,WX(l,px),WZ(l,py)); };          // default plan point of a piece -> where it is now [x,z,yaw]
 const btn=function(id,v){ $(id).setAttribute('aria-pressed',String(v)); };
 function setTv(on){ tvList.forEach(function(t){ t.tvOn(on); }); btn('tTv',on); renderer.shadowMap.needsUpdate=true; }
@@ -797,11 +808,11 @@ const sportF=People.stand(1.63,0xf1c9a5,0xf4f1ec,0x7f8fa8,0x3a2a22,true,0x2ec4ea
 sportG.add(sportF,sportM);
 function applySport(){
   if(sportOn){ offOthers('sport'); }
-  const cm=mover('coffee'); if(cm){ cm.W.visible=!sportOn&&!FS.isStored('coffee'); cm.own.forEach(function(c){ c.modeOff=sportOn; }); }
+  ['coffee','lift'].forEach(function(id){ const cm=mover(id); if(cm){ cm.W.visible=!sportOn&&usable(id); cm.own.forEach(function(c){ c.modeOff=sportOn; }); } });
   sportG.visible=sportOn&&usable('tv');
   if(sportOn){
     [[sportF,905],[sportM,985]].forEach(function(q){ const p=at('tv',1,732,q[1]), d=1.0; q[0].position.set(p[0]+Math.cos(p[2])*d,0,p[1]-Math.sin(p[2])*d); q[0].rotation.y=Math.PI+p[2]; });
-    toast('運動模式：站在電視前約 1 m（茶几已收起）');
+    toast('運動模式：站在電視前約 1 m（'+(curLayout===1?'茶几':'升降桌')+'已收起）');
   }
   rebuild(); renderer.shadowMap.needsUpdate=true;
 }
@@ -893,10 +904,18 @@ const cookG=modeGroup(1), cookManG=modeGroup(1);
   });
   window.__cookMan=man;
 })();
+const cookChair=Catalog.chair(1).group; cookChair.visible=false; LG[1].add(cookChair);
 function applyCook(){
   if(cookOn) offOthers('cook');
-  cookG.visible=cookOn; cookManG.visible=cookOn&&usable('dining');
-  if(cookOn){ const q=at('dining',1,1110+30*S1/S,810+(41*S1+0.02)/S); window.__cookMan.position.set(q[0],0.45,q[1]); window.__cookMan.rotation.y=Math.PI/2+q[2]; toast('料理模式：她在 IH 爐前炒菜，他在餐桌喝啤酒'); }
+  const L1=curLayout===1, tbl=L1?'dining':'lift';
+  cookG.visible=cookOn; cookManG.visible=cookOn&&usable(tbl); cookChair.visible=cookOn&&!L1&&usable('lift');
+  if(!L1&&usable('lift')) mover('lift').piece.lift.up=cookOn; syncFold();
+  if(cookOn){
+    if(L1){ const q=at('dining',1,1110+30*S1/S,810+(41*S1+0.02)/S); window.__cookMan.position.set(q[0],0.45,q[1]); window.__cookMan.rotation.y=Math.PI/2+q[2]; }
+    else { const c=at('lift',1,810,947-(0.7+0.25)/S), q=at('lift',1,810,947-(0.7+0.27)/S);    // north end of the raised table, facing south
+      cookChair.position.set(c[0],base(1),c[1]); cookChair.rotation.y=Math.PI+c[2]; window.__cookMan.position.set(q[0],0.45,q[1]); window.__cookMan.rotation.y=-Math.PI/2+q[2]; }
+    toast('料理模式：她在 IH 爐前炒菜，他在'+(L1?'餐桌':'升降桌')+'喝啤酒');
+  }
   renderer.shadowMap.needsUpdate=true;
 }
 $('tCook').addEventListener('click',function(){ cookOn=!cookOn; btn('tCook',cookOn); applyCook(); });
@@ -939,6 +958,19 @@ function offOthers(keep){                       // modes exclude each other
 }
 FS_onChange=function(){ if(sportOn) applySport(); if(dailyOn) applyDaily(); if(cookOn) applyCook(); if(sleepOn) applySleep(); };
 
+function syncFold(){ const m=mover('lift'), up=!!(m&&m.piece.lift.up); $('tFold').textContent=up?'升降桌：餐桌模式':'升降桌：茶几模式'; btn('tFold',up); }
+$('tFold').addEventListener('click',function(){ const m=mover('lift'); if(!m) return; m.piece.lift.up=!m.piece.lift.up; syncFold(); });
+function setLayout(n){
+  curLayout=n===2?2:1;
+  FSU.variantChanged(); rebuild();
+  document.querySelectorAll('#layBtns button').forEach(function(b){ btn2(b,+b.getAttribute('data-l')===curLayout); });
+  $('foldRow').hidden=curLayout!==2; syncFold();
+  const p=resolve(player.x,player.z,player.py); player.x=p[0]; player.z=p[1];
+  try{ localStorage.setItem('town3fLayout',String(curLayout)); }catch(_){}
+  FS_onChange(); updateAct();
+}
+function btn2(b,v){ b.setAttribute('aria-pressed',String(v)); }
+document.querySelectorAll('#layBtns button').forEach(function(b){ b.addEventListener('click',function(){ setLayout(+b.getAttribute('data-l')); }); });
 const FSU=FS.initUI({
   scene:scene,camera:camera,canvas:canvas,orb:orb,uiRoot:$('hud'),toggleButton:$('tEdit'),
   allCols:function(lv){ return allCols.filter(function(c){ return c.l===lv; }); },rebuild:rebuild,toast:toast,
@@ -950,6 +982,7 @@ const FSU=FS.initUI({
   wallSnap:function(x,z,lv){ const b=base(lv); return Walk.snapToWalls(walls.filter(function(c){ return c.l===lv&&c.kind==='w'&&c.y0<=b+1.0&&c.y1>=b+1.8&&Math.min(c.x1-c.x0,c.z1-c.z0)>=0.085; }),x,z,1.0); },
   dropLevel:function(){ return clamp(viewLevel-1,0,2); },dropY:function(){ return base(clamp(viewLevel-1,0,2)); }
 });
+(function(){ let n=1; try{ n=+(new URLSearchParams(location.search).get('layout')||localStorage.getItem('town3fLayout')||1); }catch(_){} setLayout(n); })();
 setSun(14); setMode('walk'); roofOn(true); updateRoom(); drawMini();
 requestAnimationFrame(tick);
 
@@ -963,7 +996,7 @@ requestAnimationFrame(tick);
   });
   window.parent.postMessage({type:'house-ready'},location.origin);
 })();
-if(location.hash==="#debug"){ window.__walk={furnThings:furnThings,roomAt:roomAt,player:player,resolve:resolve,floorAt:floorAt,setMode:setMode,teleport:teleport,SPOTS:SPOTS,orb:orb,doors:doors,setDoor:setDoor,scene:scene,camera:camera,renderer:renderer,levelOf:levelOf,setView:function(v){ viewLevel=v; roofOn(v>=3&&false); applyLevelVis(); },roofOn:roofOn,cols:function(){return allCols;},FS:FS,FSU:FSU,updateCamera:updateCamera,keys:keys,stepPlayer:stepPlayer,tvList:tvList}; }
+if(location.hash==="#debug"){ window.__walk={setLayout:setLayout,mover:function(id){ return FS.movers.find(function(m){ return m.id===id; }); },furnThings:furnThings,roomAt:roomAt,player:player,resolve:resolve,floorAt:floorAt,setMode:setMode,teleport:teleport,SPOTS:SPOTS,orb:orb,doors:doors,setDoor:setDoor,scene:scene,camera:camera,renderer:renderer,levelOf:levelOf,setView:function(v){ viewLevel=v; roofOn(v>=3&&false); applyLevelVis(); },roofOn:roofOn,cols:function(){return allCols;},FS:FS,FSU:FSU,updateCamera:updateCamera,keys:keys,stepPlayer:stepPlayer,tvList:tvList}; }
 }
 })();
 </script>
