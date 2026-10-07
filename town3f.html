@@ -225,11 +225,13 @@ const M={
 })();
 const lampMat=new THREE.MeshBasicMaterial({color:0xffdc96});
 M.linen=fab(0xe9dfcd,{side:THREE.DoubleSide,bumpScale:0.002});
+M.bathWall=lam(0xffffff,{roughness:0.25}); M.wcTile=lam(0xf1ede6,{roughness:0.3});
 const WM={};                                   // one wall material per colour role (see Walk.THEMES)
 Walk.WALL_ROLES.forEach(function(k){ WM[k]=lam(0xffffff,{map:wallTex,bumpMap:wallTex,bumpScale:0.0015,roughness:0.9}); });
 const FIN=Walk.Finish({THREE:THREE,anisotropy:ANISO,FL:FL,M:M,WM:WM,fabMats:fabMats});
 FIN.mapMat(FL.tile,'bathtile',1.8,true); FIN.mapMat(FL.stone,'genkantile',2.0,true); FIN.mapMat(FL.balc,'balctile',2.4);
 FIN.mapMat(FL.conc,'corrconc',2.0); FIN.paint(FL.conc,0xc9c7c2); FIN.mapMat(FL.wc,'balctile',2.4); FIN.paint(FL.wc,0xe8e8e6);
+FIN.mapMat(M.top,'counter',1.2,true); FIN.mapMat(M.bathWall,'wtbath',2.4,true); FIN.mapMat(M.wcTile,'wttoilet',1.6,true);
 FIN.loadCommon();
 FIN.applyPalette(Walk.THEMES.A);                // warm Scandinavian only for this house
 
@@ -297,13 +299,18 @@ function wall(l,x0,y0,x1,y1,t,opens){
   const part=function(s,e,yb,yt){
     const mid=(s+e)/2, off=t/2+0.06, edge=WM.outside;
     const neg=horiz?wallRoleAt(l,mid,c-off):wallRoleAt(l,c-off,mid), pos=horiz?wallRoleAt(l,mid,c+off):wallRoleAt(l,c+off,mid);
-    const mats=horiz?[edge,edge,edge,edge,WM[pos],WM[neg]]:[WM[pos],WM[neg],edge,edge,edge,edge];   // BoxGeometry faces: +x -x +y -y +z -z
+    const fm=function(r){ return r==='bath'?M.bathWall:WM[r]; };                // the bath is tiled floor to ceiling
+    const mats=horiz?[edge,edge,edge,edge,fm(pos),fm(neg)]:[fm(pos),fm(neg),edge,edge,edge,edge];   // BoxGeometry faces: +x -x +y -y +z -z
     if(horiz) bx(grp,s,e,c-t/2,c+t/2,b+yb,b+yt,mats); else bx(grp,c-t/2,c+t/2,s,e,b+yb,b+yt,mats);
     if(yb>0) return;
-    [[neg,-1],[pos,1]].forEach(function(q){       // 6 cm skirting board on room faces (not outside, not the tiled bath)
+    const skin=function(sd,d,y0,y1,mt){             // thin layer on one face: sd = -1 / +1 side, d = thickness
+      const f0=c+sd*t/2, f1=f0+sd*d;
+      if(horiz) bx(grp,s,e,Math.min(f0,f1),Math.max(f0,f1),b+y0,b+y1,mt,{cast:false}); else bx(grp,Math.min(f0,f1),Math.max(f0,f1),s,e,b+y0,b+y1,mt,{cast:false});
+    };
+    [[neg,-1],[pos,1]].forEach(function(q){
+      if(q[0]==='wc'){ const h=Math.min(1.2,yt); skin(q[1],0.012,0,h,M.wcTile); if(h>=1.2) skin(q[1],0.018,1.2,1.225,M.trim); return; }   // toilet: 1.2 m tile wainscot with a capping rail
       if(q[0]==='outside'||q[0]==='bath') return;
-      const f0=c+q[1]*t/2, f1=f0+q[1]*0.012;
-      if(horiz) bx(grp,s,e,Math.min(f0,f1),Math.max(f0,f1),b,b+0.06,M.trim,{cast:false}); else bx(grp,Math.min(f0,f1),Math.max(f0,f1),s,e,b,b+0.06,M.trim,{cast:false});
+      skin(q[1],0.012,0,0.06,M.trim);              // 6 cm skirting board
     });
   };
   const piece=function(s,e,yb,yt,col){
@@ -467,7 +474,7 @@ function floorAt(x,z,py){
 })();
 
 /* ---------- catalogue furniture ---------- */
-const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,fab:fab,get lampMat(){ return lampMat; },rnd:rnd,contactShadow:contactShadow,ceilingH:CH,anisotropy:ANISO,enableLocalClipping:function(){ renderer.localClippingEnabled=true; }});
+const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,fab:fab,get lampMat(){ return lampMat; },rnd:rnd,fabricTex:fabricTex,contactShadow:contactShadow,ceilingH:CH,anisotropy:ANISO,enableLocalClipping:function(){ renderer.localClippingEnabled=true; }});
 const furnG=[0,1,2].map(function(l){ const g=new THREE.Group(); LG[l].add(g); return g; });
 const tvList=[], furnThings=[], furnAnims=[];
 /* furniture system (lib/furniture.js): every placed item is one catalogue object wrapped as a movable set on its storey */
@@ -515,15 +522,29 @@ const LAYOUT=[
 LAYOUT.forEach(function(e){ placeItem(e[0],e[1],e[2],WX(e[2],e[3]),WZ(e[2],e[4]),Catalog.turnsToFace(e[1],e[5])); });
 FS.restoreExtras();
 FS.movers.forEach(FS.apply);
-/* built-in kitchen (part of the building, not furniture) */
-function builtin(l,px0,py0,px1,py1,y0,h,mat,col){
-  const a=WX(l,px0), c=WX(l,px1), d=WZ(l,py0), e=WZ(l,py1), b=base(l)+y0;
-  bx(LG[l],a,c,d,e,b,b+h,mat);
-  if(col){ addCol(l,a,c,d,e,base(l),base(l)+1.0,'x'); contactShadow(a,c,d,e,base(l),LG[l]); }
+/* built-in kitchen and bath (part of the building, not furniture): shared fixtures from lib/catalog.js */
+function fixture(l,piece,wx,wz,rotQ){
+  rotQ=((rotQ||0)%4+4)%4;
+  const Rg=new THREE.Group(); Rg.position.set(wx,base(l),wz); Rg.rotation.y=rotQ*Math.PI/2; Rg.add(piece.group); LG[l].add(Rg);
+  piece.cols.forEach(function(c){
+    let x0=c.x0,x1=c.x1,z0=c.z0,z1=c.z1;
+    for(let k=0;k<rotQ;k++){ const a=z0,b2=z1,d=-x1,e=-x0; x0=a; x1=b2; z0=d; z1=e; }
+    addCol(l,x0+wx,x1+wx,z0+wz,z1+wz,base(l),base(l)+1.0,'x');
+  });
+  return Rg;
 }
-builtin(1,950,568,1160,660,0,0.86,M.cabF,true); builtin(1,950,568,1160,660,0.86,0.04,M.top,false);
-builtin(1,1160,580,1255,655,0,0.86,M.cabF,true); builtin(1,1160,580,1255,655,0.86,0.04,M.top,false);
-builtin(1,985,590,1100,640,0.87,0.012,M.sink,false); builtin(1,1180,595,1240,640,0.9,0.012,M.hob,false);
+(function(){                                   // island counter facing the LDK: sink, tap, dish rack, IH hob and a hood hanging from the ceiling
+  const K=function(px,py){ return [WX(1,px),WZ(1,py)]; }, o=K(950,568), w=(1255-950)*S, d=(660-568)*S;
+  fixture(1,Catalog.sinkCounter(w,d,[(985-950)*S,(1080-950)*S,(580-568)*S,(630-568)*S],6),o[0],o[1],0);
+  let p=K(1205,612); fixture(1,Catalog.ihHob(),p[0],p[1],0); fixture(1,Catalog.rangeHood(CH),p[0],p[1],0);
+  p=K(1032,643); fixture(1,Catalog.mixerTap(),p[0],p[1],0);
+  p=K(996,649); fixture(1,Catalog.dishRack(),p[0],p[1],0);
+  p=K(1068,646); fixture(1,Catalog.dishSoap(),p[0],p[1],0);
+})();
+(function(){                                   // bath: wall set (counter, toiletries, mixer, shower) on the north wall, stool and wash bowl
+  fixture(1,Catalog.bathWallSet(),WX(1,1110),WZ(1,160)+TE/2,0);
+  fixture(1,Catalog.bathStool(),WX(1,1100),WZ(1,300),0); fixture(1,Catalog.washBowl(),WX(1,1140),WZ(1,345),0);
+})();
 function light(l,px,py,col,int,dist){
   const p=new THREE.PointLight(col||0xffe2b8,int*PLI,dist||6,2); p.position.set(WX(l,px),base(l)+CH-0.25,WZ(l,py)); LG[l].add(p); pointLights.push(p);
   const L=Catalog.ceilingLight(CH); L.group.position.set(WX(l,px),base(l),WZ(l,py)); LG[l].add(L.group);
@@ -668,7 +689,10 @@ function updateAct(){
   let best=null, bd=1.35;
   if(mode==='walk'){
     const fxv=-Math.sin(player.yaw), fzv=-Math.cos(player.yaw), pl=levelOf(player.py);
-    things.concat(furnThings).forEach(function(t){ if(t.l!==pl||(t.on&&!t.on())) return; const vx=t.pt[0]-player.x, vz=t.pt[1]-player.z, d=Math.hypot(vx,vz); if(d<bd&&(d<0.6||(vx*fxv+vz*fzv)/d>0.45)){ bd=d; best=t; } });
+    const here=roomAt(pl,player.x,player.z).n;
+    things.concat(furnThings).forEach(function(t){ if(t.l!==pl||(t.on&&!t.on())) return;
+      if(furnThings.indexOf(t)>=0){ if(roomAt(pl,t.pt[0],t.pt[1]).n!==here) return; }   // furniture and curtains: only from the same room, not through a wall
+      const vx=t.pt[0]-player.x, vz=t.pt[1]-player.z, d=Math.hypot(vx,vz); if(d<bd&&(d<0.6||(vx*fxv+vz*fzv)/d>0.45)){ bd=d; best=t; } });
   }
   curThing=best; if(best){ bAct.textContent=best.label(); bAct.hidden=false; } else bAct.hidden=true;
 }

@@ -959,7 +959,7 @@ solid(862,1688,870,1763,BASE,2.0,M.board,'w');
 })();
 
 /* ---------- shared furniture catalogue (lib/catalog.js) + placement in this house's plan pixels ---------- */
-const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,fab:fab,get lampMat(){ return lampMat; },rnd:rnd,contactShadow:contactShadow,ceilingH:H,anisotropy:ANISO,enableLocalClipping:function(){ renderer.localClippingEnabled=true; }});
+const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,fab:fab,get lampMat(){ return lampMat; },rnd:rnd,fabricTex:fabricTex,contactShadow:contactShadow,ceilingH:H,anisotropy:ANISO,enableLocalClipping:function(){ renderer.localClippingEnabled=true; }});
 function placePiece(piece,wx,wz,rotQ){         // add a catalogue piece to the furniture group at world (wx,wz); rotQ = quarter turns, counter-clockwise seen from above
   rotQ=((rotQ||0)%4+4)%4;
   const R=new THREE.Group(); R.position.set(wx,floorY(wx,wz),wz); R.rotation.y=rotQ*Math.PI/2; R.add(piece.group); furn.add(R);
@@ -971,80 +971,26 @@ function placePiece(piece,wx,wz,rotQ){         // add a catalogue piece to the f
   });
   return R;
 }
+function fixture(piece,wx,wz,rotQ){            // a built-in catalogue piece (kitchen, bath): added to the scene, its rectangles become fixed colliders
+  rotQ=((rotQ||0)%4+4)%4;
+  const R=new THREE.Group(); R.position.set(wx,0,wz); R.rotation.y=rotQ*Math.PI/2; R.add(piece.group); scene.add(R);
+  piece.cols.forEach(function(c){
+    let x0=c.x0,x1=c.x1,z0=c.z0,z1=c.z1;
+    for(let k=0;k<rotQ;k++){ const a=z0,b=z1,d=-x1,e=-x0; x0=a; x1=b; z0=d; z1=e; }
+    addCol(x0+wx,x1+wx,z0+wz,z1+wz,'x');
+  });
+  return R;
+}
 function plant(cx,cy,sz){ return placePiece(Catalog.plant(sz),X(cx),Z(cy),0); }
 function chair(cx,cy,dz){ return placePiece(Catalog.chair(dz),X(cx),Z(cy),0); }
 function roundRug(px,pz,R,style,lobes,amp,shag){ return placePiece(Catalog.roundRug(R,style,lobes,amp,shag),X(px),Z(pz),0); }
 /* ---------- fixtures ---------- */
 /* kitchen counter, sink, hob */
-(function(){                                   // counter cabinet hollowed under the sink; worktop with a rounded cut-out; stainless bowl that really goes down
-  const cx0=X(672), cx1=X(857), cz0=Z(1130), cz1=Z(1213);
-  const tx0=cx0-0.01, tx1=cx1, tz0=cz0-0.01, tz1=cz1+0.04, sx0=X(684), sx1=X(751), sz0=Z(1138), sz1=Z(1180), o={pick:false}, oc={pick:false,cast:false};
-  addCol(cx0,cx1,cz0,cz1,'x'); contactShadow(cx0,cx1,cz0,cz1,floorY((cx0+cx1)/2,(cz0+cz1)/2));
-  box(cx0,sx0,cz0,cz1,0,0.84,M.cab); box(sx1,cx1,cz0,cz1,0,0.84,M.cab);
-  box(sx0,sx1,cz0,sz0,0,0.84,M.cab); box(sx0,sx1,sz1,cz1,0,0.84,M.cab); box(sx0,sx1,sz0,sz1,0,0.6,M.cab);
-  const rr=function(x0,x1,z0,z1,r,n){          // rounded-rectangle outline as [x,z] points
-    const pts=[], cs=[[x1-r,z1-r,0],[x0+r,z1-r,Math.PI/2],[x0+r,z0+r,Math.PI],[x1-r,z0+r,1.5*Math.PI]];
-    cs.forEach(function(c){ for(let i=0;i<=n;i++){ const a=c[2]+i/n*Math.PI/2; pts.push([c[0]+Math.cos(a)*r,c[1]+Math.sin(a)*r]); } });
-    return pts;
-  };
-  const flat=function(pts){ return pts.map(function(q){ return new THREE.Vector2(q[0],-q[1]); }); };   // shape y = -world z
-  const plate=function(outer,hole,y0,depth,mat){
-    const sh=new THREE.Shape(outer); if(hole) sh.holes.push(new THREE.Path(hole));
-    const g=new THREE.ExtrudeGeometry(sh,{depth:depth,bevelEnabled:false,curveSegments:1});
-    const m=new THREE.Mesh(g,mat); m.rotation.x=-Math.PI/2; m.position.y=y0; m.receiveShadow=true; m.castShadow=true; return place(m,o);
-  };
-  const R0=0.05, hole=flat(rr(sx0,sx1,sz0,sz1,R0,6));
-  plate([new THREE.Vector2(tx0,-tz0),new THREE.Vector2(tx1,-tz0),new THREE.Vector2(tx1,-tz1),new THREE.Vector2(tx0,-tz1)],hole,0.84,0.04,M.top);
-  const sinkM=lam(0xc9cdd1,{metalness:0.92,roughness:0.3,envMapIntensity:1.2,side:THREE.DoubleSide}), rimM=lam(0xdfe3e6,{metalness:0.95,roughness:0.2,envMapIntensity:1.3});
-  plate(flat(rr(sx0-0.014,sx1+0.014,sz0-0.014,sz1+0.014,R0+0.014,6)),hole,0.88,0.006,rimM);   // polished rim around the cut-out
-  /* bowl: loft through rounded rectangles, wall straight down then a rounded bottom edge, floor sloping to the drain */
-  const dx=(sx0+sx1)/2, dz=sz1-0.1, N=7, lv=[[0.879,0,R0],[0.74,0.004,R0-0.004],[0.722,0.02,R0-0.02],[0.714,0.045,0.03]];
-  const rings=lv.map(function(l){ return rr(sx0+l[1],sx1-l[1],sz0+l[1],sz1-l[1],l[2],N); }), n=rings[0].length, pos=[], idx=[];
-  rings.forEach(function(r,k){ r.forEach(function(q){ pos.push(q[0],lv[k][0],q[1]); }); });
-  pos.push(dx,0.703,dz); const ctr=rings.length*n;
-  for(let k=0;k<rings.length-1;k++) for(let i=0;i<n;i++){ const a=k*n+i, b=k*n+(i+1)%n, c=(k+1)*n+i, d=(k+1)*n+(i+1)%n; idx.push(a,c,b,b,c,d); }
-  for(let i=0;i<n;i++) idx.push((rings.length-1)*n+i,ctr,(rings.length-1)*n+(i+1)%n);
-  const bg=new THREE.BufferGeometry(); bg.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); bg.setIndex(idx); bg.computeVertexNormals();
-  const bowl=new THREE.Mesh(bg,sinkM); bowl.receiveShadow=true; place(bowl,oc);
-  /* strainer: ring, perforated disc, tiny holes */
-  const ring=new THREE.Mesh(new THREE.TorusGeometry(0.046,0.005,8,28),rimM); ring.rotation.x=Math.PI/2; ring.position.set(dx,0.706,dz); place(ring,oc);
-  cyl(dx,dz,0.042,0.042,0.7025,0.7055,M.dark,oc,24);
-  for(let i=0;i<9;i++){ const a=i/9*TAU, r=i?0.022:0, h=new THREE.Mesh(new THREE.CircleGeometry(0.0045,8),lam(0x0c0d0e)); h.rotation.x=-Math.PI/2; h.position.set(dx+Math.cos(a)*r,0.7062,dz+Math.sin(a)*r); place(h,oc); }
-  cyl(dx,dz,0.016,0.016,0.7055,0.7062,rimM,oc,16);
-  box(X(672),X(857),Z(1130)-0.012,Z(1130),0,0.1,M.dark,oc);           // plinth on the cook's side
-  cabDoors('x',X(672),X(857),Z(1130),-1,0.1,0.83,5,false);
-})();
-box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.hob,{pick:false});
-[[803,1148],[829,1148],[816,1166]].forEach(function(p){
-  const r=new THREE.Mesh(new THREE.TorusGeometry(0.055,0.009,8,20),M.steel); r.rotation.x=Math.PI/2; r.position.set(X(p[0]),0.895,Z(p[1])); scene.add(r);
-  cyl(X(p[0]),Z(p[1]),0.035,0.035,0.89,0.9,M.dark,{pick:false,cast:false},14);
-});
-(function(){                                   // gooseneck mixer tap with a side lever, dish rack, dish soap and sponge on the back strip
-  const o={pick:false}, oc={pick:false,cast:false}, fx=X(718), fz=Z(1192);
-  const chrome=lam(0xdfe3e6,{metalness:0.95,roughness:0.18,envMapIntensity:1.3});
-  cyl(fx,fz,0.034,0.04,0.88,0.896,chrome,o,28);                                              // flange
-  cyl(fx,fz,0.02,0.024,0.896,1.03,chrome,o,24);                                             // body
-  const path=new THREE.CatmullRomCurve3([[0,1.03],[0,1.13],[0.004,1.21],[0.05,1.262],[0.13,1.27],[0.2,1.225],[0.222,1.14]].map(function(q){ return new THREE.Vector3(fx,q[1],fz-q[0]); }));
-  const neck=new THREE.Mesh(new THREE.TubeGeometry(path,48,0.0105,12,false),chrome); neck.castShadow=true; place(neck,oc);
-  cyl(fx,fz-0.222,0.0135,0.012,1.085,1.145,chrome,oc,16);                                    // aerator
-  cyl(fx,fz-0.222,0.01,0.01,1.083,1.086,M.dark,oc,12);
-  const lever=new THREE.Mesh(new THREE.CylinderGeometry(0.0065,0.0065,0.1,12),chrome); lever.rotation.z=Math.PI/2-0.35; lever.position.set(fx+0.052,1.0+0.017,fz); lever.castShadow=true; place(lever,oc);
-  rbox(fx+0.082,fx+0.108,fz-0.012,fz+0.012,1.026,1.04,0.005,chrome,oc);                     // lever paddle
-  /* dish rack left of the tap: tray, wire posts and rails, four plates, two mugs */
-  const rx0=X(685), rx1=X(712), rz0=Z(1189), rz1=Z(1211), rk=lam(0x5d6168,{roughness:0.5});
-  rbox(rx0,rx1,rz0,rz1,0.88,0.89,0.008,lam(0xe6e9ea,{roughness:0.5}),o);
-  [[rx0+0.02,rz0+0.02],[rx0+0.02,rz1-0.02],[rx1-0.02,rz0+0.02],[rx1-0.02,rz1-0.02]].forEach(function(q){ cyl(q[0],q[1],0.003,0.003,0.89,0.99,rk,oc,6); });
-  [rz0+0.02,rz1-0.02].forEach(function(z){ const r=cyl((rx0+rx1)/2,z,0.003,0.003,0,1,rk,oc,6); r.rotation.z=Math.PI/2; r.scale.y=rx1-rx0-0.04; r.position.y=0.9; });
-  [0,1,2,3].forEach(function(i){ const pl=new THREE.Mesh(new THREE.CylinderGeometry(0.095,0.095,0.012,28),lam(i%2?0xf3f1ea:0xdfe9ee,{roughness:0.2})); pl.rotation.z=Math.PI/2; pl.position.set(rx0+0.05+i*0.05,0.99,(rz0+rz1)/2); pl.castShadow=true; place(pl,oc); });
-  [0,1].forEach(function(i){ cyl(rx0+0.07+i*0.14,rz1-0.035,0.04,0.034,0.89,0.95,i?M.ceramic:lam(0x6f8fa8,{roughness:0.3}),oc,16); });
-  /* dish soap pump bottle and sponge to the right of the tap */
-  const sx=X(738), sz=Z(1197), bm=lam(0x8fc16b,{roughness:0.25,transparent:true,opacity:0.92});
-  cyl(sx,sz,0.034,0.036,0.88,1.04,bm,o,20); cyl(sx,sz,0.016,0.02,1.04,1.06,bm,oc,14);
-  cyl(sx,sz,0.006,0.006,1.06,1.09,lam(0xf2f2f2),oc,8); box(sx-0.012,sx+0.032,sz-0.009,sz+0.009,1.09,1.102,lam(0xf2f2f2),oc);
-  const lb2=lam(0xf4f1ea,{roughness:0.6}); cyl(sx,sz,0.0345,0.0365,0.93,0.99,lb2,oc,20);
-  rbox(X(748),X(748)+0.1,Z(1205)-0.035,Z(1205)+0.035,0.88,0.915,0.012,lam(0xf2c46b,{roughness:1,bumpMap:fabricTex,bumpScale:0.006}),oc);   // sponge
-  rbox(X(748),X(748)+0.1,Z(1205)-0.035,Z(1205)+0.035,0.915,0.925,0.008,lam(0x4f9f6a,{roughness:1,bumpMap:fabricTex,bumpScale:0.006}),oc);
-})();
+fixture(Catalog.sinkCounter(X(857)-X(672),Z(1213)-Z(1130),[X(684)-X(672),X(751)-X(672),Z(1138)-Z(1130),Z(1180)-Z(1130)],5),X(672),Z(1130),0);   // counter hollowed under the sink, stainless bowl
+fixture(Catalog.ihHob(),X(816),Z(1156),0);
+fixture(Catalog.mixerTap(),X(718),Z(1192),0);                                       // gooseneck mixer tap, dish rack, dish soap and sponge on the back strip
+fixture(Catalog.dishRack(),(X(685)+X(712))/2,(Z(1189)+Z(1211))/2,0);
+fixture(Catalog.dishSoap(),X(738),Z(1197),0);
 /* toilet: tank, bowl, seat and the small hand-wash counter */
 (function(){
   const zc=Z(1060);
@@ -1143,56 +1089,9 @@ box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.hob,{pick:false});
   box(X(715)-0.01,X(755)+0.01,Z(806)+0.074,Z(806)+0.082,0.99,1.71,M.frame,{pick:false});
   mirror(X(735),Z(806)+0.084,0.48,0.7,1.35,0);
 })();
-(function(){                                   // bath toiletries: wall shelf with pump bottles, face wash and soap; bath stool and wash bowl on the floor; sponge on the tub rim
-  const o={pick:false}, oc={pick:false,cast:false};
-  const wz=Z(806)+0.072, sy=0.79;
-  const steelM=lam(0xd6dade,{metalness:0.85,roughness:0.25,envMapIntensity:1}), whiteP=lam(0xf6f6f3,{roughness:0.25});
-  rbox(X(700),X(785),wz,wz+0.13,sy-0.03,sy,0.01,whiteP,o);                                       // counter under the mirror (unit-bath style)
-  /* thermostatic mixer under the counter, slide bar right of the mirror, hand shower on its holder with the hose looping down */
-  rbox(X(714),X(756),wz,wz+0.06,0.58,0.64,0.025,steelM,o);
-  [X(714)+0.02,X(756)-0.02].forEach(function(x){ const k=cyl(x,wz+0.07,0.03,0.03,0.58,0.64,lam(0xeceeef,{roughness:0.3}),oc,18); k.rotation.x=Math.PI/2; k.position.y=0.61; k.position.z=wz+0.07; });
-  cyl(X(735),wz+0.04,0.012,0.012,0.53,0.58,steelM,oc,10);                                        // tap spout
-  const barX=X(775), barZ=wz+0.035;
-  cyl(barX,barZ,0.012,0.012,1.1,1.9,steelM,o,10);
-  [1.1,1.9].forEach(function(y){ box(barX-0.015,barX+0.015,wz,barZ+0.012,y-0.015,y+0.015,steelM,oc); });
-  const hy=1.62, hz=wz+0.075, tilt=0.45;
-  box(barX-0.02,barX+0.02,barZ-0.01,hz,hy-0.035,hy-0.005,steelM,oc);                               // holder
-  const SH=new THREE.Group(); SH.position.set(barX,hy,hz); SH.rotation.x=tilt; scene.add(SH);
-  const shm=function(geo,mat,y,rx){ const m=new THREE.Mesh(geo,mat); m.position.y=y; if(rx) m.rotation.x=rx; m.castShadow=true; SH.add(m); return m; };
-  shm(new THREE.CylinderGeometry(0.014,0.012,0.22,14),steelM,-0.01);
-  const hd=shm(new THREE.CylinderGeometry(0.052,0.046,0.03,28),steelM,0.13,Math.PI/2); hd.position.z=0.012;
-  const face=shm(new THREE.CircleGeometry(0.044,28),lam(0x9aa3aa,{roughness:0.5}),0.13); face.position.z=0.028;
-  const hb=new THREE.Vector3(barX,hy-0.12*Math.cos(tilt),hz-0.12*Math.sin(tilt));
-  const hose=new THREE.CatmullRomCurve3([new THREE.Vector3(X(756)-0.02,0.58,wz+0.04),new THREE.Vector3(X(762),0.3,wz+0.12),new THREE.Vector3(X(770),0.42,wz+0.13),new THREE.Vector3(barX+0.02,0.95,wz+0.1),hb]);
-  const hm=new THREE.Mesh(new THREE.TubeGeometry(hose,48,0.008,8,false),steelM); hm.castShadow=true; scene.add(hm);
-  const pump=function(x,col,label,h){                                                            // 480 ml pump bottle
-    const z=wz+0.07, m=lam(col,{roughness:0.25,envMapIntensity:0.8});
-    cyl(x,z,0.034,0.036,sy,sy+h,m,o,20);
-    cyl(x,z,0.0345,0.0365,sy+0.04,sy+0.08,lam(label,{roughness:0.6}),oc,20);                       // label band
-    cyl(x,z,0.016,0.02,sy+h,sy+0.018+h,m,oc,14);                                                   // shoulder
-    cyl(x,z,0.006,0.006,sy+0.018+h,sy+0.048+h,lam(0xf2f2f2,{roughness:0.4}),oc,10);               // pump stem
-    box(x-0.012,x+0.03,z-0.009,z+0.009,sy+0.048+h,sy+0.06+h,lam(0xf2f2f2,{roughness:0.4}),oc);   // pump head + nozzle
-  };
-  pump(X(736)+0.04,0xf4f1ea,0x8a9a86,0.15);                                                     // shampoo
-  pump(X(736)+0.12,0xe6dccb,0xb98368,0.15);                                                     // conditioner
-  pump(X(736)+0.2,0x9fb4c6,0xf4f1ea,0.16);                                                      // body wash
-  (function(){ const x=X(736)+0.27, z=wz+0.07;                                                   // face wash tube standing on its cap
-    cyl(x,z,0.014,0.014,sy,sy+0.018,lam(0x2e9e8f,{roughness:0.4}),oc,12);
-    rbox(x-0.022,x+0.022,z-0.011,z+0.011,sy+0.018,sy+0.158,0.008,lam(0xf7f7f4,{roughness:0.3}),o); })();
-  rbox(X(702)+0.02,X(702)+0.1,wz+0.03,wz+0.11,sy,sy+0.01,0.006,lam(0xd8e2e6,{roughness:0.2}),oc);   // soap dish
-  rbox(X(702)+0.03,X(702)+0.09,wz+0.045,wz+0.095,sy+0.01,sy+0.03,0.012,lam(0xf3e9d2,{roughness:0.5}),oc); // soap bar
-  /* bath stool (風呂椅子, 30 cm high) and wash bowl (風呂桶) on the floor */
-  const plast=lam(0xf4f5f3,{roughness:0.3}), grey=lam(0xb8c4cc,{roughness:0.35});
-  const sx=X(735), sz=Z(870);
-  rbox(sx-0.15,sx+0.15,sz-0.12,sz+0.12,0.27,0.3,0.03,plast,o);                                   // seat
-  [-1,1].forEach(function(sd){ box(sx+sd*0.13-0.015,sx+sd*0.13+0.015,sz-0.11,sz+0.11,0,0.27,plast,o); });   // side legs
-  box(sx-0.03,sx+0.03,sz-0.12,sz+0.12,0.27,0.272,grey,oc);
-  const bowl=new THREE.Mesh(new THREE.LatheGeometry([[0.001,0],[0.11,0],[0.13,0.11],[0.123,0.11],[0.104,0.007],[0.001,0.007]].map(function(q){ return new THREE.Vector2(q[0],q[1]); }),28),lam(0xb8c4cc,{roughness:0.3,side:THREE.DoubleSide}));
-  bowl.position.set(X(772),0,Z(905)); bowl.castShadow=true; bowl.receiveShadow=true; place(bowl,o);
-  addCol(sx-0.15,sx+0.15,sz-0.12,sz+0.12,'x'); contactShadow(sx-0.15,sx+0.15,sz-0.12,sz+0.12,0);
-  /* sponge on the tub rim */
-  rbox(X(787)+0.005,X(787)+0.055,Z(905)-0.07,Z(905)+0.0,0.55,0.585,0.012,lam(0xf2c46b,{roughness:1,bumpMap:fabricTex,bumpScale:0.006}),o);
-})();
+fixture(Catalog.bathWallSet(),(X(700)+X(785))/2,Z(806)+0.072,0);                     // bath counter with toiletries, mixer and shower bar
+fixture(Catalog.bathStool(),X(735),Z(870),0); fixture(Catalog.washBowl(),X(772),Z(905),0);
+rbox(X(787)+0.005,X(787)+0.055,Z(905)-0.07,Z(905)+0.0,0.55,0.585,0.012,lam(0xf2c46b,{roughness:1,bumpMap:fabricTex,bumpScale:0.006}),{pick:false});   // sponge on the tub rim
 (function(){                                   // light blue-grey wall panels inside the bath
   const lm=M.bathWall, t=0.012, h=2.1;
   const nx0=X(XC)+0.05, nx1=X(XE)-0.1, nz0=Z(806)+0.06, nz1=Z(928)-0.05;
@@ -1224,13 +1123,7 @@ box(X(798),X(833),Z(938),Z(994),1.5,2.1,M.cab,{pick:false});     // wall cabinet
 cabDoors('z',Z(938),Z(994),X(798),-1,1.5,2.1,2,true);
 rb(806,948,0.3,0.24,0.08,0.03,M.cushA,0.98,false); rb(806,972,0.3,0.24,0.07,0.03,M.pillow,0.98,false);   // folded towels
 /* kitchen: sloped range hood with chimney over the hob, wall cabinet on the east wall */
-(function(){
-  const hx=X(816), hz=Z(1156);
-  const hood=new THREE.Mesh(new THREE.CylinderGeometry(0.17,0.43,0.2,4),M.steel); hood.rotation.y=Math.PI/4; hood.scale.z=0.75;
-  hood.position.set(hx,1.6,hz); scene.add(hood);
-  box(hx-0.11,hx+0.11,hz-0.1,hz+0.1,1.7,H,M.steel,{pick:false});
-  box(hx-0.3,hx+0.3,hz-0.23,hz+0.23,1.5,1.505,M.dark,{pick:false,cast:false});
-})();
+fixture(Catalog.rangeHood(H),X(816),Z(1156),0);
 box(X(XE)-0.1-0.2,X(XE)-0.1,Z(1125),Z(1218),1.5,2.25,M.cab,{pick:false});
 cabDoors('z',Z(1125),Z(1218),X(XE)-0.3,-1,1.5,2.25,3,true);
 /* shoe-in closet shelves */
