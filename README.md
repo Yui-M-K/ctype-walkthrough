@@ -8,6 +8,7 @@
 - `ctype.html`: Ctype 這一棟，可單獨開啟。選單裡的「房子」區塊在被外殼載入時才會出現。
 - `lib/people.js`: 共用的人物（站姿／坐姿、臉、頭髮、衣服、姿勢預設）。`Walk.People(THREE,lam,fab)`。
 - `lib/furniture.js`: 共用的家具系統（移動、旋轉、碰撞、收進物品庫、縮圖、存檔、人物跟隨用的座標換算）。`Walk.FurnitureSystem(host)`，UI 由 `initUI(host)` 自己產生。
+- `lib/catalog.js`: 共用的家具庫。每件家具尺寸固定、用公尺、以自己的中心為原點畫出來；房子用 `placePiece(piece, x, z, 轉幾個 90°)` 決定放哪裡。目前有：沙發、茶几、餐桌組、電視櫃（含電視）、床、床頭櫃、棚付きヘッドボード、書桌（含 3D 列印機動畫）、辦公椅、書架、椅子、植物、邊桌、立燈、圓地毯、條紋地毯、行李箱、鞋子。`Walk.Catalog(env)` 需要房子提供材質（`M` 的各個欄位）、`lam`/`fab`、亂數、接地影等。
 - 這些檔案是普通的 `<script>`（不是 ES module），所以用 `file://` 也能載入。
 - 新增房子：放一個獨立的 `xxx.html`（貼圖、模型沿用 `textures/`、`models/`），在 `HOUSES` 加一筆；localStorage 的 key 要用各自的前綴（Ctype 用 `ctypeFurn.v1`、`ctypeLayout`）。
 

@@ -510,69 +510,7 @@ function garmentGeo(type,hh,w){
   s.quadraticCurveTo(0,-0.075,R[0][0],R[0][1]);
   return new THREE.ExtrudeGeometry(s,{depth:0.03,bevelEnabled:true,bevelThickness:0.006,bevelSize:0.006,bevelSegments:1});
 }
-/* ---------- shoes: side-profile extrusions (sneaker, ankle boot, loafer, pump, sandal), 9.2 cm wide, 27 cm long, toe toward local +x ---------- */
-const shoeGeoC={}, shoeMatC={}, SW=0.092;
-function shoeMat(c){ return shoeMatC[c]||(shoeMatC[c]=lam(c,{roughness:0.6})); }
-function shoeGeo(name,build){ return shoeGeoC[name]||(shoeGeoC[name]=build()); }
-function shoeExtr(shape,depth,bev){
-  const g=new THREE.ExtrudeGeometry(shape,{depth:depth-2*bev,bevelEnabled:true,bevelThickness:bev,bevelSize:bev,bevelSegments:2,curveSegments:8});
-  g.translate(0,0,-(depth-2*bev)/2);
-  const pos=g.attributes.position;                                       // plan view: heel rounded, ball widest, toe narrowing to a round tip
-  for(let i=0;i<pos.count;i++){
-    const x=pos.getX(i), t=x<-0.1?0.8+(x+0.14)/0.04*0.15:x<0.03?0.95+(x+0.1)/0.13*0.05:1-Math.pow(Math.max(0,(x-0.03)/0.12),1.8)*0.5;
-    pos.setZ(i,pos.getZ(i)*Math.max(0.45,t));
-  }
-  g.computeVertexNormals(); return g;
-}
-function shoeSole(h,heelH){                    // outline of a flat/low-heel sole, h thick
-  const s=new THREE.Shape(); s.moveTo(-0.132,0); s.lineTo(0.125,0); s.quadraticCurveTo(0.148,0,0.148,h*0.7); s.lineTo(0.148,h); s.quadraticCurveTo(0.14,h+0.004,0.12,h+0.004);
-  s.lineTo(-0.115,h+heelH); s.quadraticCurveTo(-0.138,h+heelH,-0.138,h+heelH-0.01); s.lineTo(-0.138,0.008); s.quadraticCurveTo(-0.138,0,-0.132,0); return s;
-}
-function shoeObj(kind,c1,c2){
-  const G=new THREE.Group();
-  const add=function(g,m,x,y,z,cast){ const me=new THREE.Mesh(g,m); me.position.set(x||0,y||0,z||0); me.castShadow=cast!==false; me.receiveShadow=true; G.add(me); return me; };
-  const bx=function(w,h,d){ return shoeGeo('b'+w+'_'+h+'_'+d,function(){ return new THREE.BoxGeometry(w,h,d); }); };
-  if(kind==='sneaker'){
-    add(shoeGeo('sneakerS',function(){ return shoeExtr(shoeSole(0.03,0),SW+0.004,0.004); }),shoeMat(c2||0xf1efe9));
-    add(shoeGeo('sneakerU',function(){
-      const s=new THREE.Shape(); s.moveTo(-0.125,0.03); s.lineTo(-0.13,0.075); s.quadraticCurveTo(-0.13,0.088,-0.115,0.086); s.lineTo(-0.075,0.074);
-      s.quadraticCurveTo(-0.05,0.07,-0.03,0.09); s.lineTo(-0.018,0.1); s.quadraticCurveTo(0.03,0.085,0.075,0.07); s.quadraticCurveTo(0.12,0.062,0.138,0.045); s.quadraticCurveTo(0.146,0.036,0.14,0.03); s.closePath();
-      return shoeExtr(s,SW,0.006); }),shoeMat(c1));
-    for(let i=0;i<4;i++){ const x=-0.005+0.024*i, y=0.098-0.32*(x+0.018)+0.002; add(bx(0.012,0.004,SW*0.8),shoeMat(0xf3f1ea),x,y,0,false).rotation.z=-0.31; }
-    add(bx(0.026,0.014,SW*0.5),shoeMat(c2||0xf1efe9),-0.118,0.066,0,false);
-    add(bx(0.05,0.006,SW*0.55),shoeMat(0x18181a),-0.096,0.083,0,false).rotation.z=-0.29;     // ankle opening
-  } else if(kind==='boot'){
-    add(shoeGeo('bootS',function(){ return shoeExtr(shoeSole(0.034,0),SW+0.004,0.004); }),shoeMat(0x242426));
-    add(bx(0.07,0.02,SW),shoeMat(0x242426),-0.095,0.044,0);
-    add(shoeGeo('bootU',function(){
-      const s=new THREE.Shape(); s.moveTo(-0.125,0.034); s.lineTo(-0.13,0.165); s.lineTo(-0.035,0.17); s.lineTo(-0.028,0.105); s.quadraticCurveTo(0.03,0.085,0.08,0.075);
-      s.quadraticCurveTo(0.125,0.068,0.14,0.05); s.quadraticCurveTo(0.148,0.04,0.142,0.034); s.closePath(); return shoeExtr(s,SW,0.008); }),shoeMat(c1));
-    add(bx(0.012,0.1,SW*0.3),shoeMat(0x1c1c1e),-0.03,0.12,0,false);
-    add(bx(0.09,0.006,SW*0.7),shoeMat(0x151516),-0.082,0.171,0,false);                     // top opening of the shaft
-  } else if(kind==='loafer'){
-    add(shoeGeo('loaferS',function(){ return shoeExtr(shoeSole(0.02,0.012),SW+0.002,0.003); }),shoeMat(0x2a2220));
-    add(shoeGeo('loaferU',function(){
-      const s=new THREE.Shape(); s.moveTo(-0.126,0.034); s.lineTo(-0.129,0.066); s.quadraticCurveTo(-0.128,0.076,-0.112,0.074); s.lineTo(-0.045,0.066);
-      s.quadraticCurveTo(-0.025,0.062,-0.012,0.08); s.quadraticCurveTo(0.03,0.078,0.075,0.066); s.quadraticCurveTo(0.125,0.058,0.138,0.046); s.quadraticCurveTo(0.146,0.038,0.14,0.034); s.closePath();
-      return shoeExtr(s,SW,0.006); }),shoeMat(c1));
-    add(bx(0.03,0.01,SW*0.9),shoeMat(c2||0x8a6a4a),0.03,0.077,0,false);
-    add(bx(0.05,0.006,SW*0.6),shoeMat(0x151516),-0.08,0.074,0,false).rotation.z=-0.1;     // opening
-  } else if(kind==='pump'){
-    add(shoeGeo('pumpS',function(){
-      const s=new THREE.Shape(); s.moveTo(0.148,0.004); s.quadraticCurveTo(0.148,0,0.138,0); s.lineTo(0.05,0); s.lineTo(-0.04,0.035); s.lineTo(-0.115,0.07); s.lineTo(-0.134,0.078); s.lineTo(-0.134,0.09);
-      s.lineTo(-0.115,0.088); s.lineTo(-0.04,0.052); s.lineTo(0.05,0.014); s.lineTo(0.14,0.014); s.closePath(); return shoeExtr(s,SW*0.85,0.003); }),shoeMat(c1));
-    add(shoeGeo('pumpV',function(){
-      const s=new THREE.Shape(); s.moveTo(0.146,0.012); s.quadraticCurveTo(0.146,0.034,0.12,0.046); s.quadraticCurveTo(0.09,0.056,0.05,0.05); s.lineTo(0.02,0.026); s.lineTo(0.06,0.014); s.closePath(); return shoeExtr(s,SW,0.006); }),shoeMat(c1));
-    add(shoeGeo('pumpH',function(){
-      const s=new THREE.Shape(); s.moveTo(-0.136,0.09); s.lineTo(-0.132,0.13); s.quadraticCurveTo(-0.12,0.135,-0.09,0.118); s.lineTo(-0.07,0.088); s.lineTo(-0.1,0.074); s.closePath(); return shoeExtr(s,SW*0.9,0.005); }),shoeMat(c1));
-    const heel=add(shoeGeo('heelCone',function(){ return new THREE.CylinderGeometry(0.009,0.005,0.08,10); }),shoeMat(c1),-0.125,0.04,0);
-  } else {                                                   // sandal / slide
-    add(shoeGeo('sandalS',function(){ return shoeExtr(shoeSole(0.026,0),SW+0.006,0.006); }),shoeMat(c2||0xcdb89a));
-    add(bx(0.06,0.026,SW+0.002),shoeMat(c1),0.03,0.045,0);
-    add(bx(0.022,0.02,SW+0.002),shoeMat(c1),-0.07,0.04,0);
-  }
-  return G;
-}
+function shoeObj(kind,c1,c2){ return Catalog.shoe(kind,c1,c2); }   // shoes now live in lib/catalog.js
 function shelfItems(x0,x1,z0,z1,boards,kind){  // shoes or storage boxes on the lower boards of a shelf
   const alongZ=(z1-z0)>(x1-x0), depth=alongZ?(x1-x0):(z1-z0), len=alongZ?(z1-z0):(x1-x0), o={group:furn,detail:true,pick:false};
   const cc=alongZ?(x0+x1)/2:(z0+z1)/2, start=alongZ?z0:x0;
@@ -1055,6 +993,22 @@ solid(862,1688,870,1763,BASE,2.0,M.board,'w');
   [590,737].forEach(function(p){ box(X(p)-0.015,X(p)+0.015,Z(1738)-0.015,Z(1738)+0.015,2.05,H,M.steel,{pick:false}); });
 })();
 
+/* ---------- shared furniture catalogue (lib/catalog.js) + placement in this house's plan pixels ---------- */
+const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,fab:fab,get lampMat(){ return lampMat; },rnd:rnd,rugTex:rugTex,contactShadow:contactShadow,ceilingH:H,anisotropy:ANISO,enableLocalClipping:function(){ renderer.localClippingEnabled=true; }});
+function placePiece(piece,wx,wz,rotQ){         // add a catalogue piece to the furniture group at world (wx,wz); rotQ = quarter turns, counter-clockwise seen from above
+  rotQ=((rotQ||0)%4+4)%4;
+  const R=new THREE.Group(); R.position.set(wx,floorY(wx,wz),wz); R.rotation.y=rotQ*Math.PI/2; R.add(piece.group); furn.add(R);
+  piece.group.traverse(function(o){ if(o.isMesh){ furnMeshes.push(o); if(o.userData.detail) detailMeshes.push(o); } });
+  piece.cols.forEach(function(c){
+    let x0=c.x0,x1=c.x1,z0=c.z0,z1=c.z1;
+    for(let k=0;k<rotQ;k++){ const a=z0,b=z1,d=-x1,e=-x0; x0=a; x1=b; z0=d; z1=e; }
+    furnCols.push({x0:x0+wx,x1:x1+wx,z0:z0+wz,z1:z1+wz,kind:'f'});
+  });
+  return R;
+}
+function plant(cx,cy,sz){ return placePiece(Catalog.plant(sz),X(cx),Z(cy),0); }
+function chair(cx,cy,dz){ return placePiece(Catalog.chair(dz),X(cx),Z(cy),0); }
+function roundRug(px,pz,R,style,lobes,amp,shag){ return placePiece(Catalog.roundRug(R,style,lobes,amp,shag),X(px),Z(pz),0); }
 /* ---------- fixtures ---------- */
 /* kitchen counter, sink, hob */
 (function(){                                   // counter cabinet hollowed under the sink; worktop with a rounded cut-out; stainless bowl that really goes down
@@ -1336,32 +1290,7 @@ clothes(423,872,457,942,1.75,0.5,1.0,6);
 clothes(524,833,554,948,1.75,0.5,1.0,10);
 /* ---------- luggage in the multi-purpose room: standing against the rack, big face toward the aisle (each one movable in edit mode) ---------- */
 function suitcase(id,label,xb,zc,W,H,D,col,ribCol,soft){
-  mvBegin();
-  const o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
-  const x1=X(xb), x0=x1-D, cz=Z(zc), z0=cz-W/2, z1=cz+W/2, y0=0.055, xm=(x0+x1)/2;
-  const body=soft?fab(col):lam(col,{roughness:0.3,envMapIntensity:0.8}), dk=lam(0x1c1d20,{roughness:0.55}), steelL=lam(0xb9bec4,{metalness:0.8,roughness:0.3});
-  rbox(x0,x1,z0,z1,y0,H,soft?0.05:0.045,body,o);
-  box(xm-0.002,xm+0.002,z0+0.03,z1-0.03,H,H+0.0015,dk,oc);                                       // seam / zipper line over the top
-  [z0,z1].forEach(function(z,i){ box(xm-0.002,xm+0.002,i?z:z-0.0015,i?z+0.0015:z,y0+0.04,H-0.04,dk,oc); });   // ...and down both sides
-  if(!soft){
-    const rib=lam(ribCol,{roughness:0.35}), n=7;
-    for(let i=1;i<=n;i++){ const zr=z0+W*i/(n+1); box(x0-0.004,x0+0.001,zr-0.009,zr+0.009,y0+0.07,H-0.07,rib,oc); }   // vertical ribs on the shell
-    rbox(x1-0.075,x1-0.005,cz-0.05,cz+0.05,H,H+0.006,0.003,dk,oc);                                // telescopic-handle housing
-  } else {
-    rbox(x0-0.014,x0,z0+W*0.1,z1-W*0.1,y0+0.08,y0+(H-y0)*0.5,0.02,fab(0x2f3237),o);                 // front pocket
-    box(x0-0.014,x0-0.012,z0+W*0.12,z1-W*0.12,y0+(H-y0)*0.5-0.014,y0+(H-y0)*0.5-0.01,steelL,oc);   // pocket zipper
-    rbox(x0-0.003,x0,z1-0.11,z1-0.05,H-0.07,H-0.045,0.004,steelL,oc);                              // small badge
-    rbox(x1-0.075,x1-0.005,cz-0.05,cz+0.05,H,H+0.006,0.003,dk,oc);
-  }
-  rbox(xm-0.035,xm+0.035,cz-0.1,cz+0.1,H,H+0.012,0.004,dk,oc);                                     // top handle: base plate, grip, two posts
-  rbox(xm-0.012,xm+0.012,cz-0.085,cz+0.085,H+0.027,H+0.042,0.006,dk,oc);
-  [-1,1].forEach(function(sd){ box(xm-0.01,xm+0.01,cz+sd*0.08-0.01,cz+sd*0.08+0.01,H+0.012,H+0.032,dk,oc); });
-  [[x0+0.07,z0+0.075],[x0+0.07,z1-0.075],[x1-0.07,z0+0.075],[x1-0.07,z1-0.075]].forEach(function(q){   // spinner wheels
-    box(q[0]-0.022,q[0]+0.022,q[1]-0.02,q[1]+0.02,0.032,y0+0.004,dk,oc);
-    const w=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.018,14),dk); w.rotation.x=Math.PI/2; w.position.set(q[0],0.02,q[1]); w.castShadow=true; place(w,oc);
-  });
-  furnCols.push({x0:x0,x1:x1,z0:z0,z1:z1,kind:'f'}); contactShadow(x0,x1,z0,z1,0,furn);
-  return mvEnd(id,label);
+  mvBegin(); placePiece(Catalog.suitcase(W,H,D,col,ribCol,soft),X(xb),Z(zc),0); return mvEnd(id,label);
 }
 suitcase('lug30','30 吋行李箱（粉紅）',522,914.5,0.52,0.78,0.31,0xee9db5,0xd9809b,false);
 suitcase('lug29','29 吋行李箱（黑色軟殼）',522,959.4,0.49,0.77,0.33,0x26282c,0,true);
@@ -1372,22 +1301,6 @@ suitcase('lug24','24 吋行李箱（粉紅）',522,999.8,0.41,0.66,0.26,0xf6bccb
 const lampMat=new THREE.MeshBasicMaterial({color:0xffdc96});
 M.shade=lam(0xf2d9a6,{emissive:0x8a6428,side:THREE.DoubleSide,roughness:0.9});
 function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:furn,cast:false,open:true},20); }
-/* ---------- shared furniture catalogue (lib/catalog.js) + placement in this house's plan pixels ---------- */
-const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,lampMat:lampMat,rnd:rnd,rugTex:rugTex,contactShadow:contactShadow,ceilingH:H,enableLocalClipping:function(){ renderer.localClippingEnabled=true; }});
-function placePiece(piece,wx,wz,rotQ){         // add a catalogue piece to the furniture group at world (wx,wz); rotQ = quarter turns, counter-clockwise seen from above
-  rotQ=((rotQ||0)%4+4)%4;
-  const R=new THREE.Group(); R.position.set(wx,floorY(wx,wz),wz); R.rotation.y=rotQ*Math.PI/2; R.add(piece.group); furn.add(R);
-  piece.group.traverse(function(o){ if(o.isMesh){ furnMeshes.push(o); if(o.userData.detail) detailMeshes.push(o); } });
-  piece.cols.forEach(function(c){
-    let x0=c.x0,x1=c.x1,z0=c.z0,z1=c.z1;
-    for(let k=0;k<rotQ;k++){ const a=z0,b=z1,d=-x1,e=-x0; x0=a; x1=b; z0=d; z1=e; }
-    furnCols.push({x0:x0+wx,x1:x1+wx,z0:z0+wz,z1:z1+wz,kind:'f'});
-  });
-  return R;
-}
-function plant(cx,cy,sz){ return placePiece(Catalog.plant(sz),X(cx),Z(cy),0); }
-function chair(cx,cy,dz){ return placePiece(Catalog.chair(dz),X(cx),Z(cy),0); }
-function roundRug(px,pz,R,style,lobes,amp,shag){ return placePiece(Catalog.roundRug(R,style,lobes,amp,shag),X(px),Z(pz),0); }
 let fridgeOpen=false, fridgeT=0, fridgeDoor=null, fridgeLight=null, freezerOpen=false, freezerT=0, freezerDrawer=null;
 (function(){                                   // fridge (70 w x 65 d x 175 h), back to the north wall, door facing south: hollow upper compartment with food, swing door with milk in the pocket
   const o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
@@ -1588,66 +1501,19 @@ lb(2,function(){ mvBegin(); plant(632,1562,0.9); mvEnd('plantL2','植物'); });
   tvCols0=furnCols.slice(c0); tvCols0.forEach(function(c){ c.lay=1; });
 })();
 const BED_DX=0.09;                             // bed pulled off the west wall by the shelf headboard (15 cm deep, replaces the 6 cm board)
-(function(){                                   // room 1: Japanese queen bed 160 x 195, bedside table and lamp, print, plant
-  const cx=487, top=1316, cy=top+0.995/S, a0=furn.children.length, c0=furnCols.length;
-  rb(cx,cy,1.64,1.99,0.2,0.02,M.oakD,0.08,true);                          // frame on short legs
-  legs(cx,cy,0.76,0.94,0.08,0.03,0.025,M.oakD);
-  rb(cx,cy,1.6,1.95,0.2,0.08,M.bedA,0.28,false);                           // mattress
-  rb(cx,top+1.32/S,1.64,1.3,0.1,0.06,M.bedB,0.46,false);                   // duvet, draped over both sides
-  fb(cx-0.82/S,top+1.32/S,0.025,1.3,0.22,M.bedB,0.28,false); fb(cx+0.82/S,top+1.32/S,0.025,1.3,0.22,M.bedB,0.28,false);
-  rb(cx,top+0.68/S,1.62,0.2,0.13,0.06,M.bedB,0.47,false);                  // folded top edge
-  rb(cx-0.38/S,top+0.3/S,0.6,0.38,0.15,0.07,M.pillow,0.48,false);
-  rb(cx+0.38/S,top+0.3/S,0.6,0.38,0.15,0.07,M.pillow,0.48,false);
-  rb(575,1340,0.4,0.4,0.45,0.02,M.oak,0,true);
-  fb(575,1340-0.2/S,0.34,0.01,0.12,M.oakD,0.3,false);                       // drawer seam
-  cyl(X(575),Z(1340),0.05,0.05,0.45,0.6,M.steel,{group:furn,cast:false},10);
-  shade(X(575),Z(1340),0.13,0.1,0.58,0.75);
-  { const bedG=new THREE.Group(), mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); bedG.add(o); }); furn.add(bedG);   // bed + bedside table rotate together: head on the west wall
-    const p=[X(cx),X(0)*0+Z(top),X(414.5)+BED_DX,Z(1450)], c=0, sn=1, ox=p[2]-p[1], oz=p[3]+p[0];
-    bedG.rotation.y=Math.PI/2; bedG.position.set(p[2]-(p[0]*c+p[1]*sn),0,p[3]-(-p[0]*sn+p[1]*c));
-    furnCols.slice(c0).forEach(function(k){ const x0=k.z0+ox, x1=k.z1+ox, z0=-k.x1+oz, z1=-k.x0+oz; k.x0=x0; k.x1=x1; k.z0=z0; k.z1=z1; }); }
+(function(){                                   // room 1: Japanese queen bed 160 x 195, bedside table and lamp, shelf headboard, print, plant
+  const bedSet=new Catalog.Piece(), cy=1316+0.995/S;                       // bed + bedside table are drawn together with the head on -z, then turned to put the head on the west wall
+  bedSet.attach(Catalog.bed(),0,0,0); bedSet.attach(Catalog.bedsideTable(false),(575-487)*S,(1340-cy)*S,0);
+  placePiece(bedSet,X(414.5)+BED_DX+0.995,Z(1450),1);
   picture(X(XW)+0.1,Z(1450),0.5,0.7,1.5,Math.PI/2);
-  (function(){                                 // shelf headboard (棚付きヘッドボード): 170 x 15 cm, top tray with a socket, book, clock, phone, diffuser
-    const w0=X(XW)+0.1, w1=w0+0.15, zc=Z(1450), hw=0.85, o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
-    box(w0,w1,zc-hw,zc+hw,0,0.78,M.oakD,o);
-    rbox(w0,w1+0.01,zc-hw-0.005,zc+hw+0.005,0.78,0.8,0.006,M.oak,o);
-    box(w0,w0+0.025,zc-hw,zc+hw,0.8,0.95,M.oak,o);
-    [-1,1].forEach(function(sd){ box(w0,w1+0.01,zc+sd*hw-(sd>0?0.02:0),zc+sd*hw+(sd<0?0.02:0),0.8,0.9,M.oak,o); });
-    box(w1-0.002,w1+0.002,zc-hw+0.04,zc+hw-0.04,0.5,0.505,M.oakD,oc);                  // groove under the top
-    box(w0+0.025,w0+0.03,zc-0.06,zc+0.06,0.84,0.9,lam(0xf4f3ef,{roughness:0.4}),oc);    // 2-gang socket on the back panel
-    [-1,1].forEach(function(sd){ box(w0+0.03,w0+0.032,zc+sd*0.025-0.008,zc+sd*0.025+0.008,0.86,0.88,M.dark,oc); });
-    const bk=[0x8d6a47,0x5f6f82,0xb26b5a];
-    bk.forEach(function(c,i){ box(w0+0.04,w0+0.14,zc+0.45-0.015,zc+0.45+0.015,0.8+i*0.022,0.82+i*0.022,lam(c,{roughness:0.8}),oc); });   // stacked paperbacks
-    rbox(w0+0.05,w0+0.11,zc-0.5,zc-0.43,0.8,0.86,0.01,lam(0xeae4d8,{roughness:0.4}),o);                                                   // alarm clock
-    box(w0+0.111,w0+0.113,zc-0.49,zc-0.44,0.81,0.85,lam(0x1d1f22,{roughness:0.2}),oc);
-    box(w0+0.05,w0+0.12,zc+0.12,zc+0.155,0.8,0.808,lam(0x1d1f22,{roughness:0.25}),oc);                                                   // phone charging
-    const cable=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(w0+0.032,0.87,zc+0.025),new THREE.Vector3(w0+0.04,0.81,zc+0.06),new THREE.Vector3(w0+0.05,0.804,zc+0.137)]),16,0.002,6,false),lam(0xf4f3ef,{roughness:0.5}));
-    place(cable,oc);
-    cyl(w0+0.08,zc-0.22,0.03,0.035,0.8,0.88,lam(0xd9cfc0,{roughness:0.3}),o,16);                                                      // reed diffuser
-    [-0.012,0,0.012].forEach(function(d,i){ const r=cyl(w0+0.08+d,zc-0.22+d*0.6,0.0015,0.0015,0.88,1.05,M.oakD,oc,4); r.rotation.z=(i-1)*0.15; });
-  })();
+  placePiece(Catalog.shelfHeadboard(),X(XW)+0.1,Z(1450),0);                // shelf headboard against the west wall
   plant(420,1584,0.65);
 })();
 
+
 (function(){                                   // master bedroom extras: bed rug, second bedside table, wall shelves, full-length mirror (no clothing storage by request)
-  const rw=2.16, rd=2.55, rcx=507, rcz=1450;                                          // rounded-rectangle wool rug under and around the bed
-  const sh=new THREE.Shape(), r=0.12, hw=rw/2, hd=rd/2;
-  sh.moveTo(-hw+r,-hd); sh.lineTo(hw-r,-hd); sh.quadraticCurveTo(hw,-hd,hw,-hd+r); sh.lineTo(hw,hd-r); sh.quadraticCurveTo(hw,hd,hw-r,hd);
-  sh.lineTo(-hw+r,hd); sh.quadraticCurveTo(-hw,hd,-hw,hd-r); sh.lineTo(-hw,-hd+r); sh.quadraticCurveTo(-hw,-hd,-hw+r,-hd);
-  const c=document.createElement('canvas'); c.width=c.height=1024; const g=c.getContext('2d');
-  g.fillStyle='#e2d8c4'; g.fillRect(0,0,1024,1024);
-  const stripe=function(ins,col,wd){ g.strokeStyle=col; g.lineWidth=wd; g.strokeRect(ins/rw*1024,ins/rd*1024,1024-2*ins/rw*1024,1024-2*ins/rd*1024); };
-  stripe(0.08,'#9fb39c',16); stripe(0.14,'#c8714f',8);
-  for(let i=0;i<6000;i++){ g.fillStyle='rgba('+(rnd()<0.5?'255,255,255':'80,60,40')+','+(0.03+rnd()*0.05)+')'; g.fillRect(rnd()*1024,rnd()*1024,2+rnd()*3,2+rnd()*3); }
-  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.anisotropy=ANISO; t.repeat.set(1/rw,1/rd); t.offset.set(0.5,0.5);
-  const rug=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:0.012,bevelEnabled:false,curveSegments:6}),[new THREE.MeshStandardMaterial({map:t,roughness:1}),lam(0xcdbfa6,{roughness:1})]);
-  rug.rotation.x=-Math.PI/2; rug.position.set(X(rcx),0.001,Z(rcz)); rug.receiveShadow=true; place(rug,{group:furn,cast:false,pick:false});
-  const nlx=X(432)-0.02, nlz=Z(1537)+0.1;
-  rb(432,1537,0.4,0.4,0.45,0.02,M.oak,0,true);                                         // second bedside table + lamp + small things
-  fb(432+0.2/S,1537,0.01,0.34,0.12,M.oakD,0.3,false);
-  cyl(X(432),Z(1537),0.05,0.05,0.45,0.6,M.steel,{group:furn,cast:false},10);
-  shade(X(432),Z(1537),0.13,0.1,0.58,0.75);
-  fb(432+0.1/S,1537+0.12/S,0.16,0.12,0.03,fab(0x8a9a86),0.45,false); cyl(X(432)+0.08,Z(1537)+0.1,0.035,0.03,0.48,0.56,M.ceramic,{group:furn,cast:false},12);
+  placePiece(Catalog.stripedRug(2.16,2.55),X(507),Z(1450),0);                         // rounded-rectangle wool rug under and around the bed
+  placePiece(Catalog.bedsideTable(true),X(432),Z(1537),3);                             // second bedside table + lamp + small things (drawer faces the room)
   const zf=Z(1314.8), bk=[0x8d6a47,0x5f6f82,0xb26b5a,0xd8d2c6,0x3f4a58,0x8a9a86].map(function(c){return lam(c,{roughness:0.8});});
   [[420,490,1.25],[432,478,1.58]].forEach(function(s2,k){                               // floating shelves on the north wall
     box(X(s2[0]),X(s2[1]),zf,zf+0.17,s2[2],s2[2]+0.025,M.oak,{group:furn,pick:false});
