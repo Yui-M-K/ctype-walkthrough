@@ -88,6 +88,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 <script src="lib/furniture.js"></script>
 <script src="lib/catalog.js"></script>
 <script src="lib/look.js"></script>
+<script src="lib/finish.js"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -196,12 +197,13 @@ const FL={
   wood:lam(0xe0c9a6,{map:woodTex,roughness:0.5}), woodD:lam(0xc9b08c,{map:woodTex,roughness:0.6}),
   tile:lam(0xffffff,{map:tileTex([226,230,230],'#b4bfc5',4,8),roughness:0.35}),
   stone:lam(0xffffff,{map:tileTex([154,154,150],'#7f7f7b',2,22),roughness:0.7}),
-  conc:lam(0xa9a9a5,{roughness:0.9}), balc:lam(0xffffff,{map:tileTex([165,168,166],'#8a8d8b',2,18)})
+  conc:lam(0xa9a9a5,{roughness:0.9}), balc:lam(0xffffff,{map:tileTex([165,168,166],'#8a8d8b',2,18)}), wc:lam(0xd4d4d0,{roughness:0.5})
 };
-const fab=function(c,o){ return Walk.fabricMaterial(THREE,c,Object.assign({bumpMap:fabricTex,bumpScale:0.004},o||{})); };
+FL.bath=FL.tile;
+[FL.tile,FL.stone,FL.conc,FL.balc,FL.wc].forEach(function(m){ m.userData.uvUnit=[1,1]; });   // tiles and concrete: 1 m per uv unit (wood: one 1.818 x 0.909 m plank board)
+const fabMats=[];
+const fab=function(c,o){ const m=Walk.fabricMaterial(THREE,c,Object.assign({bumpMap:fabricTex,bumpScale:0.004},o||{})); fabMats.push(m); return m; };
 const M={
-  wall:lam(0xf3f0ea,{map:wallTex,bumpMap:wallTex,bumpScale:0.0015,roughness:0.9}),
-  wallW:lam(0xe8e2d8,{map:wallTex,roughness:0.9}),
   ceil:lam(0xf5f0e6,{emissive:0x2b2720}), slab:lam(0xc7c4bd), trim:lam(0xfbfaf7,{roughness:0.5}), frame:lam(0xf1efea,{roughness:0.5}),
   dark:lam(0x2a2d32), black:lam(0x16181b,{roughness:0.4}), steel:lam(0x8d949c,{metalness:0.9,roughness:0.25,envMapIntensity:1}),
   door:lam(0xe4d2b4,{roughness:0.55}), top:lam(0xc4c6c8,{roughness:0.35}), sink:lam(0xaab2ba,{metalness:0.8,roughness:0.3,envMapIntensity:1}),
@@ -222,6 +224,14 @@ const M={
   M.oak=lam(0xd6b88e,{map:t,roughness:0.55}); M.oakD=lam(0x8f6a49,{map:t,roughness:0.55}); M.oakChair=lam(0xcfa77c,{map:t,roughness:0.55}); M.chairBack=lam(0xc9a074,{roughness:0.55,side:THREE.DoubleSide});
 })();
 const lampMat=new THREE.MeshBasicMaterial({color:0xffdc96});
+M.linen=fab(0xe9dfcd,{side:THREE.DoubleSide,bumpScale:0.002});
+const WM={};                                   // one wall material per colour role (see Walk.THEMES)
+Walk.WALL_ROLES.forEach(function(k){ WM[k]=lam(0xffffff,{map:wallTex,bumpMap:wallTex,bumpScale:0.0015,roughness:0.9}); });
+const FIN=Walk.Finish({THREE:THREE,anisotropy:ANISO,FL:FL,M:M,WM:WM,fabMats:fabMats});
+FIN.mapMat(FL.tile,'bathtile',1.8,true); FIN.mapMat(FL.stone,'genkantile',2.0,true); FIN.mapMat(FL.balc,'balctile',2.4);
+FIN.mapMat(FL.conc,'corrconc',2.0); FIN.paint(FL.conc,0xc9c7c2); FIN.mapMat(FL.wc,'balctile',2.4); FIN.paint(FL.wc,0xe8e8e6);
+FIN.loadCommon();
+FIN.applyPalette(Walk.THEMES.A);                // warm Scandinavian only for this house
 
 /* ---------- level groups, colliders, helpers ---------- */
 const LG=[0,1,2].map(function(){ const g=new THREE.Group(); scene.add(g); return g; });
@@ -259,7 +269,7 @@ function slab(l,x0,y0,x1,y1){          // slab under level l (plan px of level l
 }
 function flr(l,x0,y0,x1,y1,mat,walkable){
   const b=base(l), a=WX(l,x0), c=WX(l,x1), d=WZ(l,y0), e=WZ(l,y1), w=c-a, h=e-d;
-  const g=new THREE.PlaneGeometry(w,h), uv=g.attributes.uv; for(let i=0;i<uv.count;i++) uv.setXY(i,uv.getX(i)*w/1.818,uv.getY(i)*h/0.909);
+  const u=mat.userData.uvUnit||[1.818,0.909], g=new THREE.PlaneGeometry(w,h), uv=g.attributes.uv; for(let i=0;i<uv.count;i++) uv.setXY(i,uv.getX(i)*w/u[0],uv.getY(i)*h/u[1]);
   const m=new THREE.Mesh(g,mat); m.rotation.x=-Math.PI/2; m.position.set((a+c)/2,b+0.003,(d+e)/2); m.receiveShadow=true; LG[l].add(m);
   if(walkable!==false) floorRects.push({l:l,x0:a,x1:c,z0:d,z1:e,y:b});
 }
@@ -281,9 +291,24 @@ function wall(l,x0,y0,x1,y1,t,opens){
   const A=horiz?WX(l,Math.min(x0,x1)):WZ(l,Math.min(y0,y1)), B=horiz?WX(l,Math.max(x0,x1)):WZ(l,Math.max(y0,y1));
   const ap=horiz?LV[l].ox:LV[l].oy;
   const ops=(opens||[]).map(function(o){ return {a:(o.a-ap)*S,b:(o.b-ap)*S,k:o.k||'win',sill:o.sill,head:o.head,hinge:o.hinge||'a',sw:o.sw||1}; }).sort(function(p,q){return p.a-q.a;});
+  const cuts=[];                                // room boundaries along this wall, so each stretch takes the colour of the room it faces
+  ROOMS.forEach(function(r){ if(r.l!==l) return; (horiz?[r.x0,r.x1]:[r.y0,r.y1]).forEach(function(v){ const w=(v-ap)*S; if(w>A+0.02&&w<B-0.02&&cuts.indexOf(w)<0) cuts.push(w); }); });
+  cuts.sort(function(p,q){ return p-q; });
+  const part=function(s,e,yb,yt){
+    const mid=(s+e)/2, off=t/2+0.06, edge=WM.outside;
+    const neg=horiz?wallRoleAt(l,mid,c-off):wallRoleAt(l,c-off,mid), pos=horiz?wallRoleAt(l,mid,c+off):wallRoleAt(l,c+off,mid);
+    const mats=horiz?[edge,edge,edge,edge,WM[pos],WM[neg]]:[WM[pos],WM[neg],edge,edge,edge,edge];   // BoxGeometry faces: +x -x +y -y +z -z
+    if(horiz) bx(grp,s,e,c-t/2,c+t/2,b+yb,b+yt,mats); else bx(grp,c-t/2,c+t/2,s,e,b+yb,b+yt,mats);
+    if(yb>0) return;
+    [[neg,-1],[pos,1]].forEach(function(q){       // 6 cm skirting board on room faces (not outside, not the tiled bath)
+      if(q[0]==='outside'||q[0]==='bath') return;
+      const f0=c+q[1]*t/2, f1=f0+q[1]*0.012;
+      if(horiz) bx(grp,s,e,Math.min(f0,f1),Math.max(f0,f1),b,b+0.06,M.trim,{cast:false}); else bx(grp,Math.min(f0,f1),Math.max(f0,f1),s,e,b,b+0.06,M.trim,{cast:false});
+    });
+  };
   const piece=function(s,e,yb,yt,col){
     if(e-s<0.01||yt-yb<0.01) return;
-    if(horiz) bx(grp,s,e,c-t/2,c+t/2,b+yb,b+yt,M.wall); else bx(grp,c-t/2,c+t/2,s,e,b+yb,b+yt,M.wall);
+    let a0=s; cuts.forEach(function(k){ if(k>s+0.01&&k<e-0.01){ part(a0,k,yb,yt); a0=k; } }); part(a0,e,yb,yt);
     if(col){ if(horiz) addCol(l,s,e,c-t/2,c+t/2,b+yb,b+yt,'w'); else addCol(l,c-t/2,c+t/2,s,e,b+yb,b+yt,'w'); }
   };
   let cur=A;
@@ -320,6 +345,27 @@ function makeDoor(l,horiz,c,o,t,head){
 }
 function applyDoor(d){ const e=d.t*d.t*(3-2*d.t); d.pv.rotation.y=d.th*e; }
 
+/* ---------- rooms (plan px per level; w = wall colour role) ---------- */
+const ROOMS=[
+  {l:0,x0:205,y0:160,x1:660,y1:385,n:'洋室1',j:'約 7 帖',w:'oat'},{l:0,x0:322,y0:385,x1:660,y1:605,n:'洋室1',j:'約 7 帖',w:'oat'},
+  {l:0,x0:88,y0:160,x1:205,y1:295,n:'廁所',j:'1 樓',w:'wc'},{l:0,x0:88,y0:295,x1:205,y1:385,n:'衣櫃',j:'CL',w:'dress'},
+  {l:0,x0:88,y0:385,x1:205,y1:712,n:'階梯',j:'1 樓 → 2 樓',w:'hall'},{l:0,x0:205,y0:385,x1:322,y1:712,n:'走廊',j:'廊下',w:'hall'},
+  {l:0,x0:88,y0:712,x1:322,y1:875,n:'玄關廳',j:'1 樓',w:'genkan'},{l:0,x0:88,y0:875,x1:322,y1:1040,n:'玄關',j:'玄関',w:'genkan'},{l:0,x0:322,y0:605,x1:670,y1:1160,n:'車庫',j:'1 樓',w:'outside'},
+  {l:1,x0:705,y0:160,x1:815,y1:385,n:'廁所',j:'2 樓',w:'wc'},{l:1,x0:815,y0:160,x1:1045,y1:385,n:'洗面室',j:'2 樓',w:'utility'},{l:1,x0:1045,y0:160,x1:1275,y1:385,n:'浴室',j:'風呂場',w:'bath'},
+  {l:1,x0:705,y0:385,x1:820,y1:720,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓',w:'hall'},{l:1,x0:705,y0:1090,x1:1275,y1:1210,n:'陽台',j:'バルコニー',w:'outside'},{l:1,x0:705,y0:385,x1:1275,y1:1090,n:'LDK',j:'約 14.7 帖',w:'oat'},
+  {l:2,x0:1312,y0:160,x1:1885,y1:385,n:'洋室2',j:'約 8 帖',w:'oat'},{l:2,x0:1540,y0:385,x1:1885,y1:605,n:'洋室2',j:'約 8 帖',w:'oat'},
+  {l:2,x0:1312,y0:385,x1:1430,y1:722,n:'階梯',j:'3 樓 ⇄ 2 樓',w:'hall'},{l:2,x0:1430,y0:385,x1:1540,y1:722,n:'走廊',j:'廊下',w:'hall'},
+  {l:2,x0:1540,y0:605,x1:1885,y1:722,n:'衣櫃',j:'CL ×2',w:'dress'},{l:2,x0:1312,y0:722,x1:1885,y1:1092,n:'洋室3',j:'約 9.2 帖',w:'oat'}
+];
+const OUT={n:'戶外',j:''};
+/* one accent wall per main room (warm Scandinavian palette): plan-px zones next to the wall, sampled from inside the room */
+const ACCENTS=[{l:1,x0:700,x1:722,y0:790,y1:1090,w:'sage'},{l:0,x0:205,x1:660,y0:150,y1:178,w:'mist'},{l:2,x0:1312,x1:1882,y0:150,y1:178,w:'peach'},{l:2,x0:1305,x1:1330,y0:722,y1:1090,w:'mist'}];
+function wallRoleAt(l,x,z){
+  const px=x/S+LV[l].ox, py=z/S+LV[l].oy;
+  for(let i=0;i<ACCENTS.length;i++){ const a=ACCENTS[i]; if(a.l===l&&px>=a.x0&&px<=a.x1&&py>=a.y0&&py<=a.y1) return a.w; }
+  const r=roomAt(l,x,z); return r.w||'outside';
+}
+
 /* ---------- plan data (reference floor plan pixels, per level) ---------- */
 const TE=0.13, TI=0.09;
 function build(){
@@ -337,7 +383,7 @@ function build(){
   wall(0,322,605,660,605,TI,[{a:385,b:585,sill:0.9}]);
   slab(0,88,160,660,605); slab(0,88,605,322,1030); slab(0,322,605,660,1150);
   flr(0,205,160,660,385,FL.wood); flr(0,322,385,660,605,FL.wood);
-  flr(0,88,160,205,295,FL.tile); flr(0,88,295,205,385,FL.wood);
+  flr(0,88,160,205,295,FL.wc); flr(0,88,295,205,385,FL.wood);
   flr(0,205,385,322,712,FL.woodD); flr(0,88,385,205,712,FL.woodD,false);
   flr(0,88,712,322,875,FL.stone); flr(0,88,875,322,1030,FL.stone); flr(0,322,605,660,1150,FL.conc);
   ceilingOf(0,205,160,660,385); ceilingOf(0,322,385,660,605); ceilingOf(0,88,160,205,385); ceilingOf(0,88,385,322,875); ceilingOf(0,322,605,660,1030);
@@ -351,7 +397,7 @@ function build(){
   wall(1,705,385,1272,385,TI,[{a:835,b:915,k:'door',hinge:'a',sw:-1}]);
   wall(1,820,490,820,712,TI);
   slab(1,705,160,1272,390); slab(1,820,390,1272,720); slab(1,705,720,1272,1090);
-  flr(1,705,160,815,383,FL.tile); flr(1,815,160,1045,383,FL.tile); flr(1,1045,160,1272,383,FL.tile);
+  flr(1,705,160,815,383,FL.wc); flr(1,815,160,1045,383,FL.wc); flr(1,1045,160,1272,383,FL.bath);
   flr(1,820,385,1272,1090,FL.wood); flr(1,705,720,820,1090,FL.wood);
   ceilingOf(1,705,160,1272,383); ceilingOf(1,820,385,1272,1090); ceilingOf(1,705,720,820,1090);
   /* balcony */
@@ -480,23 +526,23 @@ builtin(1,1160,580,1255,655,0,0.86,M.cabF,true); builtin(1,1160,580,1255,655,0.8
 builtin(1,985,590,1100,640,0.87,0.012,M.sink,false); builtin(1,1180,595,1240,640,0.9,0.012,M.hob,false);
 function light(l,px,py,col,int,dist){
   const p=new THREE.PointLight(col||0xffe2b8,int*PLI,dist||6,2); p.position.set(WX(l,px),base(l)+CH-0.25,WZ(l,py)); LG[l].add(p); pointLights.push(p);
-  const d=new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.16,0.02,16),lampMat); d.position.set(WX(l,px),base(l)+CH-0.01,WZ(l,py)); LG[l].add(d);
+  const L=Catalog.ceilingLight(CH); L.group.position.set(WX(l,px),base(l),WZ(l,py)); LG[l].add(L.group);
 }
+/* curtains over the main windows: [storey, wall 'N'|'E'|'S'|'W', plan a, plan b (along the wall), plan line of the wall] */
+const curtainSets=[];
+[[1,'S',950,1155,1090],[1,'E',780,970,1272],[0,'E',340,490,660],[2,'E',345,540,1882],[2,'E',755,970,1882],[2,'S',1550,1750,1090]].forEach(function(q){
+  const l=q[0], side=q[1], horiz=side==='S'||side==='N', w=(q[3]-q[2])*S, mid=(q[2]+q[3])/2;
+  const rot={S:0,E:1,N:2,W:3}[side], inward={S:[0,-1],E:[-1,0],N:[0,1],W:[1,0]}[side];
+  const cx=horiz?WX(l,mid):WX(l,q[4])+inward[0]*0.17, cz=horiz?WZ(l,q[4])+inward[1]*0.17:WZ(l,mid);
+  const P=Catalog.curtains(w), Rg=new THREE.Group(); Rg.position.set(cx,base(l),cz); Rg.rotation.y=rot*Math.PI/2; Rg.add(P.group); LG[l].add(Rg);
+  curtainSets.push(P);
+  P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); });
+  P.actions.forEach(function(a){ const c=Math.cos(rot*Math.PI/2), sn=Math.sin(rot*Math.PI/2);
+    furnThings.push({pt:[cx+a.x*c+a.z*sn,cz-a.x*sn+a.z*c],l:l,label:a.label,act:a.act}); });
+});
 [[470,290,0],[760,260,0],[480,900,0],[330,780,0],[1000,500,1],[1130,800,1],[920,260,1],[1160,280,1],[760,300,1],[1050,960,1],[1580,300,2],[1700,330,2],[1650,900,2],[1480,550,2],[1750,660,2]].forEach(function(p){ light(p[2],p[0],p[1],0xffe2b8,0.55,7); });
 
 /* ---------- rooms ---------- */
-const ROOMS=[
-  {l:0,x0:205,y0:160,x1:660,y1:385,n:'洋室1',j:'約 7 帖'},{l:0,x0:322,y0:385,x1:660,y1:605,n:'洋室1',j:'約 7 帖'},
-  {l:0,x0:88,y0:160,x1:205,y1:295,n:'廁所',j:'1 樓'},{l:0,x0:88,y0:295,x1:205,y1:385,n:'衣櫃',j:'CL'},
-  {l:0,x0:88,y0:385,x1:205,y1:712,n:'階梯',j:'1 樓 → 2 樓'},{l:0,x0:205,y0:385,x1:322,y1:712,n:'走廊',j:'廊下'},
-  {l:0,x0:88,y0:712,x1:322,y1:875,n:'玄關廳',j:'1 樓'},{l:0,x0:88,y0:875,x1:322,y1:1040,n:'玄關',j:'玄関'},{l:0,x0:322,y0:605,x1:670,y1:1160,n:'車庫',j:'1 樓'},
-  {l:1,x0:705,y0:160,x1:815,y1:385,n:'廁所',j:'2 樓'},{l:1,x0:815,y0:160,x1:1045,y1:385,n:'洗面室',j:'2 樓'},{l:1,x0:1045,y0:160,x1:1275,y1:385,n:'浴室',j:'風呂場'},
-  {l:1,x0:705,y0:385,x1:820,y1:720,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓'},{l:1,x0:705,y0:1090,x1:1275,y1:1210,n:'陽台',j:'バルコニー'},{l:1,x0:705,y0:385,x1:1275,y1:1090,n:'LDK',j:'約 14.7 帖'},
-  {l:2,x0:1312,y0:160,x1:1885,y1:385,n:'洋室2',j:'約 8 帖'},{l:2,x0:1540,y0:385,x1:1885,y1:605,n:'洋室2',j:'約 8 帖'},
-  {l:2,x0:1312,y0:385,x1:1430,y1:722,n:'階梯',j:'3 樓 ⇄ 2 樓'},{l:2,x0:1430,y0:385,x1:1540,y1:722,n:'走廊',j:'廊下'},
-  {l:2,x0:1540,y0:605,x1:1885,y1:722,n:'衣櫃',j:'CL ×2'},{l:2,x0:1312,y0:722,x1:1885,y1:1092,n:'洋室3',j:'約 9.2 帖'}
-];
-const OUT={n:'戶外',j:''};
 function roomAt(l,x,z){ const px=x/S+LV[l].ox, py=z/S+LV[l].oy; for(let i=0;i<ROOMS.length;i++){ const r=ROOMS[i]; if(r.l===l&&px>=r.x0&&px<=r.x1&&py>=r.y0&&py<=r.y1) return r; } return OUT; }
 function levelOf(py){ return clamp(Math.round((py+0.05)/SH),0,2); }
 
