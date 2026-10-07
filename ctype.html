@@ -1373,7 +1373,7 @@ const lampMat=new THREE.MeshBasicMaterial({color:0xffdc96});
 M.shade=lam(0xf2d9a6,{emissive:0x8a6428,side:THREE.DoubleSide,roughness:0.9});
 function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:furn,cast:false,open:true},20); }
 /* ---------- shared furniture catalogue (lib/catalog.js) + placement in this house's plan pixels ---------- */
-const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,lampMat:lampMat,rnd:rnd,rugTex:rugTex,contactShadow:contactShadow,ceilingH:H});
+const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,lampMat:lampMat,rnd:rnd,rugTex:rugTex,contactShadow:contactShadow,ceilingH:H,enableLocalClipping:function(){ renderer.localClippingEnabled=true; }});
 function placePiece(piece,wx,wz,rotQ){         // add a catalogue piece to the furniture group at world (wx,wz); rotQ = quarter turns, counter-clockwise seen from above
   rotQ=((rotQ||0)%4+4)%4;
   const R=new THREE.Group(); R.position.set(wx,floorY(wx,wz),wz); R.rotation.y=rotQ*Math.PI/2; R.add(piece.group); furn.add(R);
@@ -1774,91 +1774,16 @@ rb(650,770,0.6,0.4,0.012,0.006,M.rug,-0.15,false);   // doormat
 
 /* ---------- furniture layout 2: study in the small room, folding table in the living room, no dining table ---------- */
 lb(0,function(){                               // study (small room): shared by both layouts
-  const cx=500, cy=1133, bookMats=[0x8d6a47,0x5f6f82,0xb26b5a,0xd8d2c6,0x3f4a58,0x8a9a86,0xc9b27f,0xe7e4de].map(function(c){return lam(c,{roughness:0.8});});
+  const cx=500, cy=1133;
   mvBegin();
-  rb(cx,cy,2.0,0.65,0.035,0.01,M.oak,0.685,true);                                  // 2.0 m desk along the north wall
-  fb(cx-0.97/S,cy,0.04,0.6,0.685,M.oakD,0,false); fb(cx+0.97/S,cy,0.04,0.6,0.685,M.oakD,0,false);
-  fb(cx,cy-0.27/S,1.9,0.02,0.4,M.oakD,0.28,false);
-  rb(cx+0.62/S,cy,0.4,0.52,0.5,0.01,M.oakD,0.13,false);                             // drawer pedestal
-  fb(cx+0.62/S,cy+0.27/S,0.38,0.012,0.14,M.oak,0.15,false); fb(cx+0.62/S,cy+0.27/S,0.38,0.012,0.14,M.oak,0.32,false); fb(cx+0.62/S,cy+0.27/S,0.38,0.012,0.14,M.oak,0.49,false);
-  const sm=lam(0x0c1118,{roughness:0.12,metalness:0.3,envMapIntensity:1.2});
-  fb(cx-0.3/S,cy-0.2/S,0.04,0.04,0.14,M.black,0.72,false); fb(cx-0.3/S,cy-0.2/S,0.24,0.16,0.012,M.black,0.72,false);   // 27-inch monitor on a stand
-  fb(cx-0.3/S,cy-0.23/S,0.62,0.03,0.37,M.black,0.82,false); fb(cx-0.3/S,cy-0.214/S,0.6,0.004,0.35,sm,0.83,false);
-  fb(cx-0.3/S,cy+0.1/S,0.43,0.14,0.018,M.black,0.72,false); fb(cx+0.02/S,cy+0.1/S,0.06,0.1,0.03,M.black,0.72,false);   // keyboard, mouse
-  cyl(X(cx+0.38/S),Z(cy-0.2/S),0.06,0.06,0.72,0.735,M.dark,{group:furn,cast:false},12);   // desk lamp
-  cyl(X(cx+0.38/S),Z(cy-0.2/S),0.008,0.008,0.735,1.07,M.dark,{group:furn,cast:false},6);
-  shade(X(cx+0.38/S),Z(cy-0.2/S),0.09,0.06,0.97,1.09);
-  (function(){                                 // enclosed 3D printer at the right end of the desk (38 x 38 x 46 cm), animated while somebody works in the study
-    const px=X(cx+0.76/S), pz=Z(cy-0.03/S), w=0.38, d=0.38, h=0.46, y=0.72, o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
-    const frame=lam(0x1c1e21,{roughness:0.45}), gl=lam(0x9fb2bf,{transparent:true,opacity:0.22,roughness:0.05,metalness:0.1,envMapIntensity:1,side:THREE.DoubleSide,depthWrite:false});
-    box(px-w/2,px+w/2,pz-d/2,pz+d/2,y,y+0.06,frame,o); box(px-w/2,px+w/2,pz-d/2,pz+d/2,y+h-0.02,y+h,frame,o);   // base and top
-    [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(c){ box(px+c[0]*(w/2-0.012)-0.012,px+c[0]*(w/2-0.012)+0.012,pz+c[1]*(d/2-0.012)-0.012,pz+c[1]*(d/2-0.012)+0.012,y,y+h,frame,o); });
-    box(px-w/2,px-w/2+0.006,pz-d/2,pz+d/2,y+0.06,y+h-0.02,frame,o); box(px+w/2-0.006,px+w/2,pz-d/2,pz+d/2,y+0.06,y+h-0.02,frame,o); box(px-w/2,px+w/2,pz-d/2,pz-d/2+0.006,y+0.06,y+h-0.02,frame,o);
-    box(px-w/2+0.01,px+w/2-0.01,pz+d/2-0.004,pz+d/2,y+0.06,y+h-0.02,gl,oc);                         // glass door
-    box(px+0.08,px+0.16,pz+d/2,pz+d/2+0.004,y+0.012,y+0.05,new THREE.MeshBasicMaterial({color:0x7fd6ff}),oc);   // small screen
-    box(px-0.15,px+0.15,pz-0.15,pz+0.15,y+0.07,y+0.078,lam(0x3a3f45,{roughness:0.3,metalness:0.5}),oc);   // build plate
-    const rail=box(px-0.17,px+0.17,pz-0.012,pz+0.012,y+0.3,y+0.32,lam(0x8d949c,{metalness:0.8,roughness:0.3}),oc);
-    const head=new THREE.Group(); head.position.set(px,y+0.28,pz); furn.add(head);                  // toolhead: shroud, front fan, heatsink fins, brass hotend + nozzle, PTFE tube
-    const hm=function(geo,mat,x,yy,z){ const m=new THREE.Mesh(geo,mat); m.position.set(x,yy,z); m.castShadow=true; head.add(m); return m; };
-    const shroud=lam(0xe9ecef,{roughness:0.35}), dark=lam(0x1d1f22,{roughness:0.5}), brass=lam(0xc9a24a,{metalness:0.9,roughness:0.3,envMapIntensity:1});
-    hm(new THREE.BoxGeometry(0.075,0.026,0.032),dark,0,0.045,-0.008);                                  // carriage riding on the X rail
-    rbox(-0.03,0.03,-0.032,0.03,-0.035,0.035,0.008,shroud,{group:head,pick:false});                  // main shroud, flat front
-    const duct=hm(new THREE.BoxGeometry(0.056,0.004,0.024),dark,0,-0.03,0.026); duct.rotation.x=0.6;   // slanted part-cooling duct at the lower front
-    hm(new THREE.BoxGeometry(0.03,0.004,0.002),dark,0,0.018,0.0305);                                    // small status strip
-    const grille=hm(new THREE.BoxGeometry(0.002,0.04,0.04),dark,-0.031,0.002,0);                       // side fan grille (fan faces sideways)
-    for(let i=0;i<5;i++) hm(new THREE.BoxGeometry(0.003,0.002,0.034),lam(0x6a6f75),-0.0322,-0.014+i*0.008,0);
-    hm(new THREE.BoxGeometry(0.016,0.012,0.016),brass,0,-0.043,0);                                     // heater block
-    const nz=hm(new THREE.ConeGeometry(0.0055,0.011,10),brass,0,-0.054,0); nz.rotation.x=Math.PI;       // nozzle tip
-    hm(new THREE.CylinderGeometry(0.0045,0.0045,0.1,8),lam(0xf4f4f0,{roughness:0.4,transparent:true,opacity:0.85}),0.012,0.1,-0.012);   // PTFE feed tube
-    const nozzle=head;
-    const clip=new THREE.Plane(new THREE.Vector3(0,-1,0),y+0.08); renderer.localClippingEnabled=true;   // the print appears layer by layer below this plane
-    const pla=lam(0xf4f2ee,{roughness:0.55,clippingPlanes:[clip],clipShadows:true,side:THREE.DoubleSide});
-    const robot=new THREE.Group(); robot.position.set(px-0.03,y+0.078,pz+0.02); furn.add(robot);      // little white-PLA robot, about 10 cm tall
-    const rp=function(geo,x,yy,z){ const m=new THREE.Mesh(geo,pla); m.position.set(x,yy,z); m.castShadow=true; m.receiveShadow=true; robot.add(m); return m; };
-    [-1,1].forEach(function(sd){ rp(new THREE.BoxGeometry(0.016,0.006,0.022),sd*0.012,0.003,0.003);       // feet
-      rp(new THREE.CylinderGeometry(0.005,0.006,0.022,10),sd*0.012,0.017,0);                              // legs
-      const arm=rp(new THREE.CylinderGeometry(0.004,0.004,0.026,10),sd*0.029,0.044,0.004); arm.rotation.z=sd*0.35; arm.rotation.x=-0.3;
-      rp(new THREE.SphereGeometry(0.006,10,8),sd*0.034,0.031,0.009);                                      // hands
-      rp(new THREE.CylinderGeometry(0.004,0.004,0.004,10),sd*0.024,0.074,0).rotation.z=Math.PI/2; });     // ear bolts
-    rp(new THREE.BoxGeometry(0.044,0.034,0.026),0,0.045,0);                                               // body
-    rp(new THREE.BoxGeometry(0.02,0.012,0.004),0,0.048,0.014);                                            // chest panel
-    rp(new THREE.CylinderGeometry(0.006,0.006,0.006,10),0,0.064,0);                                       // neck
-    rp(new THREE.BoxGeometry(0.04,0.026,0.026),0,0.08,0);                                                 // head
-    [-1,1].forEach(function(sd){ rp(new THREE.CylinderGeometry(0.004,0.004,0.004,12),sd*0.009,0.082,0.014).rotation.x=Math.PI/2; });   // eyes
-    rp(new THREE.CylinderGeometry(0.0015,0.0015,0.012,6),0,0.099,0); rp(new THREE.SphereGeometry(0.0035,10,8),0,0.106,0);   // antenna
-    const sp=new THREE.Mesh(new THREE.TorusGeometry(0.08,0.03,10,24),lam(0xf1efea,{roughness:0.55})); sp.position.set(px,y+0.2,pz-d/2-0.035); place(sp,oc);   // white filament spool on the back
-    const rz0=rail.position.z, hy0=head.position.y, ry0=rail.position.y;
-    let prog=0.35; window.__printProg=function(v){ prog=v; };
-    catAnim.push(function(t){
-      const active=dailyOn;
-      if(active){ prog+=0.0005; if(prog>1.25) prog=0; }   // print, pause on the finished robot, start again
-      const hgt=0.002+0.108*prog; clip.constant=y+0.078+hgt;
-      const lift=Math.min(hgt,0.11); head.position.y=hy0-0.12+lift; rail.position.y=ry0-0.07+lift;
-      const mx=active?Math.sin(t*3.1)*0.045:0, mz=active?Math.cos(t*2.3)*0.04:0;
-      head.position.x=px-0.03+mx; head.position.z=pz+0.02+mz; rail.position.z=rz0+0.02+mz;
-    });
-  })();
-  [0,1,2,3].forEach(function(i){ fb(cx-0.88/S,cy+0.1/S-i*0.01/S,0.2,0.26,0.035,bookMats[i+1],0.72+i*0.035,false); });   // book stack
-  fcyl(cx+0.1/S,cy-0.1/S,0.04,0.035,0.72,0.09,M.ceramic,false);
+  const desk=Catalog.desk(); placePiece(desk,X(cx),Z(cy),0);                       // 2.0 m desk along the north wall, 3D printer animates while somebody works
+  window.__printProg=desk.setPrintProgress; desk.anims.forEach(function(f){ catAnim.push(function(t){ f(t,{active:dailyOn}); }); });
   mvEnd('desk','書桌（含 3D 列印機）');
   picture(X(cx),Z(1105.6),1.0,0.5,1.55,0);
   mvBegin();
-  const ox=470, oz=1188, oc=Z(oz), oxx=X(ox);                                        // office chair, back to the south
-  rb(ox,oz,0.5,0.48,0.08,0.035,M.sofaD,0.44,true);
-  rb(ox,oz+0.22/S,0.46,0.07,0.52,0.03,M.sofaD,0.52,false);
-  cyl(oxx,oc,0.03,0.03,0.08,0.44,M.steel,{group:furn,cast:false},10);
-  for(let k=0;k<5;k++){ const a=k*TAU/5+0.3; rotBox(oxx+Math.cos(a)*0.15,oc-Math.sin(a)*0.15,0.3,0.04,0.05,0.08,a,M.steel,{group:furn,pick:false,cast:false}); cyl(oxx+Math.cos(a)*0.29,oc-Math.sin(a)*0.29,0.025,0.025,0.0,0.05,M.black,{group:furn,cast:false},8); }
+  placePiece(Catalog.officeChair(),X(470),Z(1188),0);                                  // office chair, back to the south
   mvEnd('chairS','書房椅子'); mvBegin();
-  const sx0=X(415), sx1=X(441), sz0=Z(1176), sz1=Z(1296), hh=1.9;                    // bookshelf on the west wall
-  box(sx0,sx1,sz0,sz1,0,0.1,M.oakD,{group:furn,pick:false});
-  box(sx0,sx0+0.015,sz0,sz1,0.1,hh,M.oakD,{group:furn,pick:false,cast:false});
-  [sz0,(sz0+sz1)/2-0.01,sz1-0.02].forEach(function(z){ box(sx0,sx1,z,z+0.02,0.1,hh,M.oakD,{group:furn,pick:false}); });
-  [0.1,0.5,0.9,1.3,1.7,hh-0.02].forEach(function(y,k){
-    box(sx0,sx1,sz0,sz1,y,y+0.02,M.oak,{group:furn,pick:false});
-    if(k<5){ let z=sz0+0.04; while(z<sz1-0.07){ const bw=0.018+rnd()*0.035, bh=0.2+rnd()*0.17; if(rnd()<0.1){ z+=0.12; continue; }
-      box(sx0+0.02,sx0+0.02+0.2,z,z+bw,y+0.02,y+0.02+bh,bookMats[Math.floor(rnd()*bookMats.length)],{group:furn,pick:false,cast:false}); z+=bw+0.004; } }
-  });
-  furnCols.push({x0:sx0,x1:sx1,z0:sz0,z1:sz1,kind:'f'});
+  placePiece(Catalog.bookshelf(),X(428),Z(1236),0);                                    // bookshelf on the west wall
   mvEnd('shelfS','書櫃');
   mvBegin(); roundRug(505,1218,0.7,'sun',12,0.045); mvEnd('rugS','書房地毯');                                              // petal-edged round rug
   mvBegin(); plant(580,1290,0.8); mvEnd('plantS','植物');
