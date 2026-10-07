@@ -1373,7 +1373,7 @@ const lampMat=new THREE.MeshBasicMaterial({color:0xffdc96});
 M.shade=lam(0xf2d9a6,{emissive:0x8a6428,side:THREE.DoubleSide,roughness:0.9});
 function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:furn,cast:false,open:true},20); }
 /* ---------- shared furniture catalogue (lib/catalog.js) + placement in this house's plan pixels ---------- */
-const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,lampMat:lampMat,rnd:rnd,rugTex:rugTex,contactShadow:contactShadow});
+const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,lampMat:lampMat,rnd:rnd,rugTex:rugTex,contactShadow:contactShadow,ceilingH:H});
 function placePiece(piece,wx,wz,rotQ){         // add a catalogue piece to the furniture group at world (wx,wz); rotQ = quarter turns, counter-clockwise seen from above
   rotQ=((rotQ||0)%4+4)%4;
   const R=new THREE.Group(); R.position.set(wx,floorY(wx,wz),wz); R.rotation.y=rotQ*Math.PI/2; R.add(piece.group); furn.add(R);
@@ -1558,42 +1558,20 @@ let fridgeOpen=false, fridgeT=0, fridgeDoor=null, fridgeLight=null, freezerOpen=
 })();
 lb(1,function(){                               // dining table 140 x 80, four chairs, pendant lamp
   mvBegin();
-  const cx=770, cy=1330, w=1.4, d=0.8;
-  rb(cx,cy,w,d,0.035,0.015,M.oak,0.685,true);
-  rb(cx,cy,w-0.18,d-0.18,0.07,0.01,M.oakD,0.615,false);                  // apron under the top
-  legs(cx,cy,w/2-0.07,d/2-0.07,0.685,0.032,0.02,M.oakD);
-  [[745,1289,-1],[800,1289,-1],[745,1371,1],[800,1371,1]].forEach(function(c){ chair(c[0],c[1],c[2]); });
-  cyl(X(cx),Z(cy),0.004,0.004,1.75,H,M.dark,{group:furn,cast:false},6);
-  shade(X(cx),Z(cy),0.2,0.09,1.6,1.76);
-  cyl(X(cx),Z(cy),0.17,0.17,1.605,1.61,lampMat,{group:furn,cast:false},20);
+  placePiece(Catalog.diningSet(),X(770),Z(1330),0);
   mvEnd('dining','餐桌與椅子');
 });
 lb(2,function(){ mvBegin(); plant(632,1562,0.9); mvEnd('plantL2','植物'); });
 (function(){                                   // 2.5-seat sofa W155 x D77 x H73 cm, seat height 40 cm, facing the TV
   const x=690, y=1510, fx=X(x), fz=Z(y), a0=furn.children.length, c0=furnCols.length;
-  rb(x,y,0.77,1.55,0.22,0.07,M.sofaD,0.1,true);                              // frame
-  legs(x,y,0.32,0.71,0.1,0.03,0.02,M.oakD);
-  rb(x-0.335/S,y,0.1,1.55,0.45,0.05,M.sofaD,0.1,false);                      // back frame
-  [-1,1].forEach(function(s){
-    rb(x+0.095/S,y+s*0.30/S,0.58,0.60,0.10,0.05,M.sofa,0.30,false);         // seat cushions, top at 40 cm
-    const bk=rb(x-0.25/S,y+s*0.30/S,0.17,0.60,0.37,0.075,M.sofa,0.36,false); bk.rotation.z=0.13;   // back cushions, top at 73 cm
-    rb(x,y+s*0.69/S,0.75,0.17,0.40,0.07,M.sofa,0.1,false);                   // arm rests, rolled top at 58 cm
-    { const roll=new THREE.Mesh(new THREE.CylinderGeometry(0.085,0.085,0.75,20),M.sofa); roll.rotation.z=Math.PI/2; roll.position.set(X(x),0.50,Z(y+s*0.69/S)); roll.castShadow=true; roll.receiveShadow=true; place(roll,{group:furn,cast:true,pick:false}); }
-  });
-  fb(x+0.095/S,y,0.54,0.01,0.06,M.sofaD,0.34,false);                         // seam between the seat cushions
-  rb(x-0.12/S,y-0.38/S,0.16,0.40,0.36,0.07,M.cushA,0.40,false).rotation.z=0.2;
-  rb(x-0.12/S,y+0.42/S,0.16,0.38,0.33,0.07,M.cushB,0.40,false).rotation.z=0.2;
+  placePiece(Catalog.sofa(),fx,fz,0);
   sofaG=new THREE.Group(); { const mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); sofaG.add(o); }); furn.add(sofaG); }
   sofaCols0=furnCols.slice(c0); sofaCols0.forEach(function(c){ c.lay=1; });
   lb(1,function(){ mvBegin(); roundRug(772,1510,0.95,'plain',24,0.0,true); mvEnd('rugL1','圓地毯'); });
   lb(1,function(){
   mvBegin();
   const sa=furn.children.length, sc=furnCols.length;
-  rb(772,1510,0.5,0.9,0.03,0.015,M.oak,0.4,true);                           // coffee table, long side parallel to the sofa
-  legs(772,1510,0.2,0.38,0.4,0.022,0.014,M.oakD);
-  rb(772,1510,0.4,0.8,0.02,0.008,M.oakD,0.12,false);
-  rb(772,1510-0.2/S,0.22,0.3,0.03,0.006,lam(0x8a9a86),0.43,false);           // magazine
-  fcyl(772+0.04/S,1510+0.25/S,0.04,0.035,0.43,0.09,M.ceramic,false);         // mug
+  placePiece(Catalog.coffeeTable(),X(772),Z(1510),0);
   furn.children.slice(sa).forEach(function(o){ sportHide.push(o); }); furnCols.slice(sc).forEach(function(c){ sportCols.push(c); });
   mvEnd('coffee','茶几');
   });
@@ -1605,30 +1583,7 @@ lb(2,function(){ mvBegin(); plant(632,1562,0.9); mvEnd('plantL2','植物'); });
 })();
 (function(){                                   // TV board on short legs with three doors, TV on a stand
   const x=840, y=1510, a0=furn.children.length, c0=furnCols.length;
-  rb(x,y,0.4,1.4,0.36,0.015,M.oak,0.08,true);
-  legs(x,y,0.15,0.62,0.08,0.03,0.02,M.oakD);
-  cabDoors('z',Z(y)-0.68,Z(y)+0.68,X(x)-0.2,-1,0.1,0.42,3,false,M.oakD,furn);
-  const cx=X(842), cz=Z(1510), W=1.24, Hh=0.70, y0=0.58, o={group:furn,pick:false}, dk={group:furn,pick:false,cast:true};
-  [-1,1].forEach(function(s){                                              // two flat feet with short necks
-    rbox(cx-0.11,cx+0.09,cz+s*0.46-0.035,cz+s*0.46+0.035,0.44,0.455,0.006,M.black,o);
-    box(cx-0.01,cx+0.02,cz+s*0.46-0.02,cz+s*0.46+0.02,0.455,y0+0.02,M.black,o);
-  });
-  rbox(cx-0.0,cx+0.045,cz-0.34,cz+0.34,y0+0.1,y0+0.1+0.46,0.012,M.black,o);   // thicker rear housing
-  box(cx-0.03,cx+0.0,cz-W/2,cz+W/2,y0,y0+Hh,M.black,dk);                    // slim panel body, 3 cm
-  const bz=0.009;                                                             // thin bezel around the glass
-  const sm=new THREE.MeshStandardMaterial({color:0x04060a,roughness:0.05,metalness:0.25,envMapIntensity:1.6});
-  const gl=new THREE.Mesh(new THREE.PlaneGeometry(W-2*bz,Hh-2*bz),sm);
-  gl.rotation.y=-Math.PI/2; gl.position.set(cx-0.0305,y0+Hh/2,cz); furn.add(gl); furnMeshes.push(gl);
-  box(cx-0.032,cx-0.0295,cz-0.012,cz+0.012,y0+0.004,y0+0.0075,new THREE.MeshBasicMaterial({color:0x2a2a2a}),{group:furn,pick:false,cast:false});   // standby LED
-  const sc=document.createElement('canvas'); sc.width=640; sc.height=360; const g=sc.getContext('2d');
-  const sky=g.createLinearGradient(0,0,0,360); sky.addColorStop(0,'#5aa0dc'); sky.addColorStop(0.55,'#bfe0f4'); sky.addColorStop(0.62,'#f5e6c8'); sky.addColorStop(1,'#f5e6c8');
-  g.fillStyle=sky; g.fillRect(0,0,640,360);
-  g.fillStyle='#fff'; [[110,70,90],[300,50,70],[470,90,100]].forEach(function(c){ g.globalAlpha=0.8; g.beginPath(); g.ellipse(c[0],c[1],c[2],c[2]*0.28,0,0,TAU); g.fill(); }); g.globalAlpha=1;
-  g.fillStyle='#4f8f6a'; g.beginPath(); g.moveTo(0,250); g.quadraticCurveTo(160,170,330,235); g.quadraticCurveTo(480,290,640,200); g.lineTo(640,360); g.lineTo(0,360); g.fill();
-  g.fillStyle='#2f6b52'; g.beginPath(); g.moveTo(0,300); g.quadraticCurveTo(220,250,420,310); g.quadraticCurveTo(540,340,640,290); g.lineTo(640,360); g.lineTo(0,360); g.fill();
-  const st=new THREE.CanvasTexture(sc); st.encoding=THREE.sRGBEncoding;
-  const tvOn=function(on){ if(on){ sm.emissive.setHex(0xffffff); sm.emissiveMap=st; sm.emissiveIntensity=0.85; sm.color.setHex(0x000000); } else { sm.emissive.setHex(0x000000); sm.emissiveMap=null; sm.color.setHex(0x04060a); } sm.needsUpdate=true; };
-  tvOn(false); window.__tvOn=tvOn;
+  const tvp=Catalog.tvBoard(); placePiece(tvp,X(x),Z(y),0); window.__tvOn=tvp.tvOn;
   tvG=new THREE.Group(); { const mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); tvG.add(o); }); furn.add(tvG); }
   tvCols0=furnCols.slice(c0); tvCols0.forEach(function(c){ c.lay=1; });
 })();
