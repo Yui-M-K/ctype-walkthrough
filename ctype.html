@@ -207,6 +207,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script src="lib/people.js"></script>
 <script src="lib/furniture.js"></script>
+<script src="lib/catalog.js"></script>
 <script>
 (function(){
 'use strict';
@@ -479,21 +480,6 @@ function fcyl(cx,cy,r0,r1,y0,h,mat,col){
 const FS=Walk.FurnitureSystem({THREE:THREE,furn:furn,furnCols:furnCols,storageKey:'ctypeFurn.v1',variant:function(){ return curLayout; },refreshShadows:function(){ renderer.shadowMap.needsUpdate=true; }});
 const movers=FS.movers, mvBegin=FS.begin, mvEnd=FS.end, mvWrap=FS.wrap, mvApply=FS.apply, mvXf=FS.xf, mvIsStored=FS.isStored, mvGet=FS.get;
 let mvSofa=null, mvLiftThing=null, mvQuiet=false;
-function plant(cx,cy,sz){
-  fcyl(cx,cy,0.13*sz,0.1*sz,0,0.3*sz,M.pot,true);
-  cyl(X(cx),Z(cy),0.11*sz,0.11*sz,0.29*sz,0.3*sz,M.dark,{group:furn,cast:false});
-  for(let i=0;i<7;i++){
-    const a=i*2.4, rr=(0.08+rnd()*0.1)*sz, hh=(0.45+rnd()*0.35)*sz;
-    const m=new THREE.Mesh(new THREE.SphereGeometry((0.09+rnd()*0.08)*sz,10,8),i%2?M.leaf:M.leafL);
-    m.position.set(X(cx)+Math.cos(a)*rr,hh,Z(cy)+Math.sin(a)*rr); m.scale.y=1.3; place(m,{group:furn});
-  }
-}
-function chair(cx,cy,dz){                      // dining / desk chair; dz = +1 when the back is on the south side
-  rb(cx,cy,0.42,0.42,0.05,0.035,M.oakChair,0.40,true);
-  [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(s){ fcyl(cx+s[0]*0.17/S,cy+s[1]*0.17/S,0.02,0.012,0,0.41,M.oakD,false); });
-  const m=new THREE.Mesh(new THREE.CylinderGeometry(0.27,0.27,0.38,16,1,true,(dz>0?0:Math.PI)-0.75,1.5),M.chairBack);
-  m.position.set(X(cx),0.66,Z(cy)-dz*0.08); place(m,{group:furn});
-}
 function legs(cx,cy,hw,hd,h,r0,r1,mat){
   [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(s){ fcyl(cx+s[0]*hw/S,cy+s[1]*hd/S,r0,r1,0,h,mat,false); });
 }
@@ -637,29 +623,6 @@ function rugTex(style){                        // flat-colour woven look: concen
   }
   for(let i=0;i<5000;i++){ g.fillStyle='rgba('+(rnd()<0.5?'255,255,255':'60,40,20')+','+(0.03+rnd()*0.05)+')'; g.fillRect(rnd()*1024,rnd()*1024,2+rnd()*3,2+rnd()*3); }   // yarn speckle
   const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.anisotropy=ANISO; return t;
-}
-function roundRug(px,pz,R,style,lobes,amp){    // round rug with a gently scalloped edge, 1.4 cm pile, centred on plan point (px,pz)
-  const pts=[]; for(let i=0;i<240;i++){ const th=i/240*TAU, r=R*(1+amp*Math.cos(lobes*th)); pts.push(new THREE.Vector2(Math.cos(th)*r,Math.sin(th)*r)); }
-  const geo=new THREE.ExtrudeGeometry(new THREE.Shape(pts),{depth:0.014,bevelEnabled:false,curveSegments:1,steps:1});
-  const t=rugTex(style); t.repeat.set(1/(2*R*(1+amp)),1/(2*R*(1+amp))); t.offset.set(0.5,0.5);
-  const m=new THREE.Mesh(geo,[new THREE.MeshStandardMaterial({map:t,roughness:1}),lam(0xcdbfa6,{roughness:1})]);
-  m.rotation.x=-Math.PI/2; m.position.set(X(px),floorY(X(px),Z(pz))+0.001,Z(pz)); m.receiveShadow=true;
-  return place(m,{group:furn,cast:false,pick:false});
-}
-function shagLayers(px,pz,R){                  // fluffy pile: stacked alpha-tested shells whose strand density thins out toward the tip
-  const N=14, size=256, data=new Uint8Array(size*size*4);
-  for(let i=0;i<size*size;i++){ const v=196+Math.floor(rnd()*52); data[i*4]=v; data[i*4+1]=v-7; data[i*4+2]=v-19; data[i*4+3]=Math.floor(rnd()*255); }
-  const tex=new THREE.DataTexture(data,size,size,THREE.RGBAFormat); tex.wrapS=tex.wrapT=THREE.RepeatWrapping; tex.encoding=THREE.sRGBEncoding;
-  tex.magFilter=THREE.LinearFilter; tex.minFilter=THREE.LinearMipmapLinearFilter; tex.generateMipmaps=true; tex.repeat.set(1.5,1.5); tex.needsUpdate=true;
-  const pts=[]; for(let i=0;i<72;i++){ const th=i/72*TAU; pts.push(new THREE.Vector2(Math.cos(th)*R,Math.sin(th)*R)); }
-  const geo=new THREE.ShapeGeometry(new THREE.Shape(pts),24), y0=floorY(X(px),Z(pz))+0.015;
-  for(let i=0;i<N;i++){
-    const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({map:tex,alphaTest:0.1+0.82*i/N,roughness:1,envMapIntensity:0.3}));
-    m.material.color.setScalar(0.5+0.4*i/(N-1));
-    const sc=1-0.035*i/N; m.scale.set(sc,sc,1);
-    m.rotation.x=-Math.PI/2; m.position.set(X(px),y0+0.0035*i,Z(pz)); m.receiveShadow=true;
-    place(m,{group:furn,cast:false,pick:false,detail:i>0});
-  }
 }
 function artTex(w,h,variant){                  // crisp flat-colour abstract print (arches, sun, waves) in the room's palette
   const W=Math.round(1024*Math.min(1,w/h)), H=Math.round(1024*Math.min(1,h/w)), c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d');
@@ -1409,6 +1372,22 @@ suitcase('lug24','24 吋行李箱（粉紅）',522,999.8,0.41,0.66,0.26,0xf6bccb
 const lampMat=new THREE.MeshBasicMaterial({color:0xffdc96});
 M.shade=lam(0xf2d9a6,{emissive:0x8a6428,side:THREE.DoubleSide,roughness:0.9});
 function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:furn,cast:false,open:true},20); }
+/* ---------- shared furniture catalogue (lib/catalog.js) + placement in this house's plan pixels ---------- */
+const Catalog=Walk.Catalog({THREE:THREE,M:M,lam:lam,lampMat:lampMat,rnd:rnd,rugTex:rugTex,contactShadow:contactShadow});
+function placePiece(piece,wx,wz,rotQ){         // add a catalogue piece to the furniture group at world (wx,wz); rotQ = quarter turns, counter-clockwise seen from above
+  rotQ=((rotQ||0)%4+4)%4;
+  const R=new THREE.Group(); R.position.set(wx,floorY(wx,wz),wz); R.rotation.y=rotQ*Math.PI/2; R.add(piece.group); furn.add(R);
+  piece.group.traverse(function(o){ if(o.isMesh){ furnMeshes.push(o); if(o.userData.detail) detailMeshes.push(o); } });
+  piece.cols.forEach(function(c){
+    let x0=c.x0,x1=c.x1,z0=c.z0,z1=c.z1;
+    for(let k=0;k<rotQ;k++){ const a=z0,b=z1,d=-x1,e=-x0; x0=a; x1=b; z0=d; z1=e; }
+    furnCols.push({x0:x0+wx,x1:x1+wx,z0:z0+wz,z1:z1+wz,kind:'f'});
+  });
+  return R;
+}
+function plant(cx,cy,sz){ return placePiece(Catalog.plant(sz),X(cx),Z(cy),0); }
+function chair(cx,cy,dz){ return placePiece(Catalog.chair(dz),X(cx),Z(cy),0); }
+function roundRug(px,pz,R,style,lobes,amp,shag){ return placePiece(Catalog.roundRug(R,style,lobes,amp,shag),X(px),Z(pz),0); }
 let fridgeOpen=false, fridgeT=0, fridgeDoor=null, fridgeLight=null, freezerOpen=false, freezerT=0, freezerDrawer=null;
 (function(){                                   // fridge (70 w x 65 d x 175 h), back to the north wall, door facing south: hollow upper compartment with food, swing door with milk in the pocket
   const o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
@@ -1606,7 +1585,7 @@ lb(2,function(){ mvBegin(); plant(632,1562,0.9); mvEnd('plantL2','植物'); });
   rb(x-0.12/S,y+0.42/S,0.16,0.38,0.33,0.07,M.cushB,0.40,false).rotation.z=0.2;
   sofaG=new THREE.Group(); { const mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); sofaG.add(o); }); furn.add(sofaG); }
   sofaCols0=furnCols.slice(c0); sofaCols0.forEach(function(c){ c.lay=1; });
-  lb(1,function(){ mvBegin(); roundRug(772,1510,0.95,'plain',24,0.0); shagLayers(772,1510,0.95); mvEnd('rugL1','圓地毯'); });
+  lb(1,function(){ mvBegin(); roundRug(772,1510,0.95,'plain',24,0.0,true); mvEnd('rugL1','圓地毯'); });
   lb(1,function(){
   mvBegin();
   const sa=furn.children.length, sc=furnCols.length;
@@ -1930,7 +1909,7 @@ lb(0,function(){                               // study (small room): shared by 
   mvBegin(); plant(580,1290,0.8); mvEnd('plantS','植物');
 });
 lb(2,function(){
-  mvBegin(); roundRug(765,1375,0.95,'plain',24,0.0); shagLayers(765,1375,0.95); mvEnd('rugL2','圓地毯');                                          // round rug under the table
+  mvBegin(); roundRug(765,1375,0.95,'plain',24,0.0,true); mvEnd('rugL2','圓地毯');                                          // round rug under the table
   /* lift-top table in the living room: a coffee table that rises to dining height while two leaves slide apart and a centre leaf pops up */
   const G=new THREE.Group(); G.position.set(X(765),0,Z(1360)); G.rotation.y=Math.PI/2; scene.add(G);   // long side parallel to the sofa
   const lg=function(w,h,d){ const g=new THREE.BoxGeometry(w,h,d); fitUV(g,w,h,d); return g; };
@@ -1966,15 +1945,8 @@ lb(2,function(){
   ex('xPlant1','植物',function(){ plant(sp[0],sp[1],0.9); });
   ex('xPlant2','植物 2',function(){ plant(sp[0],sp[1],0.9); });
   ex('xRug','圓地毯（小）',function(){ roundRug(sp[0],sp[1],0.7,'sun',12,0.045); });
-  ex('xTable','邊桌',function(){
-    rb(sp[0],sp[1],0.45,0.45,0.03,0.015,M.oak,0.47,true); legs(sp[0],sp[1],0.17,0.17,0.47,0.02,0.014,M.oakD); rb(sp[0],sp[1],0.35,0.35,0.02,0.008,M.oakD,0.2,false);
-  });
-  ex('xLamp','立燈',function(){
-    const lx=X(sp[0]), lz=Z(sp[1]);
-    cyl(lx,lz,0.14,0.14,0,0.02,M.dark,{group:furn,cast:false},16); cyl(lx,lz,0.011,0.011,0.02,1.5,M.steel,{group:furn,cast:false},8);
-    shade(lx,lz,0.17,0.14,1.35,1.63); cyl(lx,lz,0.12,0.12,1.61,1.615,lampMat,{group:furn,cast:false},16);
-    furnCols.push({x0:lx-0.14,x1:lx+0.14,z0:lz-0.14,z1:lz+0.14,kind:'f'});
-  });
+  ex('xTable','邊桌',function(){ placePiece(Catalog.sideTable(),X(sp[0]),Z(sp[1]),0); });
+  ex('xLamp','立燈',function(){ placePiece(Catalog.floorLamp(),X(sp[0]),Z(sp[1]),0); });
 })();
 
 /* ---------- ceiling lights: flush domes, the main rooms also get a warm point light ---------- */
