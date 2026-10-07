@@ -482,7 +482,7 @@ const FS=Walk.FurnitureSystem({THREE:THREE,furn:furn,furnCols:furnCols,storageKe
     const p=Catalog.make(t), G=new THREE.Group(); G.add(p.group); furn.add(G);
     p.group.traverse(function(o){ if(o.isMesh) furnMeshes.push(o); });
     const cols=p.cols.map(function(c){ return {x0:c.x0,x1:c.x1,z0:c.z0,z1:c.z1,kind:'f'}; }); furnCols.push.apply(furnCols,cols);
-    const m=mvWrap(id,Catalog.info(t).name,[G],cols), live=function(){ return !!m.W.parent&&!mvIsStored(id); };
+    const info=Catalog.info(t), m=mvWrap(id,info.name,[G],cols,info.wall?{wall:true,pivot:[0,0],face0:Catalog.faceIndex(t)}:{}), live=function(){ return !!m.W.parent&&!mvIsStored(id); };
     p.anims.forEach(function(f){ catAnim.push(function(tt){ if(live()&&f(tt,{})) renderer.shadowMap.needsUpdate=true; }); });
     (p.actions||[]).forEach(function(a){ things.push({get pt(){ const q=mvXf(id,a.x,a.z); return [q[0],q[1]]; },on:live,label:a.label,act:a.act}); });
     return m;
@@ -552,34 +552,9 @@ function shelfItems(x0,x1,z0,z1,boards,kind){  // shoes or storage boxes on the 
     }
   });
 }
-function artTex(w,h,variant){                  // crisp flat-colour abstract print (arches, sun, waves) in the room's palette
-  const W=Math.round(1024*Math.min(1,w/h)), H=Math.round(1024*Math.min(1,h/w)), c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d');
-  g.fillStyle='#f3ecdf'; g.fillRect(0,0,W,H);
-  const pal=['#c8714f','#e0b184','#7f9a86','#35506b','#d9a3a0'];
-  if(variant===0){                              // landscape: rising sun over layered hills and a wave line
-    g.fillStyle=pal[4]; g.beginPath(); g.arc(W*0.62,H*0.52,H*0.24,0,TAU); g.fill();
-    [[pal[2],0.62,0.12],[pal[3],0.74,0.1],[pal[0],0.86,0.08]].forEach(function(l,i){
-      g.fillStyle=l[0]; g.beginPath(); g.moveTo(0,H);
-      for(let x=0;x<=W;x+=8) g.lineTo(x,H*l[1]+Math.sin(x/W*Math.PI*(2+i)+i*1.7)*H*l[2]*0.5);
-      g.lineTo(W,H); g.closePath(); g.fill();
-    });
-    g.strokeStyle='#35506b'; g.lineWidth=H*0.012; g.beginPath();
-    for(let x=0;x<=W;x+=6){ const y=H*0.2+Math.sin(x/W*Math.PI*6)*H*0.025; if(x) g.lineTo(x,y); else g.moveTo(x,y); } g.stroke();
-  } else {                                      // portrait: stacked arches with a small sun
-    const aw=W*0.56, ax=(W-aw)/2;
-    [[pal[0],0.12],[pal[1],0.3],[pal[2],0.48]].forEach(function(l,i){
-      const top=H*l[1], r=aw/2-i*aw*0.12; g.fillStyle=l[0]; g.beginPath(); g.moveTo(W/2-r,H*0.92); g.lineTo(W/2-r,top+r); g.arc(W/2,top+r,r,Math.PI,0); g.lineTo(W/2+r,H*0.92); g.closePath(); g.fill();
-    });
-    g.fillStyle=pal[3]; g.beginPath(); g.arc(W*0.5,H*0.7,aw*0.13,0,TAU); g.fill();
-    g.fillStyle=pal[4]; g.beginPath(); g.arc(W*0.8,H*0.12,W*0.06,0,TAU); g.fill();
-  }
-  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.anisotropy=ANISO; return t;
-}
 function picture(cx,cz,w,h,yc,ang){           // framed print hanging on a wall; ang = wall normal direction (rotation.y)
-  const d=0.025, nx=Math.sin(ang), nz=Math.cos(ang);
-  rotBox(cx+nx*d/2,cz+nz*d/2,w,d,yc-h/2,yc+h/2,ang,M.woodD,{group:furn,cast:false});
-  const art=new THREE.Mesh(new THREE.PlaneGeometry(w-0.08,h-0.08),new THREE.MeshStandardMaterial({map:artTex(w-0.08,h-0.08,w>=h?0:1),roughness:0.8}));
-  art.position.set(cx+nx*(d+0.002),yc,cz+nz*(d+0.002)); art.rotation.y=ang; place(art,{group:furn,cast:false});
+  const p=Catalog.picture(w,h,yc), R=new THREE.Group(); R.position.set(cx,0,cz); R.rotation.y=ang-Math.PI/2; R.add(p.group); furn.add(R);
+  p.group.traverse(function(o){ if(o.isMesh) furnMeshes.push(o); });
 }
 function curtains(a,b,zc,inside){             // rail over a south window plus a gathered panel at each end
   const x0=X(a), x1=X(b), z=Z(zc)+inside*0.17, top=2.12;
@@ -1819,7 +1794,8 @@ const FSU=FS.initUI({
     else { orb.pitch=1.12; orb.dist=15.5; orb.tx=X(636); orb.tz=Z(1160); }
   },
   onChange:syncPeopleToFurniture,
-  types:function(){ return Catalog.TYPES; },preview:function(t){ return Catalog.make(t).group; }
+  types:function(){ return Catalog.TYPES; },preview:function(t){ return Catalog.make(t).group; },
+  wallSnap:function(x,z){ return Walk.snapToWalls(colliders.filter(function(c){ return c.kind==='w'; }),x,z,1.0); }
 });
 
 /* ---------- sheet ---------- */

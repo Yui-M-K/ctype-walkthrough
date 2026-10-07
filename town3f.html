@@ -435,7 +435,7 @@ function placeItem(id,t,l,wx,wz,rotQ){         // build catalogue type t at worl
     return {x0:x0+wx,x1:x1+wx,z0:z0+wz,z1:z1+wz,y0:base(l),y1:base(l)+1.2,kind:'f',l:l};
   });
   furnCols.push.apply(furnCols,cols);
-  const m=FS.wrap(id,Catalog.info(t).name,[Rg],cols,{parent:furnG[l],lv:l}); m.lvCur=l; m.y=base(l);
+  const info=Catalog.info(t), m=FS.wrap(id,info.name,[Rg],cols,{parent:furnG[l],lv:l,wall:!!info.wall,pivot:info.wall?[wx,wz]:null,face0:(Catalog.faceIndex(t)+rotQ)%4}); m.lvCur=l; m.y=base(l);
   const live=function(){ return !!m.W.parent&&!FS.isStored(id); }, c=Math.cos(rotQ*Math.PI/2), sn=Math.sin(rotQ*Math.PI/2);
   p.anims.forEach(function(f){ furnAnims.push({live:live,f:f}); });
   (p.actions||[]).forEach(function(a){                       // piece-local point -> default world point -> wherever the user moved it
@@ -454,7 +454,7 @@ const LAYOUT=[
   ['desk1','desk',0,527,522,'N'],['chair1','officeChair',0,527,440,'S'],['shelf1','bookshelf',0,634,260,'W'],['plantH','plantS',0,240,570,'E'],
   ['bed2','bed',2,1700,300,'S'],['side2','bedside',2,1829,190,'S'],['rug2','rugBed',2,1700,345,'E'],['plant2','plant',2,1850,560,'W'],
   ['desk3','desk',2,1600,1045,'N'],['chair3','officeChair',2,1600,985,'S'],['shelf3','bookshelf',2,1352,880,'E'],
-  ['bed3','bed',2,1740,900,'S'],['sideT3','sideTable',2,1840,790,'E'],['plant3','plantS',2,1340,1060,'E']
+  ['bed3','bed',2,1740,900,'S'],['art1','artLand',0,470,168,'S'],['art2','artLand',2,1700,168,'S'],['art3','artPortrait',2,1874,1030,'W'],['art4','artSmall',0,317,550,'W'],['sideT3','sideTable',2,1840,790,'E'],['plant3','plantS',2,1340,1060,'E']
 ];
 LAYOUT.forEach(function(e){ placeItem(e[0],e[1],e[2],WX(e[2],e[3]),WZ(e[2],e[4]),Catalog.turnsToFace(e[1],e[5])); });
 FS.restoreExtras();
@@ -668,6 +668,7 @@ const FSU=FS.initUI({
   onEditToggle:function(on){ if(on){ viewLevel=levelOf(player.py)+1; roofOn(false); applyLevelVis(); orb.yaw=0; orb.pitch=1.42; orb.dist=12; orb.tx=2.4; orb.tz=4.4; } },
   onChange:function(){},
   types:function(){ return Catalog.TYPES; },preview:function(t){ return Catalog.make(t).group; },
+  wallSnap:function(x,z,lv){ const b=base(lv); return Walk.snapToWalls(walls.filter(function(c){ return c.l===lv&&c.kind==='w'&&c.y0<=b+1.0&&c.y1>=b+1.8&&Math.min(c.x1-c.x0,c.z1-c.z0)>=0.085; }),x,z,1.0); },
   dropLevel:function(){ return clamp(viewLevel-1,0,2); },dropY:function(){ return base(clamp(viewLevel-1,0,2)); }
 });
 setSun(14); setMode('walk'); roofOn(true); updateRoom(); drawMini();
