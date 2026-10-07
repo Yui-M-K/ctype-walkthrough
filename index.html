@@ -419,6 +419,7 @@ const shoeMats=[0x2a2a2e,0x6b4a35,0xe8e6e0,0x1f2c44,0x8a8d90,0xa5714a].map(funct
 const furn=new THREE.Group(); scene.add(furn);
 const partG=new THREE.Group(); scene.add(partG);
 const curtainSets=[], applThings=[];
+let vanOpen=false, vanT=0, vanDoors=[], vanLight=null;
 const furnMeshes=[], furnCols=[], picks=[], colliders=[], ceilings=[], floorRects=[], floorTris=[], detailMeshes=[];
 let realOn=false, realCol=null; let sportMode=false; const sportCols=[], sportHide=[];
 let curLayout=1, foldT=0, foldTarget=0, foldApply=function(){};
@@ -602,6 +603,69 @@ function garmentGeo(type,hh,w){
   s.quadraticCurveTo(0,-0.075,R[0][0],R[0][1]);
   return new THREE.ExtrudeGeometry(s,{depth:0.03,bevelEnabled:true,bevelThickness:0.006,bevelSize:0.006,bevelSegments:1});
 }
+/* ---------- shoes: side-profile extrusions (sneaker, ankle boot, loafer, pump, sandal), 9.2 cm wide, 27 cm long, toe toward local +x ---------- */
+const shoeGeoC={}, shoeMatC={}, SW=0.092;
+function shoeMat(c){ return shoeMatC[c]||(shoeMatC[c]=lam(c,{roughness:0.6})); }
+function shoeGeo(name,build){ return shoeGeoC[name]||(shoeGeoC[name]=build()); }
+function shoeExtr(shape,depth,bev){
+  const g=new THREE.ExtrudeGeometry(shape,{depth:depth-2*bev,bevelEnabled:true,bevelThickness:bev,bevelSize:bev,bevelSegments:2,curveSegments:8});
+  g.translate(0,0,-(depth-2*bev)/2);
+  const pos=g.attributes.position;                                       // plan view: heel rounded, ball widest, toe narrowing to a round tip
+  for(let i=0;i<pos.count;i++){
+    const x=pos.getX(i), t=x<-0.1?0.8+(x+0.14)/0.04*0.15:x<0.03?0.95+(x+0.1)/0.13*0.05:1-Math.pow(Math.max(0,(x-0.03)/0.12),1.8)*0.5;
+    pos.setZ(i,pos.getZ(i)*Math.max(0.45,t));
+  }
+  g.computeVertexNormals(); return g;
+}
+function shoeSole(h,heelH){                    // outline of a flat/low-heel sole, h thick
+  const s=new THREE.Shape(); s.moveTo(-0.132,0); s.lineTo(0.125,0); s.quadraticCurveTo(0.148,0,0.148,h*0.7); s.lineTo(0.148,h); s.quadraticCurveTo(0.14,h+0.004,0.12,h+0.004);
+  s.lineTo(-0.115,h+heelH); s.quadraticCurveTo(-0.138,h+heelH,-0.138,h+heelH-0.01); s.lineTo(-0.138,0.008); s.quadraticCurveTo(-0.138,0,-0.132,0); return s;
+}
+function shoeObj(kind,c1,c2){
+  const G=new THREE.Group();
+  const add=function(g,m,x,y,z,cast){ const me=new THREE.Mesh(g,m); me.position.set(x||0,y||0,z||0); me.castShadow=cast!==false; me.receiveShadow=true; G.add(me); return me; };
+  const bx=function(w,h,d){ return shoeGeo('b'+w+'_'+h+'_'+d,function(){ return new THREE.BoxGeometry(w,h,d); }); };
+  if(kind==='sneaker'){
+    add(shoeGeo('sneakerS',function(){ return shoeExtr(shoeSole(0.03,0),SW+0.004,0.004); }),shoeMat(c2||0xf1efe9));
+    add(shoeGeo('sneakerU',function(){
+      const s=new THREE.Shape(); s.moveTo(-0.125,0.03); s.lineTo(-0.13,0.075); s.quadraticCurveTo(-0.13,0.088,-0.115,0.086); s.lineTo(-0.075,0.074);
+      s.quadraticCurveTo(-0.05,0.07,-0.03,0.09); s.lineTo(-0.018,0.1); s.quadraticCurveTo(0.03,0.085,0.075,0.07); s.quadraticCurveTo(0.12,0.062,0.138,0.045); s.quadraticCurveTo(0.146,0.036,0.14,0.03); s.closePath();
+      return shoeExtr(s,SW,0.006); }),shoeMat(c1));
+    for(let i=0;i<4;i++){ const x=-0.005+0.024*i, y=0.098-0.32*(x+0.018)+0.002; add(bx(0.012,0.004,SW*0.8),shoeMat(0xf3f1ea),x,y,0,false).rotation.z=-0.31; }
+    add(bx(0.026,0.014,SW*0.5),shoeMat(c2||0xf1efe9),-0.118,0.066,0,false);
+    add(bx(0.05,0.006,SW*0.55),shoeMat(0x18181a),-0.096,0.083,0,false).rotation.z=-0.29;     // ankle opening
+  } else if(kind==='boot'){
+    add(shoeGeo('bootS',function(){ return shoeExtr(shoeSole(0.034,0),SW+0.004,0.004); }),shoeMat(0x242426));
+    add(bx(0.07,0.02,SW),shoeMat(0x242426),-0.095,0.044,0);
+    add(shoeGeo('bootU',function(){
+      const s=new THREE.Shape(); s.moveTo(-0.125,0.034); s.lineTo(-0.13,0.165); s.lineTo(-0.035,0.17); s.lineTo(-0.028,0.105); s.quadraticCurveTo(0.03,0.085,0.08,0.075);
+      s.quadraticCurveTo(0.125,0.068,0.14,0.05); s.quadraticCurveTo(0.148,0.04,0.142,0.034); s.closePath(); return shoeExtr(s,SW,0.008); }),shoeMat(c1));
+    add(bx(0.012,0.1,SW*0.3),shoeMat(0x1c1c1e),-0.03,0.12,0,false);
+    add(bx(0.09,0.006,SW*0.7),shoeMat(0x151516),-0.082,0.171,0,false);                     // top opening of the shaft
+  } else if(kind==='loafer'){
+    add(shoeGeo('loaferS',function(){ return shoeExtr(shoeSole(0.02,0.012),SW+0.002,0.003); }),shoeMat(0x2a2220));
+    add(shoeGeo('loaferU',function(){
+      const s=new THREE.Shape(); s.moveTo(-0.126,0.034); s.lineTo(-0.129,0.066); s.quadraticCurveTo(-0.128,0.076,-0.112,0.074); s.lineTo(-0.045,0.066);
+      s.quadraticCurveTo(-0.025,0.062,-0.012,0.08); s.quadraticCurveTo(0.03,0.078,0.075,0.066); s.quadraticCurveTo(0.125,0.058,0.138,0.046); s.quadraticCurveTo(0.146,0.038,0.14,0.034); s.closePath();
+      return shoeExtr(s,SW,0.006); }),shoeMat(c1));
+    add(bx(0.03,0.01,SW*0.9),shoeMat(c2||0x8a6a4a),0.03,0.077,0,false);
+    add(bx(0.05,0.006,SW*0.6),shoeMat(0x151516),-0.08,0.074,0,false).rotation.z=-0.1;     // opening
+  } else if(kind==='pump'){
+    add(shoeGeo('pumpS',function(){
+      const s=new THREE.Shape(); s.moveTo(0.148,0.004); s.quadraticCurveTo(0.148,0,0.138,0); s.lineTo(0.05,0); s.lineTo(-0.04,0.035); s.lineTo(-0.115,0.07); s.lineTo(-0.134,0.078); s.lineTo(-0.134,0.09);
+      s.lineTo(-0.115,0.088); s.lineTo(-0.04,0.052); s.lineTo(0.05,0.014); s.lineTo(0.14,0.014); s.closePath(); return shoeExtr(s,SW*0.85,0.003); }),shoeMat(c1));
+    add(shoeGeo('pumpV',function(){
+      const s=new THREE.Shape(); s.moveTo(0.146,0.012); s.quadraticCurveTo(0.146,0.034,0.12,0.046); s.quadraticCurveTo(0.09,0.056,0.05,0.05); s.lineTo(0.02,0.026); s.lineTo(0.06,0.014); s.closePath(); return shoeExtr(s,SW,0.006); }),shoeMat(c1));
+    add(shoeGeo('pumpH',function(){
+      const s=new THREE.Shape(); s.moveTo(-0.136,0.09); s.lineTo(-0.132,0.13); s.quadraticCurveTo(-0.12,0.135,-0.09,0.118); s.lineTo(-0.07,0.088); s.lineTo(-0.1,0.074); s.closePath(); return shoeExtr(s,SW*0.9,0.005); }),shoeMat(c1));
+    const heel=add(shoeGeo('heelCone',function(){ return new THREE.CylinderGeometry(0.009,0.005,0.08,10); }),shoeMat(c1),-0.125,0.04,0);
+  } else {                                                   // sandal / slide
+    add(shoeGeo('sandalS',function(){ return shoeExtr(shoeSole(0.026,0),SW+0.006,0.006); }),shoeMat(c2||0xcdb89a));
+    add(bx(0.06,0.026,SW+0.002),shoeMat(c1),0.03,0.045,0);
+    add(bx(0.022,0.02,SW+0.002),shoeMat(c1),-0.07,0.04,0);
+  }
+  return G;
+}
 function shelfItems(x0,x1,z0,z1,boards,kind){  // shoes or storage boxes on the lower boards of a shelf
   const alongZ=(z1-z0)>(x1-x0), depth=alongZ?(x1-x0):(z1-z0), len=alongZ?(z1-z0):(x1-x0), o={group:furn,detail:true,pick:false};
   const cc=alongZ?(x0+x1)/2:(z0+z1)/2, start=alongZ?z0:x0;
@@ -609,15 +673,19 @@ function shelfItems(x0,x1,z0,z1,boards,kind){  // shoes or storage boxes on the 
     if(i>=boards.length-2) return;
     const top=y+0.025;
     if(kind==='shoes'){
-      const L=Math.min(depth-0.05,0.27), step=0.115, n=Math.floor((len-0.05)/step);
+      const inDepth=depth>=0.285, slot=inDepth?0.215:0.31, n=Math.max(1,Math.floor((len-0.04)/slot));
+      const dir=alongZ?(inDepth?Math.PI:-Math.PI/2):(inDepth?Math.PI/2:0);                 // toes face the open side of the shelf
       for(let k=0;k<n;k++){
-        if(rnd()<0.28) continue;
-        const p=start+0.04+step*(k+0.5), mat=shoeMats[Math.floor(rnd()*shoeMats.length)];
-        const a0=cc-L/2, aMid=a0+L*0.4, a1=cc+L/2, w=0.042;     // heel/ankle part, lower toe part, dark sole
-        const part=function(s,e,y0,y1,r,m){ if(alongZ) rbox(s,e,p-w,p+w,y0,y1,r,m,o); else rbox(p-w,p+w,s,e,y0,y1,r,m,o); };
-        part(a0,a1,top,top+0.014,0.006,M.dark);
-        part(a0,aMid+0.02,top+0.014,top+0.095,0.025,mat);
-        part(aMid-0.02,a1,top+0.014,top+0.055,0.022,mat);
+        if(rnd()<0.2) continue;
+        const along=start+(len-n*slot)/2+slot*(k+0.5), kind2=['sneaker','sneaker','sneaker','boot','loafer','pump','sandal'][Math.floor(rnd()*7)];
+        const c1=kind2==='pump'?[0xd9b8a2,0x1c1c1e,0xa3262f,0xe7c9d0][Math.floor(rnd()*4)]:kind2==='sandal'?[0x1c1c1e,0x7a5a3a][Math.floor(rnd()*2)]:kind2==='boot'?[0x6b4a35,0x1c1c1e][Math.floor(rnd()*2)]:kind2==='loafer'?[0x1c1c1e,0x5a3a28,0x8a5a3a][Math.floor(rnd()*3)]:[0x2a2a2e,0x6b4a35,0xe8e6e0,0x1f2c44,0x8a8d90,0xa5714a][Math.floor(rnd()*6)];
+        const c2=kind2==='sneaker'?(rnd()<0.7?0xf1efe9:0x2a2a2e):0x8a6a4a, sc=Math.min(0.94+rnd()*0.1,(inDepth?depth-0.03:0.30)/0.296);
+        [-1,1].forEach(function(sd){
+          const g=shoeObj(kind2,c1,c2); g.scale.setScalar(sc);
+          const off=sd*0.05, stag=sd*0.012;
+          g.position.set(alongZ?(inDepth?cc+stag:cc+off):(inDepth?along+off:along+stag),top,alongZ?(inDepth?along+off:along+stag):(inDepth?cc+stag:cc+off)); g.rotation.y=dir;
+          furn.add(g); g.traverse(function(o2){ if(o2.isMesh){ furnMeshes.push(o2); detailMeshes.push(o2); } });
+        });
       }
     } else {
       const n=Math.max(1,Math.floor(len/0.4)), bw=Math.min(0.34,len/n-0.04), hg=0.2+rnd()*0.08, bd=depth-0.06;
@@ -1189,7 +1257,55 @@ box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.hob,{pick:false});
 /* washbasin vanity in the hallway alcove: on your right as you walk in from the genkan */
 (function(){
   const vx0=564.1, vx1=608.6, vy0=826.2, vy1=921;
-  solid(vx0,vy0,vx1,vy1,0,0.78,M.cab,'x');                                        // cabinet
+  const cx0=X(vx0), cx1=X(vx1), cz0=Z(vy0), cz1=Z(vy1), zc=Z(873.6), oo={pick:false}, oc2={pick:false,cast:false};
+  addCol(cx0,cx1,cz0,cz1,'x'); contactShadow(cx0,cx1,cz0,cz1,floorY((cx0+cx1)/2,(cz0+cz1)/2));
+  /* hollow cabinet: plinth, back, ends, floor board, shelves left and right of the drain pipe, two hinged doors */
+  box(cx0,cx1-0.03,cz0,cz1,0,0.1,M.dark,oo);
+  const inner=lam(0xc9bfae,{roughness:0.75});
+  box(cx0,cx0+0.02,cz0,cz1,0.1,0.78,inner); box(cx0,cx1,cz0,cz0+0.02,0.1,0.78,M.cab); box(cx0,cx1,cz1-0.02,cz1,0.1,0.78,M.cab);
+  box(cx0,cx1,cz0,cz1,0.1,0.118,inner,oc2); box(cx0,cx1,cz0,cz1,0.76,0.78,M.cab,oc2);
+  const shelfY=0.42; box(cx0+0.02,cx1-0.02,cz0+0.02,zc-0.15,shelfY,shelfY+0.018,inner,oc2); box(cx0+0.02,cx1-0.02,zc+0.15,cz1-0.02,shelfY,shelfY+0.018,inner,oc2);
+  const pvc=lam(0xe9ebec,{roughness:0.4}), pipeX=(cx0+0.14+cx1-0.04)/2;
+  cyl(pipeX,zc,0.016,0.016,0.5,0.8,pvc,oc2,14);                                                    // drain pipe and trap running to the wall
+  { const tr=cyl((pipeX+cx0+0.02)/2,zc,0.016,0.016,0,1,pvc,oc2,14); tr.rotation.z=Math.PI/2; tr.scale.y=pipeX-cx0-0.02; tr.position.y=0.5; }
+  [-0.05,0.05].forEach(function(d){ cyl(cx0+0.04,zc+d,0.007,0.007,0.12,0.78,M.steel,oc2,8); box(cx0+0.02,cx0+0.07,zc+d-0.012,zc+d+0.012,0.2,0.23,M.steel,oc2); });   // supply pipes, angle valves
+  /* contents: toothbrush cup, toothpaste, mouthwash, floss; towels, toilet paper, cleaner */
+  const it=function(geo,mat,x,y,z,cast){ const m=new THREE.Mesh(geo,mat); m.position.set(x,y,z); m.castShadow=cast!==false; m.receiveShadow=true; furn.add(m); furnMeshes.push(m); return m; };
+  const sy=shelfY+0.018, lz=cz0+0.11, mid=cx1-0.14;               // kept near the front: the worktop overhang hides anything deeper from standing height
+  it(new THREE.CylinderGeometry(0.034,0.03,0.09,20),M.ceramic,mid,sy+0.045,lz);                    // cup
+  it(new THREE.CylinderGeometry(0.027,0.027,0.002,20),lam(0x2a2a2e,{roughness:0.9}),mid,sy+0.0905,lz,false);
+  [[0xf2a7b8,-0.22,0.1],[0x5fa8d8,0.18,0.25],[0xf4f4f0,0.0,-0.18]].forEach(function(b){            // toothbrushes fanned out of the cup
+    const g=new THREE.Group(); g.position.set(mid,sy+0.04,lz); g.rotation.set(b[2],0,b[1]);
+    const h=new THREE.Mesh(new THREE.CylinderGeometry(0.0055,0.0042,0.19,8),lam(b[0],{roughness:0.4})); h.position.y=0.095; h.castShadow=true; g.add(h);
+    const hd=new THREE.Mesh(new THREE.BoxGeometry(0.014,0.034,0.009),lam(0xf4f4f0,{roughness:0.6})); hd.position.y=0.205; g.add(hd);
+    const br=new THREE.Mesh(new THREE.BoxGeometry(0.012,0.028,0.009),lam(0x5fa8d8,{roughness:0.8})); br.position.set(0,0.207,0.0085); g.add(br);
+    furn.add(g); furnMeshes.push(h,hd,br);
+  });
+  [[lz+0.1,0xf4f4f0,0x2c78c8],[lz+0.16,0xf4f4f0,0xd8453c]].forEach(function(t){                   // toothpaste tubes lying on the shelf
+    const g=new THREE.Group(); g.position.set(mid+0.01,sy+0.017,t[0]); g.rotation.x=Math.PI/2;
+    const b=new THREE.Mesh(new THREE.CylinderGeometry(0.017,0.017,0.13,16),lam(t[1],{roughness:0.35})); b.castShadow=true; g.add(b);
+    const bd=new THREE.Mesh(new THREE.CylinderGeometry(0.0173,0.0173,0.045,16),lam(t[2],{roughness:0.35})); bd.position.y=0.02; g.add(bd);
+    const cp=new THREE.Mesh(new THREE.CylinderGeometry(0.011,0.012,0.022,12),lam(t[2],{roughness:0.4})); cp.position.y=0.076; g.add(cp);
+    const cr=new THREE.Mesh(new THREE.BoxGeometry(0.036,0.016,0.004),lam(t[1],{roughness:0.5})); cr.position.y=-0.066; g.add(cr);
+    furn.add(g); furnMeshes.push(b,bd,cp,cr);
+  });
+  it(new THREE.CylinderGeometry(0.03,0.03,0.17,18),lam(0x6fb4e8,{transparent:true,opacity:0.8,roughness:0.15}),mid-0.1,sy+0.085,lz+0.31);   // mouthwash
+  it(new THREE.CylinderGeometry(0.025,0.025,0.03,16),lam(0xf4f4f0),mid-0.1,sy+0.185,lz+0.31,false);
+  it(new THREE.BoxGeometry(0.05,0.07,0.032),lam(0xcfeee6,{roughness:0.5}),mid+0.07,sy+0.035,lz+0.34);                         // floss box
+  const rz=cz1-0.2;
+  [0,1,2].forEach(function(i){ it(new THREE.BoxGeometry(0.27,0.065,0.2),fab(i===2?0xcfd9e2:0xf4f2ee),mid,sy+0.0325+i*0.067,rz); });  // folded towels
+  const pk=it(new THREE.BoxGeometry(0.26,0.12,0.26),lam(0xf4f6f8,{transparent:true,opacity:0.55,roughness:0.2}),mid,0.118+0.06,rz+0.0,false);   // toilet paper pack on the floor board
+  [[-0.06,-0.06],[0.06,-0.06],[-0.06,0.06],[0.06,0.06]].forEach(function(q){ it(new THREE.CylinderGeometry(0.052,0.052,0.1,16),lam(0xfbfbf9,{roughness:0.9}),mid+q[0],0.118+0.05,rz+q[1]); });
+  it(new THREE.CylinderGeometry(0.038,0.04,0.2,18),lam(0xbfe3ea,{transparent:true,opacity:0.85,roughness:0.2}),mid,0.118+0.1,lz+0.02);   // cleaning spray bottle on the floor board, left
+  it(new THREE.BoxGeometry(0.04,0.035,0.05),lam(0xf4f4f0),mid,0.118+0.215,lz+0.02,false);
+  vanLight=new THREE.PointLight(0xfff4e6,0,1.3,2); vanLight.position.set(mid,0.45,zc); scene.add(vanLight);
+  /* two doors, hinged at the outer ends, swinging out into the hallway */
+  [[cz0,1],[cz1,-1]].forEach(function(d){
+    const G=new THREE.Group(); G.position.set(cx1,0,d[0]); furn.add(G); vanDoors.push(G);
+    const len=(cz1-cz0)/2-0.002, pm=new THREE.Mesh(new THREE.BoxGeometry(0.02,0.65,len),M.cabF); pm.position.set(0.011,0.445,d[1]*len/2); pm.castShadow=true; pm.receiveShadow=true; G.add(pm);
+    const hd=new THREE.Mesh(new THREE.BoxGeometry(0.012,0.14,0.012),M.steel); hd.position.set(0.026,0.62,d[1]*(len-0.05)); G.add(hd);
+  });
+  applThings.push({pt:[cx1+0.45,zc],label:function(){ return vanOpen?'關上櫃子':'打開洗面台櫃子'; },act:function(){ vanOpen=!vanOpen; }});
   box(X(vx0),X(vx1)+0.01,Z(vy0),Z(vy1),0.78,0.81,M.top,{pick:false});              // counter top
   box(X(vx0)+0.02,X(vx1)-0.02,Z(vy0)+0.02,Z(vy1)-0.02,0.4,0.42,M.frame,{pick:false});
   const bx0=X(vx0)+0.14, bx1=X(vx1)-0.04, bz0=Z(873.6-22.7), bz1=Z(873.6+22.7), bw=0.035, bt=0.93;   // large square basin, about 55 x 36 cm
@@ -1200,6 +1316,17 @@ box(X(791),X(841),Z(1136),Z(1176),0.875,0.89,M.hob,{pick:false});
   mirror(X(vx0)+0.162,(Z(vy0)+Z(vy1))/2,Z(vy1)-Z(vy0)-0.04,0.86,1.5,Math.PI/2);
   cyl(X(vx0)+0.06,Z(874),0.013,0.013,0.81,1.0,M.steel,{pick:false},10);
   box(X(vx0)+0.04,X(vx0)+0.17,Z(874)-0.01,Z(874)+0.01,0.99,1.01,M.steel,{pick:false,cast:false});
+  /* touch-free foaming soap dispenser south of the basin: frosted tank, spout arm reaching toward the basin, sensor eye on the underside */
+  const dx=X(vx0)+0.2, dz=Z(908), y0=0.81, wh=lam(0xf5f6f7,{roughness:0.25,envMapIntensity:0.7});
+  cyl(dx,dz,0.046,0.048,y0,y0+0.012,lam(0x2a2d31,{roughness:0.4}),{pick:false},28);
+  cyl(dx,dz,0.04,0.04,y0+0.012,y0+0.158,lam(0xe6f2f6,{transparent:true,opacity:0.88,roughness:0.12}),{pick:false},28);       // tank
+  cyl(dx,dz,0.0392,0.0392,y0+0.03,y0+0.1,lam(0xd8eef4,{roughness:0.3}),{pick:false,cast:false},28);                              // liquid level
+  cyl(dx,dz,0.037,0.041,y0+0.158,y0+0.176,wh,{pick:false},28);
+  rbox(dx-0.022,dx+0.022,dz-0.098,dz+0.012,y0+0.166,y0+0.194,0.012,wh,{pick:false});                                             // spout arm
+  cyl(dx,dz-0.082,0.0075,0.0065,y0+0.15,y0+0.168,lam(0xdfe3e6,{roughness:0.3}),{pick:false,cast:false},12);                        // nozzle
+  cyl(dx,dz-0.058,0.0105,0.0105,y0+0.1635,y0+0.1665,lam(0x0a0f14,{roughness:0.08}),{pick:false,cast:false},16);                  // sensor lens
+  const led=new THREE.Mesh(new THREE.SphereGeometry(0.0032,8,6),new THREE.MeshBasicMaterial({color:0x4de08a})); led.position.set(dx,y0+0.188,dz-0.0975); scene.add(led);
+  catAnim.push(function(t){ led.material.color.setHex((Math.floor(t*0.8)%4===0)?0x1c4a30:0x4de08a); });
 })();
 /* bathtub (rim, cavity, water), shower bar and mirror */
 (function(){
@@ -1306,6 +1433,14 @@ cabDoors('z',Z(1125),Z(1218),X(XE)-0.3,-1,1.5,2.25,3,true);
 /* shoe-in closet shelves */
 ghost(772,730,797,800,2.2,[0.05,0.45,0.85,1.25,1.65,2.1],[],'shoes');
 ghost(707,782,772,802,2.2,[0.05,0.45,0.85,1.25,1.65,2.1],[],'shoes');
+(function(){                                   // a few pairs left on the genkan floor, toes toward the entrance door
+  [[618,780,'sneaker',0xe8e6e0,0xf1efe9],[641,784,'loafer',0x1c1c1e,0x8a6a4a],[660,778,'sneaker',0x1f2c44,0xf1efe9]].forEach(function(q){
+    [-1,1].forEach(function(sd){
+      const g=shoeObj(q[2],q[3],q[4]); g.scale.setScalar(0.97); g.position.set(X(q[0])+sd*0.052,floorY(X(q[0]),Z(q[1]))+0.002,Z(q[1])+sd*0.006); g.rotation.y=Math.PI/2;
+      furn.add(g); g.traverse(function(o2){ if(o2.isMesh){ furnMeshes.push(o2); detailMeshes.push(o2); } });
+    });
+  });
+})();
 /* utility room: hanging racks and shelves */
 ghost(423,810,457,942,2.0,[0.2,1.9],[1.75,0.95]);
 ghost(524,833,554,948,2.0,[0.2,1.9],[1.75,0.95]);
@@ -1315,6 +1450,39 @@ box(X(476),X(497),Z(1024),Z(1076),1.45,2.05,M.cab,{pick:false});           // wa
 cabDoors('z',Z(1024),Z(1076),X(497),1,1.45,2.05,2,true);
 clothes(423,872,457,942,1.75,0.5,1.0,6);
 clothes(524,833,554,948,1.75,0.5,1.0,10);
+/* ---------- luggage in the multi-purpose room: standing against the rack, big face toward the aisle (each one movable in edit mode) ---------- */
+function suitcase(id,label,xb,zc,W,H,D,col,ribCol,soft){
+  mvBegin();
+  const o={group:furn,pick:false}, oc={group:furn,pick:false,cast:false};
+  const x1=X(xb), x0=x1-D, cz=Z(zc), z0=cz-W/2, z1=cz+W/2, y0=0.055, xm=(x0+x1)/2;
+  const body=soft?fab(col):lam(col,{roughness:0.3,envMapIntensity:0.8}), dk=lam(0x1c1d20,{roughness:0.55}), steelL=lam(0xb9bec4,{metalness:0.8,roughness:0.3});
+  rbox(x0,x1,z0,z1,y0,H,soft?0.05:0.045,body,o);
+  box(xm-0.002,xm+0.002,z0+0.03,z1-0.03,H,H+0.0015,dk,oc);                                       // seam / zipper line over the top
+  [z0,z1].forEach(function(z,i){ box(xm-0.002,xm+0.002,i?z:z-0.0015,i?z+0.0015:z,y0+0.04,H-0.04,dk,oc); });   // ...and down both sides
+  if(!soft){
+    const rib=lam(ribCol,{roughness:0.35}), n=7;
+    for(let i=1;i<=n;i++){ const zr=z0+W*i/(n+1); box(x0-0.004,x0+0.001,zr-0.009,zr+0.009,y0+0.07,H-0.07,rib,oc); }   // vertical ribs on the shell
+    rbox(x1-0.075,x1-0.005,cz-0.05,cz+0.05,H,H+0.006,0.003,dk,oc);                                // telescopic-handle housing
+  } else {
+    rbox(x0-0.014,x0,z0+W*0.1,z1-W*0.1,y0+0.08,y0+(H-y0)*0.5,0.02,fab(0x2f3237),o);                 // front pocket
+    box(x0-0.014,x0-0.012,z0+W*0.12,z1-W*0.12,y0+(H-y0)*0.5-0.014,y0+(H-y0)*0.5-0.01,steelL,oc);   // pocket zipper
+    rbox(x0-0.003,x0,z1-0.11,z1-0.05,H-0.07,H-0.045,0.004,steelL,oc);                              // small badge
+    rbox(x1-0.075,x1-0.005,cz-0.05,cz+0.05,H,H+0.006,0.003,dk,oc);
+  }
+  rbox(xm-0.035,xm+0.035,cz-0.1,cz+0.1,H,H+0.012,0.004,dk,oc);                                     // top handle: base plate, grip, two posts
+  rbox(xm-0.012,xm+0.012,cz-0.085,cz+0.085,H+0.027,H+0.042,0.006,dk,oc);
+  [-1,1].forEach(function(sd){ box(xm-0.01,xm+0.01,cz+sd*0.08-0.01,cz+sd*0.08+0.01,H+0.012,H+0.032,dk,oc); });
+  [[x0+0.07,z0+0.075],[x0+0.07,z1-0.075],[x1-0.07,z0+0.075],[x1-0.07,z1-0.075]].forEach(function(q){   // spinner wheels
+    box(q[0]-0.022,q[0]+0.022,q[1]-0.02,q[1]+0.02,0.032,y0+0.004,dk,oc);
+    const w=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.018,14),dk); w.rotation.x=Math.PI/2; w.position.set(q[0],0.02,q[1]); w.castShadow=true; place(w,oc);
+  });
+  furnCols.push({x0:x0,x1:x1,z0:z0,z1:z1,kind:'f'}); contactShadow(x0,x1,z0,z1,0,furn);
+  return mvEnd(id,label);
+}
+suitcase('lug30','30 吋行李箱（粉紅）',522,914.5,0.52,0.78,0.31,0xee9db5,0xd9809b,false);
+suitcase('lug29','29 吋行李箱（黑色軟殼）',522,959.4,0.49,0.77,0.33,0x26282c,0,true);
+suitcase('lug24','24 吋行李箱（粉紅）',522,999.8,0.41,0.66,0.26,0xf6bccb,0xe49fb4,false);
+
 
 /* ---------- reference furniture (can be switched off) ---------- */
 const lampMat=new THREE.MeshBasicMaterial({color:0xffdc96});
@@ -2934,6 +3102,7 @@ function tick(now){
   updateDoors(dt);
   curtainSets.forEach(function(c){ if(c.t!==c.target){ c.t=c.target>c.t?Math.min(1,c.t+dt/1.6):Math.max(0,c.t-dt/1.6); applyCurtain(c); renderer.shadowMap.needsUpdate=true; } });
   if(fridgeDoor){ const ft=fridgeOpen?1:0; if(fridgeT!==ft){ fridgeT=ft?Math.min(1,fridgeT+dt/0.8):Math.max(0,fridgeT-dt/0.8); const e=fridgeT*fridgeT*(3-2*fridgeT); fridgeDoor.rotation.y=1.85*e; fridgeLight.intensity=0.7*e; renderer.shadowMap.needsUpdate=true; } }
+  if(vanDoors.length){ const vt=vanOpen?1:0; if(vanT!==vt){ vanT=vt?Math.min(1,vanT+dt/0.6):Math.max(0,vanT-dt/0.6); const e=vanT*vanT*(3-2*vanT); vanDoors[0].rotation.y=1.75*e; vanDoors[1].rotation.y=-1.75*e; vanLight.intensity=0.7*e; renderer.shadowMap.needsUpdate=true; } }
   if(freezerDrawer){ const ft=freezerOpen?1:0; if(freezerT!==ft){ freezerT=ft?Math.min(1,freezerT+dt/0.7):Math.max(0,freezerT-dt/0.7); const e=freezerT*freezerT*(3-2*freezerT); freezerDrawer.position.z=Z(1030)+0.325+0.42*e; renderer.shadowMap.needsUpdate=true; } }
   for(let i=0;i<catAnim.length;i++) catAnim[i](t/1000);
   if(foldT!==foldTarget){ foldT=foldTarget>foldT?Math.min(foldTarget,foldT+dt/2.2):Math.max(foldTarget,foldT-dt/2.2); foldApply(foldT); }
@@ -3005,7 +3174,7 @@ if(location.hash==='#debug'){
     X:X,Z:Z,S:S,OX:OX,OY:OY,SPOTS:SPOTS,R:R,floorY:floorY,roomAt:roomAt,setMode:setMode,stepPlayer:stepPlayer,joy:joy,keys:keys,
     mv:{store:function(id){ mvStore(movers.find(function(q){return q.id===id;})); },takeOut:function(id,x,z){ return mvTakeOut(movers.find(function(q){return q.id===id;}),x,z); },movers:movers,get:mvGet,saved:function(){return mvSaved;},edit:mvSetEdit,select:function(id){ mvSel=movers.find(function(q){return q.id===id;})||null; mvUpdateHelper(); mvUi(); },rotate:mvRotate,
       screen:function(id){ const m=movers.find(function(q){return q.id===id;}), s=mvGet(m), v=new THREE.Vector3(m.pv[0]+s.dx,0.5,m.pv[1]+s.dz).project(camera), r=canvas.getBoundingClientRect(); return [r.left+(v.x+1)/2*r.width,r.top+(1-v.y)/2*r.height]; }},
-    teleport:teleport,applyTheme:applyTheme,curtains:curtainSets,setFridge:function(v){ fridgeOpen=v; },setFreezer:function(v){ freezerOpen=v; },setCook:function(v){ cookOn=v; $('tCook').setAttribute('aria-pressed',String(v)); applyCook(); },setDaily:function(v){ dailyOn=v; $('tDaily').setAttribute('aria-pressed',String(v)); applyDaily(); },setSleep:function(v){ sleepOn=v; $('tSleep').setAttribute('aria-pressed',String(v)); applySleep(); },setReal:function(v){ realOn=v; $('tReal').setAttribute('aria-pressed',String(v)); applyReal(); },real:function(){return realSofa;},setLayout:setLayout,setFold:function(v){foldTarget=v;foldT=v;foldApply(v);syncFold();},doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
+    orb:orb,teleport:teleport,applyTheme:applyTheme,curtains:curtainSets,setFridge:function(v){ fridgeOpen=v; },setFreezer:function(v){ freezerOpen=v; },setVanity:function(v){ vanOpen=v; },setCook:function(v){ cookOn=v; $('tCook').setAttribute('aria-pressed',String(v)); applyCook(); },setDaily:function(v){ dailyOn=v; $('tDaily').setAttribute('aria-pressed',String(v)); applyDaily(); },setSleep:function(v){ sleepOn=v; $('tSleep').setAttribute('aria-pressed',String(v)); applySleep(); },setReal:function(v){ realOn=v; $('tReal').setAttribute('aria-pressed',String(v)); applyReal(); },real:function(){return realSofa;},setLayout:setLayout,setFold:function(v){foldTarget=v;foldT=v;foldApply(v);syncFold();},doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
 }
 }
 })();
