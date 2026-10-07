@@ -1161,10 +1161,10 @@ lb(2,function(){ mvBegin(); plant(632,1562,0.9); mvEnd('plantL2','植物'); });
   tvG=new THREE.Group(); { const mv=furn.children.slice(a0); mv.forEach(function(o){ furn.remove(o); tvG.add(o); }); furn.add(tvG); }
   tvCols0=furnCols.slice(c0); tvCols0.forEach(function(c){ c.lay=1; });
 })();
-const BED_DX=0.09;                             // bed pulled off the west wall by the shelf headboard (15 cm deep, replaces the 6 cm board)
+const BED_DX=0.09; let bed1Piece=null;                             // bed pulled off the west wall by the shelf headboard (15 cm deep, replaces the 6 cm board)
 (function(){                                   // room 1: Japanese queen bed 160 x 195, bedside table and lamp, shelf headboard, print, plant
   const bedSet=new Catalog.Piece(), cy=1316+0.995/S;                       // bed + bedside table are drawn together with the head on -z, then turned to put the head on the west wall
-  bedSet.attach(Catalog.bed(),0,0,0); bedSet.attach(Catalog.bedsideTable(false),(575-487)*S,(1340-cy)*S,0);
+  bed1Piece=bedSet.attach(Catalog.bed(),0,0,0); bedSet.attach(Catalog.bedsideTable(false),(575-487)*S,(1340-cy)*S,0);
   placePiece(bedSet,X(414.5)+BED_DX+0.995,Z(1450),1);
   picture(X(XW)+0.1,Z(1450),0.5,0.7,1.5,Math.PI/2);
   placePiece(Catalog.shelfHeadboard(),X(XW)+0.1,Z(1450),0);                // shelf headboard against the west wall
@@ -1656,17 +1656,8 @@ const nightBg=(function(){ const c=document.createElement('canvas'); c.width=4; 
   gr.addColorStop(0,'#05080f'); gr.addColorStop(0.6,'#0d1626'); gr.addColorStop(1,'#1a2438'); g.fillStyle=gr; g.fillRect(0,0,4,256);
   const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t; })();
 let dayEnv=scene.environment, dayRim=null;
-const blanket=(function(){ const b=rbox(X(515)+BED_DX,X(580)+BED_DX,Z(1450)-0.5,Z(1450)+0.5,0.5,1.0,0.16,fab(0xd9d2c4),{group:furn,pick:false}); b.visible=false; return b; })();
-function placeSleepers(on){
-  const F=sportG.userData.f, M=sportG.userData.m, bz=Z(1450);
-  blanket.visible=on&&furnOn;
-  if(on) F.visible=M.visible=true;
-  [F,M].forEach(function(q){ (q.userData.jcs||[]).forEach(function(j){ j.visible=!on; }); });
-  if(!on){ if(!sportMode) sportG.visible=false; applySport(); return; }
-  sportG.visible=true;
-  [[F,1.63,-1,0.15],[M,1.69,1,0.0]].forEach(function(a){ const q=a[0]; q.rotation.order='ZYX'; q.rotation.set(0,a[2]>0?Math.PI/2:-Math.PI/2,Math.PI/2);   // lying on the side, head west, front toward the partner
-    q.position.set(X(430)+BED_DX+a[1]*0.98+a[3], 0.8, bz+a[2]*0.11); });
-}
+const sleepersG=People.sleepers({duvet:M.bedB,cuff:M.pillow}); sleepersG.visible=false; bed1Piece.group.add(sleepersG);   // two sleepers under the duvet, in the bed's own frame
+function placeSleepers(on){ sleepersG.visible=on; }
 function applySleep(){
   if(sleepOn&&dailyOn){ dailyOn=false; $('tDaily').setAttribute('aria-pressed','false'); applyDaily(); }
   if(sleepOn&&cookOn) offCook();

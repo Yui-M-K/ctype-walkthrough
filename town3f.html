@@ -925,11 +925,7 @@ const sleepG=modeGroup(2), nightMat=new THREE.MeshBasicMaterial({color:0x6a4a30}
   const dome=new THREE.Mesh(new THREE.SphereGeometry(0.035,16,10,0,TAU,0,Math.PI/2),nightMat); nightG.add(dome);
   const b=new THREE.Mesh(new THREE.CylinderGeometry(0.036,0.04,0.012,16),M.ceramic); b.position.y=-0.006; nightG.add(b);
   nightPt.position.y=0.12; nightG.add(nightPt); LG[2].add(nightG);
-  const inner=new THREE.Group(); inner.rotation.y=-Math.PI/2; sleepG.add(inner);      // drawn head-west like Ctype, turned so the head is on the north wall
-  const F=People.stand(1.63,0xf1c9a5,0xf4f1ec,0x7f8fa8,0x3a2a22,true), Mm=People.stand(1.69,0xe2b890,0x3c4a5c,0x2f3a4a,0x1f1a16,false);
-  [[F,1.63,-1,0.15],[Mm,1.69,1,0.0]].forEach(function(a){ const q=a[0]; q.rotation.order='ZYX'; q.rotation.set(0,a[2]>0?Math.PI/2:-Math.PI/2,Math.PI/2);
-    q.position.set(15.5*S1-0.995+a[1]*0.98+a[3],0.8,a[2]*0.11); inner.add(q); });
-  rbox(inner,0.224,1.013,-0.5,0.5,0.5,1.0,0.16,fab(0xd9d2c4));
+  sleepG.add(People.sleepers({duvet:M.bedB,cuff:M.pillow})); mover('bed2').piece.group.add(sleepG); sleepG.position.y=0;   // in the bed's own frame, so it follows the bed
 })();
 const dayBg=scene.background, nightBg=(function(){ const c=document.createElement('canvas'); c.width=4; c.height=256; const g=c.getContext('2d'), gr=g.createLinearGradient(0,0,0,256);
   gr.addColorStop(0,'#05080f'); gr.addColorStop(0.6,'#0d1626'); gr.addColorStop(1,'#1a2438'); g.fillStyle=gr; g.fillRect(0,0,4,256);
@@ -946,7 +942,7 @@ function applySleep(){
   scene.background=on?nightBg:dayBg; scene.fog.color.setHex(on?0x0a1220:0xdde9f3); scene.environment=on?null:(dayEnv||scene.environment);
   renderer.toneMappingExposure=on?1.7:1.0;
   const sd=at('side2',2,1829,190); nightG.position.set(sd[0]-0.08,base(2)+0.463,sd[1]+0.02); nightMat.color.setHex(on?0xffd9a8:0x6a4a30); nightPt.intensity=on?2.1:0;
-  sleepG.visible=on&&usable('bed2'); if(on){ const b=at('bed2',2,1700,300); sleepG.position.x=b[0]; sleepG.position.z=b[1]; sleepG.rotation.y=b[2]; }
+  sleepG.visible=on&&usable('bed2');
   renderer.shadowMap.needsUpdate=true; scene.traverse(function(o){ if(o.material&&!Array.isArray(o.material)) o.material.needsUpdate=true; });
 }
 $('tSleep').addEventListener('click',function(){ sleepOn=!sleepOn; btn('tSleep',sleepOn); applySleep(); });
