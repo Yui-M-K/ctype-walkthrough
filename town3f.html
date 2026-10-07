@@ -461,7 +461,7 @@ function furnish(){
   put(0,Catalog.bookshelf(),620,195,0);
   put(0,Catalog.plant(0.8),240,570,0);
   fx(0,100,880,180,1000,0,0.5,M.cab,true);   // shoe bench
-  car();
+  put(0,Catalog.car(),490,890,0);
   /* 3F */
   const bed2=new Catalog.Piece(); bed2.attach(Catalog.bed(),0,0,0); bed2.attach(Catalog.bedsideTable(true),1.18,-0.8,0);
   put(2,bed2,1700,300,0);
@@ -473,15 +473,6 @@ function furnish(){
   const bed3=Catalog.bed(); put(2,bed3,1740,900,0);
   put(2,Catalog.sideTable(),1840,790,0);
   put(2,Catalog.plant(0.7),1340,1060,0);
-}
-function car(){
-  const l=0, g=furnG[0], cx=WX(0,490), cz=WZ(0,880), b=0;
-  const body=rbox(g,cx-0.85,cx+0.85,cz-2.1,cz+2.1,b+0.28,b+0.9,0.18,M.car); furnMeshes.push(body);
-  const cab=rbox(g,cx-0.74,cx+0.74,cz-0.9,cz+0.9,b+0.88,b+1.4,0.16,M.car); furnMeshes.push(cab);
-  const gl=rbox(g,cx-0.76,cx+0.76,cz-0.78,cz+0.78,b+0.92,b+1.34,0.1,lam(0x23323f,{roughness:0.1,metalness:0.4,envMapIntensity:1})); furnMeshes.push(gl);
-  [[-0.8,-1.3],[0.8,-1.3],[-0.8,1.3],[0.8,1.3]].forEach(function(w){ const m=new THREE.Mesh(new THREE.CylinderGeometry(0.33,0.33,0.22,18),M.black); m.rotation.z=Math.PI/2; m.position.set(cx+w[0],b+0.33,cz+w[1]); m.castShadow=true; g.add(m); furnMeshes.push(m); });
-  furnCols.push({x0:cx-0.9,x1:cx+0.9,z0:cz-2.1,z1:cz+2.1,y0:0,y1:1.4,kind:'f',l:0});
-  contactShadow(cx-0.9,cx+0.9,cz-2.1,cz+2.1,0,g);
 }
 furnish();
 [[470,290,0],[760,260,0],[480,900,0],[330,780,0],[1000,500,1],[1130,800,1],[920,260,1],[1160,280,1],[760,300,1],[1050,960,1],[1580,300,2],[1700,330,2],[1650,900,2],[1480,550,2],[1750,660,2]].forEach(function(p){ light(p[2],p[0],p[1],0xffe2b8,0.55,7); });
