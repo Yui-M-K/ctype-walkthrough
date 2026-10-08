@@ -566,7 +566,7 @@ function placeItem(id,t,l,wx,wz,rotQ,piece,lay){   // build catalogue type t (or
 const LAYOUT=[
   ['tv','tvBoard',1,738,945,'E'],['sofa','sofa',1,892,945,'W'],['coffee','coffeeTable',1,805,947,'E'],['dining','diningSet',1,1110,810,'E'],
   ['plantL','plant',1,1235,1055,'W'],['lampL','floorLamp',1,765,835,'E'],['fridge','fridge70',1,1224,429.5,'S'],['cat','catTabby',1,960,1040,'W'],['catBowls','catBowls',1,1240,955,'E'],
-  ['tub','bathtub',1,1217,277,'W'],['vanity','vanity',1,873,201,'S'],['washer','washer',1,985,205,'S'],['wc2','toilet',1,762,213,'S'],
+  ['tub','bathtub',1,1217,277,'W'],['vanity','vanity',1,873,201,'S'],['washer','washer',1,990,214,'S'],['wc2','toilet',1,762,213,'S'],
   ['wc1','toilet',0,142,232,'E'],['shoes','shoeCabinet',0,117,940,'E'],['car','car',0,490,918,'S'],
   ['bed1','bed',0,470,290,'S'],['side1','bedside',0,599,190,'S'],['rug1','rugBed',0,470,330,'E'],
   ['desk1','desk',0,527,522,'N'],['chair1','officeChair',0,527,440,'S'],['shelf1','bookshelf',0,634,300,'W'],['plantH','plantS',0,240,570,'E'],
@@ -609,7 +609,7 @@ function fixture(l,piece,wx,wz,rotQ){
   fixture(1,Catalog.bathStool(),WX(1,1100),WZ(1,300),0); fixture(1,Catalog.washBowl(),WX(1,1140),WZ(1,345),0);
 })();
 fixture(0,Catalog.clothesRack(0.8),WX(0,146),WZ(0,340),1);                            // 1F closet: hanging clothes facing the opening
-fixture(1,Catalog.towels(0.85),WX(1,985),WZ(1,205),1);                                 // folded towels on the washing machine
+fixture(1,Catalog.towels(1.064),WX(1,990),WZ(1,205),1);                                 // folded towels on the washing machine
 (function(){ const P=Catalog.soapDispenser(0.85); fixture(1,P,WX(1,840),WZ(1,213),3); P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); }); })();
 const lightFixtures=[];                       // hidden in the overview so they do not float above the cut-away rooms
 function light(l,px,py,col,int,dist){
