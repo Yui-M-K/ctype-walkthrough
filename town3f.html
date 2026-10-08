@@ -601,8 +601,9 @@ function fixture(l,piece,wx,wz,rotQ){
 }
 (function(){                                   // island counter facing the LDK: sink, tap, dish rack, IH hob and a hood hanging from the ceiling
   const K=function(px,py){ return [WX(1,px),WZ(1,py)]; }, o=K(950,568), w=(1255-950)*S, d=(660-568)*S;
-  fixture(1,Catalog.sinkCounter(w,d,[(985-950)*S,(1080-950)*S,(580-568)*S,(630-568)*S],6),o[0],o[1],0);
+  fixture(1,Catalog.sinkCounter(w,d,[(985-950)*S,(1080-950)*S,(580-568)*S,(630-568)*S],[{k:'fill',w:0.15},{k:'sink',w:0.97},{k:'dw',w:0.45},{k:'spice',w:0.23},{k:'drawers',w:0.63},{k:'fill',w:w-2.43}]),o[0],o[1],0);
   let p=K(1205,612); fixture(1,Catalog.ihHob(),p[0],p[1],0); fixture(1,Catalog.rangeHood(CH),p[0],p[1],0);
+  p=K(1145,600); fixture(1,Catalog.seasoningTray(),p[0],p[1],0);
   p=K(1032,643); fixture(1,Catalog.mixerTap(),p[0],p[1],0);
   p=K(996,649); fixture(1,Catalog.dishRack(),p[0],p[1],0);
   p=K(1068,646); fixture(1,Catalog.dishSoap(),p[0],p[1],0);

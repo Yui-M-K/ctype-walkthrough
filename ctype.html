@@ -944,6 +944,9 @@ function fixture(piece,wx,wz,rotQ){            // a built-in catalogue piece (ki
     for(let k=0;k<rotQ;k++){ const a=z0,b=z1,d=-x1,e=-x0; x0=a; x1=b; z0=d; z1=e; }
     addCol(x0+wx,x1+wx,z0+wz,z1+wz,'x');
   });
+  const c=Math.cos(rotQ*Math.PI/2), sn=Math.sin(rotQ*Math.PI/2);
+  piece.anims.forEach(function(f){ catAnim.push(function(t){ if(f(t)) renderer.shadowMap.needsUpdate=true; }); });
+  (piece.actions||[]).forEach(function(a){ applThings.push({pt:[wx+a.x*c+a.z*sn,wz-a.x*sn+a.z*c],label:a.label,act:a.act}); });
   return R;
 }
 function movable(id,label,piece,wx,wz,rotQ){     // a catalogue piece the user can move or store; its actions follow it around
@@ -959,8 +962,9 @@ function chair(cx,cy,dz){ return placePiece(Catalog.chair(dz),X(cx),Z(cy),0); }
 function roundRug(px,pz,R,style,lobes,amp,shag){ return placePiece(Catalog.roundRug(R,style,lobes,amp,shag),X(px),Z(pz),0); }
 /* ---------- fixtures ---------- */
 /* kitchen counter, sink, hob */
-fixture(Catalog.sinkCounter(X(857)-X(672),Z(1213)-Z(1130),[X(684)-X(672),X(751)-X(672),Z(1138)-Z(1130),Z(1180)-Z(1130)],5),X(672),Z(1130),0);   // counter hollowed under the sink, stainless bowl
+fixture(Catalog.sinkCounter(X(857)-X(672),Z(1213)-Z(1130),[X(684)-X(672),X(751)-X(672),Z(1138)-Z(1130),Z(1180)-Z(1130)],[{k:'fill',w:0.1},{k:'sink',w:0.9},{k:'dw',w:0.45},{k:'drawers',w:0.6},{k:'spice',w:X(857)-X(672)-2.05}]),X(672),Z(1130),0);   // counter hollowed under the sink, stainless bowl
 fixture(Catalog.ihHob(),X(816),Z(1156),0);
+fixture(Catalog.seasoningTray(),X(816),Z(1156)+0.38,0);                       // everyday seasonings beside the hob
 fixture(Catalog.mixerTap(),X(718),Z(1192),0);                                       // gooseneck mixer tap, dish rack, dish soap and sponge on the back strip
 fixture(Catalog.dishRack(),(X(685)+X(712))/2,(Z(1189)+Z(1211))/2,0);
 fixture(Catalog.dishSoap(),X(738),Z(1197),0);
