@@ -594,15 +594,20 @@ function placeItem(id,t,l,wx,wz,rotQ,piece,lay){   // build catalogue type t (or
 }
 /* default furnishing: [id, type, storey, plan x, plan y, facing N/E/S/W] */
 const LAYOUT=[
-  ['tv','tvBoard',1,738,945,'E'],['sofa','sofa',1,892,945,'W'],['coffee','coffeeTable',1,805,947,'E'],['dining','diningSet',1,1110,810,'E'],
-  ['plantL','plant',1,1235,1055,'W'],['lampL','floorLamp',1,765,835,'E'],['fridge','fridge70',1,1224,429.5,'S'],['cat','catTabby',1,960,1040,'W'],['catBowls','catBowls',1,1240,955,'E'],
+  ['tv','tvBoard',1,738,945,'E'],['sofa','lSofa',1,930,945,'W'],['coffee','coffeeTable',1,805,947,'E'],['dining','diningSet',1,1110,810,'E'],
+  ['plantL','plant',1,1240,1066,'W'],['lampL','floorLamp',1,765,835,'E'],['fridge','fridge70',1,1224,429.5,'S'],['cat','catTabby',1,1010,1062,'W'],['catBowls','catBowls',1,1250,880,'E'],
   ['washer','washer',1,990,214,'S',function(){ const p=Catalog.washer(); p.attach(Catalog.towels(1.064),-0.06,0,0); return p; }],
 ['shoes','shoeCabinet',0,117,940,'E'],['car','car',0,490,918,'S'],
   ['bed1','bed',0,470,290,'S'],['side1','bedside',0,599,190,'S'],['rug1','rugBed',0,470,330,'E'],
   ['desk1','desk',0,527,522,'N'],['chair1','officeChair',0,527,440,'S'],['shelf1','bookshelf',0,634,300,'W'],['plantH','plantS',0,240,570,'E'],
   ['bed2','bed',2,1700,300,'S'],['side2','bedside',2,1829,190,'S'],['rug2','rugBed',2,1700,345,'E'],['plant2','plant',2,1842,560,'W'],
-  ['desk3','desk',2,1520,1045,'N'],['chair3','officeChair',2,1520,985,'S'],['shelf3','bookshelf',2,1352,880,'E'],
+  ['duo','duoDesk',2,1560,1047,'N'],['shelf3','bookshelf',2,1352,880,'E'],
   ['bed3','bed',2,1740,900,'S'],
+  /* from the wish list (provisional places until the layout is redesigned) */
+  ['massage','massageChair',1,1206,1000,'W'],['map','worldMap',1,824,600,'E'],['robot','robotVacuum',1,833,690,'E'],['bins','trashBins',1,1030,410,'S'],['broom','broomCabinet',1,975,411,'S'],
+  ['fan','fan',1,760,1060,'E'],['perch','catPerch',1,711,760,'E'],['bbq','bbqGrill',1,1220,1150,'N'],['outdoor','outdoorSet',1,1000,1150,'N'],
+  ['crib','babyCrib',2,1590,300,'E'],['smallShelf','smallShelf',2,1774,585,'N'],['dehum','dehumidifier',2,1570,585,'N'],
+  ['stock','stockShelf',0,634,520,'W'],['umbrella','umbrellaStand',0,105,1008,'E'],
   ['appl','applianceCabinet',1,1120,418,'S'],['shelves2','wallShelves',2,1650,599.6,'N'],['mirror2','fullMirror',2,1545.4,450,'E'],
   ['rack3a','clothesRack',2,1624,662,'S'],['rack3b','clothesRack',2,1795,662,'S'],['shoeRack','shoeShelf',0,280,851.6,'N'],['mat','doormat',0,195,850,'E'],
   ['catBed','catBed',1,745,1082.2,'N'],['catStepB','catStep',1,800,1082.2,'N',function(){ return Catalog.catStep(1.38); }],
@@ -646,6 +651,9 @@ function fixture(l,piece,wx,wz,rotQ){
 fixture(1,Catalog.bathtub(),WX(1,1217),WZ(1,277),2);
 fixture(1,Catalog.vanity(),WX(1,873),WZ(1,201),3);
 fixture(1,Catalog.toilet(),WX(1,762),WZ(1,213),3); fixture(0,Catalog.toilet(),WX(0,142),WZ(0,232),0);
+fixture(0,Catalog.wallFoldTable(),WX(0,322)-TI/2,WZ(0,950),2);                           // genkan: fold-down shelf for parcels and keys
+fixture(0,Catalog.evCharger(),WX(0,322)+TI/2,WZ(0,780),0);                                // garage: wall connector for the Model 3
+(function(){ [[WX(0,300),WZ(0,1030)+TE/2,3],[WX(0,660)+TE/2,WZ(0,1100),0]].forEach(function(c){ const P=Catalog.securityCamera(); P.group.position.y=2.3; fixture(0,P,c[0],c[1],c[2]); }); })();   // security cameras over the porch and the garage
 fixture(0,Catalog.clothesRack(0.8),WX(0,146),WZ(0,340),1);                            // 1F closet: hanging clothes facing the opening
 (function(){ const P=Catalog.soapDispenser(0.85); fixture(1,P,WX(1,840),WZ(1,213),3); P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); }); })();
 const lightFixtures=[];                       // hidden in the overview so they do not float above the cut-away rooms
@@ -904,9 +912,9 @@ const viewerF=People.sit(1.63,0.40,0xf1c9a5,0xf4f1ec,0x7f8fa8,0x3a2a22,true,Peop
 (function(){ const H=new THREE.Group(); H.position.set(-0.05,0.13,0); viewerF.add(H); const c=Catalog.catModel(0xa07a55,0xf6f2ec,'#4a3626'); H.add(c.group); modeAnims.push(function(t){ if(viewerG.visible) c.anim(t); }); })();
 function applyDaily(){
   if(dailyOn) offOthers('daily');
-  workerG.visible=dailyOn&&usable('chair3'); viewerG.visible=dailyOn&&usable('sofa');
+  workerG.visible=dailyOn&&usable('duo'); viewerG.visible=dailyOn&&usable('sofa');
   if(dailyOn){
-    const w=at('chair3',2,1520,985); workerM.position.set(w[0],0.52,w[1]); workerM.rotation.y=-Math.PI/2+w[2];
+    const w=at('duo',2,1601,987); workerM.position.set(w[0],0.52,w[1]); workerM.rotation.y=-Math.PI/2+w[2];
     const v=at('sofa',1,892,945); viewerF.position.set(v[0]+Math.cos(v[2])*0.08+Math.sin(v[2])*0.3,0.40,v[1]-Math.sin(v[2])*0.08+Math.cos(v[2])*0.3); viewerF.rotation.y=Math.PI+v[2];
     toast('日常模式：他在 3F 書桌工作，她在 2F 沙發看電視');
   }
