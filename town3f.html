@@ -212,7 +212,7 @@ const FL={
   stone:lam(0xffffff,{map:tileTex([154,154,150],'#7f7f7b',2,22),roughness:0.7}),
   conc:lam(0xa9a9a5,{roughness:0.9}), balc:lam(0xffffff,{map:tileTex([165,168,166],'#8a8d8b',2,18)}), wc:lam(0xd4d4d0,{roughness:0.5})
 };
-FL.bath=FL.tile;
+FL.bath=lam(0xffffff,{roughness:0.5}); FL.bath.userData.uvUnit=[1,1];
 [FL.tile,FL.stone,FL.conc,FL.balc,FL.wc].forEach(function(m){ m.userData.uvUnit=[1,1]; });   // tiles and concrete: 1 m per uv unit (wood: one 1.818 x 0.909 m plank board)
 const fabMats=[];
 const fab=function(c,o){ const m=Walk.fabricMaterial(THREE,c,Object.assign({bumpMap:fabricTex,bumpScale:0.004},o||{})); fabMats.push(m); return m; };
@@ -245,7 +245,7 @@ Walk.WALL_ROLES.forEach(function(k){ WM[k]=lam(0xffffff,{map:wallTex,bumpMap:wal
 const FIN=Walk.Finish({THREE:THREE,anisotropy:ANISO,FL:FL,M:M,WM:WM,fabMats:fabMats});
 FIN.mapMat(FL.tile,'bathtile',1.8,true); FIN.mapMat(FL.stone,'genkantile',2.0,true); FIN.mapMat(FL.balc,'balctile',2.4);
 FIN.mapMat(FL.conc,'corrconc',2.0); FIN.paint(FL.conc,0xc9c7c2); FIN.mapMat(FL.wc,'balctile',2.4); FIN.paint(FL.wc,0xe8e8e6);
-FIN.mapMat(M.top,'counter',1.2,true); FIN.mapMat(M.bathWall,'wtbath',2.4,true); FIN.mapMat(M.wcTile,'wttoilet',1.6,true);
+FIN.mapMat(M.top,'counter',1.2,true); FIN.mapMat(M.bathWall,'bathwall_lg',1.2,true); FIN.mapMat(FL.bath,'bathfloor_lg',1.2,true);   // large-format tiles: 60 x 30 cm walls, 60 x 60 cm floor FIN.mapMat(M.wcTile,'wttoilet',1.6,true);
 FIN.loadCommon();
 FIN.applyPalette(Walk.THEMES.A);                // warm Scandinavian only for this house
 
