@@ -956,18 +956,8 @@ fixture(Catalog.ihHob(),X(816),Z(1156),0);
 fixture(Catalog.mixerTap(),X(718),Z(1192),0);                                       // gooseneck mixer tap, dish rack, dish soap and sponge on the back strip
 fixture(Catalog.dishRack(),(X(685)+X(712))/2,(Z(1189)+Z(1211))/2,0);
 fixture(Catalog.dishSoap(),X(738),Z(1197),0);
-/* toilet: tank, bowl, seat and the small hand-wash counter */
-(function(){
-  const zc=Z(1060);
-  rbox(X(476),X(493),Z(1044),Z(1077),0.42,0.78,0.025,M.ceramic,{pick:false});
-  const bowl=cyl(X(516),zc,0.19,0.16,0.08,0.38,M.ceramic,{pick:false},24); bowl.scale.set(1.3,1,0.95);
-  cyl(X(506),zc,0.12,0.14,0,0.09,M.ceramic,{pick:false},16);
-  rbox(X(493),X(541),zc-0.19,zc+0.19,0.38,0.42,0.16,M.ceramic,{pick:false});
-  rbox(X(476)-0.01,X(493)+0.01,Z(1044)-0.01,Z(1077)+0.01,0.78,0.795,0.01,M.ceramic,{pick:false});   // tank lid
-  cyl(X(484),zc,0.025,0.025,0.795,0.81,M.steel,{pick:false,cast:false},12);                          // flush button
-  addCol(X(476),X(541),Z(1040),Z(1081),'x');
-  box(X(512),X(602),Z(1086),Z(1099),0.9,0.94,M.board,{pick:false});
-})();
+fixture(Catalog.toilet(),X(476)+0.37,Z(1060),0);                                   // toilet (shared piece), tank against the west wall
+box(X(512),X(602),Z(1086),Z(1099),0.9,0.94,M.board,{pick:false});                      // small hand-wash counter
 /* washbasin vanity in the hallway alcove: on your right as you walk in from the genkan */
 (function(){
   const vx0=564.1, vx1=608.6, vy0=826.2, vy1=921;
@@ -1074,19 +1064,10 @@ rbox(X(787)+0.005,X(787)+0.055,Z(905)-0.07,Z(905)+0.0,0.55,0.585,0.012,lam(0xf2c
   box(x0,x0+t+0.006,z0,z1,h,h+0.025,M.trim,{pick:false,cast:false}); box(x0,x1,z1-t-0.006,z1,h,h+0.025,M.trim,{pick:false,cast:false}); box(x1-t-0.006,x1,z0,z1,h,h+0.025,M.trim,{pick:false,cast:false});
 })();
 box(X(XE)-0.112,X(XE)-0.1,Z(1122),Z(1220),0.88,1.5,M.kTile,{pick:false});   // kitchen wall panel between the worktop and the wall cabinet
-/* washing machine */
-solid(780,934,832,986,0,0.98,M.white,'x');
-(function(){                                   // front-loader: chrome door ring, dark glass, control strip with dial and display
-  const fx=X(780), fz=Z(960);
-  const ring=new THREE.Mesh(new THREE.TorusGeometry(0.2,0.03,10,28),M.steel); ring.rotation.y=Math.PI/2; ring.position.set(fx-0.012,0.5,fz); scene.add(ring);
-  const gl=new THREE.Mesh(new THREE.CylinderGeometry(0.19,0.17,0.05,26),M.washGlass); gl.rotation.z=Math.PI/2; gl.position.set(fx-0.015,0.5,fz); scene.add(gl);
-  box(fx-0.008,fx,fz-0.24,fz+0.24,0.86,0.95,M.dark,{pick:false,cast:false});
-  const dial=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.025,16),M.steel); dial.rotation.z=Math.PI/2; dial.position.set(fx-0.02,0.905,fz+0.13); scene.add(dial);
-  box(fx-0.014,fx-0.006,fz-0.18,fz-0.06,0.89,0.92,M.display,{pick:false,cast:false});
-})();
+fixture(Catalog.washer(),X(832)-0.36,Z(960),2);                               // washing machine (shared piece), back against the east wall, door facing west
 box(X(798),X(833),Z(938),Z(994),1.5,2.1,M.cab,{pick:false});     // wall cabinet above the washer
 cabDoors('z',Z(938),Z(994),X(798),-1,1.5,2.1,2,true);
-rb(806,948,0.3,0.24,0.08,0.03,M.cushA,0.98,false); rb(806,972,0.3,0.24,0.07,0.03,M.pillow,0.98,false);   // folded towels
+rb(806,948,0.3,0.24,0.08,0.03,M.cushA,1.064,false); rb(806,972,0.3,0.24,0.07,0.03,M.pillow,1.064,false);   // folded towels
 /* kitchen: sloped range hood with chimney over the hob, wall cabinet on the east wall */
 fixture(Catalog.rangeHood(H),X(816),Z(1156),0);
 box(X(XE)-0.1-0.2,X(XE)-0.1,Z(1125),Z(1218),1.5,2.25,M.cab,{pick:false});
