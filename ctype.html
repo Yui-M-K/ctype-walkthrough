@@ -1100,13 +1100,16 @@ box(X(476),X(497),Z(1024),Z(1076),1.45,2.05,M.cab,{pick:false});           // wa
 cabDoors('z',Z(1024),Z(1076),X(497),1,1.45,2.05,2,true);
 clothes(423,872,457,942,1.75,0.5,1.0,6);
 clothes(524,833,554,948,1.75,0.5,1.0,10);
-/* ---------- luggage in the multi-purpose room: standing against the rack, big face toward the aisle (each one movable in edit mode) ---------- */
-function suitcase(id,label,xb,zc,W,H,D,col,ribCol,soft){
-  mvBegin(); placePiece(Catalog.suitcase(W,H,D,col,ribCol,soft),X(xb),Z(zc),0); return mvEnd(id,label);
+/* ---------- luggage in the multi-purpose room: stored under the hanging clothes so the aisle stays clear (each one movable in edit mode) ---------- */
+function suitcase(id,label,cx,cz,W,H,D,col,ribCol,soft){   // stored lying on its back on the bottom board of a clothes rack, length along the rack
+  const sc=Catalog.suitcase(W,H,D,col,ribCol,soft); sc.group.rotation.z=-Math.PI/2; sc.group.position.set(-H/2,0.225,0);
+  sc.group.traverse(function(o){ if(o.renderOrder===1) o.visible=false; });
+  const P=new Catalog.Piece(); P.group.add(sc.group);
+  mvBegin(); placePiece(P,X(cx),Z(cz),1); return mvEnd(id,label);
 }
-suitcase('lug30','30 吋行李箱（粉紅）',522,914.5,0.52,0.78,0.31,0xee9db5,0xd9809b,false);
-suitcase('lug29','29 吋行李箱（黑色軟殼）',522,959.4,0.49,0.77,0.33,0x26282c,0,true);
-suitcase('lug24','24 吋行李箱（粉紅）',522,999.8,0.41,0.66,0.26,0xf6bccb,0xe49fb4,false);
+suitcase('lug30','30 吋行李箱（粉紅）',440,846,0.52,0.78,0.31,0xee9db5,0xd9809b,false);       // west rack, under the clothes
+suitcase('lug24','24 吋行李箱（粉紅）',440,909,0.41,0.66,0.26,0xf6bccb,0xe49fb4,false);
+suitcase('lug29','29 吋行李箱（黑色軟殼）',536,890,0.49,0.77,0.33,0x26282c,0,true);           // east rack
 
 
 /* ---------- reference furniture (can be switched off) ---------- */
