@@ -946,6 +946,14 @@ function fixture(piece,wx,wz,rotQ){            // a built-in catalogue piece (ki
   });
   return R;
 }
+function movable(id,label,piece,wx,wz,rotQ){     // a catalogue piece the user can move or store; its actions follow it around
+  mvBegin(); placePiece(piece,wx,wz,rotQ); mvEnd(id,label);
+  const c=Math.cos((rotQ||0)*Math.PI/2), sn=Math.sin((rotQ||0)*Math.PI/2);
+  (piece.actions||[]).forEach(function(a){ const dx=wx+a.x*c+a.z*sn, dz=wz-a.x*sn+a.z*c;
+    applThings.push({get pt(){ const q=mvXf(id,dx,dz); return [q[0],q[1]]; },on:function(){ return !mvIsStored(id); },label:a.label,act:a.act}); });
+  return piece;
+}
+function washerWithTowels(){ const p=Catalog.washer(); p.attach(Catalog.towels(1.064),-0.06,0,0); return p; }
 function plant(cx,cy,sz){ return placePiece(Catalog.plant(sz),X(cx),Z(cy),0); }
 function chair(cx,cy,dz){ return placePiece(Catalog.chair(dz),X(cx),Z(cy),0); }
 function roundRug(px,pz,R,style,lobes,amp,shag){ return placePiece(Catalog.roundRug(R,style,lobes,amp,shag),X(px),Z(pz),0); }
@@ -1064,10 +1072,9 @@ rbox(X(787)+0.005,X(787)+0.055,Z(905)-0.07,Z(905)+0.0,0.55,0.585,0.012,lam(0xf2c
   box(x0,x0+t+0.006,z0,z1,h,h+0.025,M.trim,{pick:false,cast:false}); box(x0,x1,z1-t-0.006,z1,h,h+0.025,M.trim,{pick:false,cast:false}); box(x1-t-0.006,x1,z0,z1,h,h+0.025,M.trim,{pick:false,cast:false});
 })();
 box(X(XE)-0.112,X(XE)-0.1,Z(1122),Z(1220),0.88,1.5,M.kTile,{pick:false});   // kitchen wall panel between the worktop and the wall cabinet
-fixture(Catalog.washer(),X(832)-0.36,Z(960),2);                               // washing machine (shared piece), back against the east wall, door facing west
+movable('washer','洗衣機',washerWithTowels(),X(832)-0.36,Z(960),2);              // washing machine with folded towels on top, back against the east wall
 box(X(798),X(833),Z(938),Z(994),1.5,2.1,M.cab,{pick:false});     // wall cabinet above the washer
 cabDoors('z',Z(938),Z(994),X(798),-1,1.5,2.1,2,true);
-rb(806,948,0.3,0.24,0.08,0.03,M.cushA,1.064,false); rb(806,972,0.3,0.24,0.07,0.03,M.pillow,1.064,false);   // folded towels
 /* kitchen: sloped range hood with chimney over the hob, wall cabinet on the east wall */
 fixture(Catalog.rangeHood(H),X(816),Z(1156),0);
 box(X(XE)-0.1-0.2,X(XE)-0.1,Z(1125),Z(1218),1.5,2.25,M.cab,{pick:false});
@@ -1103,11 +1110,10 @@ const lampMat=new THREE.MeshBasicMaterial({color:0xffdc96});
 M.shade=lam(0xf2d9a6,{emissive:0x8a6428,side:THREE.DoubleSide,roughness:0.9});
 function shade(cx,cz,r0,r1,y0,y1){ return cyl(cx,cz,r0,r1,y0,y1,M.shade,{group:furn,cast:false,open:true},20); }
 const fridgeP=Catalog.fridge70();              // fridge (70 w x 65 d x 175 h), back to the north wall, door facing south
-placePiece(fridgeP,X(821),Z(1030),0);
-fridgeP.actions.forEach(function(a){ applThings.push({pt:[X(821)+a.x,Z(1030)+a.z],label:a.label,act:a.act}); });
+movable('fridge','冰箱',fridgeP,X(821),Z(1030),0);
 (function(){                                   // appliance cabinet west of the fridge, back to the north wall (shared piece); the coffee machine brews on demand
-  const P=Catalog.applianceCabinet(), cx=X(701)+0.5, cz=Z(999)+0.052+0.225; placePiece(P,cx,cz,0);
-  P.actions.forEach(function(a){ applThings.push({pt:[cx+a.x,cz+a.z],label:a.label,act:function(){ a.act(); toast('咖啡機：磨豆、沖煮中'); }}); });
+  const P=Catalog.applianceCabinet(); P.actions.forEach(function(a){ const f=a.act; a.act=function(){ f(); toast('咖啡機：磨豆、沖煮中'); }; });
+  movable('appl','家電櫃',P,X(701)+0.5,Z(999)+0.052+0.225,0);
   P.anims.forEach(function(f){ catAnim.push(function(t){ if(f(t)) renderer.shadowMap.needsUpdate=true; }); });
   window.__brew=P.brew;
 })();
