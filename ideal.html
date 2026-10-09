@@ -32,7 +32,7 @@
       <button id="tCook" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">料理模式（她做菜、他喝啤酒）</button>
       <button id="tSleep" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">睡覺模式（3F 洋室2，只開小夜燈）</button>
       <button id="tSport" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">運動模式（Switch）</button>
-      <button id="tBbq" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">烤肉模式（庭院木平台）</button>
+      <button id="tBbq" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">烤肉模式（庭院）</button>
     </div>
     <h3>家具配置</h3>
     <div id="layBtns" class="seg">
@@ -40,6 +40,16 @@
       <button type="button" class="tog" data-l="2" aria-pressed="false">配置二（來客：展開大餐桌）</button>
     </div>
     <div class="seg" id="foldRow" style="margin-top:8px" hidden><button id="tFold" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">升降桌：茶几模式</button></div>
+    <h3>庭院</h3>
+    <div id="gardenBtns" class="seg" style="grid-template-columns:repeat(3,1fr)">
+      <button type="button" class="tog" data-g="deck" aria-pressed="true">木平台＋桌椅</button>
+      <button type="button" class="tog" data-g="grill" aria-pressed="false">只有烤肉架</button>
+      <button type="button" class="tog" data-g="none" aria-pressed="false">全部收起來</button>
+    </div>
+    <div id="treeBtns" class="seg" style="margin-top:8px">
+      <button type="button" class="tog" data-t="sakura" aria-pressed="true">櫻花</button>
+      <button type="button" class="tog" data-t="maple" aria-pressed="false">紅葉</button>
+    </div>
     <h3 id="houseH" hidden>房子</h3>
     <div id="houseBtns" class="seg" hidden></div>
     <h3>所有門</h3>
@@ -47,7 +57,7 @@
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
     <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿，兩指一起拖曳可轉向與抬頭低頭；電腦：滑鼠拖曳轉向，WASD／方向鍵移動，Shift 加速。走近門並面向它，畫面下方會出現開關按鈕（電腦可按 F）。階梯直接走上去就會換樓層。「俯瞰」可選擇看哪一層（屋頂與上層會被拿掉）。</p>
-    <p class="help"><b>這棟房子：</b>依「住宅要望書」設計、縮成東京常見尺寸的三層透天：建物 5.8 × 7.0 m（三層合計約 122 m²・約 37 坪）、土地約 24 坪。1F L 型鏡子房兼收納（整面收納櫃、盡頭整面鏡子、緣側）、正對大門的玄關土間（貓用柵欄擋在上框前）、車庫（Tesla 充電樁）；2F 約 20 帖的整層 LDK（水槽與 IH 爐在同一座對面式半島、北牆摺疊六人餐桌、地暖、間接照明、貓走道）與廁所、陽台（1.1 m 玻璃欄杆）；3F 主臥＋更衣間、書房（日後可當小孩房）、洗面脫衣室（洗衣機）、獨立的三溫暖室、浴室與廁所。庭院有櫻花與木平台，可以開「烤肉模式」。全室無段差、拉門為主、樓梯雙側扶手與感應腳燈。鄰地三面 1.8 m 木格柵、臨路矮牆＋門扉＋伸縮門。主臥的窗簾會依「日照時間」自動開關。原本較寬敞的版本在選單「理想之家（寬敞版）」。</p>
+    <p class="help"><b>這棟房子：</b>依「住宅要望書」設計、縮成東京常見尺寸的三層透天：建物 5.8 × 7.0 m（三層合計約 122 m²・約 37 坪）、土地約 24 坪。1F L 型鏡子房兼收納（整面收納櫃、盡頭整面鏡子、緣側）、正對大門的玄關土間（貓用柵欄擋在上框前）、車庫（Tesla 充電樁）；2F 約 20 帖的整層 LDK（水槽與 IH 爐在同一座對面式半島、北牆摺疊六人餐桌、地暖、間接照明、貓走道）與廁所、陽台（1.1 m 玻璃欄杆）；3F 主臥＋更衣間、書房（日後可當小孩房）、洗面脫衣室（洗衣機）、獨立的三溫暖室、浴室與廁所。庭院的主樹可在櫻花／紅葉之間切換，擺設可選「木平台＋桌椅」「只有烤肉架」「全部收起來」，有烤肉架時可以開「烤肉模式」。全室無段差、拉門為主、樓梯雙側扶手與感應腳燈。鄰地三面 1.8 m 木格柵、臨路矮牆＋門扉＋伸縮門。主臥的窗簾會依「日照時間」自動開關。原本較寬敞的版本在選單「理想之家（寬敞版）」。</p>
   </div>
 </div>
 <div id="load">載入 3D 場景…<small>首次開啟需要幾秒鐘</small></div>
@@ -228,12 +238,14 @@ site:function(E){
   floorRects.push({l:0,x0:EX0,x1:EX1,z0:EZ0,z1:EZ1,y:-0.08}); floorRects.push({l:0,x0:EX0-0.3,x1:EX0,z0:EZ0+0.3,z1:EZ1-0.3,y:-0.2});
   bx(ground,EX0-0.15,WX(0,0),EZ0-0.1,EZ1+0.1,2.45,2.55,M.roof,{cast:true});                 // eave
   [EZ0+0.1,EZ1-0.1].forEach(function(z){ bx(ground,EX0-0.04,EX0+0.04,z-0.04,z+0.04,-0.3,2.45,lam(0x7a5a3c,{roughness:0.8})); });
-  [[140,0xd9cfc0],[220,0x5b6f86]].forEach(function(c){ const z=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.05,0.5),fab(c[1])); z.position.set(EX0+0.45,-0.055,WZ(0,c[0])); z.castShadow=z.receiveShadow=true; ground.add(z); });   // two zabuton
+  [[140,0xd9cfc0],[220,0x5b6f86]].forEach(function(c){ const z=new THREE.Mesh(new THREE.CylinderGeometry(0.24,0.25,0.06,32),fab(c[1])); z.position.set(EX0+0.45,-0.05,WZ(0,c[0])); z.castShadow=z.receiveShadow=true; ground.add(z); });   // two round cushions
   /* BBQ deck at floor height in the south of the garden, cedar like the engawa */
   const DX0=LX0+0.15, DX1=-0.15, DZ0=5.0, DZ1=7.2;
-  for(let x=DX0;x<DX1-0.001;x+=0.12) bx(ground,x+0.005,Math.min(x+0.115,DX1),DZ0,DZ1,-0.03,0,deck,{cast:false});
-  bx(ground,DX0,DX1,DZ0,DZ1,-0.3,-0.03,lam(0x8a6a4c,{roughness:0.8}),{cast:false});
-  floorRects.push({l:0,x0:DX0,x1:DX1,z0:DZ0,z1:DZ1,y:0});
+  const deckG=new THREE.Group(); deckG.userData.keep=true; ground.add(deckG);
+  for(let x=DX0;x<DX1-0.001;x+=0.12) bx(deckG,x+0.005,Math.min(x+0.115,DX1),DZ0,DZ1,-0.03,0,deck,{cast:false});
+  bx(deckG,DX0,DX1,DZ0,DZ1,-0.3,-0.03,lam(0x8a6a4c,{roughness:0.8}),{cast:false});
+  const deckRect={l:0,x0:DX0,x1:DX1,z0:DZ0,z1:DZ1,y:0}; floorRects.push(deckRect);
+  E.garden={deckG:deckG,deckRect:deckRect,trees:{}};
   /* lawn with a little colour variation */
   const lawnTex=(function(){ const c=document.createElement('canvas'); c.width=c.height=256; const g=c.getContext('2d'); g.fillStyle='#6f9a4e'; g.fillRect(0,0,256,256);
     for(let i=0;i<5000;i++){ g.fillStyle='rgba('+(70+rnd()*60|0)+','+(120+rnd()*60|0)+','+(40+rnd()*30|0)+',0.5)'; g.fillRect(rnd()*256,rnd()*256,1+rnd()*2,2+rnd()*4); }
@@ -283,7 +295,9 @@ site:function(E){
     col.door=d; doors.push(d);
   })();
   for(let x=LX0+0.45;x<PX0-0.3;x+=0.62){ const P=Catalog.shrub(0.36+rnd()*0.08); P.group.position.set(x,-0.3,LZ1-0.45); ground.add(P.group); }   // planting inside the street wall
-  [[-1.5,0.6,3.4,'ash'],[-1.55,4.35,3.0,'sakura']].forEach(function(t){ const P=Catalog.gardenTree(t[2],t[3]); P.group.position.set(t[0],-0.3,t[1]); ground.add(P.group); addCol(0,t[0]-0.12,t[0]+0.12,t[1]-0.12,t[1]+0.12,-0.3,2,'w'); });
+  [[-1.5,0.6,3.4,'ash'],[-1.55,4.35,3.0,'sakura'],[-1.55,4.35,3.0,'maple']].forEach(function(t){ const P=Catalog.gardenTree(t[2],t[3]); P.group.position.set(t[0],-0.3,t[1]); ground.add(P.group);
+    if(t[3]!=='ash'){ P.group.userData.keep=true; E.garden.trees[t[3]]=P.group; }   // the feature tree switches between cherry and maple
+    addCol(0,t[0]-0.12,t[0]+0.12,t[1]-0.12,t[1]+0.12,-0.3,2,'w'); });
   [[-1.85,7.7],[-1.85,-0.2],[-1.1,-0.25],[-1.9,2.9]].forEach(function(q){ const P=Catalog.shrub(0.3+rnd()*0.1); P.group.position.set(q[0],-0.3,q[1]); ground.add(P.group); });
   const flowers=[0xe86a8a,0xf4c95d,0xffffff,0xb07ad8];                                      // flower bed along the north fence
   bx(ground,LX0+0.3,LX0+1.2,LZ0+0.1,LZ0+0.5,-0.3,-0.2,lam(0x6b5444,{roughness:1}),{cast:false});
@@ -548,7 +562,8 @@ const bbqG=modeGroup(0), fireG=new THREE.Group(), fireLight=new THREE.PointLight
 LG[0].add(fireLight); bbqG.add(fireG);                   // the light stays in the scene (off) so turning the mode on doesn't recompile shaders
 const griller=People.stand(1.69,0xe2b890,0x5a6b4a,0x2f3a4a,0x1f1a16,false,undefined,undefined,{e:function(sd){ return sd>0?[0.2,1.03,0.2]:[0.18,1.02,-0.22]; }, h:function(sd){ return sd>0?[0.4,0.97,0.1]:[0.36,0.95,-0.14]; }});
 const sitter=People.sit(1.63,0.45,0xf1c9a5,0xf4f1ec,0x7f8fa8,0x3a2a22,true,{e:function(sd,u){ return [0.04*u,0.22*u,sd*0.19*u]; }, h:function(sd,u){ return [0.2*u,0.73-0.45+0.025,sd*0.1*u]; }});
-bbqG.add(griller,sitter);
+const stander=People.stand(1.63,0xf1c9a5,0xf4f1ec,0x7f8fa8,0x3a2a22,true,undefined,undefined,{e:function(sd){ return sd>0?[0.12,0.98,0.2]:[0.03,0.95,-0.19]; }, h:function(sd){ return sd>0?[0.26,1.1,0.12]:[0.05,0.72,-0.2]; }});
+bbqG.add(griller,sitter,stander);
 const smoke=[];
 (function(){
   const add=function(par,geo,mt,x,y,z){ const m=new THREE.Mesh(geo,mt); m.position.set(x,y,z); m.castShadow=true; par.add(m); return m; };
@@ -568,6 +583,7 @@ const smoke=[];
   const tongs=new THREE.Mesh(new THREE.BoxGeometry(0.3,0.008,0.02),lam(0xc9ced3,{metalness:0.85,roughness:0.25})); tongs.position.set(0.52,0.9,0.09); tongs.rotation.z=-0.55; tongs.castShadow=true; griller.add(tongs);
   const canM=lam(0xd8dde2,{metalness:0.8,roughness:0.3,envMapIntensity:1});
   add(sitter,new THREE.CylinderGeometry(0.033,0.033,0.122,20),canM,0.42,0.73-0.45+0.061,0.2);
+  add(stander,new THREE.CylinderGeometry(0.033,0.033,0.122,20),canM,0.28,1.12,0.12);
   add(sitter,new THREE.CylinderGeometry(0.1,0.085,0.015,24),M.ceramic,0.5,0.73-0.45+0.008,-0.08);
   for(let i=0;i<5;i++) add(sitter,new THREE.BoxGeometry(0.03,0.025,0.03),[meat,pep,meat,oni,tom][i],0.48+Math.cos(i*1.3)*0.04,0.73-0.45+0.028,-0.08+Math.sin(i*1.3)*0.04);
 })();
@@ -576,20 +592,45 @@ modeAnims.push(function(t){
   fireLight.intensity=2.4+0.5*Math.sin(t*9)+0.3*Math.sin(t*23);
   smoke.forEach(function(m,i){ const q=((t*0.28+i/smoke.length)%1); m.position.set(Math.sin(t*0.7+i)*0.06+q*0.25,0.85+q*1.6,Math.cos(t*0.5+i*2)*0.06); m.scale.setScalar(0.6+q*2.6); m.material.opacity=0.32*Math.sin(q*Math.PI)*(1-q*0.5); });
 });
+/* garden setup: deck with table and grill / the grill alone on the lawn / everything put away; the feature tree is cherry or autumn maple */
+let gardenSet='deck', treeKind='sakura';
+try{ gardenSet=localStorage.getItem('idealGarden')||'deck'; treeKind=localStorage.getItem('idealTree')||'sakura'; }catch(_){}
+const gardenShows=function(id){ return id==='bbq'?gardenSet!=='none':gardenSet==='deck'; };
+['bbq','outdoor'].forEach(function(id){ const m=mover(id); if(!m) return;
+  m.onApply=function(x,z){
+    if(m.lvCur===0) m.W.position.y=E.floorAt(x,z,0);   // on the deck, or on the lawn when the deck is gone
+    if(!gardenShows(id)){ m.W.visible=false; m.own.forEach(function(c){ c.mvOff=true; }); }
+  };
+});
+function applyGarden(){
+  const G=E.garden; G.deckG.visible=gardenSet==='deck'; G.deckRect.y=gardenSet==='deck'?0:-0.3;
+  Object.keys(G.trees).forEach(function(k){ G.trees[k].visible=k===treeKind; });
+  ['bbq','outdoor'].forEach(function(id){ const m=mover(id); if(m) E.FS.apply(m); });
+  document.querySelectorAll('#gardenBtns [data-g]').forEach(function(b){ b.setAttribute('aria-pressed',String(b.dataset.g===gardenSet)); });
+  document.querySelectorAll('#treeBtns [data-t]').forEach(function(b){ b.setAttribute('aria-pressed',String(b.dataset.t===treeKind)); });
+  try{ localStorage.setItem('idealGarden',gardenSet); localStorage.setItem('idealTree',treeKind); }catch(_){}
+  if(E.bbqOn) applyBbq();
+  rebuild(); E.renderer.shadowMap.needsUpdate=true;
+}
+document.querySelectorAll('#gardenBtns [data-g]').forEach(function(b){ b.addEventListener('click',function(){ gardenSet=b.dataset.g; applyGarden(); }); });
+document.querySelectorAll('#treeBtns [data-t]').forEach(function(b){ b.addEventListener('click',function(){ treeKind=b.dataset.t; applyGarden(); }); });
 function applyBbq(){
+  if(E.bbqOn&&gardenSet==='none'){ E.bbqOn=false; btn('tBbq',false); toast('烤肉用具都收起來了：在選單「庭院」選「木平台＋桌椅」或「只有烤肉架」'); }
   if(E.bbqOn) offOthers('bbq');
-  const g=mover('bbq'), okG=usable('bbq'), okS=usable('outdoor');
+  const g=mover('bbq'), okG=usable('bbq')&&gardenSet!=='none', okS=usable('outdoor')&&gardenSet==='deck';
   if(g&&g.piece.openLid) g.piece.openLid(E.bbqOn&&okG);
-  bbqG.visible=E.bbqOn&&okG; sitter.visible=okS; fireLight.intensity=0;
+  bbqG.visible=E.bbqOn&&okG; sitter.visible=okS; stander.visible=!okS; fireLight.intensity=0;
   if(E.bbqOn&&okG){
-    const p=at('bbq',0,-50,690); fireG.position.set(p[0],0,p[1]); fireG.rotation.y=p[2]; fireLight.position.set(p[0],0.95,p[1]);
-    const q=at('bbq',0,-50,638); griller.position.set(q[0],0,q[1]); griller.rotation.y=-Math.PI/2+p[2];
-    if(okS){ const r=at('outdoor',0,-130,685); sitter.position.set(r[0],0.45,r[1]); sitter.rotation.y=Math.PI/2+r[2]; }
-    toast('烤肉模式：庭院的木平台上，他在顧烤肉串，她坐在戶外椅喝飲料');
+    const gy=g.W.position.y, p=at('bbq',0,-50,690); fireG.position.set(p[0],gy,p[1]); fireG.rotation.y=p[2]; fireLight.position.set(p[0],gy+0.95,p[1]);
+    const q=at('bbq',0,-50,638); griller.position.set(q[0],gy,q[1]); griller.rotation.y=-Math.PI/2+p[2];
+    if(okS){ const r=at('outdoor',0,-130,685); sitter.position.set(r[0],mover('outdoor').W.position.y+0.45,r[1]); sitter.rotation.y=Math.PI/2+r[2]; }
+    else { const r=at('bbq',0,-105,640); stander.position.set(r[0],gy,r[1]); stander.rotation.y=-0.74+p[2]; }
+    toast(okS?'烤肉模式：庭院的木平台上，他在顧烤肉串，她坐在戶外椅喝飲料':'烤肉模式：草地上只擺烤肉架，他在顧烤肉串，她拿著飲料站在旁邊');
   }
   E.renderer.shadowMap.needsUpdate=true;
 }
 $('tBbq').addEventListener('click',function(){ E.bbqOn=!E.bbqOn; btn('tBbq',E.bbqOn); applyBbq(); });
+applyGarden();
 function offOthers(keep){                       // modes exclude each other
   if(keep!=='sport'&&E.sportOn){ E.sportOn=false; btn('tSport',false); applySport(); }
   if(keep!=='daily'&&E.dailyOn){ E.dailyOn=false; btn('tDaily',false); applyDaily(); }
