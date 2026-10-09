@@ -112,6 +112,7 @@ import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
 import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
+import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 (function(){
 'use strict';
@@ -245,7 +246,8 @@ M.linen=fab(0xe9dfcd,{side:THREE.DoubleSide,bumpScale:0.002});
 M.bathWall=lam(0xffffff,{roughness:0.25}); M.wcTile=lam(0xf1ede6,{roughness:0.3});
 const WM={};                                   // one wall material per colour role (see Walk.THEMES)
 Walk.WALL_ROLES.forEach(function(k){ WM[k]=lam(0xffffff,{map:wallTex,bumpMap:wallTex,bumpScale:0.0015,roughness:0.9}); });
-const FIN=Walk.Finish({THREE:THREE,anisotropy:ANISO,FL:FL,M:M,WM:WM,fabMats:fabMats});
+let ktx2=null; try{ ktx2=new KTX2Loader().setTranscoderPath('https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/libs/basis/').detectSupport(renderer); }catch(_){}
+const FIN=Walk.Finish({THREE:THREE,anisotropy:ANISO,FL:FL,M:M,WM:WM,fabMats:fabMats,ktx2:ktx2});
 FIN.mapMat(FL.tile,'bathtile',1.8,true); FIN.mapMat(FL.stone,'genkantile',2.0,true); FIN.mapMat(FL.balc,'balctile',2.4);
 FIN.mapMat(FL.conc,'corrconc',2.0); FIN.paint(FL.conc,0xc9c7c2); FIN.mapMat(FL.wc,'balctile',2.4); FIN.paint(FL.wc,0xe8e8e6);
 FIN.mapMat(M.top,'counter',1.2,true); FIN.mapMat(M.bathWall,'bathwall_lg',2.4,true); FIN.mapMat(FL.bath,'bathfloor_lg',1.8,true);   // large-format porcelain: 120 x 60 cm walls, 90 x 90 cm floor FIN.mapMat(M.wcTile,'wttoilet',1.6,true);

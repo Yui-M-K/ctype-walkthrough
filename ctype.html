@@ -221,6 +221,7 @@ import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
 import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
+import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 (function(){
@@ -1819,7 +1820,8 @@ partBtns.forEach(function(b){ b.addEventListener('click',function(){ setPart(+b.
 
 /* ---------- colour schemes and photographic textures: shared (lib/finish.js) ---------- */
 const THEMES=Walk.THEMES;
-const FIN=Walk.Finish({THREE:THREE,anisotropy:ANISO,FL:FL,M:M,WM:WM,fabMats:fabMats});
+let ktx2=null; try{ ktx2=new KTX2Loader().setTranscoderPath('https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/libs/basis/').detectSupport(renderer); }catch(_){}
+const FIN=Walk.Finish({THREE:THREE,anisotropy:ANISO,FL:FL,M:M,WM:WM,fabMats:fabMats,ktx2:ktx2});
 const paint=FIN.paint, mapMat=FIN.mapMat;
 let themeId='A';
 mapMat(FL.bath,'bathfloor_lg',1.8/0.6,true);   // floor uv = metres / 0.6: 90 x 90 cm porcelain
