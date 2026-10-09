@@ -264,22 +264,23 @@ site:function(E){
     for(let i=0;i<=L/1.8+0.01;i++){ const a=Math.min((horiz?x0:z0)+i*1.8,horiz?x1:z1); if(horiz) bx(ground,a-0.04,a+0.04,z0-0.04,z0+0.04,0.1,1.55,post); else bx(ground,x0-0.04,x0+0.04,a-0.04,a+0.04,0.1,1.55,post); }
     if(horiz) addCol(0,x0,x1,z0-0.07,z0+0.07,-0.3,1.5,'w'); else addCol(0,x0-0.07,x0+0.07,z0,z1,-0.3,1.5,'w'); };
   screen(LX0,LZ0,LX0,LZ1); screen(LX0,LZ0,LX1,LZ0); screen(LX1,LZ0,LX1,LZ1);
-  const GX1=WX(0,215), GX0=GX1-0.8, PX0=GX0-0.4, CX0=GX1+0.1;
+  const GX0=WX(0,123), GX1=GX0+1.0, PX0=GX0-0.4, PX1=GX1+0.4, CX0=PX1+0.03;   // double gate between two matching pillars, centred on the porch
   const lowWall=function(x0,x1){ bx(ground,x0,x1,LZ1-0.08,LZ1+0.08,-0.3,0.3,render); bx(ground,x0-0.01,x1+0.01,LZ1-0.09,LZ1+0.09,0.3,0.34,render,{cast:false});
     slats(x0,LZ1,x1,LZ1,0.34,1.2,0.16); addCol(0,x0,x1,LZ1-0.09,LZ1+0.09,-0.3,1.2,'w'); };
   lowWall(LX0,PX0);
-  bx(ground,PX0,GX0,LZ1-0.12,LZ1+0.12,-0.3,1.45,render); bx(ground,PX0-0.01,GX0+0.01,LZ1-0.13,LZ1+0.13,1.45,1.5,lam(0x6b6e72,{roughness:0.5,metalness:0.4}));   // gate pillar
+  const capM=lam(0x6b6e72,{roughness:0.5,metalness:0.4}), lampM=lam(0xfff1d6,{emissive:0xffd9a0,emissiveIntensity:0.6});
+  [[PX0,GX0],[GX1,PX1]].forEach(function(p){ bx(ground,p[0],p[1],LZ1-0.12,LZ1+0.12,-0.3,1.45,render); bx(ground,p[0]-0.01,p[1]+0.01,LZ1-0.13,LZ1+0.13,1.45,1.5,capM);
+    bx(ground,p[0]+0.12,p[1]-0.12,LZ1-0.05,LZ1+0.05,1.5,1.62,lampM,{cast:false}); addCol(0,p[0],p[1],LZ1-0.12,LZ1+0.12,-0.3,1.45,'w'); });   // pillars with a lamp on each
   bx(ground,PX0+0.06,GX0-0.06,LZ1+0.12,LZ1+0.14,0.85,1.15,lam(0x2a2d31,{roughness:0.4,metalness:0.3}),{cast:false});                                         // post box slot plate
-  bx(ground,GX0-0.27,GX0-0.13,LZ1+0.12,LZ1+0.135,1.2,1.34,lam(0x1b1d20,{roughness:0.3}),{cast:false}); bx(ground,GX0-0.23,GX0-0.17,LZ1+0.135,LZ1+0.14,1.27,1.31,lam(0x9fd6ff,{emissive:0x4aa8e8}),{cast:false});   // intercom
-  bx(ground,PX0+0.08,GX0-0.08,LZ1+0.12,LZ1+0.13,0.55,0.65,lam(0xc9a074,{roughness:0.5}),{cast:false});                                                      // house number
-  bx(ground,PX0+0.15,GX0-0.15,LZ1-0.05,LZ1+0.05,1.5,1.62,lam(0xfff1d6,{emissive:0xffd9a0,emissiveIntensity:0.6}),{cast:false});                              // gate light
-  bx(ground,GX1,GX1+0.06,LZ1-0.06,LZ1+0.06,-0.3,1.3,post);
-  (function(){                                 // wooden gate leaf, hinged on the pillar, opens into the lot
-    const w=GX1-GX0-0.02, pv=new THREE.Group(); pv.position.set(GX0+0.01,0,LZ1); ground.add(pv);
-    for(let x=0.02;x<w-0.05;x+=0.1){ const m=new THREE.Mesh(new THREE.BoxGeometry(0.07,1.2,0.03),fenceM); m.position.set(x+0.035,0.65,0); m.castShadow=true; pv.add(m); }
-    [0.2,1.1].forEach(function(y){ const m=new THREE.Mesh(new THREE.BoxGeometry(w,0.06,0.03),post); m.position.set(w/2,y,-0.03); pv.add(m); });
-    const h=new THREE.Mesh(new THREE.BoxGeometry(0.02,0.18,0.03),M.steel); h.position.set(w-0.08,0.9,0.03); pv.add(h);
-    const col=addCol(0,GX0,GX1,LZ1-0.05,LZ1+0.05,-0.3,1.3,'d'), d={l:0,pv:pv,th:Math.PI/2,open:false,t:0,col:col,mid:[(GX0+GX1)/2,LZ1],label:function(o){ return o?'關上門扉':'打開門扉'; }};
+  bx(ground,PX0+0.13,PX0+0.27,LZ1+0.12,LZ1+0.135,1.2,1.34,lam(0x1b1d20,{roughness:0.3}),{cast:false}); bx(ground,PX0+0.17,PX0+0.23,LZ1+0.135,LZ1+0.14,1.27,1.31,lam(0x9fd6ff,{emissive:0x4aa8e8}),{cast:false});   // intercom
+  bx(ground,GX1+0.08,PX1-0.08,LZ1+0.12,LZ1+0.13,1.0,1.1,lam(0xc9a074,{roughness:0.5}),{cast:false});                                                        // house number
+  (function(){                                 // two wooden gate leaves hinged on the pillars, opening into the lot together
+    const w=(GX1-GX0)/2-0.01, mk=function(hx,sg){ const pv=new THREE.Group(); pv.userData.keep=true; pv.position.set(hx,0,LZ1); ground.add(pv);
+      for(let x=0.02;x<w-0.04;x+=0.1){ const m=new THREE.Mesh(new THREE.BoxGeometry(0.07,1.2,0.03),fenceM); m.position.set(sg*(x+0.035),0.65,0); m.castShadow=true; pv.add(m); }
+      [0.2,1.1].forEach(function(y){ const m=new THREE.Mesh(new THREE.BoxGeometry(w,0.06,0.03),post); m.position.set(sg*w/2,y,-0.03); pv.add(m); });
+      const h=new THREE.Mesh(new THREE.BoxGeometry(0.02,0.18,0.03),M.steel); h.position.set(sg*(w-0.05),0.9,0.03); pv.add(h); return pv; };
+    const L=mk(GX0+0.005,1), R=mk(GX1-0.005,-1), both={rotation:{set y(v){ L.rotation.y=v; R.rotation.y=-v; }, get y(){ return L.rotation.y; }}};
+    const col=addCol(0,GX0,GX1,LZ1-0.05,LZ1+0.05,-0.3,1.3,'d'), d={l:0,pv:both,th:Math.PI/2,open:false,t:0,col:col,mid:[(GX0+GX1)/2,LZ1],label:function(o){ return o?'關上門扉':'打開門扉'; }};
     col.door=d; doors.push(d);
   })();
   (function(){                                 // telescopic (accordion) gate across the car apron, folds toward the east boundary
