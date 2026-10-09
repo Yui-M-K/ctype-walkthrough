@@ -26,6 +26,7 @@ function open(id){
   Object.keys(frames).forEach(function(k){ frames[k].hidden=true; });
   if(!frames[id]){ const f=document.createElement('iframe'); f.src=h.src+frameQuery(); f.title=h.name; f.allow='fullscreen'; document.body.appendChild(f); frames[id]=f; }
   frames[id].hidden=false; cur=id;
+  Object.keys(frames).forEach(function(k){ try{ frames[k].contentWindow.postMessage({type:'house-active',active:k===id},location.origin); }catch(_){} });   // hidden houses stop drawing
   try{ localStorage.setItem('houseLast',id); }catch(_){}
   document.title='屋內漫步 · '+h.name;
   setTimeout(function(){ try{ frames[id].contentWindow.focus(); }catch(_){} },0);

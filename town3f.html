@@ -135,7 +135,7 @@ let seed=7311;
 function rnd(){ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }
 
 let renderer;
-try{ renderer=new THREE.WebGLRenderer({canvas:$('c'),antialias:true}); }
+try{ renderer=new THREE.WebGLRenderer({canvas:$('c'),antialias:(window.devicePixelRatio||1)<1.5,powerPreference:'high-performance'}); }   // sharp Retina screens need no MSAA
 catch(e){ showMsg('這個瀏覽器無法啟動 3D 繪圖（WebGL）。請改用 Safari 或 Chrome 開啟。'); return; }
 let pixelRatio=Math.min(window.devicePixelRatio||1,1.75);
 renderer.setPixelRatio(pixelRatio);
@@ -159,7 +159,7 @@ const scene=new THREE.Scene();
 })();
 scene.fog=new THREE.Fog(0xdde9f3,60,300);
 const camera=new THREE.PerspectiveCamera(70,1,0.05,600); camera.rotation.order='YXZ'; scene.add(camera);
-const post=Walk.Look({THREE:THREE,renderer:renderer,scene:scene,camera:camera,EffectComposer:EffectComposer,RenderPass:RenderPass,GTAOPass:GTAOPass,OutputPass:OutputPass,HDRLoader:HDRLoader,envUrl:'textures/env_lebombo_1k.hdr',aoWhen:function(){ return mode==='walk'; }});
+const post=Walk.Look({THREE:THREE,renderer:renderer,scene:scene,camera:camera,EffectComposer:EffectComposer,RenderPass:RenderPass,GTAOPass:GTAOPass,OutputPass:OutputPass,HDRLoader:HDRLoader,envUrl:'textures/env_lebombo_512.hdr',aoWhen:function(){ return mode==='walk'; }});
 
 const LI=Math.PI, PLI=5;                       // light units since three.js r155: ambient/directional x pi, ceiling point lights also lose the legacy falloff
 const amb=new THREE.AmbientLight(0xffffff,0.6*LI); scene.add(amb);
@@ -845,7 +845,8 @@ function walkLevels(){                         // storeys that can be seen: the 
 const stairBox=new THREE.Box3(), camFr=new THREE.Frustum(), camMat=new THREE.Matrix4();
 function tick(now){
   requestAnimationFrame(tick);
-  const t=now||last, raw=Math.min(0.25,(t-last)/1000)||0.016; last=t; frame++;
+  if(Walk.Perf.paused||(perf&&!perf.ready)){ last=now||last; return; }
+  const t=now||last, raw=Math.min(0.15,(t-last)/1000)||0.016; last=t; frame++;
   let busy=false;
   for(let rest=raw;rest>1e-6;rest-=0.04){ const dt=Math.min(0.04,rest); updateDoors(dt); stepPlayer(dt); }   // long frames still move the full distance, in collision-safe steps
   const dt=Math.min(0.05,raw);
@@ -861,6 +862,7 @@ function tick(now){
   if(perf){
     lightT+=dt; const lv=mode==='walk'?walkLevels():[clamp(viewLevel-1,0,2)], here=camera.position;
     if(lightT>0.15||!lightAt||lightAt.distanceToSquared(here)>0.25){ lightT=0; lightAt=(lightAt||new THREE.Vector3()).copy(here); perf.lights.update(here,lv); if(mode==='walk') LG.forEach(function(g,i){ const v=lv.indexOf(i)>=0; if(g.visible!==v){ g.visible=v; renderer.shadowMap.needsUpdate=true; } }); }
+    if(frame%6===0) perf.cull.update(camera,mode==='walk'?0.01:0.014);
     const e=camera.matrixWorld.elements, sig=mode+viewLevel+':'+e.map(function(v){ return v.toFixed(3); }).join(',');
     busy=busy||sportOn||dailyOn||cookOn||sleepOn||FS.isEditing()||renderer.shadowMap.needsUpdate;
     perf.overlay.frame(dt);
@@ -1076,8 +1078,9 @@ setSun(14); setMode('walk'); roofOn(true); updateRoom(); drawMini();
   }});
   const overlay=Walk.Perf.Overlay(renderer,function(){ return '光源 '+lights.K+' 盞・物件 '+st.before+' → '+st.after+(gov.step?'\n自動降畫質 第 '+gov.step+' 段':''); });
   $('tPerf').addEventListener('click',function(){ overlay.on=!overlay.on; this.setAttribute('aria-pressed',String(overlay.on)); });
-  perf={lights:lights,gov:gov,overlay:overlay,stats:st};
-  try{ LG.forEach(function(g){ g.visible=true; }); renderer.compile(scene,camera); }catch(_){}   // compile every storey's shaders now, not on the first visit
+  const cull=Walk.Perf.DetailCull(THREE,LG.concat([ground]));
+  perf={lights:lights,gov:gov,overlay:overlay,stats:st,cull:cull,ready:false};
+  Walk.Perf.precompile(THREE,renderer,scene,camera,LG).then(function(){ perf.ready=true; renderer.shadowMap.needsUpdate=true; });   // every storey's shaders, so the first visit to a floor does not stall
   renderer.shadowMap.needsUpdate=true;
 })();
 requestAnimationFrame(tick);

@@ -244,7 +244,7 @@ function rnd(){ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,
 
 /* ---------- renderer / scene ---------- */
 let renderer;
-try{ renderer=new THREE.WebGLRenderer({canvas:$('c'),antialias:true}); }
+try{ renderer=new THREE.WebGLRenderer({canvas:$('c'),antialias:(window.devicePixelRatio||1)<1.5,powerPreference:'high-performance'}); }   // sharp Retina screens need no MSAA
 catch(e){ showMsg('這個瀏覽器無法啟動 3D 繪圖（WebGL）。請改用 Safari 或 Chrome 開啟。'); return; }
 let pixelRatio=Math.min(window.devicePixelRatio||1,1.75);
 renderer.setPixelRatio(pixelRatio);
@@ -278,7 +278,7 @@ scene.fog=new THREE.Fog(0xdde9f3,70,420);
 const camera=new THREE.PerspectiveCamera(70,1,0.05,800);
 camera.rotation.order='YXZ';
 scene.add(camera);
-const post=Walk.Look({THREE:THREE,renderer:renderer,scene:scene,camera:camera,EffectComposer:EffectComposer,RenderPass:RenderPass,GTAOPass:GTAOPass,OutputPass:OutputPass,HDRLoader:HDRLoader,envUrl:'textures/env_lebombo_1k.hdr',aoWhen:function(){ return mode==='walk'; }});
+const post=Walk.Look({THREE:THREE,renderer:renderer,scene:scene,camera:camera,EffectComposer:EffectComposer,RenderPass:RenderPass,GTAOPass:GTAOPass,OutputPass:OutputPass,HDRLoader:HDRLoader,envUrl:'textures/env_lebombo_512.hdr',aoWhen:function(){ return mode==='walk'; }});
 
 /* ---------- lights ---------- */
 const LI=Math.PI, PLI=5;                       // light units since three.js r155: ambient/directional x pi, ceiling point lights also lose the legacy falloff
@@ -1974,7 +1974,8 @@ function stepPlayer(dt){
 let last=performance.now(), frame=0, first=true, perf=null;
 function tick(now){
   requestAnimationFrame(tick);
-  const t=now||last, raw=Math.min(0.25,(t-last)/1000)||0.016, dt=Math.min(0.05,raw); last=t; frame++;
+  if(Walk.Perf.paused||(perf&&!perf.ready)){ last=now||last; return; }
+  const t=now||last, raw=Math.min(0.15,(t-last)/1000)||0.016, dt=Math.min(0.05,raw); last=t; frame++;
   const sh0=renderer.shadowMap.needsUpdate; renderer.shadowMap.needsUpdate=false;
   updateDoors(dt);
   curtainSets.forEach(function(c){ if(c.t!==c.target){ c.t=c.target>c.t?Math.min(1,c.t+dt/1.6):Math.max(0,c.t-dt/1.6); applyCurtain(c); renderer.shadowMap.needsUpdate=true; } });
@@ -1989,6 +1990,7 @@ function tick(now){
   if(mode==='walk'&&frame%6===0) updateDist();
   const busy=renderer.shadowMap.needsUpdate||doors.some(function(d){ return d.t!==(d.open?1:0); })||foldT!==foldTarget||FS.isEditing();
   renderer.shadowMap.needsUpdate=renderer.shadowMap.needsUpdate||sh0;
+  if(perf&&frame%6===0) perf.cull.update(camera,mode==='walk'?0.01:0.014);
   if(perf){ const e=camera.matrixWorld.elements, sig=mode+':'+e.map(function(v){ return v.toFixed(3); }).join(','); perf.overlay.frame(dt); if(!perf.gov.frame(dt,sig,busy)&&!first) return; }
   if(frame%2===0) drawMini();
   post.render();
@@ -2055,7 +2057,9 @@ updateRoom(); drawMini();
   }});
   const overlay=Walk.Perf.Overlay(renderer,function(){ return '物件 '+st.before+' → '+st.after+(gov.step?'\n自動降畫質 第 '+gov.step+' 段':''); });
   $('tPerf').addEventListener('click',function(){ overlay.on=!overlay.on; this.setAttribute('aria-pressed',String(overlay.on)); });
-  perf={gov:gov,overlay:overlay,stats:st};
+  const cull=Walk.Perf.DetailCull(THREE,[scene]);
+  perf={gov:gov,overlay:overlay,stats:st,cull:cull,ready:false};
+  Walk.Perf.precompile(THREE,renderer,scene,camera,[]).then(function(){ perf.ready=true; });
   renderer.shadowMap.needsUpdate=true;
 })();
 requestAnimationFrame(tick);
