@@ -57,7 +57,7 @@
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
     <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿，兩指一起拖曳可轉向與抬頭低頭；電腦：滑鼠拖曳轉向，WASD／方向鍵移動，Shift 加速。走近門並面向它，畫面下方會出現開關按鈕（電腦可按 F）。階梯直接走上去就會換樓層。「俯瞰」可選擇看哪一層（屋頂與上層會被拿掉）。</p>
-    <p class="help"><b>這棟房子：</b>依「住宅要望書」設計、縮成東京常見尺寸的三層透天：建物 5.8 × 7.0 m（三層合計約 122 m²・約 37 坪）、土地約 24 坪。1F L 型鏡子房兼收納（北牆整面鏡子＋可拉下遮住的捲簾、盡頭收納櫃、緣側）、附小洗手台的廁所、正對大門的玄關土間（貓用柵欄擋在上框前、可直通車庫）、車庫（Tesla 充電樁）；2F 約 20 帖的整層 LDK（水槽與 IH 爐在同一座對面式半島、北牆摺疊六人餐桌、按摩椅、地暖、間接照明、貓走道）與廁所、陽台（一整扇大落地門、1.1 m 玻璃欄杆）；3F 主臥＋更衣間、書房（日後可當小孩房）、洗面脫衣室（洗衣機）、獨立的三溫暖室、浴室與廁所。庭院的主樹可在櫻花／紅葉之間切換，擺設可選「木平台＋桌椅」「只有烤肉架」「全部收起來」，有烤肉架時可以開「烤肉模式」。全室無段差、拉門為主、樓梯雙側扶手與感應腳燈。鄰地三面 1.8 m 木格柵、臨路矮牆＋門扉＋伸縮門。主臥的窗簾會依「日照時間」自動開關。原本較寬敞的版本在選單「理想之家（寬敞版）」。</p>
+    <p class="help"><b>這棟房子：</b>依「住宅要望書」設計、東京常見尺寸的三層透天：建物 5.8 × 7.8 m（每層約 45 m²，三層合計約 136 m²・約 41 坪）、土地約 24 坪。1F 鏡子房（北牆整面鏡子＋可拉下遮住的捲簾、緣側）、拉門儲藏室（收納櫃・層架・貓砂盆）、附小洗手台的廁所、與車庫打通的玄關土間（貓用柵欄擋在上框前、可收起的置物架）、車庫（Tesla 充電樁）；2F 約 23 帖的整層 LDK（水槽與 IH 爐在同一座對面式半島、北牆摺疊六人餐桌、電動躺椅沙發、按摩椅、地暖、間接照明、貓走道）與廁所、陽台（一整扇大落地門、1.1 m 玻璃欄杆）；3F 主臥＋更衣間、書房（日後可當小孩房）、洗面脫衣室（洗衣機）、獨立的三溫暖室、浴室與廁所。庭院的主樹可在櫻花／紅葉之間切換，擺設可選「木平台＋桌椅」「只有烤肉架」「全部收起來」，有烤肉架時可以開「烤肉模式」。全室無段差、拉門為主、樓梯雙側扶手與感應腳燈。鄰地三面 1.8 m 木格柵、臨路矮牆＋門扉＋伸縮門。主臥的窗簾會依「日照時間」自動開關。原本較寬敞的版本在選單「理想之家（寬敞版）」。</p>
   </div>
 </div>
 <div id="load">載入 3D 場景…<small>首次開啟需要幾秒鐘</small></div>
@@ -94,87 +94,88 @@ SZ:0.01,
 LV:[{ox:0,oy:0},{ox:0,oy:0},{ox:0,oy:0}],
 /* sun shadow box half-size (m) and the point the sun aims at */
 sunBox:10,
-center:[2.9,3,3.6],
+center:[2.9,3,4.0],
 autoArea:true,
 /* exterior / interior wall thickness (m) */
 TE:0.13,
 TI:0.09,
 /* first view: start point (plan, 1F), overview orbit, minimap scale and origin */
-start:[252,775],
-orb:{yaw:0.5,pitch:1.0,dist:24,tx:2.9,tz:3.6},
+start:[252,850],
+orb:{yaw:0.5,pitch:1.0,dist:24,tx:2.9,tz:4.0},
 mini:[32,-0.8,-0.4],
 /* around the stairwell every storey is drawn: x margin, north, south (m) */
 stairZone:[0.6,1.2,1.2],
 /* lift-top table id per layout; edit-mode overview */
 liftIds:{1:'lift',2:'lift'},
-editOrbit:{yaw:0,pitch:1.42,dist:18,tx:2.9,tz:3.6},
-/* rooms: storey, plan box, name, label, wall colour role (plan in cm: 5.8 x 7.0 m, x east / y south, the street on the south) */
+editOrbit:{yaw:0,pitch:1.42,dist:19,tx:2.9,tz:4.0},
+/* rooms: storey, plan box, name, label, wall colour role (plan in cm: 5.8 x 7.8 m, x east / y south, the street on the south) */
 rooms:[
-  {l:0,x0:0,y0:0,x1:310,y1:300,n:'鏡子房',j:'兼收納・約 9 帖',w:'peach'},{l:0,x0:310,y0:0,x1:580,y1:180,n:'鏡子房',j:'兼收納・約 9 帖',w:'peach'},
-  {l:0,x0:0,y0:300,x1:115,y1:630,n:'階梯',j:'1 樓 → 2 樓',w:'hall'},{l:0,x0:0,y0:630,x1:115,y1:700,n:'階梯',j:'1 樓 → 2 樓',w:'hall'},
+  {l:0,x0:0,y0:0,x1:310,y1:300,n:'鏡子房',j:'約 6 帖',w:'peach'},{l:0,x0:310,y0:0,x1:580,y1:180,n:'儲藏室',j:'納戸・貓砂盆',w:'peach'},
+  {l:0,x0:0,y0:300,x1:115,y1:630,n:'階梯',j:'1 樓 → 2 樓',w:'hall'},{l:0,x0:0,y0:630,x1:115,y1:780,n:'階梯',j:'1 樓 → 2 樓',w:'hall'},
   {l:0,x0:200,y0:300,x1:310,y1:520,n:'玄關廳',j:'ホール',w:'hall'},{l:0,x0:115,y0:430,x1:200,y1:520,n:'玄關廳',j:'ホール',w:'hall'},{l:0,x0:115,y0:300,x1:200,y1:430,n:'廁所',j:'1 樓・小洗手台',w:'wc'},
-  {l:0,x0:115,y0:520,x1:205,y1:700,n:'走廊',j:'廊下',w:'hall'},
-  {l:0,x0:205,y0:520,x1:310,y1:700,n:'玄關',j:'土間',w:'genkan'},
-  {l:0,x0:310,y0:180,x1:580,y1:700,n:'車庫',j:'Model 3＋充電樁',w:'outside'},{l:0,x0:-90,y0:-10,x1:0,y1:310,n:'緣側',j:'縁側',w:'outside'},
+  {l:0,x0:115,y0:520,x1:205,y1:780,n:'走廊',j:'廊下',w:'hall'},
+  {l:0,x0:205,y0:520,x1:310,y1:780,n:'玄關',j:'土間・與車庫相通',w:'genkan'},
+  {l:0,x0:310,y0:180,x1:580,y1:780,n:'車庫',j:'Model 3＋充電樁・與土間相通',w:'outside'},{l:0,x0:-90,y0:-10,x1:0,y1:310,n:'緣側',j:'縁側',w:'outside'},
   {l:1,x0:0,y0:0,x1:115,y1:200,n:'廁所',j:'2 樓',w:'wc'},
-  {l:1,x0:0,y0:200,x1:115,y1:300,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓',w:'hall'},{l:1,x0:0,y0:300,x1:115,y1:630,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓',w:'hall'},{l:1,x0:0,y0:630,x1:115,y1:700,n:'階梯',j:'2 樓 → 3 樓',w:'hall'},
+  {l:1,x0:0,y0:200,x1:115,y1:300,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓',w:'hall'},{l:1,x0:0,y0:300,x1:115,y1:630,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓',w:'hall'},{l:1,x0:0,y0:630,x1:115,y1:780,n:'階梯',j:'2 樓 → 3 樓',w:'hall'},
   {l:1,x0:340,y0:0,x1:580,y1:255,n:'廚房',j:'LDK',w:'oat'},
-  {l:1,x0:115,y0:0,x1:340,y1:700,n:'LDK',j:'約 20 帖',w:'oat'},{l:1,x0:340,y0:255,x1:580,y1:700,n:'LDK',j:'約 20 帖',w:'oat'},
-  {l:1,x0:0,y0:700,x1:580,y1:850,n:'陽台',j:'曬衣・植物',w:'outside'},
+  {l:1,x0:115,y0:0,x1:340,y1:780,n:'LDK',j:'約 23 帖',w:'oat'},{l:1,x0:340,y0:255,x1:580,y1:780,n:'LDK',j:'約 23 帖',w:'oat'},
+  {l:1,x0:0,y0:780,x1:580,y1:870,n:'陽台',j:'曬衣・植物',w:'outside'},
   {l:2,x0:0,y0:0,x1:115,y1:200,n:'廁所',j:'3 樓',w:'wc'},
   {l:2,x0:0,y0:200,x1:115,y1:300,n:'階梯',j:'3 樓 ⇄ 2 樓',w:'hall'},{l:2,x0:0,y0:300,x1:115,y1:630,n:'階梯',j:'3 樓 ⇄ 2 樓',w:'hall'},
   {l:2,x0:115,y0:0,x1:260,y1:200,n:'洗面室',j:'洗面・脫衣・洗衣',w:'utility'},{l:2,x0:260,y0:0,x1:390,y1:200,n:'三溫暖室',j:'單人三溫暖',w:'dress'},{l:2,x0:390,y0:0,x1:580,y1:200,n:'浴室',j:'浴缸＋淋浴',w:'bath'},
   {l:2,x0:115,y0:200,x1:215,y1:500,n:'走廊',j:'廊下',w:'hall'},
   {l:2,x0:215,y0:200,x1:580,y1:400,n:'書房',j:'約 4.5 帖・日後可當小孩房',w:'mist'},
-  {l:2,x0:215,y0:400,x1:580,y1:500,n:'主臥',j:'約 6 帖',w:'oat'},{l:2,x0:245,y0:500,x1:580,y1:700,n:'主臥',j:'約 6 帖',w:'oat'},
-  {l:2,x0:115,y0:500,x1:245,y1:700,n:'更衣間',j:'WIC',w:'dress'},{l:2,x0:0,y0:630,x1:115,y1:700,n:'更衣間',j:'WIC',w:'dress'}
+  {l:2,x0:215,y0:400,x1:580,y1:500,n:'主臥',j:'約 6 帖',w:'oat'},{l:2,x0:245,y0:500,x1:580,y1:780,n:'主臥',j:'約 6 帖',w:'oat'},
+  {l:2,x0:115,y0:500,x1:245,y1:780,n:'更衣間',j:'WIC',w:'dress'},{l:2,x0:0,y0:630,x1:115,y1:780,n:'更衣間',j:'WIC',w:'dress'}
 ],
 /* accent walls: TV wall in the living room (sage), head wall of the bedroom (mist), north wall of the study (peach) */
-accents:[{l:1,x0:560,x1:575,y0:250,y1:700,w:'sage'},{l:2,x0:215,x1:580,y0:405,y1:420,w:'mist'},{l:2,x0:215,x1:580,y0:205,y1:220,w:'peach'}],
+accents:[{l:1,x0:560,x1:575,y0:250,y1:780,w:'sage'},{l:2,x0:215,x1:580,y0:405,y1:420,w:'mist'},{l:2,x0:215,x1:580,y0:205,y1:220,w:'peach'}],
 /* curtains: [storey, wall side, a, b, wall line, auto] — the master bedroom's follow the time of day (smart home) */
-curtains:[[1,'S',200,560,700],[1,'N',170,330,0],[2,'S',260,560,700,true],[2,'E',460,640,580,true],[2,'E',240,360,580]],
+curtains:[[1,'S',200,560,780],[1,'N',170,330,0],[2,'S',260,560,780,true],[2,'E',460,640,580,true],[2,'E',240,360,580]],
 /* teleport spots: [name, plan x, plan y, storey, view, yaw, (pitch)] */
-spots:[['玄關',252,810,0,0,0],['鏡子房',60,250,0,0,-Math.PI*0.4],['緣側',-45,150,0,0,Math.PI/2],['庭院',-60,330,0,0,Math.PI*0.92,-0.12],['車庫',445,770,0,0,0],['LDK',200,600,1,1,-Math.PI/2],['廚房',450,115,1,1,Math.PI,-0.2],['陽台',290,780,1,1,0],['浴室',450,185,2,2,0,-0.35],['三溫暖室',325,175,2,2,0,-0.1],['洗面室',240,170,2,2,Math.PI*0.25,-0.2],['主臥',300,680,2,2,-Math.PI*0.25,-0.2],['書房',300,300,2,2,-Math.PI/2],['更衣間',215,646,2,2,Math.PI*0.1,-0.15]],
+spots:[['玄關',252,850,0,0,0],['鏡子房',60,250,0,0,-Math.PI*0.4],['緣側',-45,150,0,0,Math.PI/2],['庭院',-60,330,0,0,Math.PI*0.92,-0.12],['車庫',445,862,0,0,0],['LDK',200,600,1,1,-Math.PI/2],['廚房',450,115,1,1,Math.PI,-0.2],['陽台',290,830,1,1,0],['浴室',450,185,2,2,0,-0.35],['三溫暖室',325,175,2,2,0,-0.1],['洗面室',240,170,2,2,Math.PI*0.25,-0.2],['主臥',300,680,2,2,-Math.PI*0.25,-0.2],['書房',300,300,2,2,-Math.PI/2],['更衣間',215,646,2,2,Math.PI*0.1,-0.15]],
 /* furniture that exists only in layout 1 */
 lay1:{fold1:1},
 build:function(E){
   const {CH,FL,LG,M,SLAB,TE,TI,WX,WZ,addCol,base,bx,ceilingOf,floorRects,flr,ldkFloors,slab,wall}=E;
-  /* 1F: L-shaped mirror room (mirror wall with a roller screen, storage at the far east end, engawa), powder room, hall, genkan facing the front door (cat gate at the step), garage entered from the genkan */
+  /* 1F: mirror room (mirror wall with a roller screen, engawa), storage room behind it, powder room, hall, genkan open to the garage (cat gate at the step) */
   wall(0,0,0,580,0,TE,[{a:420,b:500,sill:1.6,head:2.0}]);
-  wall(0,0,0,0,700,TE,[{a:90,b:280,k:'slide2',mat:M.glass,head:2.15},{a:420,b:520,sill:1.5,head:2.0}]);
-  wall(0,0,700,310,700,TE,[{a:30,b:95,sill:1.0},{a:212,b:300,k:'door',hinge:'a',sw:-1,mat:M.entry,head:2.1}]);      // front door, opening outward
-  bx(LG[0],WX(0,185),WX(0,315),WZ(0,700)+TE/2,WZ(0,700)+0.9,2.35,2.43,M.roof);                                     // door canopy
-  wall(0,310,700,580,700,TE,[{a:325,b:565,k:'open',head:2.25}]);
-  wall(0,580,0,580,700,TE,[{a:300,b:400,sill:1.6,head:2.1}]);
+  wall(0,0,0,0,780,TE,[{a:90,b:280,k:'slide2',mat:M.glass,head:2.15},{a:420,b:520,sill:1.5,head:2.0}]);
+  wall(0,0,780,310,780,TE,[{a:30,b:95,sill:1.0},{a:212,b:300,k:'door',hinge:'a',sw:1,mat:M.entry,head:2.1}]);      // front door
+  bx(LG[0],WX(0,185),WX(0,315),WZ(0,780)+TE/2,WZ(0,780)+0.75,2.35,2.43,M.roof);                                     // door canopy
+  wall(0,310,780,580,780,TE,[{a:311,b:565,k:'open',head:2.25}]);
+  wall(0,580,0,580,780,TE,[{a:300,b:400,sill:1.6,head:2.1}]);
   wall(0,0,300,310,300,TI,[{a:225,b:300,k:'slide'}]);
   wall(0,200,300,200,430,TI,[{a:335,b:405,k:'slide'}]); wall(0,115,430,200,430,TI);
-  wall(0,310,180,310,700,TI,[{a:545,b:625,k:'slide'}]);
+  wall(0,310,180,310,520,TI);
+  wall(0,310,0,310,180,TI,[{a:20,b:100,k:'slide'},{a:140,b:165,k:'open',head:0.25}]);   // storage room door, and a cat hole to the litter box
   wall(0,310,180,580,180,TI);
   wall(0,115,300,115,610,TI);
-  wall(0,205,520,205,700,TI,[{a:540,b:690,sill:0.9,head:2.1}]);
-  slab(0,0,0,580,700);
-  flr(0,0,0,310,300,FL.wood); flr(0,310,0,580,180,FL.wood); flr(0,0,630,115,700,FL.wood); flr(0,115,300,200,430,FL.wc); flr(0,115,430,205,700,FL.wood); flr(0,205,430,310,520,FL.wood); flr(0,200,300,310,430,FL.wood);
-  flr(0,310,180,580,700,FL.conc);
-  ceilingOf(0,0,0,310,300); ceilingOf(0,310,0,580,180); ceilingOf(0,115,300,310,700); ceilingOf(0,0,630,115,700); ceilingOf(0,310,180,580,700);
+  wall(0,205,520,205,780,TI,[{a:540,b:770,sill:0.9,head:2.1}]);
+  slab(0,0,0,580,780);
+  flr(0,0,0,310,300,FL.wood); flr(0,310,0,580,180,FL.wood); flr(0,0,630,115,780,FL.wood); flr(0,115,300,200,430,FL.wc); flr(0,115,430,205,780,FL.wood); flr(0,205,430,310,520,FL.wood); flr(0,200,300,310,430,FL.wood);
+  flr(0,310,180,580,780,FL.conc);
+  ceilingOf(0,0,0,310,300); ceilingOf(0,310,0,580,180); ceilingOf(0,115,300,310,780); ceilingOf(0,0,630,115,780); ceilingOf(0,310,180,580,780);
   /* the genkan floor is one tile step (5 cm) down */
-  [[205,520,310,700]].forEach(function(r){ const a=WX(0,r[0]),c=WX(0,r[2]),d=WZ(0,r[1]),e=WZ(0,r[3]);
+  [[205,520,310,780]].forEach(function(r){ const a=WX(0,r[0]),c=WX(0,r[2]),d=WZ(0,r[1]),e=WZ(0,r[3]);
     bx(LG[0],a,c,d,e,-0.05,-0.047,FL.stone); floorRects.push({l:0,x0:a,x1:c,z0:d,z1:e,y:-0.05}); });
   bx(LG[0],WX(0,205)+TI/2,WX(0,310)-TI/2,WZ(0,520)-0.02,WZ(0,520),-0.05,0.0,M.oak,{cast:false});      // 5 cm step edge (上がり框)
   /* 2F: LDK over the whole floor (dining on the north-west, kitchen north-east, living to the south), toilet by the stair top, full-width balcony */
   wall(1,0,0,580,0,TE,[{a:20,b:95,sill:1.5,head:2.0,frost:true},{a:170,b:330,sill:1.2},{a:350,b:570,sill:2.0,head:2.3}]);
-  wall(1,0,0,0,700,TE,[{a:40,b:140,sill:1.4,head:2.0,frost:true},{a:400,b:520,sill:1.5,head:2.1}]);
-  wall(1,580,0,580,700,TE,[{a:80,b:150,sill:1.1}]);
-  wall(1,0,700,580,700,TE,[{a:25,b:95,sill:1.0},{a:200,b:560,k:'slide2',mat:M.glass,head:2.15}]);
+  wall(1,0,0,0,780,TE,[{a:40,b:140,sill:1.4,head:2.0,frost:true},{a:400,b:520,sill:1.5,head:2.1}]);
+  wall(1,580,0,580,780,TE,[{a:80,b:150,sill:1.1}]);
+  wall(1,0,780,580,780,TE,[{a:25,b:95,sill:1.0},{a:200,b:560,k:'slide2',mat:M.glass,head:2.15}]);
   wall(1,0,200,115,200,TI,[{a:20,b:95,k:'slide'}]);
   wall(1,115,0,115,200,TI);
   wall(1,115,300,115,610,TI);
-  slab(1,0,0,580,300); slab(1,115,300,580,630); slab(1,0,630,580,700);
-  flr(1,0,0,115,200,FL.wc); flr(1,0,200,115,300,FL.wood); flr(1,0,630,115,700,FL.wood);
-  ldkFloors.push(flr(1,115,0,360,700,FL.wood),flr(1,360,0,580,700,FL.wood));
-  ceilingOf(1,0,0,115,200); ceilingOf(1,0,200,115,300); ceilingOf(1,115,0,580,700); ceilingOf(1,0,630,115,700);
-  /* balcony: 1.5 m deep across the whole front (also the canopy over the genkan and garage), 1.1 m glass rail */
-  const bb=base(1), bx0=WX(1,0), bx1=WX(1,580), bz0=WZ(1,700), bz1=WZ(1,850);
-  bx(LG[1],bx0-0.07,bx1+0.07,bz0,bz1+0.07,bb-SLAB,bb,M.slab); flr(1,0,705,580,850,FL.balc);
+  slab(1,0,0,580,300); slab(1,115,300,580,630); slab(1,0,630,580,780);
+  flr(1,0,0,115,200,FL.wc); flr(1,0,200,115,300,FL.wood); flr(1,0,630,115,780,FL.wood);
+  ldkFloors.push(flr(1,115,0,360,780,FL.wood),flr(1,360,0,580,780,FL.wood));
+  ceilingOf(1,0,0,115,200); ceilingOf(1,0,200,115,300); ceilingOf(1,115,0,580,780); ceilingOf(1,0,630,115,780);
+  /* balcony: 0.9 m deep across the whole front (also the canopy over the genkan and garage), 1.1 m glass rail */
+  const bb=base(1), bx0=WX(1,0), bx1=WX(1,580), bz0=WZ(1,780), bz1=WZ(1,870);
+  bx(LG[1],bx0-0.07,bx1+0.07,bz0,bz1+0.07,bb-SLAB,bb,M.slab); flr(1,0,785,580,870,FL.balc);
   [[bx0,bx0,bz0,bz1],[bx1,bx1,bz0,bz1],[bx0,bx1,bz1,bz1]].forEach(function(r){
     const hz=r[2]===r[3], x0=r[0]-(hz?0:0.03), x1=r[1]+(hz?0:0.03), z0=r[2]-(hz?0.03:0), z1=r[3]+(hz?0.03:0);
     bx(LG[1],x0,x1,z0,z1,bb+0.05,bb+1.1,M.railGlass,{cast:false}); bx(LG[1],x0-0.01,x1+0.01,z0-0.01,z1+0.01,bb+1.08,bb+1.13,M.steel);
@@ -183,27 +184,27 @@ build:function(E){
   });
   /* 3F: toilet, washroom (laundry), sauna room and bath along the north; study and master bedroom on the east; walk-in closet by the stairs */
   wall(2,0,0,580,0,TE,[{a:20,b:95,sill:1.5,head:2.0,frost:true},{a:150,b:245,sill:1.4,head:2.0,frost:true},{a:440,b:560,sill:1.2,head:2.0,frost:true}]);
-  wall(2,0,0,0,700,TE,[{a:50,b:150,sill:1.4,head:2.0,frost:true},{a:400,b:520,sill:1.5,head:2.1}]);
-  wall(2,580,0,580,700,TE,[{a:240,b:360},{a:460,b:640}]);
-  wall(2,0,700,245,700,TE,[{a:30,b:100,sill:1.5,head:2.0}]);
-  wall(2,245,700,580,700,TE,[{a:260,b:560,sill:0.5,head:2.15}]);
+  wall(2,0,0,0,780,TE,[{a:50,b:150,sill:1.4,head:2.0,frost:true},{a:400,b:520,sill:1.5,head:2.1}]);
+  wall(2,580,0,580,780,TE,[{a:240,b:360},{a:460,b:640}]);
+  wall(2,0,780,245,780,TE,[{a:30,b:100,sill:1.5,head:2.0}]);
+  wall(2,245,780,580,780,TE,[{a:260,b:560,sill:0.5,head:2.15}]);
   wall(2,0,200,115,200,TI,[{a:20,b:95,k:'slide'}]);
   wall(2,115,0,115,200,TI);
   wall(2,115,200,580,200,TI,[{a:125,b:205,k:'slide'}]);
   wall(2,260,0,260,200,TI,[{a:115,b:190,k:'slide'}]);
   wall(2,390,0,390,200,TI,[{a:115,b:190,k:'slide',mat:M.frost}]);
   wall(2,215,200,215,500,TI,[{a:230,b:310,k:'slide'},{a:410,b:490,k:'slide'}]);
-  wall(2,245,500,245,700,TI,[{a:580,b:660,k:'slide'}]);
+  wall(2,245,500,245,780,TI,[{a:580,b:660,k:'slide'}]);
   wall(2,215,400,580,400,TI);
   wall(2,115,500,245,500,TI);
   wall(2,115,500,115,630,TI); wall(2,0,630,115,630,TI);
-  slab(2,0,0,580,300); slab(2,115,300,580,630); slab(2,0,630,580,700);
+  slab(2,0,0,580,300); slab(2,115,300,580,630); slab(2,0,630,580,780);
   flr(2,0,0,115,200,FL.wc); flr(2,115,0,260,200,FL.wc); flr(2,260,0,390,200,FL.wood); flr(2,390,0,580,200,FL.bath);
-  flr(2,0,200,115,300,FL.wood); flr(2,115,200,215,500,FL.wood); flr(2,215,200,580,400,FL.wood); flr(2,215,400,580,500,FL.wood); flr(2,245,500,580,700,FL.wood);
-  flr(2,115,500,245,700,FL.woodD); flr(2,0,630,115,700,FL.woodD);
-  ceilingOf(2,0,0,115,200); ceilingOf(2,115,0,260,200); ceilingOf(2,260,0,390,200); ceilingOf(2,390,0,580,200); ceilingOf(2,0,200,115,300); ceilingOf(2,0,300,115,630); ceilingOf(2,115,200,215,500); ceilingOf(2,215,200,580,400); ceilingOf(2,215,400,580,500); ceilingOf(2,245,500,580,700); ceilingOf(2,115,500,245,700); ceilingOf(2,0,630,115,700);
+  flr(2,0,200,115,300,FL.wood); flr(2,115,200,215,500,FL.wood); flr(2,215,200,580,400,FL.wood); flr(2,215,400,580,500,FL.wood); flr(2,245,500,580,780,FL.wood);
+  flr(2,115,500,245,780,FL.woodD); flr(2,0,630,115,780,FL.woodD);
+  ceilingOf(2,0,0,115,200); ceilingOf(2,115,0,260,200); ceilingOf(2,260,0,390,200); ceilingOf(2,390,0,580,200); ceilingOf(2,0,200,115,300); ceilingOf(2,0,300,115,630); ceilingOf(2,115,200,215,500); ceilingOf(2,215,200,580,400); ceilingOf(2,215,400,580,500); ceilingOf(2,245,500,580,780); ceilingOf(2,115,500,245,780); ceilingOf(2,0,630,115,780);
   /* roof */
-  const ry=base(2)+CH; bx(LG[2],WX(2,0)-0.3,WX(2,580)+0.3,WZ(2,0)-0.3,WZ(2,700)+0.3,ry,ry+SLAB+0.05,M.roof);
+  const ry=base(2)+CH; bx(LG[2],WX(2,0)-0.3,WX(2,580)+0.3,WZ(2,0)-0.3,WZ(2,780)+0.3,ry,ry+SLAB+0.05,M.roof);
 },
 stair:function(E){
   const {TE,WX,WZ}=E;
@@ -225,12 +226,11 @@ site:function(E){
 /* ---------- site: about 8.6 x 9.2 m (≈ 24 坪): a 2.2 m garden with the engawa on the west, porch and car apron on the street side, fences, neighbours ---------- */
 (function(){
   const g=new THREE.Mesh(new THREE.PlaneGeometry(260,260),M.grass); g.rotation.x=-Math.PI/2; g.position.set(2.4,-0.3,4.2); g.receiveShadow=true; ground.add(g);
-  const HX1=WX(0,580)+TE/2, HZ1=WZ(0,700), LX0=-2.2, LX1=HX1+0.5, LZ0=-0.5, LZ1=HZ1+1.7;
+  const HX1=WX(0,580)+TE/2, HZ1=WZ(0,780), LX0=-2.2, LX1=HX1+0.5, LZ0=-0.5, LZ1=HZ1+0.9;
   const road=new THREE.Mesh(new THREE.PlaneGeometry(260,6),M.asphalt); road.rotation.x=-Math.PI/2; road.position.set(2,-0.29,LZ1+3); road.receiveShadow=true; ground.add(road);
-  const VZ=WZ(0,700)+TE/2;
-  bx(ground,WX(0,195),WX(0,310),VZ,VZ+0.8,-0.3,-0.1,FL.stone);                                // porch, one step below the genkan floor
-  floorRects.push({l:0,x0:WX(0,195),x1:WX(0,310),z0:VZ,z1:VZ+0.8,y:-0.1});
-  const ramp=new THREE.Mesh(new THREE.BoxGeometry(1.15,0.02,0.9),FL.stone); ramp.position.set(WX(0,252),-0.2,VZ+0.8+0.45); ramp.rotation.x=-Math.atan2(0.2,0.9); ramp.receiveShadow=true; ground.add(ramp);   // gentle slope instead of a step (barrier-free)
+  const VZ=WZ(0,780)+TE/2;
+  bx(ground,WX(0,195),WX(0,310),VZ,LZ1-0.12,-0.3,-0.1,FL.stone);                              // porch up to the gate, one step below the genkan floor
+  floorRects.push({l:0,x0:WX(0,195),x1:WX(0,310),z0:VZ,z1:LZ1-0.12,y:-0.1});
   const apron=new THREE.Mesh(new THREE.PlaneGeometry(HX1-WX(0,310),LZ1-HZ1),FL.conc); apron.rotation.x=-Math.PI/2; apron.position.set((HX1+WX(0,310))/2,-0.285,(HZ1+LZ1)/2); apron.receiveShadow=true; ground.add(apron);
   /* engawa: cedar deck 90 cm deep along the mirror room, a low step down to the garden, posts and a shallow eave */
   const EX0=WX(0,-90), EX1=WX(0,0)-TE/2, EZ0=WZ(0,-10), EZ1=WZ(0,310), deck=lam(0xb98a5c,{roughness:0.75});
@@ -253,8 +253,6 @@ site:function(E){
     for(let i=0;i<5000;i++){ g.fillStyle='rgba('+(70+rnd()*60|0)+','+(120+rnd()*60|0)+','+(40+rnd()*30|0)+',0.5)'; g.fillRect(rnd()*256,rnd()*256,1+rnd()*2,2+rnd()*4); }
     const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(5,9); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=ANISO; return t; })();
   const lawn=new THREE.Mesh(new THREE.PlaneGeometry(-TE/2-(LX0+0.08),LZ1-0.12-(LZ0+0.08)),lam(0xffffff,{map:lawnTex,roughness:1})); lawn.rotation.x=-Math.PI/2; lawn.position.set((LX0+0.08-TE/2)/2,-0.285,(LZ0+0.08+LZ1-0.12)/2); lawn.receiveShadow=true; ground.add(lawn);   // the whole side garden, up to the house
-  /* stepping stones from the porch toward the garden */
-  for(let i=0;i<4;i++){ const x=1.5-i*0.72, z=VZ+0.55+Math.sin(i*1.3)*0.2; const st=new THREE.Mesh(new THREE.CylinderGeometry(0.24,0.26,0.04,9),lam(0x9a968e,{roughness:0.9})); st.scale.z=0.75; st.position.set(x,-0.27,z); st.rotation.y=i; st.receiveShadow=true; ground.add(st); }
   /* boundary: neighbours on three sides get a 1.8 m screen (block base + cedar slats); the street side is a low white wall with slats,
      a gate pillar and a wooden gate to the porch, and a telescopic gate across the car apron */
   const fenceM=lam(0x8a6a4c,{roughness:0.8}), post=lam(0x5a4636,{roughness:0.8}), block=lam(0xb9b6ae,{roughness:0.95}), render=lam(0xeeeae2,{roughness:0.9});
@@ -266,7 +264,7 @@ site:function(E){
     for(let i=0;i<=L/1.8+0.01;i++){ const a=Math.min((horiz?x0:z0)+i*1.8,horiz?x1:z1); if(horiz) bx(ground,a-0.04,a+0.04,z0-0.04,z0+0.04,0.1,1.55,post); else bx(ground,x0-0.04,x0+0.04,a-0.04,a+0.04,0.1,1.55,post); }
     if(horiz) addCol(0,x0,x1,z0-0.07,z0+0.07,-0.3,1.5,'w'); else addCol(0,x0-0.07,x0+0.07,z0,z1,-0.3,1.5,'w'); };
   screen(LX0,LZ0,LX0,LZ1); screen(LX0,LZ0,LX1,LZ0); screen(LX1,LZ0,LX1,LZ1);
-  const GX1=WX(0,305), GX0=GX1-1.1, PX0=GX0-0.4, CX0=GX1+0.1;
+  const GX1=WX(0,305), GX0=GX1-0.8, PX0=GX0-0.4, CX0=GX1+0.1;
   const lowWall=function(x0,x1){ bx(ground,x0,x1,LZ1-0.08,LZ1+0.08,-0.3,0.3,render); bx(ground,x0-0.01,x1+0.01,LZ1-0.09,LZ1+0.09,0.3,0.34,render,{cast:false});
     slats(x0,LZ1,x1,LZ1,0.34,1.2,0.16); addCol(0,x0,x1,LZ1-0.09,LZ1+0.09,-0.3,1.2,'w'); };
   lowWall(LX0,PX0);
@@ -315,28 +313,28 @@ layout:function(E){
 /* default furnishing: [id, type, storey, plan x, plan y, facing N/E/S/W, (make)] — everything here is movable in edit mode */
 return [
   /* 2F living: corridor along the stair wall from the stair top to flight B; TV wall with the cat walkway on the east */
-  ['tv','tvBoard',1,553,500,'W'],['sofa','lSofa',1,265,500,'E'],['lift','liftTable',1,365,475,'E'],['rugL','rugRound',1,370,500,'E'],['lampL','floorLamp',1,275,355,'E'],['massage','massageChair',1,185,340,'E'],
+  ['tv','tvBoard',1,553,500,'W'],['sofa','reclinerSofa',1,258,500,'E'],['lift','liftTable',1,365,475,'E'],['rugL','rugRound',1,370,500,'E'],['lampL','floorLamp',1,275,355,'E'],['massage','massageChair',1,185,340,'E'],
   ['map','worldMap',1,119.5,470,'E'],
   ['perch','catPerch',1,250,3.5,'S',function(){ return Catalog.catWindowPerch(1.2); }],['catA','catStep',1,573.5,380,'W',function(){ return Catalog.catStep(1.45); }],['catHouse','catHouse',1,573.5,430,'W',function(){ return Catalog.catHouse(1.5); }],['catB','catStep',1,573.5,485,'W',function(){ return Catalog.catStep(1.75); }],
   ['catBed','catBed',1,573.5,540,'W',function(){ return Catalog.catBed(1.95,'tabby'); }],['catC','catStep',1,573.5,590,'W',function(){ return Catalog.catStep(1.75); }],
   ['cat','catGrey',1,420,610,'E'],['catBowls','catBowls',1,562,620,'E'],
   /* 2F dining (folding six-seat table on the north wall), robot vacuum docked by the TV; the litter box sits in the 1F hall */
-  ['fold1','foldTable',1,225,6.5,'S'],['litter','litterBox',0,420,128,'E'],['robot','robotVacuum',1,553,390,'W'],
+  ['fold1','foldTable',1,225,6.5,'S'],['litter','litterBox',0,420,128,'E'],['stock','stockShelf',0,380,26.5,'S'],['robot','robotVacuum',1,553,390,'W'],
   /* 2F kitchen: fridge and appliance cabinet on the back wall, bins at the end of the peninsula */
   ['fridge','fridge70',1,538.5,40,'S'],['appl','applianceCabinet',1,451.5,30,'S'],['bins','trashBins',1,322,205,'W'],
   /* 2F balcony */
-  ['plantB1','plant',1,495,800,'E'],['plantB2','plantS',1,553,805,'E'],
+  ['plantB1','plant',1,495,825,'E'],['plantB2','plantS',1,553,825,'E'],
   /* garden BBQ deck */
   ['outdoor','outdoorSet',0,-130,610,'E'],['bbq','bbqGrill',0,-50,690,'E'],
   /* 1F genkan, mirror room, garage */
-  ['shoeRack','shoeShelf',0,290.5,470,'W',function(){ return Catalog.shoeShelf(0.9,0.3,1.8); }],['mat','doormat',0,256,672,'N'],['umbrella','umbrellaStand',0,294.5,682,'W'],['shoesW','shoesW',0,270,595,'N'],
+  ['shoeRack','shoeShelf',0,290.5,470,'W',function(){ return Catalog.shoeShelf(0.9,0.3,1.8); }],['mat','doormat',0,256,752,'N'],['umbrella','umbrellaStand',0,201,822,'E'],['shoesW','shoesW',0,270,595,'N'],
   ['plantM','plant',0,35,262,'E'],
-  ['car','car',0,468,445,'S'],
+  ['car','car',0,415,539,'S'],
   /* 3F bedroom */
   ['bed','bed',2,412,520,'S'],['headboard','headboard',2,412,404.5,'S'],['side','bedside',2,522,425,'S'],['rugBed','rugBed',2,412,560,'E'],
-  ['fanB','fan',2,550,670,'W'],['artBed','artPortrait',2,249.5,540,'E'],
+  ['fanB','fan',2,550,750,'W'],['artBed','artPortrait',2,249.5,540,'E'],
   /* 3F walk-in closet, study, hall, washroom */
-  ['rackW1','clothesRack',2,150,565,'E',function(){ return Catalog.clothesRack(1.2); }],['rackW2','clothesRack',2,57,665,'N',function(){ return Catalog.clothesRack(1.0); }],['mirrorW','fullMirror',2,240.5,532,'W'],['dehum','dehumidifier',2,225,680,'N'],
+  ['rackW1','clothesRack',2,150,565,'E',function(){ return Catalog.clothesRack(1.2); }],['rackW2','clothesRack',2,57,745,'N',function(){ return Catalog.clothesRack(1.0); }],['mirrorW','fullMirror',2,240.5,532,'W'],['dehum','dehumidifier',2,225,760,'N'],
   ['duo','duoDesk',2,455,360.5,'N'],['shelf3','bookshelf',2,365,220.5,'S'],['rugS','rugRoundSun',2,375,320,'E'],['plant3','plantS',2,240,380,'E'],['artHall','artSmall',2,210.5,360,'W'],
   ['washer','washer',2,215,40,'S',function(){ const p=Catalog.washer(); p.attach(Catalog.towels(1.064),-0.06,0,0); return p; }]
 ];
@@ -357,14 +355,17 @@ fixtures:function(E){
 })();
 (function(){                                   // 3F: one-person sauna in its own room between the washroom and the bath; tub along the north wall, shower set on the south wall
   (function(){ const x0=WX(2,390)+TI/2, x1=WX(2,580)-TE/2; fixture(2,Catalog.bathtub(x1-x0),(x0+x1)/2,WZ(2,45.5),3); })();   // wall to wall
-  fixture(2,Catalog.homeSauna(),WX(2,325),WZ(2,59),3);
+  (function(){ const S=Catalog.homeSauna(), wx=WX(2,325), wz=WZ(2,59); fixture(2,S,wx,wz,3);   // the glass door opens like any other door
+    const r=S.doorRect, b=E.base(2), x0=wx-r[3], x1=wx-r[2], z0=wz+r[0], z1=wz+r[1];
+    const col=addCol(2,x0,x1,z0,z1,b,b+1.95,'d'), d={l:2,pv:S.doorPivot,th:Math.PI/2,open:false,t:0,col:col,mid:[(x0+x1)/2,(z0+z1)/2],label:function(o){ return o?'關上三溫暖門':'打開三溫暖門'; }};
+    col.door=d; doors.push(d); })();
   fixture(2,Catalog.bathWallSet(),WX(2,500),WZ(2,200)-TI/2,2);
   fixture(2,Catalog.bathStool(),WX(2,495),WZ(2,150),0); fixture(2,Catalog.washBowl(),WX(2,530),WZ(2,170),0);
   fixture(2,Catalog.vanity(),WX(2,147),WZ(2,60),0);
   (function(){ const P=Catalog.soapDispenser(0.85); fixture(2,P,WX(2,167),WZ(2,88),0); P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); }); })();
 })();
 fixture(1,Catalog.toilet(),WX(1,57),WZ(1,52),3); fixture(2,Catalog.toilet(),WX(2,57),WZ(2,52),3);
-fixture(0,Catalog.wallFoldTable(),WX(0,310)-TI/2,WZ(0,668),2);                            // genkan: fold-down shelf for parcels and keys
+fixture(0,Catalog.wallFoldTable(),WX(0,205)+TI/2,WZ(0,610),0);                            // genkan: fold-down shelf for parcels and keys
 (function(){                                   // pressure-mounted cat gate across the step edge: the only way from the genkan floor into the house
   const z=WZ(0,520)-0.05, x0=WX(0,205)+TI/2, x1=WX(0,310)-TI/2, P=Catalog.petGate(x1-x0,1.5);
   P.group.position.set((x0+x1)/2,0,z); P.group.rotation.y=Math.PI/2; LG[0].add(P.group);
@@ -372,7 +373,7 @@ fixture(0,Catalog.wallFoldTable(),WX(0,310)-TI/2,WZ(0,668),2);                  
   col.door=d; doors.push(d);
 })();
 (function(){                                   // garage: Tesla Wall Connector on the east wall beside the charge port; tap it to plug the car in
-  const C=Catalog.evCharger(), g=fixture(0,C,WX(0,580)-TE/2,WZ(0,230),2), cab=lam(0x2a2c30,{roughness:0.55});
+  const C=Catalog.evCharger(), g=fixture(0,C,WX(0,580)-TE/2,WZ(0,330),2), cab=lam(0x2a2c30,{roughness:0.55});
   let on=false, line=null; const head=new THREE.Mesh(new THREE.CylinderGeometry(0.026,0.032,0.16,16),lam(0xf2f2f0,{roughness:0.3})); head.rotation.z=Math.PI/2; head.visible=false; head.userData.keep=true; LG[0].add(head);
   const v=function(q,o){ return o.localToWorld(new THREE.Vector3(q[0],q[1],q[2])); };
   window.__chargeUpdate=function(){
@@ -385,10 +386,10 @@ fixture(0,Catalog.wallFoldTable(),WX(0,310)-TI/2,WZ(0,668),2);                  
     line=new THREE.Mesh(new THREE.TubeGeometry(curve,40,0.012,8),cab); line.castShadow=true; LG[0].add(line);
     head.position.set(b.x+0.04,b.y,b.z); E.renderer.shadowMap.needsUpdate=true;
   };
-  furnThings.push({pt:[WX(0,540),WZ(0,215)],l:0,on:function(){ return E.usable('car'); },label:function(){ return on?'拔下充電槍':'插上充電'; },act:function(){ on=!on; window.__chargeUpdate(); toast(on?'開始充電：Wall Connector 燈號轉綠':'已拔下充電槍'); }});
+  furnThings.push({pt:[WX(0,530),WZ(0,330)],l:0,on:function(){ return E.usable('car'); },label:function(){ return on?'拔下充電槍':'插上充電'; },act:function(){ on=!on; window.__chargeUpdate(); toast(on?'開始充電：Wall Connector 燈號轉綠':'已拔下充電槍'); }});
   furnAnims.push({live:function(){ return on; },f:function(t){ C.ledMat.emissiveIntensity=0.8+0.6*Math.sin(t*2.4); return false; }});
 })();
-(function(){ [[WX(0,250),WZ(0,700)+TE/2,3,2.2],[WX(0,580)+TE/2,WZ(0,600),0,2.4]].forEach(function(c){ const P=Catalog.securityCamera(); P.group.position.y=c[3]; fixture(0,P,c[0],c[1],c[2]); }); })();
+(function(){ [[WX(0,250),WZ(0,780)+TE/2,3,2.2],[WX(0,580)+TE/2,WZ(0,600),0,2.4]].forEach(function(c){ const P=Catalog.securityCamera(); P.group.position.y=c[3]; fixture(0,P,c[0],c[1],c[2]); }); })();
 (function(){                                   // mirror room: mirror wall on the north with a pull-down screen, storage at the far east end (suitcases, seasonal things)
   const x1=WX(0,580)-TE/2, x0=x1-0.6, z0=WZ(0,0)+TE/2, z1=WZ(0,180)-TI/2, H=2.4, n=2, w=(z1-z0)/n;
   bx(LG[0],x0+0.02,x1,z0,z1,0,H,M.cabF); bx(LG[0],x0,x1,z0,z1,H,CH,M.cabF,{cast:false});
@@ -414,11 +415,11 @@ fixture(0,Catalog.wallFoldTable(),WX(0,310)-TI/2,WZ(0,668),2);                  
 },
 lighting:function(E){
   const {cove,light,pendant}=E;
-[[155,180,0],[60,665,0],[262,380,0],[157,365,0,0.3],[252,620,0],[445,95,0],[445,440,0],
- [57,100,1,0.3],[57,250,1],[210,100,1],[480,140,1],[350,500,1],[200,620,1],[57,665,1],
+[[155,180,0],[60,705,0],[262,380,0],[157,365,0,0.3],[257,650,0],[445,95,0],[445,480,0],
+ [57,100,1,0.3],[57,250,1],[210,100,1],[480,140,1],[350,500,1],[200,660,1],[57,705,1],
  [57,100,2,0.3],[190,100,2],[325,155,2,0.3],[485,100,2,0.3],[165,350,2],[400,300,2],[400,560,2],[165,600,2]].forEach(function(p){ light(p[2],p[0],p[1],0xffe2b8,p[3]||0.5,7); });
 pendant(1,390,205); pendant(1,460,205);
-cove(1,200,700,580,700,-1); cove(1,580,300,580,700,-1); cove(1,115,300,115,610,1);
+cove(1,200,780,580,780,-1); cove(1,580,300,580,780,-1); cove(1,115,300,115,610,1);
 cove(2,215,400,580,400,1);
 },
 modes:function(E){
@@ -453,7 +454,7 @@ function applyDaily(){
   workerG.visible=E.dailyOn&&usable('duo'); viewerG.visible=E.dailyOn&&usable(sid);
   if(E.dailyOn){
     const w=at('duo',2,500,305.5); workerM.position.set(w[0],0.52,w[1]); workerM.rotation.y=w[2];
-    const v=at(sid,1,272,495); viewerF.position.set(v[0],0.40,v[1]); viewerF.rotation.y=v[2];
+    const v=at(sid,1,250,500); viewerF.position.set(v[0],0.5,v[1]); viewerF.rotation.y=v[2];
     toast('日常模式：他在 3F 書桌工作，她在 2F 沙發看電視');
   }
   setTv(E.dailyOn); E.renderer.shadowMap.needsUpdate=true;
@@ -608,8 +609,8 @@ modeAnims.push(function(t){
 /* garden setup: deck with table and grill / the grill alone on the lawn / everything put away; the feature tree is cherry or autumn maple */
 let gardenSet='deck', treeKind='sakura';
 try{ gardenSet=localStorage.getItem('idealGarden')||'deck'; treeKind=localStorage.getItem('idealTree')||'sakura'; }catch(_){}
-const gardenShows=function(id){ return id==='bbq'?gardenSet!=='none':gardenSet==='deck'; };
-['bbq','outdoor'].forEach(function(id){ const m=mover(id); if(!m) return;
+const gardenShows=function(id){ return id==='bbq'?gardenSet!=='none':id==='outdoor'?gardenSet==='deck':true; };
+['bbq','outdoor','umbrella'].forEach(function(id){ const m=mover(id); if(!m) return;
   m.onApply=function(x,z){
     if(m.lvCur===0) m.W.position.y=E.floorAt(x,z,0);   // on the deck, or on the lawn when the deck is gone
     if(!gardenShows(id)){ m.W.visible=false; m.own.forEach(function(c){ c.mvOff=true; }); }
