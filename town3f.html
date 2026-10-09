@@ -182,43 +182,14 @@ build:function(E){
 },
 stair:function(E){
   const {WX,WZ}=E;
-  return {x0:WX(0,98),x1:WX(0,205),zs:WZ(0,720),zn:WZ(0,390),N:14,footLeds:false,soffitGap:0.05};
+  return {x0:WX(0,98),x1:WX(0,205),zs:WZ(0,720),zn:WZ(0,390),N:14,footLeds:true,soffitGap:0};
 },
 stairExtras:function(E){
-  const {LG,M,SH,ST,TE,WX,WZ,base,lam}=E;
-/* wall handrail (Ø36 mm, 85 cm above the nosings) on the outer west wall, on brackets, with level ends that turn back into the wall */
-(function(){
-  const wallFace=WX(0,88)+TE/2, rx=wallFace+0.065, r=0.018, L=ST.zs-ST.zn, run=L/ST.N, k=SH/L, H=0.85;
-  const rail=lam(0xc9a074,{roughness:0.45}), steel=M.steel;
-  const seg=function(g,a,c,rad,mt){ const d=new THREE.Vector3().subVectors(c,a), m=new THREE.Mesh(new THREE.CylinderGeometry(rad,rad,d.length(),12),mt);
-    m.position.copy(a).addScaledVector(d,0.5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize()); m.castShadow=true; g.add(m); return m; };
-  const ball=function(g,p,rad,mt){ const m=new THREE.Mesh(new THREE.SphereGeometry(rad,12,8),mt); m.position.copy(p); g.add(m); };
-  [0,1].forEach(function(l){
-    const b=base(l), g=LG[l], V=function(z,y){ return new THREE.Vector3(rx,y,z); };
-    const z0=ST.zs-run*0.5, z1=ST.zn+run*0.5, y0=b+(ST.zs-z0)*k+H, y1=b+(ST.zs-z1)*k+H;
-    const pts=[V(z0+0.3,y0),V(z0,y0),V(z1,y1),V(z1-0.3,y1)];
-    for(let i=0;i<3;i++){ seg(g,pts[i],pts[i+1],r,rail); ball(g,pts[i+1],r,rail); }
-    ball(g,pts[0],r,rail);
-    [pts[0],pts[3]].forEach(function(p){ seg(g,p,new THREE.Vector3(wallFace,p.y,p.z),r,rail); });   // ends return to the wall
-    const n=Math.max(2,Math.round(Math.hypot(z0-z1,y1-y0)/1.0));
-    for(let i=0;i<=n;i++){                       // brackets
-      const z=z0+(z1-z0)*i/n, y=y0+(y1-y0)*i/n-r-0.035;
-      seg(g,new THREE.Vector3(wallFace,y,z),new THREE.Vector3(rx,y,z),0.006,steel);
-      seg(g,new THREE.Vector3(rx,y,z),new THREE.Vector3(rx,y+0.035,z),0.006,steel);
-      const plate=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.008,16),steel); plate.rotation.z=Math.PI/2; plate.position.set(wallFace+0.004,y,z); g.add(plate);
-    }
-  });
-  /* 2F: the upper flight's east side is open where the lower flight arrives (no wall there): white balusters and a top rail */
-  const b=base(1), xg=ST.x1-0.035, zEnd=WZ(1,490), zTop=ST.zn;
-  const guard=lam(0xf4f1ea,{roughness:0.5});
-  for(let z=zTop+run*0.5;z<zEnd;z+=run){
-    const yb=b+(ST.zs-z+run*0.5)*k-0.0, yt=b+(ST.zs-z)*k+H;
-    seg(LG[1],new THREE.Vector3(xg,Math.min(yb,b+SH),z),new THREE.Vector3(xg,yt,z),0.012,guard);
-  }
-  const ya=b+(ST.zs-zEnd)*k+H, yb2=b+SH+H;
-  seg(LG[1],new THREE.Vector3(xg,ya,zEnd),new THREE.Vector3(xg,yb2,zTop),0.022,rail);
-  seg(LG[1],new THREE.Vector3(xg,b+SH,zTop),new THREE.Vector3(xg,yb2,zTop),0.03,guard);    // newel at the top
-})();
+  const {ST,TE,TI,WX,WZ,handrail,stairGuard}=E;
+/* oak handrails with an LED wash: the outer west wall on both flights, the east wall of the lower flight; glass guard where the upper flight's east side is open */
+[0,1].forEach(function(l){ handrail(l,WX(0,88)+TE/2,1); });
+handrail(0,WX(0,205)-TI/2,-1);
+stairGuard(1,ST.x1-0.035,ST.zn,WZ(1,490));
 },
 site:function(E){
   const {FL,M,TE,WX,WZ,bx,floorRects,ground}=E;
