@@ -129,6 +129,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
   padding:0 24px; background:var(--paper); color:var(--ink); font-size:15px; line-height:1.6;
 }
 #load small{display:block; margin-top:6px; color:var(--muted); font-size:12px}
+#load{flex-direction:column}
+.loadBar{width:min(240px,60vw);height:3px;margin-top:14px;border-radius:2px;background:var(--line);overflow:hidden}
+.loadBar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
 #err{
   position:fixed; left:16px; right:16px; top:calc(70px + env(safe-area-inset-top, 0px)); z-index:5;
   background:var(--pin); color:#fff; border-radius:10px; padding:10px 12px; font-size:13px; line-height:1.5;
@@ -257,6 +260,7 @@ renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure=1.0;
 const ANISO=Math.min(8,renderer.capabilities.getMaxAnisotropy?renderer.capabilities.getMaxAnisotropy():1);
+const loadStatus=Walk.Perf.LoadStatus(); loadStatus.set('建立房子',0.1);
 
 const scene=new THREE.Scene();
 (function(){
@@ -1821,7 +1825,7 @@ partBtns.forEach(function(b){ b.addEventListener('click',function(){ setPart(+b.
 /* ---------- colour schemes and photographic textures: shared (lib/finish.js) ---------- */
 const THEMES=Walk.THEMES;
 let ktx2=null; try{ ktx2=new KTX2Loader().setTranscoderPath('https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/libs/basis/').detectSupport(renderer); }catch(_){}
-const FIN=Walk.Finish({THREE:THREE,anisotropy:ANISO,FL:FL,M:M,WM:WM,fabMats:fabMats,ktx2:ktx2});
+const FIN=Walk.Finish({THREE:THREE,anisotropy:ANISO,FL:FL,M:M,WM:WM,fabMats:fabMats,ktx2:ktx2,onProgress:function(d,t){ loadStatus.tex(d,t); }});
 const paint=FIN.paint, mapMat=FIN.mapMat;
 let themeId='A';
 mapMat(FL.bath,'bathfloor_lg',1.8/0.6,true);   // floor uv = metres / 0.6: 90 x 90 cm porcelain
@@ -2061,7 +2065,8 @@ updateRoom(); drawMini();
   $('tPerf').addEventListener('click',function(){ overlay.on=!overlay.on; this.setAttribute('aria-pressed',String(overlay.on)); });
   const cull=Walk.Perf.DetailCull(THREE,[scene]);
   perf={gov:gov,overlay:overlay,stats:st,cull:cull,ready:false};
-  Walk.Perf.precompile(THREE,renderer,scene,camera,[]).then(function(){ perf.ready=true; });
+  loadStatus.set('下載貼圖');
+  Walk.Perf.precompile(THREE,renderer,scene,camera,[],FIN.whenLoaded().then(function(){ loadStatus.set('準備畫面',0.8); })).then(function(){ perf.ready=true; });
   renderer.shadowMap.needsUpdate=true;
 })();
 requestAnimationFrame(tick);

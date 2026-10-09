@@ -43,6 +43,7 @@ window.addEventListener('message',function(e){
   let want=params.get('house'); if(!want){ try{ want=localStorage.getItem('houseLast'); }catch(_){} }
   if(!open(want)) open(HOUSES[0].id);
 })();
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)) window.addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });   // offline cache
 </script>
 </body>
 </html>
