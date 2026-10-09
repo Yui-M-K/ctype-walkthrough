@@ -245,7 +245,7 @@ Walk.WALL_ROLES.forEach(function(k){ WM[k]=lam(0xffffff,{map:wallTex,bumpMap:wal
 const FIN=Walk.Finish({THREE:THREE,anisotropy:ANISO,FL:FL,M:M,WM:WM,fabMats:fabMats});
 FIN.mapMat(FL.tile,'bathtile',1.8,true); FIN.mapMat(FL.stone,'genkantile',2.0,true); FIN.mapMat(FL.balc,'balctile',2.4);
 FIN.mapMat(FL.conc,'corrconc',2.0); FIN.paint(FL.conc,0xc9c7c2); FIN.mapMat(FL.wc,'balctile',2.4); FIN.paint(FL.wc,0xe8e8e6);
-FIN.mapMat(M.top,'counter',1.2,true); FIN.mapMat(M.bathWall,'bathwall_lg',1.2,true); FIN.mapMat(FL.bath,'bathfloor_lg',1.2,true);   // large-format tiles: 60 x 30 cm walls, 60 x 60 cm floor FIN.mapMat(M.wcTile,'wttoilet',1.6,true);
+FIN.mapMat(M.top,'counter',1.2,true); FIN.mapMat(M.bathWall,'bathwall_lg',2.4,true); FIN.mapMat(FL.bath,'bathfloor_lg',1.8,true);   // large-format porcelain: 120 x 60 cm walls, 90 x 90 cm floor FIN.mapMat(M.wcTile,'wttoilet',1.6,true);
 FIN.loadCommon();
 FIN.applyPalette(Walk.THEMES.A);                // warm Scandinavian only for this house
 

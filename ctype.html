@@ -1819,14 +1819,14 @@ const THEMES=Walk.THEMES;
 const FIN=Walk.Finish({THREE:THREE,anisotropy:ANISO,FL:FL,M:M,WM:WM,fabMats:fabMats});
 const paint=FIN.paint, mapMat=FIN.mapMat;
 let themeId='A';
-mapMat(FL.bath,'bathtile',1.8/0.6,true);       // floor uv = metres / 0.6, photo tile = 1.8 m (30 cm tiles)
+mapMat(FL.bath,'bathfloor_lg',1.8/0.6,true);   // floor uv = metres / 0.6: 90 x 90 cm porcelain
 mapMat(FL.stone,'genkantile',2.0/0.6,true);
 mapMat(FL.balc,'balctile',2.4/0.6);
 mapMat(FL.corr,'corrconc',2.0); paint(FL.corr,0xdedcd8);
 mapMat(FL.wc,'balctile',2.4); paint(FL.wc,0xe8e8e6);
 mapMat(FL.cf,'balctile',2.4); paint(FL.cf,0xe2d8c6);
 mapMat(M.top,'counter',1.2,true);
-mapMat(M.bathWall,'wtbath',2.4,true);          // bath wall: pale aqua gloss tile, about 16 cm
+mapMat(M.bathWall,'bathwall_lg',2.4,true);     // bath wall: 120 x 60 cm porcelain
 mapMat(M.wcTile,'wttoilet',1.6,true);          // toilet wainscot: white tile, about 11 cm
 mapMat(M.kTile,'wtkitchen',0.9,true);          // kitchen panel: white hexagon mosaic
 mapMat(M.conc,'pilaster',2.0); paint(M.conc,0xdcdad4);

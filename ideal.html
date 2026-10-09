@@ -248,7 +248,7 @@ Walk.WALL_ROLES.forEach(function(k){ WM[k]=lam(0xffffff,{map:wallTex,bumpMap:wal
 const FIN=Walk.Finish({THREE:THREE,anisotropy:ANISO,FL:FL,M:M,WM:WM,fabMats:fabMats});
 FIN.mapMat(FL.tile,'bathtile',1.8,true); FIN.mapMat(FL.stone,'genkantile',2.0,true); FIN.mapMat(FL.balc,'balctile',2.4);
 FIN.mapMat(FL.conc,'corrconc',2.0); FIN.paint(FL.conc,0xc9c7c2); FIN.mapMat(FL.wc,'balctile',2.4); FIN.paint(FL.wc,0xe8e8e6);
-FIN.mapMat(M.top,'counter',1.2,true); FIN.mapMat(M.bathWall,'bathwall_lg',1.2,true); FIN.mapMat(FL.bath,'bathfloor_lg',1.2,true);   // large-format tiles: 60 x 30 cm walls, 60 x 60 cm floor FIN.mapMat(M.wcTile,'wttoilet',1.6,true);
+FIN.mapMat(M.top,'counter',1.2,true); FIN.mapMat(M.bathWall,'bathwall_lg',2.4,true); FIN.mapMat(FL.bath,'bathfloor_lg',1.8,true);   // large-format porcelain: 120 x 60 cm walls, 90 x 90 cm floor FIN.mapMat(M.wcTile,'wttoilet',1.6,true);
 FIN.loadCommon();
 FIN.applyPalette(Walk.THEMES.A);                // warm Scandinavian only for this house
 
@@ -536,39 +536,41 @@ flight(0); flight(1);
   bx(LG[l],xw-TE/2,xw,z0,z1,y0,y1,M.ext,{cast:false}); bx(LG[l],xw,xw+TE/2,z0,z1,y0,y1,WM.hall,{cast:false});
   bx(LG[l],xi-TI/2,xi+TI/2,z0,z1,y0,y1,WM.hall,{cast:false});
 });
-/* handrails on both sides (barrier-free): Ø36 mm, 85 cm above the nosings, on brackets, level ends turned back to the wall */
+/* handrails on both sides (barrier-free): flat oak rail 48 x 30 mm, 85 cm above the nosings, on slim black brackets, with a warm LED line
+   under it (the stair's night light); the 3F stairwell edge gets a frameless glass guard with the same oak cap */
 (function(){
-  const r=0.018, L=ST.zs-ST.zn, run=L/ST.N, k=SH/L, H=0.85;
-  const rail=lam(0xc9a074,{roughness:0.45}), steel=M.steel;
-  const seg=function(g,a,c,rad,mt){ const d=new THREE.Vector3().subVectors(c,a), m=new THREE.Mesh(new THREE.CylinderGeometry(rad,rad,d.length(),12),mt);
-    m.position.copy(a).addScaledVector(d,0.5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize()); m.castShadow=true; g.add(m); return m; };
-  const ball=function(g,p,rad,mt){ const m=new THREE.Mesh(new THREE.SphereGeometry(rad,12,8),mt); m.position.copy(p); g.add(m); };
+  const L=ST.zs-ST.zn, run=L/ST.N, k=SH/L, H=0.85, RW=0.048, RH=0.03;
+  const oak=lam(0xc9a074,{roughness:0.4,envMapIntensity:0.6}), black=lam(0x1d1f22,{roughness:0.45,metalness:0.4});
+  const glass=new THREE.MeshPhysicalMaterial({color:0xeef4f3,roughness:0.03,metalness:0,transparent:true,opacity:0.22,envMapIntensity:1.2,side:THREE.DoubleSide,depthWrite:false});
+  const bar=function(g,a,c,w,h,mt,o){ const d=a.distanceTo(c), m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mt); m.position.copy(a).lerp(c,0.5); m.lookAt(c); m.castShadow=!(o&&o.flat); m.receiveShadow=true; g.add(m); return m; };
+  const cap=function(g,p,dir,mt){ const m=new THREE.Mesh(new THREE.CylinderGeometry(RH/2,RH/2,RW,16,1,false,0,Math.PI),mt); m.position.copy(p); m.rotation.set(0,dir,Math.PI/2); g.add(m); };
   const handrail=function(l,wallFace,sd){        // sd = +1 rail stands off toward +x, -1 toward -x
-    const b=base(l), g=LG[l], rx=wallFace+sd*0.065, V=function(z,y){ return new THREE.Vector3(rx,y,z); };
+    const b=base(l), g=LG[l], rx=wallFace+sd*(0.055+RW/2), V=function(z,y){ return new THREE.Vector3(rx,y,z); };
     const z0=ST.zs-run*0.5, z1=ST.zn+run*0.5, y0=b+(ST.zs-z0)*k+H, y1=b+(ST.zs-z1)*k+H;
     const pts=[V(z0+0.3,y0),V(z0,y0),V(z1,y1),V(z1-0.3,y1)];
-    for(let i=0;i<3;i++){ seg(g,pts[i],pts[i+1],r,rail); ball(g,pts[i+1],r,rail); }
-    ball(g,pts[0],r,rail);
-    [pts[0],pts[3]].forEach(function(p){ seg(g,p,new THREE.Vector3(wallFace,p.y,p.z),r,rail); });
-    const n=Math.max(2,Math.round(Math.hypot(z0-z1,y1-y0)/1.0));
+    for(let i=0;i<3;i++){ const ext=i===1?0:0.012, d=new THREE.Vector3().subVectors(pts[i+1],pts[i]).normalize();
+      bar(g,pts[i].clone().addScaledVector(d,-ext),pts[i+1].clone().addScaledVector(d,ext),RW,RH,oak); }
+    [pts[0],pts[3]].forEach(function(p){ const q=new THREE.Vector3(wallFace+sd*0.012,p.y,p.z); bar(g,p.clone().setX(rx+sd*RW/2),q,RH,RH,oak); });   // ends returned to the wall
+    const led=function(a,c){ const da=a.clone(), dc=c.clone(); da.y-=RH/2+0.002; dc.y-=RH/2+0.002; bar(g,da,dc,RW*0.45,0.004,M.footLed,{flat:true}); };
+    led(pts[1],pts[2]); led(pts[0],pts[1]); led(pts[2],pts[3]);
+    const n=Math.max(2,Math.round(Math.hypot(z0-z1,y1-y0)/0.9));
     for(let i=0;i<=n;i++){
-      const z=z0+(z1-z0)*i/n, y=y0+(y1-y0)*i/n-r-0.035;
-      seg(g,new THREE.Vector3(wallFace,y,z),new THREE.Vector3(rx,y,z),0.006,steel);
-      seg(g,new THREE.Vector3(rx,y,z),new THREE.Vector3(rx,y+0.035,z),0.006,steel);
-      const plate=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.008,16),steel); plate.rotation.z=Math.PI/2; plate.position.set(wallFace+sd*0.004,y,z); g.add(plate);
+      const z=z0+(z1-z0)*i/n, y=y0+(y1-y0)*i/n-RH/2;
+      bar(g,new THREE.Vector3(wallFace,y-0.05,z),new THREE.Vector3(rx,y-0.05,z),0.012,0.012,black);
+      bar(g,new THREE.Vector3(rx,y-0.05,z),new THREE.Vector3(rx,y,z),0.012,0.012,black);
+      bx(g,wallFace+(sd>0?0:-0.006),wallFace+(sd>0?0.006:0),z-0.025,z+0.025,y-0.08,y-0.02,black,{cast:false});
     }
   };
   [0,1].forEach(function(l){ handrail(l,TE/2,1); handrail(l,WX(0,130)-TI/2,-1); });
-  /* 3F: the hall looks down the stairwell between z 390 and 560: white balusters, oak top rail and a newel */
-  const b=base(2), xg=WX(2,130)-0.035, guard=lam(0xf4f1ea,{roughness:0.5}), zA=ST.zn, zB=WZ(2,560);
-  for(let z=zA+0.06;z<zB;z+=0.12) seg(LG[2],new THREE.Vector3(xg,b,z),new THREE.Vector3(xg,b+1.1,z),0.012,guard);
-  seg(LG[2],new THREE.Vector3(xg,b+1.1,zA),new THREE.Vector3(xg,b+1.1,zB),0.022,rail);
-  [zA,zB].forEach(function(z){ seg(LG[2],new THREE.Vector3(xg,b,z),new THREE.Vector3(xg,b+1.15,z),0.03,guard); });
-  addCol(2,xg-0.03,xg+0.03,zA,zB,b,b+1.1,'w');
-  const edge=function(l,x0,x1,z){ const bb=base(l); for(let x=x0+0.06;x<x1;x+=0.12) seg(LG[l],new THREE.Vector3(x,bb,z),new THREE.Vector3(x,bb+1.1,z),0.012,guard);
-    seg(LG[l],new THREE.Vector3(x0,bb+1.1,z),new THREE.Vector3(x1,bb+1.1,z),0.022,rail); [x0,x1].forEach(function(x){ seg(LG[l],new THREE.Vector3(x,bb,z),new THREE.Vector3(x,bb+1.15,z),0.03,guard); }); addCol(l,x0,x1,z-0.03,z+0.03,bb,bb+1.1,'w'); };
-  edge(2,WX(2,0)+TE/2,WX(2,130)-TI/2,ST.zs+0.04);                                        // 3F closet: rail along the open edge above flight B
-  /* 2F landing: the top of flight A has no wall on the living side between z 250 and 390 -> short guard along the void edge is not needed (flight B covers it) */
+  const guard=function(l,x0,z0,x1,z1){            // frameless glass in a floor channel, oak cap rail on top, 1.1 m
+    const bb=base(l), g=LG[l], A=new THREE.Vector3(x0,bb+1.1,z0), C=new THREE.Vector3(x1,bb+1.1,z1);
+    const pane=bar(g,new THREE.Vector3(x0,bb+0.55,z0),new THREE.Vector3(x1,bb+0.55,z1),0.012,1.06,glass,{flat:true}); pane.renderOrder=1;
+    bar(g,new THREE.Vector3(x0,bb+0.03,z0),new THREE.Vector3(x1,bb+0.03,z1),0.04,0.06,black);
+    bar(g,A,C,0.06,0.035,oak);
+    if(x0===x1) addCol(l,x0-0.03,x0+0.03,Math.min(z0,z1),Math.max(z0,z1),bb,bb+1.1,'w'); else addCol(l,Math.min(x0,x1),Math.max(x0,x1),z0-0.03,z0+0.03,bb,bb+1.1,'w');
+  };
+  guard(2,WX(2,130)-0.035,ST.zn,WX(2,130)-0.035,WZ(2,560));                                  // 3F hall looking down the stairwell
+  guard(2,WX(2,0)+TE/2,ST.zs+0.04,WX(2,130)-TI/2,ST.zs+0.04);                                // 3F closet: open edge above flight B
 })();
 function rampY(r,x,z){ if(x<r.x0-0.04||x>r.x1+0.04||z>r.zs||z<r.zn) return null; return r.y0+(r.zs-z)/(r.zs-r.zn)*SH; }
 function floorAt(x,z,py){
