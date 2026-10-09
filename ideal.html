@@ -251,8 +251,8 @@ site:function(E){
   /* lawn with a little colour variation */
   const lawnTex=(function(){ const c=document.createElement('canvas'); c.width=c.height=256; const g=c.getContext('2d'); g.fillStyle='#6f9a4e'; g.fillRect(0,0,256,256);
     for(let i=0;i<5000;i++){ g.fillStyle='rgba('+(70+rnd()*60|0)+','+(120+rnd()*60|0)+','+(40+rnd()*30|0)+',0.5)'; g.fillRect(rnd()*256,rnd()*256,1+rnd()*2,2+rnd()*4); }
-    const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(2,7); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=ANISO; return t; })();
-  const lawn=new THREE.Mesh(new THREE.PlaneGeometry(-TE/2-(LX0+0.08),LZ1-0.12-(LZ0+0.08)),lam(0xffffff,{map:lawnTex,roughness:1})); lawn.rotation.x=-Math.PI/2; lawn.position.set((LX0+0.08-TE/2)/2,-0.285,(LZ0+0.08+LZ1-0.12)/2);   // the whole side garden, up to the house lawn.receiveShadow=true; ground.add(lawn);
+    const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(5,9); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=ANISO; return t; })();
+  const lawn=new THREE.Mesh(new THREE.PlaneGeometry(-TE/2-(LX0+0.08),LZ1-0.12-(LZ0+0.08)),lam(0xffffff,{map:lawnTex,roughness:1})); lawn.rotation.x=-Math.PI/2; lawn.position.set((LX0+0.08-TE/2)/2,-0.285,(LZ0+0.08+LZ1-0.12)/2); lawn.receiveShadow=true; ground.add(lawn);   // the whole side garden, up to the house
   /* stepping stones from the porch toward the garden */
   for(let i=0;i<4;i++){ const x=1.5-i*0.72, z=VZ+0.55+Math.sin(i*1.3)*0.2; const st=new THREE.Mesh(new THREE.CylinderGeometry(0.24,0.26,0.04,9),lam(0x9a968e,{roughness:0.9})); st.scale.z=0.75; st.position.set(x,-0.27,z); st.rotation.y=i; st.receiveShadow=true; ground.add(st); }
   /* boundary: neighbours on three sides get a 1.8 m screen (block base + cedar slats); the street side is a low white wall with slats,
