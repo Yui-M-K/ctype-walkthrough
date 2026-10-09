@@ -712,7 +712,7 @@ const LAYOUT=[
   /* 2F balcony */
   ['outdoor','outdoorSet',1,150,930,'N'],['bbq','bbqGrill',1,330,935,'E'],['plantB1','plant',1,470,935,'E'],['plantB2','plantS',1,600,940,'E'],
   /* 1F */
-  ['car','car',0,527,600,'S'],['shoeRack','shoeShelf',0,305,760,'S'],['mat','doormat',0,312,826,'N'],['umbrella','umbrellaStand',0,362,830,'W'],['shoesW','shoesW',0,272,805,'N'],
+  ['car','car',0,527,612,'S'],['shoeRack','shoeShelf',0,305,760,'S'],['mat','doormat',0,312,826,'N'],['umbrella','umbrellaStand',0,362,830,'W'],['shoesW','shoesW',0,272,805,'N'],
   ['stock','stockShelf',0,603,100,'W'],['rackN','clothesRack',0,480,40,'S',function(){ return Catalog.clothesRack(1.4); }],
   ['suit30','suit30P',0,623.5,318,'W'],['suit29','suit29B',0,623.5,268,'W'],['suit24','suit24P',0,623.5,215,'W'],
   ['plantM','plant',0,292,318,'W'],['artH','artPortrait',0,134.5,470,'E'],
@@ -767,7 +767,23 @@ fixture(0,Catalog.wallFoldTable(),WX(0,380)-TI/2,WZ(0,790),2);                  
   const col=addCol(0,x-0.04,x+0.04,z0,z1,0,1.5,'d'), d={l:0,pv:P.leafPivot,th:-Math.PI/2,open:false,t:0,col:col,mid:[x,(z0+z1)/2],label:function(o){ return o?'關上柵欄':'打開柵欄'; }};
   col.door=d; doors.push(d);
 })();
-fixture(0,Catalog.evCharger(),WX(0,380)+TI/2,WZ(0,520),0);                                // garage: wall connector for the Model 3
+(function(){                                   // garage: Tesla Wall Connector on the back wall behind the charge port; tap it to plug the car in
+  const C=Catalog.evCharger(), g=fixture(0,C,WX(0,598),WZ(0,350)+TI/2,3), cab=lam(0x2a2c30,{roughness:0.55});
+  let on=false, line=null; const head=new THREE.Mesh(new THREE.CylinderGeometry(0.026,0.032,0.16,16),lam(0xf2f2f0,{roughness:0.3})); head.rotation.z=Math.PI/2; head.visible=false; LG[0].add(head);
+  const v=function(q,o){ return o.localToWorld(new THREE.Vector3(q[0],q[1],q[2])); };
+  window.__chargeUpdate=function(){
+    if(line){ LG[0].remove(line); line.geometry.dispose(); line=null; }
+    const car=mover('car'), ok=on&&car&&usable('car'); head.visible=ok; C.setCharging(ok);
+    if(!ok){ renderer.shadowMap.needsUpdate=true; return; }
+    g.updateMatrixWorld(true); car.piece.group.updateMatrixWorld(true);
+    const a=v(C.plugOut,C.group), b=v(car.piece.port,car.piece.group), m=a.clone().lerp(b,0.5);
+    const curve=new THREE.CatmullRomCurve3([a,new THREE.Vector3(a.x,0.3,a.z+0.05),new THREE.Vector3(m.x,0.03,m.z),new THREE.Vector3(b.x+0.12,0.2,b.z),new THREE.Vector3(b.x+0.08,b.y,b.z)]);
+    line=new THREE.Mesh(new THREE.TubeGeometry(curve,40,0.012,8),cab); line.castShadow=true; LG[0].add(line);
+    head.position.set(b.x+0.04,b.y,b.z); renderer.shadowMap.needsUpdate=true;
+  };
+  furnThings.push({pt:[WX(0,598),WZ(0,350)+0.45],l:0,on:function(){ return usable('car'); },label:function(){ return on?'拔下充電槍':'插上充電'; },act:function(){ on=!on; window.__chargeUpdate(); toast(on?'開始充電：Wall Connector 燈號轉綠':'已拔下充電槍'); }});
+  let ph=0; furnAnims.push({live:function(){ return on; },f:function(t){ ph=t; C.ledMat.emissiveIntensity=0.8+0.6*Math.sin(t*2.4); return false; }});
+})();
 (function(){ [[WX(0,225),WZ(0,850)+TE/2,3,2.2],[WX(0,630)+TE/2,WZ(0,700),0,2.4]].forEach(function(c){ const P=Catalog.securityCamera(); P.group.position.y=c[3]; fixture(0,P,c[0],c[1],c[2]); }); })();
 (function(){                                   // multipurpose room: mirror wall (dance), barre on the east wall, fabric acoustic panels on the south wall
   const mw=Walk.planarMirror(THREE,3.1,2.0); mw.position.set(WX(0,165),1.15,WZ(0,0)+TE/2+0.012); LG[0].add(mw);
@@ -1190,7 +1206,7 @@ function offOthers(keep){                       // modes exclude each other
   if(keep!=='cook'&&cookOn){ cookOn=false; btn('tCook',false); applyCook(); }
   if(keep!=='sleep'&&sleepOn){ sleepOn=false; btn('tSleep',false); applySleep(); }
 }
-FS_onChange=function(){ if(sportOn) applySport(); if(dailyOn) applyDaily(); if(cookOn) applyCook(); if(sleepOn) applySleep(); };
+FS_onChange=function(){ if(window.__chargeUpdate) window.__chargeUpdate(); if(sportOn) applySport(); if(dailyOn) applyDaily(); if(cookOn) applyCook(); if(sleepOn) applySleep(); };
 
 function liftId(){ return curLayout===2?'lift2':'lift'; }
 function syncFold(){ const m=mover(liftId()), up=!!(m&&m.piece.lift.up); $('tFold').textContent=up?'升降桌：餐桌模式':'升降桌：茶几模式'; btn('tFold',up); }
