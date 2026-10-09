@@ -66,6 +66,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     <div class="seg" style="margin-top:12px">
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
       <button id="tAO" class="tog" style="grid-column:1/-1" type="button" aria-pressed="false">環境光遮蔽（角落與接縫的陰影，較耗效能）</button>
+      <button id="tPerf" class="tog" style="grid-column:1/-1" type="button" aria-pressed="false">顯示效能資訊（FPS・繪製次數）</button>
       <button id="tFurn" class="tog" type="button" aria-pressed="true">參考家具</button>
       <button id="tEdit" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">擺放家具（拖曳移動、旋轉、從型錄拿新的）</button>
       <button id="tTv" class="tog" type="button" aria-pressed="false">電視開機</button>
@@ -101,6 +102,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 <script src="lib/furniture.js"></script>
 <script src="lib/catalog.js"></script>
 <script src="lib/look.js"></script>
+<script src="lib/perf.js"></script>
 <script src="lib/finish.js"></script>
 <script type="module">
 import * as THREE from 'three';
@@ -109,6 +111,7 @@ import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
 import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
+import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 (function(){
 'use strict';
@@ -589,6 +592,7 @@ FS.movers.forEach(FS.apply);
 function fixture(l,piece,wx,wz,rotQ){
   rotQ=((rotQ||0)%4+4)%4;
   const Rg=new THREE.Group(); Rg.position.set(wx,base(l),wz); Rg.rotation.y=rotQ*Math.PI/2; Rg.add(piece.group); LG[l].add(Rg);
+  if(piece.anims.length||(piece.actions&&piece.actions.length)) Rg.userData.keep=true;   // moving parts stay separate from the merged building
   piece.cols.forEach(function(c){
     let x0=c.x0,x1=c.x1,z0=c.z0,z1=c.z1;
     for(let k=0;k<rotQ;k++){ const a=z0,b2=z1,d=-x1,e=-x0; x0=a; x1=b2; z0=d; z1=e; }
@@ -629,7 +633,7 @@ const curtainSets=[];
   const l=q[0], side=q[1], horiz=side==='S'||side==='N', w=(q[3]-q[2])*S, mid=(q[2]+q[3])/2;
   const rot={S:0,E:1,N:2,W:3}[side], inward={S:[0,-1],E:[-1,0],N:[0,1],W:[1,0]}[side];
   const cx=horiz?WX(l,mid):WX(l,q[4])+inward[0]*0.17, cz=horiz?WZ(l,q[4])+inward[1]*0.17:WZ(l,mid);
-  const P=Catalog.curtains(w), Rg=new THREE.Group(); Rg.position.set(cx,base(l),cz); Rg.rotation.y=rot*Math.PI/2; Rg.add(P.group); LG[l].add(Rg);
+  const P=Catalog.curtains(w), Rg=new THREE.Group(); Rg.position.set(cx,base(l),cz); Rg.rotation.y=rot*Math.PI/2; Rg.add(P.group); LG[l].add(Rg); Rg.userData.keep=true;
   curtainSets.push(P);
   P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); });
   P.actions.forEach(function(a){ const c=Math.cos(rot*Math.PI/2), sn=Math.sin(rot*Math.PI/2);
@@ -749,7 +753,7 @@ window.addEventListener('contextmenu',function(e){ e.preventDefault(); });
 const toastEl=$('toast'), bAct=$('bAct'); let toastT=0, curThing=null;
 function toast(t){ toastEl.textContent=t; toastEl.hidden=false; clearTimeout(toastT); toastT=setTimeout(function(){ toastEl.hidden=true; },1800); }
 (function(){                                   // ambient occlusion: on by default except on touch devices; remembered per device
-  const b=$('tAO'); let on=!(window.matchMedia&&matchMedia('(pointer: coarse)').matches);
+  const b=$('tAO'); let on=false;
   try{ const v=localStorage.getItem('walkAO'); if(v!==null) on=v==='1'; }catch(_){}
   const set=function(v){ post.setAO(v); b.setAttribute('aria-pressed',String(v)); };
   set(on);
@@ -796,12 +800,18 @@ SPOTS.forEach(function(s){ const b=document.createElement('button'); b.type='but
 /* ---------- minimap / HUD ---------- */
 const mini=$('mini'), mg=mini.getContext('2d'), MS=44, MX0=-0.2, MZ0=-0.4;
 const KC={w:'#39404a',d:'#a0714f',f:'#c9a47a',x:'#8fa3b8'};
+const miniBg=document.createElement('canvas'), mbg=miniBg.getContext('2d'); let miniKey=null, miniAge=0;
 function drawMini(){
   const l=levelOf(player.py), b=base(l);
-  mg.clearRect(0,0,mini.width,mini.height);
-  floorRects.forEach(function(f){ if(f.l!==l) return; mg.fillStyle='#dfd2bd'; mg.fillRect((f.x0-MX0)*MS,(f.z0-MZ0)*MS,(f.x1-f.x0)*MS,(f.z1-f.z0)*MS); });
-  ramps.forEach(function(r){ if(r.l===l||r.l===l-1){ mg.fillStyle='#caa77a'; mg.fillRect((r.x0-MX0)*MS,(r.zn-MZ0)*MS,(r.x1-r.x0)*MS,(r.zs-r.zn)*MS); } });
-  allCols.forEach(function(c){ if(c.y0>=b+2.6||c.y1<=b+0.05) return; if(c.y0<b-0.05&&c.y1<b+0.3) return; mg.fillStyle=KC[c.kind]||'#444'; mg.fillRect((c.x0-MX0)*MS,(c.z0-MZ0)*MS,Math.max(1.5,(c.x1-c.x0)*MS),Math.max(1.5,(c.z1-c.z0)*MS)); });
+  if(miniBg.width!==mini.width||miniBg.height!==mini.height){ miniBg.width=mini.width; miniBg.height=mini.height; miniKey=null; }
+  if(miniKey!==l+':'+allCols.length||allCols!==drawMini.cols||++miniAge>15){        // plan layer: redrawn when the storey or the obstacles change, refreshed twice a second
+    miniKey=l+':'+allCols.length; drawMini.cols=allCols; miniAge=0;
+    mbg.clearRect(0,0,miniBg.width,miniBg.height);
+    floorRects.forEach(function(f){ if(f.l!==l) return; mbg.fillStyle='#dfd2bd'; mbg.fillRect((f.x0-MX0)*MS,(f.z0-MZ0)*MS,(f.x1-f.x0)*MS,(f.z1-f.z0)*MS); });
+    ramps.forEach(function(r){ if(r.l===l||r.l===l-1){ mbg.fillStyle='#caa77a'; mbg.fillRect((r.x0-MX0)*MS,(r.zn-MZ0)*MS,(r.x1-r.x0)*MS,(r.zs-r.zn)*MS); } });
+    allCols.forEach(function(c){ if(c.y0>=b+2.6||c.y1<=b+0.05) return; if(c.y0<b-0.05&&c.y1<b+0.3) return; mbg.fillStyle=KC[c.kind]||'#444'; mbg.fillRect((c.x0-MX0)*MS,(c.z0-MZ0)*MS,Math.max(1.5,(c.x1-c.x0)*MS),Math.max(1.5,(c.z1-c.z0)*MS)); });
+  }
+  mg.clearRect(0,0,mini.width,mini.height); mg.drawImage(miniBg,0,0);
   const px=(player.x-MX0)*MS, pz=(player.z-MZ0)*MS, ang=Math.atan2(-Math.cos(player.yaw),-Math.sin(player.yaw));
   mg.fillStyle='rgba(232,103,42,.3)'; mg.beginPath(); mg.moveTo(px,pz); mg.arc(px,pz,64,ang-0.62,ang+0.62); mg.closePath(); mg.fill();
   mg.fillStyle='#e8672a'; mg.strokeStyle='#fff'; mg.lineWidth=3; mg.beginPath(); mg.arc(px,pz,8,0,TAU); mg.fill(); mg.stroke();
@@ -823,28 +833,47 @@ function stepPlayer(dt){
   const vx=(fxv*mz+rx*mx)*SPEED*run, vz=(fzv*mz+rz*mx)*SPEED*run;
   if(vx||vz){ const p=resolve(player.x+vx*dt,player.z+vz*dt,player.py); player.x=p[0]; player.z=p[1]; if(mode==='over') player.yaw=Math.atan2(-vx,-vz); }
 }
-let last=performance.now(), frame=0, first=true, aqT=0, aqN=0, aqDone=false;
+let last=performance.now(), frame=0, first=true, perf=null, lightT=0, lightAt=null;
+function walkLevels(){                         // storeys that can be seen: the own one and those below (through the windows); all of them outdoors or by the stairwell
+  const l=levelOf(player.py), r=roomAt(l,player.x,player.z);
+  if(r===OUT||r.n==='陽台'||r.n==='階梯'||(player.x>ST.x0-1.2&&player.x<ST.x1+1.2&&player.z>ST.zn-1.5&&player.z<ST.zs+1.2)) return [0,1,2];
+  const v=[]; for(let i=0;i<=l;i++) v.push(i);
+  if(l<2){ stairBox.min.set(ST.x0-0.1,base(l)+CH-0.2,ST.zn-0.1); stairBox.max.set(ST.x1+0.1,base(l+1)+0.3,ST.zs+0.1);   // the stairwell opening above shows the next storey
+    camera.updateMatrixWorld(); camFr.setFromProjectionMatrix(camMat.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse)); if(camFr.intersectsBox(stairBox)) v.push(l+1); }
+  return v;
+}
+const stairBox=new THREE.Box3(), camFr=new THREE.Frustum(), camMat=new THREE.Matrix4();
 function tick(now){
   requestAnimationFrame(tick);
-  const t=now||last, dt=Math.min(0.05,(t-last)/1000)||0.016; last=t; frame++;
-  updateDoors(dt); stepPlayer(dt);
+  const t=now||last, raw=Math.min(0.25,(t-last)/1000)||0.016; last=t; frame++;
+  let busy=false;
+  for(let rest=raw;rest>1e-6;rest-=0.04){ const dt=Math.min(0.04,rest); updateDoors(dt); stepPlayer(dt); }   // long frames still move the full distance, in collision-safe steps
+  const dt=Math.min(0.05,raw);
+  if(doors.some(function(d){ return d.t!==(d.open?1:0); })) busy=true;
   for(let i=0;i<modeAnims.length;i++) modeAnims[i](t/1000);
-  for(let i=0;i<furnAnims.length;i++){ const a=furnAnims[i]; if(a.live()&&a.f(t/1000,{})) renderer.shadowMap.needsUpdate=true; }
+  for(let i=0;i<furnAnims.length;i++){ const a=furnAnims[i]; if(a.live()&&a.f(t/1000,{})){ renderer.shadowMap.needsUpdate=true; busy=true; } }
   const fy=floorAt(player.x,player.z,player.py);
   player.camY+=(fy-player.camY)*Math.min(1,dt*9); player.py=fy;
   avatar.visible=mode==='over'; avatar.position.set(player.x,player.camY,player.z); avatar.rotation.y=player.yaw;
   updateCamera();
   if(frame%4===0){ updateRoom(); updateAct(); }
   if(mode==='walk'&&frame%6===0) updateDist();
+  if(perf){
+    lightT+=dt; const lv=mode==='walk'?walkLevels():[clamp(viewLevel-1,0,2)], here=camera.position;
+    if(lightT>0.15||!lightAt||lightAt.distanceToSquared(here)>0.25){ lightT=0; lightAt=(lightAt||new THREE.Vector3()).copy(here); perf.lights.update(here,lv); if(mode==='walk') LG.forEach(function(g,i){ const v=lv.indexOf(i)>=0; if(g.visible!==v){ g.visible=v; renderer.shadowMap.needsUpdate=true; } }); }
+    const e=camera.matrixWorld.elements, sig=mode+viewLevel+':'+e.map(function(v){ return v.toFixed(3); }).join(',');
+    busy=busy||sportOn||dailyOn||cookOn||sleepOn||FS.isEditing()||renderer.shadowMap.needsUpdate;
+    perf.overlay.frame(dt);
+    if(!perf.gov.frame(dt,sig,busy)&&!first) return;
+  }
   if(frame%2===0) drawMini();
   post.render();
   if(first){ first=false; loadEl.hidden=true; }
-  if(!aqDone&&frame>30){ aqT+=dt; aqN++; if(aqN>=120){ aqDone=true; if(aqN/aqT<26){ window.__aoOff(); pointLights.forEach(function(p){ p.visible=false; }); if(pixelRatio>1){ pixelRatio=1; renderer.setPixelRatio(1); resize(); } } } }
 }
 
 /* ---------- life modes (same as Ctype): TV, curtains, daily, cooking, sleeping, sport; people come from lib/people.js and follow the furniture they use ---------- */
 const People=Walk.People(THREE,lam,fab), S1=0.01213, modeAnims=[];
-const modeGroup=function(l){ const g=new THREE.Group(); g.visible=false; g.position.y=base(l); LG[l].add(g); return g; };
+const modeGroup=function(l){ const g=new THREE.Group(); g.userData.keep=true; g.visible=false; g.position.y=base(l); LG[l].add(g); return g; };
 const mover=function(id){ return FS.movers.find(function(m){ return m.id===id; }); };
 const usable=function(id){ const m=mover(id); return !!m&&!FS.isStored(id)&&(!m.W.userData.lay||m.W.userData.lay===curLayout); };
 const at=function(id,l,px,py){ return FS.xf(id,WX(l,px),WZ(l,py)); };          // default plan point of a piece -> where it is now [x,z,yaw]
@@ -954,7 +983,7 @@ const cookG=modeGroup(1), cookManG=modeGroup(1);
   });
   window.__cookMan=man;
 })();
-const cookChair=Catalog.chair(1).group; cookChair.visible=false; LG[1].add(cookChair);
+const cookChair=Catalog.chair(1).group; cookChair.userData.keep=true; cookChair.visible=false; LG[1].add(cookChair);
 function applyCook(){
   if(cookOn) offOthers('cook');
   const L1=curLayout===1, tbl=L1?'dining':'lift';
@@ -1030,6 +1059,27 @@ const FSU=FS.initUI({
 });
 (function(){ let n=1; try{ n=+(new URLSearchParams(location.search).get('layout')||localStorage.getItem('town3fLayout')||1); }catch(_){} setLayout(n); })();
 setSun(14); setMode('walk'); roofOn(true); updateRoom(); drawMini();
+(function(){                                   // performance: merge the static building, nearest-lights pool, frame governor, FPS overlay
+  const keep=new Set(); furnMeshes.forEach(function(o){ o.userData.wasFurn=true; });
+  lightFixtures.forEach(function(g){ keep.add(g); }); labelGroups.forEach(function(g){ keep.add(g); });
+  if(roofMesh) keep.add(roofMesh); keep.add(avatar);
+  Walk.Perf.trimShadows(LG.concat([ground]),0.07);
+  const named=new Set(); [M,FL,WM].forEach(function(o){ Object.keys(o).forEach(function(k){ if(o[k]&&o[k].isMaterial) named.add(o[k]); }); });
+  Walk.Perf.shareMaterials(LG.concat([ground]),named);
+  const st=Walk.Perf.mergeStatic(THREE,mergeGeometries,LG.concat([ground]),keep,function(rem,add){ rem.forEach(function(o){ const i=furnMeshes.indexOf(o); if(i>=0) furnMeshes.splice(i,1); }); if(rem.some(function(o){ return o.userData.wasFurn; })) furnMeshes.push.apply(furnMeshes,add); });
+  
+  const per=LG.map(function(g){ let n=0; g.traverse(function(o){ if(o.isPointLight) n++; }); return n; });
+  const lights=Walk.Perf.NearLights(THREE,scene,LG,Math.min(16,Math.max.apply(null,per)));
+  const gov=Walk.Perf.Governor({renderer:renderer,pixelRatio:pixelRatio,onResize:resize,degrade:function(step){
+    if(step===1) window.__aoOff();
+    if(step===3){ scene.traverse(function(o){ if(o.isDirectionalLight&&o.castShadow&&o.shadow.mapSize.x>1024){ o.shadow.mapSize.set(1024,1024); if(o.shadow.map){ o.shadow.map.dispose(); o.shadow.map=null; } } }); renderer.shadowMap.needsUpdate=true; }
+  }});
+  const overlay=Walk.Perf.Overlay(renderer,function(){ return '光源 '+lights.K+' 盞・物件 '+st.before+' → '+st.after+(gov.step?'\n自動降畫質 第 '+gov.step+' 段':''); });
+  $('tPerf').addEventListener('click',function(){ overlay.on=!overlay.on; this.setAttribute('aria-pressed',String(overlay.on)); });
+  perf={lights:lights,gov:gov,overlay:overlay,stats:st};
+  try{ LG.forEach(function(g){ g.visible=true; }); renderer.compile(scene,camera); }catch(_){}   // compile every storey's shaders now, not on the first visit
+  renderer.shadowMap.needsUpdate=true;
+})();
 requestAnimationFrame(tick);
 
 (function(){
@@ -1042,7 +1092,7 @@ requestAnimationFrame(tick);
   });
   window.parent.postMessage({type:'house-ready'},location.origin);
 })();
-if(location.hash==="#debug"){ window.__walk={setLayout:setLayout,mover:function(id){ return FS.movers.find(function(m){ return m.id===id; }); },furnThings:furnThings,roomAt:roomAt,player:player,resolve:resolve,floorAt:floorAt,setMode:setMode,teleport:teleport,SPOTS:SPOTS,orb:orb,doors:doors,setDoor:setDoor,scene:scene,camera:camera,renderer:renderer,levelOf:levelOf,setView:function(v){ viewLevel=v; roofOn(v>=3&&false); applyLevelVis(); },roofOn:roofOn,cols:function(){return allCols;},FS:FS,FSU:FSU,updateCamera:updateCamera,keys:keys,stepPlayer:stepPlayer,tvList:tvList}; }
+if(location.hash==="#debug"){ window.__walk={get perf(){ return perf; },setLayout:setLayout,mover:function(id){ return FS.movers.find(function(m){ return m.id===id; }); },furnThings:furnThings,roomAt:roomAt,player:player,resolve:resolve,floorAt:floorAt,setMode:setMode,teleport:teleport,SPOTS:SPOTS,orb:orb,doors:doors,setDoor:setDoor,scene:scene,camera:camera,renderer:renderer,levelOf:levelOf,setView:function(v){ viewLevel=v; roofOn(v>=3&&false); applyLevelVis(); },roofOn:roofOn,cols:function(){return allCols;},FS:FS,FSU:FSU,updateCamera:updateCamera,keys:keys,stepPlayer:stepPlayer,tvList:tvList}; }
 }
 })();
 </script>

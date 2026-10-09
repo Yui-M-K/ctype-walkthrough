@@ -160,6 +160,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
       <button id="tFurn" class="tog" type="button" aria-pressed="true">參考家具與衣物</button>
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
       <button id="tAO" class="tog" type="button" aria-pressed="false">環境光遮蔽（角落與接縫的陰影，較耗效能）</button>
+      <button id="tPerf" class="tog" type="button" aria-pressed="false">顯示效能資訊（FPS・繪製次數）</button>
       <button id="tTv" class="tog" type="button" aria-pressed="false">電視開機</button>
       <button id="tDaily" class="tog" type="button" aria-pressed="false">日常模式（他工作、她看電視）</button>
       <button id="tCurt" class="tog" type="button" aria-pressed="false">窗簾全部拉上</button>
@@ -210,6 +211,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
 <script src="lib/furniture.js"></script>
 <script src="lib/catalog.js"></script>
 <script src="lib/look.js"></script>
+<script src="lib/perf.js"></script>
 <script src="lib/finish.js"></script>
 <script type="module">
 import * as THREE from 'three';
@@ -218,6 +220,7 @@ import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
 import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
+import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 (function(){
@@ -1549,7 +1552,7 @@ const FSU=FS.initUI({
 
 /* ---------- sheet ---------- */
 (function(){                                   // ambient occlusion: on by default except on touch devices; remembered per device
-  const b=$('tAO'); let on=!(window.matchMedia&&matchMedia('(pointer: coarse)').matches);
+  const b=$('tAO'); let on=false;
   try{ const v=localStorage.getItem('walkAO'); if(v!==null) on=v==='1'; }catch(_){}
   const set=function(v){ post.setAO(v); b.setAttribute('aria-pressed',String(v)); };
   set(on);
@@ -1919,19 +1922,16 @@ const mini=$('mini'), mg=mini.getContext('2d');
 const MS=32, MX0=-0.65, MZ0=-1.9;
 const mxp=function(x){return (x-MX0)*MS;}, mzp=function(z){return (z-MZ0)*MS;};
 const KC={w:'#39404a',s:'#7f8c9b',x:'#8fa3b8',f:'#c9a47a',d:'#a0714f'};
+const miniBg=document.createElement('canvas'), mbg=miniBg.getContext('2d'); let miniCols=null, miniAge=0;
 function drawMini(){
-  mg.clearRect(0,0,mini.width,mini.height);
-  floorRects.forEach(function(f){
-    mg.fillStyle=f.c; mg.fillRect(mxp(X(f.x0)),mzp(Z(f.y0)),(f.x1-f.x0)*S*MS,(f.y1-f.y0)*S*MS);
-  });
-  floorTris.forEach(function(f){
-    mg.fillStyle=f.c; mg.beginPath();
-    f.p.forEach(function(q,i){ const u=mxp(X(q[0])), v=mzp(Z(q[1])); if(i) mg.lineTo(u,v); else mg.moveTo(u,v); });
-    mg.closePath(); mg.fill();
-  });
-  allCols.forEach(function(c){
-    mg.fillStyle=KC[c.kind]||'#444'; mg.fillRect(mxp(c.x0),mzp(c.z0),(c.x1-c.x0)*MS,(c.z1-c.z0)*MS);
-  });
+  if(miniBg.width!==mini.width||miniBg.height!==mini.height){ miniBg.width=mini.width; miniBg.height=mini.height; miniCols=null; }
+  if(miniCols!==allCols||++miniAge>15){            // plan layer: redrawn when the obstacles change, refreshed twice a second
+    miniCols=allCols; miniAge=0; mbg.clearRect(0,0,miniBg.width,miniBg.height);
+    floorRects.forEach(function(f){ mbg.fillStyle=f.c; mbg.fillRect(mxp(X(f.x0)),mzp(Z(f.y0)),(f.x1-f.x0)*S*MS,(f.y1-f.y0)*S*MS); });
+    floorTris.forEach(function(f){ mbg.fillStyle=f.c; mbg.beginPath(); f.p.forEach(function(q,i){ const u=mxp(X(q[0])), v=mzp(Z(q[1])); if(i) mbg.lineTo(u,v); else mbg.moveTo(u,v); }); mbg.closePath(); mbg.fill(); });
+    allCols.forEach(function(c){ mbg.fillStyle=KC[c.kind]||'#444'; mbg.fillRect(mxp(c.x0),mzp(c.z0),(c.x1-c.x0)*MS,(c.z1-c.z0)*MS); });
+  }
+  mg.clearRect(0,0,mini.width,mini.height); mg.drawImage(miniBg,0,0);
   const px=mxp(player.x), pz=mzp(player.z);
   const ang=Math.atan2(-Math.cos(player.yaw),-Math.sin(player.yaw));
   mg.fillStyle='rgba(232,103,42,.3)'; mg.beginPath(); mg.moveTo(px,pz); mg.arc(px,pz,64,ang-0.62,ang+0.62); mg.closePath(); mg.fill();
@@ -1971,31 +1971,28 @@ function stepPlayer(dt){
     if(mode==='over') player.yaw=Math.atan2(-vx,-vz);
   }
 }
-let last=performance.now(), frame=0, first=true, aqT=0, aqN=0, aqDone=false;
+let last=performance.now(), frame=0, first=true, perf=null;
 function tick(now){
   requestAnimationFrame(tick);
-  const t=now||last, dt=Math.min(0.05,(t-last)/1000)||0.016; last=t; frame++;
+  const t=now||last, raw=Math.min(0.25,(t-last)/1000)||0.016, dt=Math.min(0.05,raw); last=t; frame++;
+  const sh0=renderer.shadowMap.needsUpdate; renderer.shadowMap.needsUpdate=false;
   updateDoors(dt);
   curtainSets.forEach(function(c){ if(c.t!==c.target){ c.t=c.target>c.t?Math.min(1,c.t+dt/1.6):Math.max(0,c.t-dt/1.6); applyCurtain(c); renderer.shadowMap.needsUpdate=true; } });
   if(fridgeP.anims[0](t/1000)) renderer.shadowMap.needsUpdate=true;
   if(vanDoors.length){ const vt=vanOpen?1:0; if(vanT!==vt){ vanT=vt?Math.min(1,vanT+dt/0.6):Math.max(0,vanT-dt/0.6); const e=vanT*vanT*(3-2*vanT); vanDoors[0].rotation.y=1.75*e; vanDoors[1].rotation.y=-1.75*e; vanLight.intensity=0.14*e; renderer.shadowMap.needsUpdate=true; } }
   for(let i=0;i<catAnim.length;i++) catAnim[i](t/1000);
   if(foldT!==foldTarget){ foldT=foldTarget>foldT?Math.min(foldTarget,foldT+dt/2.2):Math.max(foldTarget,foldT-dt/2.2); foldApply(foldT); }
-  stepPlayer(dt);
+  for(let rest=raw;rest>1e-6;rest-=0.04) stepPlayer(Math.min(0.04,rest));   // long frames still move the full distance, in collision-safe steps
   player.camY+=(floorY(player.x,player.z)-player.camY)*Math.min(1,dt*9);
   updateCamera();
   if(frame%4===0){ updateRoom(); updateAct(); }
   if(mode==='walk'&&frame%6===0) updateDist();
+  const busy=renderer.shadowMap.needsUpdate||doors.some(function(d){ return d.t!==(d.open?1:0); })||foldT!==foldTarget||FS.isEditing();
+  renderer.shadowMap.needsUpdate=renderer.shadowMap.needsUpdate||sh0;
+  if(perf){ const e=camera.matrixWorld.elements, sig=mode+':'+e.map(function(v){ return v.toFixed(3); }).join(','); perf.overlay.frame(dt); if(!perf.gov.frame(dt,sig,busy)&&!first) return; }
   if(frame%2===0) drawMini();
   post.render();
   if(first){ first=false; loadEl.hidden=true; }
-  if(!aqDone&&frame>30){
-    aqT+=dt; aqN++;
-    if(aqN>=120){
-      aqDone=true;
-      if(aqN/aqT<26){ window.__aoOff(); pointLights.forEach(function(p){ scene.remove(p); }); detailMeshes.forEach(function(m){ m.visible=false; }); if(pixelRatio>1){ pixelRatio=1; renderer.setPixelRatio(1); resize(); } }
-    }
-  }
 }
 /* ---------- furniture layouts ---------- */
 const ROOM2=ROOMS.filter(function(r){return r.n==='洋室 (2)';})[0], layBtns=Array.prototype.slice.call($('layBtns').querySelectorAll('button')), foldBtn=$('tFold');
@@ -2043,6 +2040,24 @@ mvWrap('tv','電視櫃與電視',[tvG],[],{pose:true,pivotFn:function(){ return 
 })();
 setMode('walk');
 updateRoom(); drawMini();
+(function(){                                   // performance: merge the static apartment shell, trim tiny shadows, frame governor, FPS overlay
+  const keep=new Set([camera,avatar,labels]); ceilings.concat(layObjs,sportHide).forEach(function(m){ keep.add(m); });   // objects the page shows / hides one by one furnMeshes.forEach(function(o){ o.userData.wasFurn=true; });
+  Walk.Perf.trimShadows([scene],0.07);
+  const named=new Set(); [M,FL].forEach(function(o){ Object.keys(o).forEach(function(k){ if(o[k]&&o[k].isMaterial) named.add(o[k]); }); });
+  Walk.Perf.shareMaterials([scene],named);
+  const st=Walk.Perf.mergeStatic(THREE,mergeGeometries,[scene],keep,function(rem,add){
+    rem.forEach(function(o){ [furnMeshes,picks,detailMeshes].forEach(function(L){ const i=L.indexOf(o); if(i>=0) L.splice(i,1); }); });
+    if(rem.some(function(o){ return o.userData.wasFurn; })) furnMeshes.push.apply(furnMeshes,add); else picks.push.apply(picks,add);
+  });
+  const gov=Walk.Perf.Governor({renderer:renderer,pixelRatio:pixelRatio,onResize:resize,degrade:function(step){
+    if(step===1) window.__aoOff();
+    if(step===3){ scene.traverse(function(o){ if(o.isDirectionalLight&&o.castShadow&&o.shadow.mapSize.x>1024){ o.shadow.mapSize.set(1024,1024); if(o.shadow.map){ o.shadow.map.dispose(); o.shadow.map=null; } } }); renderer.shadowMap.needsUpdate=true; }
+  }});
+  const overlay=Walk.Perf.Overlay(renderer,function(){ return '物件 '+st.before+' → '+st.after+(gov.step?'\n自動降畫質 第 '+gov.step+' 段':''); });
+  $('tPerf').addEventListener('click',function(){ overlay.on=!overlay.on; this.setAttribute('aria-pressed',String(overlay.on)); });
+  perf={gov:gov,overlay:overlay,stats:st};
+  renderer.shadowMap.needsUpdate=true;
+})();
 requestAnimationFrame(tick);
 
 (function(){                                   // when embedded in the house switcher (index.html): list the available houses in the menu
@@ -2060,7 +2075,7 @@ requestAnimationFrame(tick);
   window.parent.postMessage({type:'house-ready'},location.origin);
 })();
 if(location.hash==='#debug'){
-  window.__walk={player:player,resolve:resolve,cols:function(){return allCols;},setFurn:function(v){furnOn=v;rebuild();},setPart:setPart,
+  window.__walk={get perf(){ return perf; },player:player,resolve:resolve,cols:function(){return allCols;},setFurn:function(v){furnOn=v;rebuild();},setPart:setPart,
     X:X,Z:Z,S:S,OX:OX,OY:OY,SPOTS:SPOTS,R:R,floorY:floorY,roomAt:roomAt,setMode:setMode,stepPlayer:stepPlayer,joy:joy,keys:keys,
     mv:{store:function(id){ FSU.store(movers.find(function(q){return q.id===id;})); },takeOut:function(id,x,z){ return FSU.takeOut(movers.find(function(q){return q.id===id;}),x,z); },movers:movers,get:mvGet,saved:FS.saved,edit:FSU.setEdit,select:FSU.select,rotate:FSU.rotate,screen:FSU.screen},
     orb:orb,teleport:teleport,applyTheme:applyTheme,curtains:curtainSets,setFridge:function(v){ fridgeP.open.door=v; },setFreezer:function(v){ fridgeP.open.freezer=v; },setVanity:function(v){ vanOpen=v; },setCook:function(v){ cookOn=v; $('tCook').setAttribute('aria-pressed',String(v)); applyCook(); },setDaily:function(v){ dailyOn=v; $('tDaily').setAttribute('aria-pressed',String(v)); applyDaily(); },setSleep:function(v){ sleepOn=v; $('tSleep').setAttribute('aria-pressed',String(v)); applySleep(); },setReal:function(v){ realOn=v; $('tReal').setAttribute('aria-pressed',String(v)); applyReal(); },real:function(){return realSofa;},setLayout:setLayout,setFold:function(v){foldTarget=v;foldT=v;foldApply(v);syncFold();},doors:doors,setDoor:setDoor,updateAct:updateAct,actNow:actNow,setSun:setSun,renderer:renderer,scene:scene,camera:camera,updateCamera:updateCamera};
