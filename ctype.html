@@ -57,10 +57,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outlin
   width:100px; height:214px; border-radius:10px; background:var(--card); border:1px solid var(--line);
   backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
 }
-#cross{
-  position:absolute; left:50%; top:50%; width:6px; height:6px; margin:-3px 0 0 -3px; border-radius:50%;
-  background:rgba(255,255,255,.9); box-shadow:0 0 0 1px rgba(0,0,0,.45);
-}
+#cross{display:none!important}
 #dist{
   position:absolute; left:50%; transform:translateX(-50%); bottom:calc(26px + env(safe-area-inset-bottom, 0px));
   font-family:var(--font-num); font-variant-numeric:tabular-nums; font-size:13px; padding:6px 10px;
