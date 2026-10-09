@@ -47,7 +47,7 @@
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
     <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿，兩指一起拖曳可轉向與抬頭低頭；電腦：滑鼠拖曳轉向，WASD／方向鍵移動，Shift 加速。走近門並面向它，畫面下方會出現開關按鈕（電腦可按 F）。階梯直接走上去就會換樓層。「俯瞰」可選擇看哪一層（屋頂與上層會被拿掉）。</p>
-    <p class="help"><b>這棟房子：</b>依「住宅要望書」設計、縮成東京常見尺寸的三層透天：建物 5.8 × 7.0 m（三層合計約 122 m²・約 37 坪）、土地約 28 坪。1F L 型鏡子房兼收納（整面收納櫃、盡頭整面鏡子、緣側）、正對大門的玄關土間（貓用柵欄擋在上框前）、車庫（Tesla 充電樁）；2F 約 20 帖的整層 LDK（水槽與 IH 爐在同一座對面式半島、北牆摺疊六人餐桌、地暖、間接照明、貓走道）與廁所、陽台（1.1 m 玻璃欄杆）；3F 主臥＋更衣間、書房（日後可當小孩房）、洗面脫衣室（洗衣機）、獨立的三溫暖室、浴室與廁所。庭院有櫻花與木平台，可以開「烤肉模式」。全室無段差、拉門為主、樓梯雙側扶手與感應腳燈。鄰地三面 1.8 m 木格柵、臨路矮牆＋門扉＋伸縮門。主臥的窗簾會依「日照時間」自動開關。原本較寬敞的版本在選單「理想之家（寬敞版）」。</p>
+    <p class="help"><b>這棟房子：</b>依「住宅要望書」設計、縮成東京常見尺寸的三層透天：建物 5.8 × 7.0 m（三層合計約 122 m²・約 37 坪）、土地約 24 坪。1F L 型鏡子房兼收納（整面收納櫃、盡頭整面鏡子、緣側）、正對大門的玄關土間（貓用柵欄擋在上框前）、車庫（Tesla 充電樁）；2F 約 20 帖的整層 LDK（水槽與 IH 爐在同一座對面式半島、北牆摺疊六人餐桌、地暖、間接照明、貓走道）與廁所、陽台（1.1 m 玻璃欄杆）；3F 主臥＋更衣間、書房（日後可當小孩房）、洗面脫衣室（洗衣機）、獨立的三溫暖室、浴室與廁所。庭院有櫻花與木平台，可以開「烤肉模式」。全室無段差、拉門為主、樓梯雙側扶手與感應腳燈。鄰地三面 1.8 m 木格柵、臨路矮牆＋門扉＋伸縮門。主臥的窗簾會依「日照時間」自動開關。原本較寬敞的版本在選單「理想之家（寬敞版）」。</p>
   </div>
 </div>
 <div id="load">載入 3D 場景…<small>首次開啟需要幾秒鐘</small></div>
@@ -210,15 +210,15 @@ glassGuard(2,WX(2,115)-0.035,ST.zn,WX(2,115)-0.035,WZ(2,500));                  
 },
 site:function(E){
   const {ANISO,Catalog,FL,M,TE,WX,WZ,addCol,bx,doors,fab,floorRects,ground,lam,rnd}=E;
-/* ---------- site: about 9.5 x 9.8 m (≈ 28 坪): a 3 m garden with the engawa on the west, porch and car apron on the street side, fences, neighbours ---------- */
+/* ---------- site: about 8.6 x 9.2 m (≈ 24 坪): a 2.2 m garden with the engawa on the west, porch and car apron on the street side, fences, neighbours ---------- */
 (function(){
   const g=new THREE.Mesh(new THREE.PlaneGeometry(260,260),M.grass); g.rotation.x=-Math.PI/2; g.position.set(2.4,-0.3,4.2); g.receiveShadow=true; ground.add(g);
-  const HX1=WX(0,580)+TE/2, HZ1=WZ(0,700), LX0=-3.1, LX1=HX1+0.5, LZ0=-0.8, LZ1=HZ1+2.0;
+  const HX1=WX(0,580)+TE/2, HZ1=WZ(0,700), LX0=-2.2, LX1=HX1+0.5, LZ0=-0.5, LZ1=HZ1+1.7;
   const road=new THREE.Mesh(new THREE.PlaneGeometry(260,6),M.asphalt); road.rotation.x=-Math.PI/2; road.position.set(2,-0.29,LZ1+3); road.receiveShadow=true; ground.add(road);
   const VZ=WZ(0,700)+TE/2;
   bx(ground,WX(0,195),WX(0,310),VZ,VZ+0.8,-0.3,-0.1,FL.stone);                                // porch, one step below the genkan floor
   floorRects.push({l:0,x0:WX(0,195),x1:WX(0,310),z0:VZ,z1:VZ+0.8,y:-0.1});
-  const ramp=new THREE.Mesh(new THREE.BoxGeometry(1.15,0.02,1.0),FL.stone); ramp.position.set(WX(0,252),-0.2,VZ+0.8+0.5); ramp.rotation.x=-Math.atan2(0.2,1.0); ramp.receiveShadow=true; ground.add(ramp);   // gentle slope instead of a step (barrier-free)
+  const ramp=new THREE.Mesh(new THREE.BoxGeometry(1.15,0.02,0.9),FL.stone); ramp.position.set(WX(0,252),-0.2,VZ+0.8+0.45); ramp.rotation.x=-Math.atan2(0.2,0.9); ramp.receiveShadow=true; ground.add(ramp);   // gentle slope instead of a step (barrier-free)
   const apron=new THREE.Mesh(new THREE.PlaneGeometry(HX1-WX(0,310),LZ1-HZ1),FL.conc); apron.rotation.x=-Math.PI/2; apron.position.set((HX1+WX(0,310))/2,-0.285,(HZ1+LZ1)/2); apron.receiveShadow=true; ground.add(apron);
   /* engawa: cedar deck 90 cm deep along the mirror room, a low step down to the garden, posts and a shallow eave */
   const EX0=WX(0,-90), EX1=WX(0,0)-TE/2, EZ0=WZ(0,-10), EZ1=WZ(0,310), deck=lam(0xb98a5c,{roughness:0.75});
@@ -230,7 +230,7 @@ site:function(E){
   [EZ0+0.1,EZ1-0.1].forEach(function(z){ bx(ground,EX0-0.04,EX0+0.04,z-0.04,z+0.04,-0.3,2.45,lam(0x7a5a3c,{roughness:0.8})); });
   [[140,0xd9cfc0],[220,0x5b6f86]].forEach(function(c){ const z=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.05,0.5),fab(c[1])); z.position.set(EX0+0.45,-0.055,WZ(0,c[0])); z.castShadow=z.receiveShadow=true; ground.add(z); });   // two zabuton
   /* BBQ deck at floor height in the south of the garden, cedar like the engawa */
-  const DX0=-2.9, DX1=-0.15, DZ0=5.0, DZ1=7.2;
+  const DX0=LX0+0.15, DX1=-0.15, DZ0=5.0, DZ1=7.2;
   for(let x=DX0;x<DX1-0.001;x+=0.12) bx(ground,x+0.005,Math.min(x+0.115,DX1),DZ0,DZ1,-0.03,0,deck,{cast:false});
   bx(ground,DX0,DX1,DZ0,DZ1,-0.3,-0.03,lam(0x8a6a4c,{roughness:0.8}),{cast:false});
   floorRects.push({l:0,x0:DX0,x1:DX1,z0:DZ0,z1:DZ1,y:0});
@@ -282,13 +282,12 @@ site:function(E){
     const col=addCol(0,CX0,LX1,LZ1-0.05,LZ1+0.05,-0.3,1.1,'d'), d={l:0,slide:true,leaf:{position:proxy},axis:'x',base0:0,shift:1,open:false,t:0,col:col,mid:[(CX0+LX1)/2,LZ1],label:function(o){ return o?'關上伸縮門':'打開伸縮門'; }};
     col.door=d; doors.push(d);
   })();
-  bx(ground,GX0,GX1,VZ+1.8,LZ1,-0.3,-0.282,FL.stone,{cast:false});                                  // paving from the ramp to the gate
   for(let x=LX0+0.45;x<PX0-0.3;x+=0.62){ const P=Catalog.shrub(0.36+rnd()*0.08); P.group.position.set(x,-0.3,LZ1-0.45); ground.add(P.group); }   // planting inside the street wall
-  [[-2.2,0.7,3.6,'ash'],[-2.1,4.6,3.2,'sakura']].forEach(function(t){ const P=Catalog.gardenTree(t[2],t[3]); P.group.position.set(t[0],-0.3,t[1]); ground.add(P.group); addCol(0,t[0]-0.12,t[0]+0.12,t[1]-0.12,t[1]+0.12,-0.3,2,'w'); });
-  [[-2.75,7.75],[-2.7,-0.45],[-1.6,-0.5],[-2.8,3.0]].forEach(function(q){ const P=Catalog.shrub(0.3+rnd()*0.1); P.group.position.set(q[0],-0.3,q[1]); ground.add(P.group); });
+  [[-1.5,0.6,3.4,'ash'],[-1.55,4.35,3.0,'sakura']].forEach(function(t){ const P=Catalog.gardenTree(t[2],t[3]); P.group.position.set(t[0],-0.3,t[1]); ground.add(P.group); addCol(0,t[0]-0.12,t[0]+0.12,t[1]-0.12,t[1]+0.12,-0.3,2,'w'); });
+  [[-1.85,7.7],[-1.85,-0.2],[-1.1,-0.25],[-1.9,2.9]].forEach(function(q){ const P=Catalog.shrub(0.3+rnd()*0.1); P.group.position.set(q[0],-0.3,q[1]); ground.add(P.group); });
   const flowers=[0xe86a8a,0xf4c95d,0xffffff,0xb07ad8];                                      // flower bed along the north fence
-  bx(ground,LX0+0.3,LX0+2.4,LZ0+0.1,LZ0+0.5,-0.3,-0.2,lam(0x6b5444,{roughness:1}),{cast:false});
-  for(let i=0;i<28;i++){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.035,8,6),lam(flowers[i%4],{roughness:0.7})); m.position.set(LX0+0.4+rnd()*1.9,-0.12+rnd()*0.12,LZ0+0.15+rnd()*0.3); ground.add(m);
+  bx(ground,LX0+0.3,LX0+1.2,LZ0+0.1,LZ0+0.5,-0.3,-0.2,lam(0x6b5444,{roughness:1}),{cast:false});
+  for(let i=0;i<28;i++){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.035,8,6),lam(flowers[i%4],{roughness:0.7})); m.position.set(LX0+0.4+rnd()*0.7,-0.12+rnd()*0.12,LZ0+0.15+rnd()*0.3); ground.add(m);
     const st=new THREE.Mesh(new THREE.CylinderGeometry(0.004,0.004,0.18,4),M.leaf); st.position.set(m.position.x,m.position.y-0.09,m.position.z); ground.add(st); }
   const nb=[[LX0-3.2,3,5.6,8,6.8],[LX0-9.5,3,5.5,8,6.2],[LX1+3.2,3,5,8,7],[LX1+9.5,3,5.4,8,6.4],[-0.5,-8.5,6,7,6.6],[6,-8.5,5.5,7,7.2]];   // neighbours left, right and behind
   nb.forEach(function(n){ bx(ground,n[0]-n[2]/2,n[0]+n[2]/2,n[1]-n[3]/2+3,n[1]+n[3]/2+3,-0.3,n[4],M.ext); });
@@ -313,7 +312,7 @@ return [
   /* 2F balcony */
   ['plantB1','plant',1,495,800,'E'],['plantB2','plantS',1,553,805,'E'],
   /* garden BBQ deck */
-  ['outdoor','outdoorSet',0,-185,600,'N'],['bbq','bbqGrill',0,-60,660,'E'],
+  ['outdoor','outdoorSet',0,-130,610,'E'],['bbq','bbqGrill',0,-50,690,'E'],
   /* 1F genkan, mirror room, garage */
   ['shoeRack','shoeShelf',0,224.5,590,'E',function(){ return Catalog.shoeShelf(0.9,0.3,1.8); }],['mat','doormat',0,256,672,'N'],['umbrella','umbrellaStand',0,294.5,682,'W'],['shoesW','shoesW',0,270,595,'N'],
   ['plantM','plant',0,35,262,'E'],
@@ -583,9 +582,9 @@ function applyBbq(){
   if(g&&g.piece.openLid) g.piece.openLid(E.bbqOn&&okG);
   bbqG.visible=E.bbqOn&&okG; sitter.visible=okS; fireLight.intensity=0;
   if(E.bbqOn&&okG){
-    const p=at('bbq',0,-60,660); fireG.position.set(p[0],0,p[1]); fireG.rotation.y=p[2]; fireLight.position.set(p[0],0.95,p[1]);
-    const q=at('bbq',0,-60,712); griller.position.set(q[0],0,q[1]); griller.rotation.y=Math.PI/2+p[2];
-    if(okS){ const r=at('outdoor',0,-260,600); sitter.position.set(r[0],0.45,r[1]); sitter.rotation.y=r[2]; }
+    const p=at('bbq',0,-50,690); fireG.position.set(p[0],0,p[1]); fireG.rotation.y=p[2]; fireLight.position.set(p[0],0.95,p[1]);
+    const q=at('bbq',0,-50,638); griller.position.set(q[0],0,q[1]); griller.rotation.y=-Math.PI/2+p[2];
+    if(okS){ const r=at('outdoor',0,-130,685); sitter.position.set(r[0],0.45,r[1]); sitter.rotation.y=Math.PI/2+r[2]; }
     toast('烤肉模式：庭院的木平台上，他在顧烤肉串，她坐在戶外椅喝飲料');
   }
   E.renderer.shadowMap.needsUpdate=true;
