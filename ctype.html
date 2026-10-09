@@ -1051,7 +1051,7 @@ box(X(512),X(602),Z(1086),Z(1099),0.9,0.94,M.board,{pick:false});               
 })();
 /* bathtub (rim, cavity, water), shower bar and mirror */
 (function(){
-  const x0=X(787), x1=X(845), z0=Z(820), z1=Z(915), w=0.06;
+  const x0=X(787)+0.155, x1=X(845)+0.155, z0=Z(820)-0.11, z1=Z(915)+0.108, w=0.06;   // against the back wall and both end walls
   rbox(x0,x1,z0,z1,0,0.1,0.03,M.white,{pick:false});
   box(x0,x0+w,z0,z1,0.1,0.55,M.white,{pick:false}); box(x1-w,x1,z0,z1,0.1,0.55,M.white,{pick:false});
   box(x0,x1,z0,z0+w,0.1,0.55,M.white,{pick:false}); box(x0,x1,z1-w,z1,0.1,0.55,M.white,{pick:false});
@@ -1063,7 +1063,7 @@ box(X(512),X(602),Z(1086),Z(1099),0.9,0.94,M.board,{pick:false});               
 })();
 fixture(Catalog.bathWallSet(),(X(700)+X(785))/2,Z(806)+0.072,0);                     // bath counter with toiletries, mixer and shower bar
 fixture(Catalog.bathStool(),X(735),Z(870),0); fixture(Catalog.washBowl(),X(772),Z(905),0);
-rbox(X(787)+0.005,X(787)+0.055,Z(905)-0.07,Z(905)+0.0,0.55,0.585,0.012,lam(0xf2c46b,{roughness:1,bumpMap:fabricTex,bumpScale:0.006}),{pick:false});   // sponge on the tub rim
+rbox(X(787)+0.16,X(787)+0.21,Z(905)-0.07,Z(905)+0.0,0.55,0.585,0.012,lam(0xf2c46b,{roughness:1,bumpMap:fabricTex,bumpScale:0.006}),{pick:false});   // sponge on the tub rim
 (function(){                                   // light blue-grey wall panels inside the bath
   const lm=M.bathWall, t=0.012, h=2.1;
   const nx0=X(XC)+0.05, nx1=X(XE)-0.1, nz0=Z(806)+0.06, nz1=Z(928)-0.05;

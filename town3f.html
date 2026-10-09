@@ -228,7 +228,7 @@ layout2:function(E){
 return [['lift','liftTable',1,810,947,'E'],['deskL','desk',1,1110,800,'N'],['chairL','officeChair',1,1110,718,'S'],['rugL','rugRoundSun',1,1110,760,'E']];
 },
 fixtures:function(E){
-  const {CH,Catalog,S,TE,WX,WZ,fixture,furnAnims}=E;
+  const {CH,Catalog,S,TE,TI,WX,WZ,fixture,furnAnims}=E;
 /* built-in kitchen and bath (part of the building, not furniture): shared fixtures from lib/catalog.js */
 (function(){                                   // island counter facing the LDK: sink, tap, dish rack, IH hob and a hood hanging from the ceiling
   const K=function(px,py){ return [WX(1,px),WZ(1,py)]; }, o=K(950,568), w=(1255-950)*S, d=(660-568)*S;
@@ -240,11 +240,11 @@ fixtures:function(E){
   p=K(1068,646); fixture(1,Catalog.dishSoap(),p[0],p[1],0);
 })();
 (function(){                                   // bath: wall set (counter, toiletries, mixer, shower) on the north wall, stool and wash bowl
-  fixture(1,Catalog.bathWallSet(),WX(1,1110),WZ(1,160)+TE/2,0);
+  fixture(1,Catalog.bathWallSet(),WX(1,1104),WZ(1,160)+TE/2,0);
   fixture(1,Catalog.bathStool(),WX(1,1100),WZ(1,300),0); fixture(1,Catalog.washBowl(),WX(1,1140),WZ(1,345),0);
 })();
 /* fixed bathroom fixtures (they stay when you move house): bathtub, wash basin, toilets */
-fixture(1,Catalog.bathtub(),WX(1,1217),WZ(1,277),2);
+(function(){ const z0=WZ(1,160)+TE/2, z1=WZ(1,385)-TI/2; fixture(1,Catalog.bathtub(z1-z0),WX(1,1217),(z0+z1)/2,2); })();   // wall to wall
 fixture(1,Catalog.vanity(),WX(1,873),WZ(1,201),3);
 fixture(1,Catalog.toilet(),WX(1,762),WZ(1,213),3); fixture(0,Catalog.toilet(),WX(0,142),WZ(0,232),0);
 fixture(0,Catalog.clothesRack(0.8),WX(0,146),WZ(0,340),1);                            // 1F closet: hanging clothes facing the opening

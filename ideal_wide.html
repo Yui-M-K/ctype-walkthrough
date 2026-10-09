@@ -343,11 +343,11 @@ fixtures:function(E){
   fixture(1,Catalog.sinkCounter(1.1,0.9,null,[{k:'fill',w:0.1},{k:'drawers',w:0.6},{k:'spice',w:0.2},{k:'fill',w:0.2}]),WX(1,430)+TI/2,WZ(1,280),0);   // peninsula with the hob, facing the living room; 80 cm passage east of it
   fixture(1,Catalog.ihHob(),WX(1,480),WZ(1,325),0); fixture(1,Catalog.rangeHood(CH),WX(1,480),WZ(1,325),0); fixture(1,Catalog.seasoningTray(),WX(1,532),WZ(1,295),0);
 })();
-(function(){                                   // bath: tub along the west wall, two-person sauna in the north-east corner, shower set on the south wall
-  fixture(1,Catalog.bathtub(),WX(1,46),WZ(1,125),0);
+(function(){                                   // bath: tub along the whole west wall, two-person sauna in the north-east corner, shower set on the south wall
+  (function(){ const z0=WZ(1,0)+TE/2, z1=WZ(1,220)-TI/2; fixture(1,Catalog.bathtub(z1-z0),WX(1,46),(z0+z1)/2,0); })();   // wall to wall
   fixture(1,Catalog.homeSauna(),WX(1,185),WZ(1,60),3);
-  fixture(1,Catalog.bathWallSet(),WX(1,75),WZ(1,220)-TI/2,2);
-  fixture(1,Catalog.bathStool(),WX(1,115),WZ(1,170),0); fixture(1,Catalog.washBowl(),WX(1,150),WZ(1,195),0);
+  fixture(1,Catalog.bathWallSet(),WX(1,150),WZ(1,220)-TI/2,2);
+  fixture(1,Catalog.bathStool(),WX(1,150),WZ(1,170),0); fixture(1,Catalog.washBowl(),WX(1,190),WZ(1,195),0);
   fixture(1,Catalog.vanity(),WX(1,282),WZ(1,60),0);
   (function(){ const P=Catalog.soapDispenser(0.85); fixture(1,P,WX(1,302),WZ(1,88),0); P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); }); })();
 })();

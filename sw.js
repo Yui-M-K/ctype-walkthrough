@@ -20,7 +20,8 @@ self.addEventListener('fetch',function(e){
     }));
     return;
   }
-  e.respondWith(fetch(req).then(function(res){ return save(req,res); }).catch(function(){   // network first
+  const fresh=req.mode==='navigate'?new Request(req.url,{cache:'no-cache',credentials:'same-origin'}):new Request(req,{cache:'no-cache'});   // revalidate, so a new deploy shows up without waiting out the browser cache
+  e.respondWith(fetch(fresh).then(function(res){ return save(req,res); }).catch(function(){   // network first
     return caches.match(req,{ignoreSearch:true}).then(function(hit){ return hit||Response.error(); });
   }));
 });

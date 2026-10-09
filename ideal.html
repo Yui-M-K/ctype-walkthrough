@@ -342,7 +342,7 @@ fixtures:function(E){
   fixture(1,Catalog.ihHob(),WX(1,530),WZ(1,205),0); fixture(1,Catalog.rangeHood(CH),WX(1,530),WZ(1,205),0); fixture(1,Catalog.seasoningTray(),X0+1.45,Z0+0.72,0);
 })();
 (function(){                                   // 3F: one-person sauna in its own room between the washroom and the bath; tub along the north wall, shower set on the south wall
-  fixture(2,Catalog.bathtub(),WX(2,499),WZ(2,45.5),3);
+  (function(){ const x0=WX(2,390)+TI/2, x1=WX(2,580)-TE/2; fixture(2,Catalog.bathtub(x1-x0),(x0+x1)/2,WZ(2,45.5),3); })();   // wall to wall
   fixture(2,Catalog.homeSauna(),WX(2,325),WZ(2,59),3);
   fixture(2,Catalog.bathWallSet(),WX(2,500),WZ(2,200)-TI/2,2);
   fixture(2,Catalog.bathStool(),WX(2,495),WZ(2,150),0); fixture(2,Catalog.washBowl(),WX(2,530),WZ(2,170),0);
