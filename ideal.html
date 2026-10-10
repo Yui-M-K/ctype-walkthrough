@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261011o">
+<link rel="stylesheet" href="lib/storeys.css?v=20261011p">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,13 +67,13 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261011o"></script>
-<script src="lib/furniture.js?v=20261011o"></script>
-<script src="lib/catalog.js?v=20261011o"></script>
-<script src="lib/look.js?v=20261011o"></script>
-<script src="lib/perf.js?v=20261011o"></script>
-<script src="lib/finish.js?v=20261011o"></script>
-<script src="lib/storeys.js?v=20261011o"></script>
+<script src="lib/people.js?v=20261011p"></script>
+<script src="lib/furniture.js?v=20261011p"></script>
+<script src="lib/catalog.js?v=20261011p"></script>
+<script src="lib/look.js?v=20261011p"></script>
+<script src="lib/perf.js?v=20261011p"></script>
+<script src="lib/finish.js?v=20261011p"></script>
+<script src="lib/storeys.js?v=20261011p"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -147,10 +147,10 @@ build:function(E){
   wall(0,0,850,270,850,TE,[{a:7,b:270,k:'open',head:2.25}]);
   wall(0,270,850,580,850,TE,[{a:276,b:575,k:'open',head:2.25}]);
   wall(0,580,0,580,850,TE,[{a:300,b:400,sill:1.6,head:2.1}]);
-  wall(0,0,300,310,300,TI,[{a:145,b:245,k:'door',hinge:'b',sw:-1}]);
+  wall(0,0,300,310,300,TI,[{a:155,b:235,k:'door',hinge:'b',sw:-1}]);
   wall(0,115,300,115,630,TI,[{a:305,b:395,k:'slide'}]);   // powder room under the stair, entered from the hall
   wall(0,270,300,270,790,TI);
-  wall(0,310,0,310,300,TI,[{a:110,b:210,k:'slide'}]);   // storage room door
+  wall(0,310,0,310,300,TI,[{a:115,b:205,k:'slide'}]);   // storage room door
   wall(0,310,290,580,290,TI);
   bx(LG[0],WX(0,0)-0.07,WX(0,115),WZ(0,0)-0.07,WZ(0,790),-SLAB,0,M.slab); bx(LG[0],WX(0,115),WX(0,270),WZ(0,0)-0.07,WZ(0,700),-SLAB,0,M.slab); bx(LG[0],WX(0,270),WX(0,310),WZ(0,0)-0.07,WZ(0,300),-SLAB,0,M.slab); bx(LG[0],WX(0,310),WX(0,580)+0.07,WZ(0,0)-0.07,WZ(0,290),-SLAB,0,M.slab);
   const GY=-0.27;                                                                                  // garage slab at grade (3 cm above the ground), so the car drives straight in
@@ -200,7 +200,7 @@ build:function(E){
   });
   /* 3F (flight B lands 60 cm further south, so the stair top has a 1.2 m landing): toilet off the landing; washroom, bath and sauna room in a row
      along the north; study and master bedroom on the east; walk-in closet across the end of the hall */
-  wall(2,0,0,580,0,TE,[{a:20,b:95,sill:1.5,head:2.0,frost:true},{a:195,b:285,sill:1.4,head:2.0,frost:true},{a:325,b:420,sill:1.45,head:2.15,frost:true}]);
+  wall(2,0,0,580,0,TE,[{a:20,b:95,sill:1.5,head:2.0,frost:true},{a:122,b:182,sill:1.4,head:2.0,frost:true},{a:325,b:420,sill:1.45,head:2.15,frost:true}]);
   wall(2,0,0,0,850,TE,[{a:130,b:210,sill:1.4,head:2.0,frost:true},{a:420,b:540,sill:1.5,head:2.1}]);
   wall(2,580,0,580,850,TE,[{a:300,b:440},{a:600,b:760}]);
   wall(2,0,850,245,850,TE);
@@ -209,7 +209,7 @@ build:function(E){
   wall(2,115,0,115,240,TI);
   wall(2,300,0,300,240,TI,[{a:145,b:225,k:'slide',mat:M.frost}]);
   wall(2,445,0,445,240,TI,[{a:165,b:235,k:'slide',mat:M.frost}]);
-  wall(2,215,240,215,520,TI,[{a:280,b:370,k:'door',hinge:'a',sw:1}]);
+  wall(2,215,240,215,520,TI,[{a:285,b:365,k:'door',hinge:'a',sw:1}]);
   wall(2,215,520,580,520,TI);
   wall(2,245,520,245,850,TI,[{a:550,b:630,k:'door',hinge:'b',sw:1}]);
   wall(2,0,690,245,690,TI,[{a:140,b:220,k:'slide'}]);
@@ -415,7 +415,7 @@ fixtures:function(E){
 fixture(1,Catalog.toilet(),WX(1,57),WZ(1,52),3); fixture(2,Catalog.toilet(),WX(2,57),WZ(2,52),3);
 [[1,WX(1,115)-TI/2,WZ(1,95),2],[2,WX(2,115)-TI/2,WZ(2,95),2],[0,WX(0,0)+TE/2+0.015,WZ(0,415),0]].forEach(function(q){ fixture(q[0],Catalog.paperHolder(),q[1],q[2],q[3]); });   // every toilet: roll holder by the seat and a small sanitary bin
 [[1,WX(1,100),WZ(1,22),2],[2,WX(2,100),WZ(2,22),2],[0,WX(0,100),WZ(0,452),2]].forEach(function(q){ fixture(q[0],Catalog.sanitaryBin(),q[1],q[2],q[3]); });
-fixture(0,Catalog.wallFoldTable(0.75),WX(0,270)-TI/2,WZ(0,745),2);
+fixture(0,Catalog.wallFoldTable(1.0),WX(0,270)-TI/2,WZ(0,705),2);
 (function(){                                   // storage room south wall: suitcases parked on the floor under three wall-hung shelves of boxes
   const x0=WX(0,355), x1=WX(0,512), zw=WZ(0,290)-TI/2, d=0.36, oc={cast:false}, boxC=[0xe9e4da,0xc9b79c,0x9fb0bf,0xd8cfc0,0xb8c7b0];
   for(let x=x0+0.02;x<=x1;x+=0.52) bx(LG[0],x,x+0.02,zw-0.015,zw,0.82,2.3,M.steel,oc);
@@ -433,7 +433,7 @@ fixture(0,Catalog.wallFoldTable(0.75),WX(0,270)-TI/2,WZ(0,745),2);
   bx(LG[0],xe-0.02,xe,WZ(0,300)+TI/2,WZ(0,700),CH-0.1,CH-0.02,M.trim,oc); bx(LG[0],xe-0.03,xe-0.02,WZ(0,300)+TI/2+0.02,WZ(0,700)-0.02,CH-0.1,CH-0.095,glow,oc);
   const rx0=WX(0,150), rx1=WX(0,232); bx(LG[0],rx0,rx1,WZ(0,330),WZ(0,620),0.003,0.009,lam(0xcfc3ae,{roughness:0.95}),oc); bx(LG[0],rx0+0.05,rx1-0.05,WZ(0,335),WZ(0,615),0.009,0.0095,lam(0xe8e0d0,{roughness:0.95}),oc);
 })();                             // genkan: fold-down shelf for parcels, key rack above it
-fixture(0,Catalog.keyRack(),WX(0,270)-TI/2,WZ(0,745),2);
+fixture(0,Catalog.keyRack(),WX(0,270)-TI/2,WZ(0,725),2);
 (function(){ const d=doors.find(function(q){ return q.kp; }); if(!d) return;   // smart lock: the slide cover drops to show the keypad
   let v=0, tg=0, last=null; const y0=d.kp.cover.position.y;
   furnThings.push({pt:[d.kp.at[0],d.kp.at[1]+d.kp.out*0.4],l:0,on:function(){ return !d.open; },label:function(){ return tg?'蓋上密碼鎖':'打開密碼鎖蓋'; },act:function(){ tg=tg?0:1; last=null; }});
