@@ -21,7 +21,7 @@ const HOUSES=[
 ];
 const frames={}, params=new URLSearchParams(location.search);
 let cur=null;
-const VER='20261011m';                          // bump with the ?v= of the lib files so a house page and its libraries always load together
+const VER='20261011n';                          // bump with the ?v= of the lib files so a house page and its libraries always load together
 function frameQuery(){ const q=new URLSearchParams(params); q.delete('house'); q.set('v',VER); return '?'+q.toString()+location.hash; }
 function open(id){
   const h=HOUSES.find(function(x){ return x.id===id&&x.src&&!x.disabled; }); if(!h) return false;

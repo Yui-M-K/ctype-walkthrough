@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261011m">
+<link rel="stylesheet" href="lib/storeys.css?v=20261011n">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,13 +67,13 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261011m"></script>
-<script src="lib/furniture.js?v=20261011m"></script>
-<script src="lib/catalog.js?v=20261011m"></script>
-<script src="lib/look.js?v=20261011m"></script>
-<script src="lib/perf.js?v=20261011m"></script>
-<script src="lib/finish.js?v=20261011m"></script>
-<script src="lib/storeys.js?v=20261011m"></script>
+<script src="lib/people.js?v=20261011n"></script>
+<script src="lib/furniture.js?v=20261011n"></script>
+<script src="lib/catalog.js?v=20261011n"></script>
+<script src="lib/look.js?v=20261011n"></script>
+<script src="lib/perf.js?v=20261011n"></script>
+<script src="lib/finish.js?v=20261011n"></script>
+<script src="lib/storeys.js?v=20261011n"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -143,7 +143,7 @@ build:function(E){
      storage room behind it, hall, genkan in front of the hall (cat gate at the step), powder room off the stair foot, garage */
   wall(0,0,0,580,0,TE,[{a:420,b:500,sill:1.6,head:2.0}]);
   wall(0,0,0,0,760,TE,[{a:55,b:245,k:'slide2',mat:M.glass,head:2.15,screen:-1},{a:555,b:615,sill:1.5,head:2.3}]);   // stair window above the low end of the rail
-  wall(0,0,760,274.5,760,TE,[{a:142,b:242,k:'door',hinge:'a',sw:1,mat:M.entry,head:2.1,handle:'bar'}]);    // front door set back 90 cm under the house: a covered porch that opens into the garage
+  wall(0,0,760,274.5,760,TE,[{a:142,b:242,k:'door',hinge:'a',sw:1,mat:M.entry,head:2.1,handle:'bar',keypad:1}]);    // front door set back 90 cm under the house: a covered porch that opens into the garage
   wall(0,0,850,270,850,TE,[{a:7,b:270,k:'open',head:2.25}]);
   wall(0,270,850,580,850,TE,[{a:276,b:575,k:'open',head:2.25}]);
   wall(0,580,0,580,850,TE,[{a:300,b:400,sill:1.6,head:2.1}]);
@@ -345,9 +345,6 @@ site:function(E){
     const st=new THREE.Mesh(new THREE.CylinderGeometry(0.004,0.004,0.18,4),M.leaf); st.position.set(m.position.x,m.position.y-0.09,m.position.z); ground.add(st); }
   const nb=[[LX0-3.2,3,5.6,8,6.8],[LX0-9.5,3,5.5,8,6.2],[LX1+3.2,3,5,8,7],[LX1+9.5,3,5.4,8,6.4],[-0.5,-8.5,6,7,6.6],[6,-8.5,5.5,7,7.2]];   // neighbours left, right and behind
   nb.forEach(function(n){ bx(ground,n[0]-n[2]/2,n[0]+n[2]/2,n[1]-n[3]/2+3,n[1]+n[3]/2+3,-0.3,n[4],M.ext); });
-  /* smart lock keypad beside the front door */
-  const VZ=WZ(0,760)+TE/2;
-  bx(ground,WX(0,248),WX(0,256),VZ,VZ+0.02,1.2,1.32,lam(0x1b1d20,{roughness:0.3}),{cast:false}); bx(ground,WX(0,250),WX(0,254),VZ+0.02,VZ+0.023,1.27,1.3,lam(0x9fd6ff,{emissive:0x4aa8e8}),{cast:false});
 })();
 },
 layout:function(E){
