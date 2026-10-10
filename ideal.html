@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261011t">
+<link rel="stylesheet" href="lib/storeys.css?v=20261011u">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,13 +67,13 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261011t"></script>
-<script src="lib/furniture.js?v=20261011t"></script>
-<script src="lib/catalog.js?v=20261011t"></script>
-<script src="lib/look.js?v=20261011t"></script>
-<script src="lib/perf.js?v=20261011t"></script>
-<script src="lib/finish.js?v=20261011t"></script>
-<script src="lib/storeys.js?v=20261011t"></script>
+<script src="lib/people.js?v=20261011u"></script>
+<script src="lib/furniture.js?v=20261011u"></script>
+<script src="lib/catalog.js?v=20261011u"></script>
+<script src="lib/look.js?v=20261011u"></script>
+<script src="lib/perf.js?v=20261011u"></script>
+<script src="lib/finish.js?v=20261011u"></script>
+<script src="lib/storeys.js?v=20261011u"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -413,11 +413,10 @@ fixtures:function(E){
   fixture(2,Catalog.handBasin(),WX(2,0)+TE/2,WZ(2,160),0);
 })();
 fixture(1,Catalog.toilet(),WX(1,0)+TE/2+0.455,WZ(1,60),0);
-(function(){                                   // 3F walk-in closet: one built-in L of white panels; two-tier hanging along the south wall, bag and hat cubbies on the west wall, a continuous top shelf, cupboards above and an LED strip
+(function(){                                   // 3F walk-in closet: one built-in L of white panels; two-tier hanging wall to wall along the south, bag and hat cubbies on the west wall, a continuous top shelf, cupboards above and an LED strip
   const b=E.base(2), xw=WX(2,0)+TE/2, xe=WX(2,215)-TI/2, zs=WZ(2,850)-TE/2, zn=WZ(2,690)+TI/2, D=0.6, zf=zs-D, xf=xw+0.36, oc={cast:false}, W=M.cabF, glow=new THREE.MeshBasicMaterial({color:0xffe3b8}), xm=(xw+xe)/2;
-  bx(LG[2],xm-0.01,xm+0.01,zf,zs,b,b+2.0,W);                                                                  // partition between the two hanging bays
   bx(LG[2],xw,xf,zf-0.02,zf,b,b+2.0,W);                                                                       // the cubbies' end panel where the two runs meet
-  [[xw+0.005,xm-0.012],[xm+0.012,xe-0.005]].forEach(function(r){ const P=Catalog.clothesRack(r[1]-r[0],true,true); fixture(2,P,(r[0]+r[1])/2,zs-D/2,0); });
+  fixture(2,Catalog.clothesRack(xe-xw-0.01,true,true),xm,zs-D/2,0);                                           // one continuous two-tier rail wall to wall
   const C=Catalog.bagShelf(); C.group.traverse(function(o){ if(o.isMesh&&o.material===M.oak) o.material=W; }); C.cols.length=0; fixture(2,C,xw+0.175,(zn+zf-0.02)/2,1);
   bx(LG[2],xw,xe,zf,zs,b+2.0,b+2.025,W); bx(LG[2],xw,xf,zn,zf,b+2.0,b+2.025,W);                               // continuous top shelf
   bx(LG[2],xw+0.02,xe-0.02,zf+0.02,zf+0.03,b+1.99,b+1.995,glow,oc); bx(LG[2],xf-0.03,xf-0.02,zn+0.02,zf-0.02,b+1.99,b+1.995,glow,oc);
