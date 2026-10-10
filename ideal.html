@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261011i">
+<link rel="stylesheet" href="lib/storeys.css?v=20261011j">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,13 +67,13 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261011i"></script>
-<script src="lib/furniture.js?v=20261011i"></script>
-<script src="lib/catalog.js?v=20261011i"></script>
-<script src="lib/look.js?v=20261011i"></script>
-<script src="lib/perf.js?v=20261011i"></script>
-<script src="lib/finish.js?v=20261011i"></script>
-<script src="lib/storeys.js?v=20261011i"></script>
+<script src="lib/people.js?v=20261011j"></script>
+<script src="lib/furniture.js?v=20261011j"></script>
+<script src="lib/catalog.js?v=20261011j"></script>
+<script src="lib/look.js?v=20261011j"></script>
+<script src="lib/perf.js?v=20261011j"></script>
+<script src="lib/finish.js?v=20261011j"></script>
+<script src="lib/storeys.js?v=20261011j"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -260,8 +260,7 @@ site:function(E){
   bx(ground,PX0w,PX1w,PZ1,LZ1-0.09,-0.3,-0.29,lam(0xffffff,{map:gravelT,roughness:0.95}),{cast:false});
   const GC=WX(0,123)+0.5, slabM=lam(0xc9c3b8,{roughness:0.8});
   [PZ1+0.06,PZ1+0.32].forEach(function(z,i){ const w=i?0.7:0.9; bx(ground,GC-w/2,GC+w/2,z,z+0.22,-0.3,-0.27,slabM); floorRects.push({l:0,x0:GC-w/2,x1:GC+w/2,z0:z,z1:z+0.22,y:-0.27}); });
-  [[WX(0,25),PZ1+0.28,0.3],[GC-0.8,PZ1+0.3,0.22],[GC+0.8,PZ1+0.3,0.22]].forEach(function(q){ const P=Catalog.shrub(q[2]); P.group.position.set(q[0],-0.29,q[1]); ground.add(P.group); });
-  [[GC-0.5,PZ1+0.12],[GC+0.5,PZ1+0.12]].forEach(function(q){   // low path lights either side of the stepping slabs
+  [[GC-0.8,PZ1+0.3],[GC+0.8,PZ1+0.3]].forEach(function(q){   // low path lights either side of the stepping slabs
     bx(ground,q[0]-0.035,q[0]+0.035,q[1]-0.035,q[1]+0.035,-0.29,0.12,lam(0x2b2b2d,{roughness:0.5}));
     bx(ground,q[0]-0.038,q[0]+0.038,q[1]-0.038,q[1]+0.038,0.05,0.095,new THREE.MeshBasicMaterial({color:0xffe2b0}),{cast:false}); });
   bx(ground,WX(0,270),HX1,HZ1+0.07,LZ1,-0.3,-0.27,FL.conc); floorRects.push({l:0,x0:WX(0,270),x1:HX1,z0:HZ1+0.07,z1:LZ1,y:-0.27});   // level concrete apron with pebble slits
