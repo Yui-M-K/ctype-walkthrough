@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261010d">
+<link rel="stylesheet" href="lib/storeys.css?v=20261010e">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,13 +67,13 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261010d"></script>
-<script src="lib/furniture.js?v=20261010d"></script>
-<script src="lib/catalog.js?v=20261010d"></script>
-<script src="lib/look.js?v=20261010d"></script>
-<script src="lib/perf.js?v=20261010d"></script>
-<script src="lib/finish.js?v=20261010d"></script>
-<script src="lib/storeys.js?v=20261010d"></script>
+<script src="lib/people.js?v=20261010e"></script>
+<script src="lib/furniture.js?v=20261010e"></script>
+<script src="lib/catalog.js?v=20261010e"></script>
+<script src="lib/look.js?v=20261010e"></script>
+<script src="lib/perf.js?v=20261010e"></script>
+<script src="lib/finish.js?v=20261010e"></script>
+<script src="lib/storeys.js?v=20261010e"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -202,7 +202,7 @@ build:function(E){
   wall(2,115,0,115,150,TI,[{a:62,b:142,k:'slide'}]);   // the 3F toilet opens off the washroom; the nook beside it is the washroom's laundry corner
   wall(2,115,240,580,240,TI,[{a:120,b:210,k:'slide'}]);
   wall(2,260,0,260,240,TI,[{a:150,b:235,k:'slide'}]);
-  wall(2,390,0,390,240,TI,[{a:150,b:235,k:'slide',mat:M.frost}]);
+  wall(2,390,0,390,240,TI,[{a:150,b:235,k:'door',hinge:'b',sw:1,mat:M.frost}]);
   wall(2,215,240,215,560,TI,[{a:255,b:345,k:'slide'},{a:472,b:558,k:'slide'}]);
   wall(2,245,560,245,850,TI,[{a:635,b:725,k:'slide'}]);
   wall(2,215,470,580,470,TI);
@@ -361,7 +361,7 @@ return [
   ['fanB','fan',2,550,820,'W'],['artBed','artPortrait',2,249.5,600,'E'],
   /* 3F walk-in closet, study, hall, washroom */
   ['rackW1','clothesRack',2,182,594.5,'S',function(){ return Catalog.clothesRack(1.2); }],['rackW2','clothesRack',2,57,815,'N',function(){ return Catalog.clothesRack(1.0); }],['mirrorW','fullMirror',2,200,842.5,'N'],['dehum','dehumidifier',2,142,827,'N'],['bags','bagShelf',2,60,652,'S'],
-  ['duo','duoDesk',2,455,430.5,'N'],['printer','printerCart',2,325,442,'N'],['shelf3','bookshelf',2,365,260.5,'S'],['rugS','rugRoundSun',2,385,355,'E'],['plant3','plantS',2,545,275,'E'],['artHall','artSmall',2,210.5,410,'W'],
+  ['duo','duoDesk',2,455,430.5,'N'],['printer','printerCart',2,325,442,'N'],['shelf3','bookshelf',2,365,260.5,'S'],['rugS','rugRoundSun',2,385,355,'E'],['plant3','plantS',2,545,275,'E'],['artHall','artSmall',2,165,555.5,'N'],
   ['washer','washer',2,52,195,'E',function(){ const p=Catalog.washer(); p.attach(Catalog.towels(1.064),-0.06,0,0); return p; }]
 ];
 },
@@ -452,7 +452,7 @@ fixture(0,Catalog.wallFoldTable(1.0),WX(0,63),WZ(0,850)-TE/2,1);                
 (function(){                                   // pressure-mounted cat gate at the top of the 2F->1F flight: the cats keep to the upper floors
   const b=E.base(1), z=WZ(1,300)+0.03, x0=WX(1,0)+TE/2, x1=WX(1,115)-TI/2, P=Catalog.petGate(x1-x0,1.5);
   P.group.position.set((x0+x1)/2,b,z); P.group.rotation.y=Math.PI/2; LG[1].add(P.group);
-  const col=addCol(1,x0,x1,z-0.04,z+0.04,b,b+1.5,'d'), d={l:1,pv:P.leafPivot,th:-Math.PI/2,open:false,t:0,col:col,mid:[(x0+x1)/2,z],label:function(o){ return o?'關上柵欄':'打開柵欄'; }};
+  const col=addCol(1,x0,x1,z-0.04,z+0.04,b,b+1.5,'d'), d={l:1,pv:P.leafPivot,th:Math.PI/2,open:false,t:0,col:col,mid:[(x0+x1)/2,z],label:function(o){ return o?'關上柵欄':'打開柵欄'; }};
   col.door=d; doors.push(d);
 })();
 },
