@@ -222,10 +222,15 @@ stairExtras:function(E){
 });
 handrail(0,TE/2,1,WZ(0,300)+TI/2+0.01); handrail(1,TE/2,1);
 [0,1].forEach(function(l){ handrail(l,WX(0,115)-TI/2,-1,WZ(l,300)+0.03,WZ(l,610)-0.03); });
-(function(){                                   // 3F hall beside the stairwell: floor-to-ceiling oak battens instead of a glass guard
-  const b=base(2), x=WX(2,115)-0.035, z0=ST.zn, z1=WZ(2,560);
-  for(let z=z0+0.03;z<z1-0.02;z+=0.1) bx(LG[2],x-0.02,x+0.02,z,z+0.035,b,b+CH,M.oak);
-  bx(LG[2],x-0.025,x+0.025,z0,z1,b,b+0.05,M.oakD); addCol(2,x-0.03,x+0.03,z0,z1,b,b+CH,'w');
+(function(){                                   // 3F hall beside the stairwell: waist-high guard (1.1 m), matte-black balusters under a wide oak cap, open above
+  const b=base(2), x=WX(2,115)-0.035, z0=ST.zn, z1=WZ(2,560), H=1.1, black=new THREE.MeshStandardMaterial({color:0x1d1d1f,roughness:0.55,metalness:0.6});
+  const glow=new THREE.MeshBasicMaterial({color:0xffe3b8});
+  bx(LG[2],x-0.03,x+0.03,z0,z1,b,b+0.08,M.oakD);
+  for(let z=z0+0.06;z<z1-0.04;z+=0.105) bx(LG[2],x-0.006,x+0.006,z,z+0.02,b+0.08,b+H-0.045,black);
+  bx(LG[2],x-0.015,x+0.015,z0+0.02,z1-0.02,b+H-0.06,b+H-0.045,black);
+  bx(LG[2],x-0.065,x+0.065,z0,z1,b+H-0.045,b+H,M.oak);
+  bx(LG[2],x-0.04,x+0.04,z0+0.03,z1-0.03,b+H-0.05,b+H-0.046,glow);
+  addCol(2,x-0.065,x+0.065,z0,z1,b,b+H,'w');
 })();
 },
 site:function(E){
