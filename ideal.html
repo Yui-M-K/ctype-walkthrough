@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261011c">
+<link rel="stylesheet" href="lib/storeys.css?v=20261011d">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,13 +67,13 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261011c"></script>
-<script src="lib/furniture.js?v=20261011c"></script>
-<script src="lib/catalog.js?v=20261011c"></script>
-<script src="lib/look.js?v=20261011c"></script>
-<script src="lib/perf.js?v=20261011c"></script>
-<script src="lib/finish.js?v=20261011c"></script>
-<script src="lib/storeys.js?v=20261011c"></script>
+<script src="lib/people.js?v=20261011d"></script>
+<script src="lib/furniture.js?v=20261011d"></script>
+<script src="lib/catalog.js?v=20261011d"></script>
+<script src="lib/look.js?v=20261011d"></script>
+<script src="lib/perf.js?v=20261011d"></script>
+<script src="lib/finish.js?v=20261011d"></script>
+<script src="lib/storeys.js?v=20261011d"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -162,7 +162,6 @@ build:function(E){
     bx(LG[0],a,c,d,e,GY,GY+0.003,FL.conc); floorRects.push({l:0,x0:a,x1:c,z0:d,z1:e,y:GY}); });
   bx(LG[0],WX(0,0)-0.07,WX(0,270),WZ(0,700),WZ(0,790),-SLAB-0.15,-0.15,M.slab);                                        // the genkan floor sits 15 cm lower
   bx(LG[0],WX(0,0)-0.07,WX(0,270),WZ(0,790),WZ(0,850)+0.07,-SLAB-0.2,-0.2,M.slab);
-  bx(LG[0],WX(0,0)+TE/2,WX(0,270),WZ(0,790)+TE/2,WZ(0,850)+TE/2,-0.21,-0.2,FL.stone,{cast:false}); floorRects.push({l:0,x0:WX(0,0)+TE/2,x1:WX(0,270),z0:WZ(0,790)+TE/2,z1:WZ(0,850)+TE/2,y:-0.2});   // porch
   [[WX(0,0)-TE/2,WX(0,0)+TE/2,WZ(0,700),WZ(0,850),-0.3],[WX(0,270)-TI/2,WX(0,270)+TI/2,WZ(0,700),WZ(0,790),-0.15],[WX(0,0),WX(0,120),WZ(0,790)-TE/2,WZ(0,790)+TE/2,-0.2],[WX(0,220),WX(0,274.5),WZ(0,790)-TE/2,WZ(0,790)+TE/2,-0.2]]
     .forEach(function(r){ bx(LG[0],r[0],r[1],r[2],r[3],r[4],0,M.slab,{cast:false}); });                                      // concrete kerb under the walls round the lower floor
   bx(LG[0],WX(0,120),WX(0,220),WZ(0,790)-TE/2,WZ(0,790)+TE/2,-0.2,-0.15,FL.stone,{cast:false});                               // door sill
@@ -247,14 +246,28 @@ site:function(E){
   const g=new THREE.Mesh(new THREE.PlaneGeometry(260,260),M.grass); g.rotation.x=-Math.PI/2; g.position.set(2.4,-0.3,4.2); g.receiveShadow=true; ground.add(g);
   const HX1=WX(0,580)+TE/2, HZ1=WZ(0,850), LX0=-2.2, LX1=HX1+0.5, LZ0=-0.5, LZ1=HZ1+1.5;
   const road=new THREE.Mesh(new THREE.PlaneGeometry(260,6),M.asphalt); road.rotation.x=-Math.PI/2; road.position.set(2,-0.29,LZ1+3); road.receiveShadow=true; ground.add(road);
-  const VZ=WZ(0,850)+TE/2;
-  bx(ground,WX(0,105),WX(0,240),VZ,LZ1-0.12,-0.3,-0.2,FL.stone);                              // porch up to the gate, one step below the genkan floor
-  floorRects.push({l:0,x0:WX(0,105),x1:WX(0,240),z0:VZ,z1:LZ1-0.12,y:-0.2});
-  bx(ground,WX(0,270),HX1,HZ1+0.07,LZ1,-0.3,-0.27,FL.conc); floorRects.push({l:0,x0:WX(0,270),x1:HX1,z0:HZ1+0.07,z1:LZ1,y:-0.27});   // level concrete apron out to the street
-  (function(){ const c=document.createElement('canvas'); c.width=c.height=512; const g=c.getContext('2d'); g.fillStyle='#a9a398'; g.fillRect(0,0,512,512);   // flagstone paving from the gate to the door
-    for(let y=0;y<512;y+=64) for(let x=-((y/64)%2)*48;x<512;x+=96){ const t=0.82+rnd()*0.16; g.fillStyle='rgb('+(215*t|0)+','+(208*t|0)+','+(196*t|0)+')'; g.fillRect(x+3,y+3,90-rnd()*8,58-rnd()*6); }
-    const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.colorSpace=THREE.SRGBColorSpace; t.repeat.set(2.4,1.4); t.anisotropy=ANISO;
-    bx(ground,WX(0,0)-TE/2,WX(0,270),HZ1+TE/2,LZ1-0.09,-0.3,-0.288,lam(0xffffff,{map:t,roughness:0.9}),{cast:false}); })();
+  const tex=function(draw,rx,rz){ const c=document.createElement('canvas'); c.width=c.height=512; draw(c.getContext('2d')); const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.colorSpace=THREE.SRGBColorSpace; t.repeat.set(rx,rz); t.anisotropy=ANISO; return t; };
+  const tileT=tex(function(g){ g.fillStyle='#8f8a83'; g.fillRect(0,0,512,512); for(let i=0;i<2;i++) for(let j=0;j<2;j++){ const v=0.94+rnd()*0.06; g.fillStyle='rgb('+(176*v|0)+','+(170*v|0)+','+(161*v|0)+')'; g.fillRect(i*256+3,j*256+3,250,250);
+      for(let k=0;k<260;k++){ g.fillStyle='rgba(90,84,76,'+(0.04+rnd()*0.06)+')'; g.fillRect(i*256+3+rnd()*246,j*256+3+rnd()*246,2+rnd()*3,2+rnd()*3); } } },1,1);
+  const gravelT=tex(function(g){ g.fillStyle='#b9b4aa'; g.fillRect(0,0,512,512); for(let k=0;k<9000;k++){ const v=150+rnd()*90|0; g.fillStyle='rgb('+v+','+(v-4)+','+(v-12)+')'; g.beginPath(); g.arc(rnd()*512,rnd()*512,1.2+rnd()*2.4,0,7); g.fill(); } },3,3);
+  const pebT=tex(function(g){ g.fillStyle='#4a4846'; g.fillRect(0,0,512,512); for(let k=0;k<5000;k++){ const v=60+rnd()*80|0; g.fillStyle='rgb('+v+','+v+','+(v+4)+')'; g.beginPath(); g.arc(rnd()*512,rnd()*512,2+rnd()*4,0,7); g.fill(); } },1,6);
+  /* porch: 60 cm porcelain tiles from the set-back door out under the balcony, one stone step down to a gravel forecourt with stepping slabs to the gate */
+  const PZ0=WZ(0,790)+TE/2, PZ1=WZ(1,940), PX0w=WX(0,0)-TE/2, PX1w=WX(0,270), tileM=lam(0xffffff,{map:tileT,roughness:0.55});
+  tileT.repeat.set((PX1w-PX0w)/1.2,(PZ1-PZ0)/1.2);
+  bx(ground,PX0w,PX1w,PZ0,PZ1,-0.3,-0.198,tileM,{cast:false}); floorRects.push({l:0,x0:PX0w,x1:PX1w,z0:PZ0,z1:PZ1,y:-0.198});
+  bx(ground,PX0w,PX1w,PZ1-0.03,PZ1+0.005,-0.3,-0.196,lam(0x6f6a64,{roughness:0.6}),{cast:false});
+  gravelT.repeat.set((PX1w-PX0w)/0.8,(LZ1-PZ1)/0.8);
+  bx(ground,PX0w,PX1w,PZ1,LZ1-0.09,-0.3,-0.29,lam(0xffffff,{map:gravelT,roughness:0.95}),{cast:false});
+  const GC=WX(0,123)+0.5, slabM=lam(0xc9c3b8,{roughness:0.8});
+  [PZ1+0.06,PZ1+0.32].forEach(function(z,i){ const w=i?0.7:0.9; bx(ground,GC-w/2,GC+w/2,z,z+0.22,-0.3,-0.27,slabM); floorRects.push({l:0,x0:GC-w/2,x1:GC+w/2,z0:z,z1:z+0.22,y:-0.27}); });
+  [[WX(0,20),PZ1+0.25,0.3],[WX(0,62),PZ1+0.3,0.26],[WX(0,250),PZ1+0.26,0.24]].forEach(function(q){ const P=Catalog.shrub(q[2]); P.group.position.set(q[0],-0.29,q[1]); ground.add(P.group); });
+  [[WX(0,95),PZ1+0.12],[WX(0,240),PZ1+0.12]].forEach(function(q){   // low path lights
+    bx(ground,q[0]-0.035,q[0]+0.035,q[1]-0.035,q[1]+0.035,-0.29,0.12,lam(0x2b2b2d,{roughness:0.5}));
+    bx(ground,q[0]-0.03,q[0]+0.03,q[1]-0.03,q[1]+0.03,0.06,0.11,new THREE.MeshBasicMaterial({color:0xffe2b0}),{cast:false}); });
+  bx(ground,WX(0,270),HX1,HZ1+0.07,LZ1,-0.3,-0.27,FL.conc); floorRects.push({l:0,x0:WX(0,270),x1:HX1,z0:HZ1+0.07,z1:LZ1,y:-0.27});   // level concrete apron with pebble slits
+  const pebM=lam(0xffffff,{map:pebT,roughness:0.9});
+  bx(ground,(WX(0,270)+HX1)/2-0.06,(WX(0,270)+HX1)/2+0.06,HZ1+0.07,LZ1,-0.27,-0.267,pebM,{cast:false});
+  [HZ1+0.55,HZ1+1.05].forEach(function(z){ bx(ground,WX(0,270)+0.05,HX1-0.05,z-0.05,z+0.05,-0.27,-0.267,pebM,{cast:false}); });
   /* engawa: cedar deck 90 cm deep along the mirror room, a low step down to the garden, posts and a shallow eave */
   const EX0=WX(0,-90), EX1=WX(0,0)-TE/2, EZ0=WZ(0,-10), EZ1=WZ(0,310), deck=lam(0xb98a5c,{roughness:0.75});
   for(let z=EZ0;z<EZ1-0.001;z+=0.12) bx(ground,EX0,EX1,z+0.005,Math.min(z+0.115,EZ1),-0.11,-0.08,deck,{cast:false});
@@ -331,7 +344,8 @@ site:function(E){
   const nb=[[LX0-3.2,3,5.6,8,6.8],[LX0-9.5,3,5.5,8,6.2],[LX1+3.2,3,5,8,7],[LX1+9.5,3,5.4,8,6.4],[-0.5,-8.5,6,7,6.6],[6,-8.5,5.5,7,7.2]];   // neighbours left, right and behind
   nb.forEach(function(n){ bx(ground,n[0]-n[2]/2,n[0]+n[2]/2,n[1]-n[3]/2+3,n[1]+n[3]/2+3,-0.3,n[4],M.ext); });
   /* smart lock keypad beside the front door */
-  bx(ground,WX(0,220),WX(0,228),VZ,VZ+0.02,1.2,1.32,lam(0x1b1d20,{roughness:0.3}),{cast:false}); bx(ground,WX(0,222),WX(0,226),VZ+0.02,VZ+0.023,1.27,1.3,lam(0x9fd6ff,{emissive:0x4aa8e8}),{cast:false});
+  const VZ=WZ(0,790)+TE/2;
+  bx(ground,WX(0,226),WX(0,234),VZ,VZ+0.02,1.2,1.32,lam(0x1b1d20,{roughness:0.3}),{cast:false}); bx(ground,WX(0,228),WX(0,232),VZ+0.02,VZ+0.023,1.27,1.3,lam(0x9fd6ff,{emissive:0x4aa8e8}),{cast:false});
 })();
 },
 layout:function(E){
