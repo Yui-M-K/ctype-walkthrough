@@ -358,7 +358,7 @@ return [
   ['catBed','catBed',1,573.5,540,'W',function(){ return Catalog.catBed(1.95,'tabby'); }],['catC','catStep',1,573.5,590,'W',function(){ return Catalog.catStep(1.98); }],
   ['cat','catGrey',1,470,795,'E'],['catBowls','catBowls',1,548,782,'E'],
   /* 2F dining (folding six-seat table on the north wall), robot vacuum docked by the TV; the litter box sits in the 1F hall */
-  ['fold1','foldTable',1,225,6.5,'S'],['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,247,'E'],['suitL','suit30P',0,390,285.5,'N'],['suitM','suit29B',0,442,285.5,'N'],['suitS','suit24P',0,488,285.5,'N'],['litter','litterRobot',1,40,812,'E'],['robot','robotVacuum',1,553,390,'W'],
+  ['fold1','foldTable',1,225,6.5,'S'],['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,247,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,40,812,'E'],['robot','robotVacuum',1,553,390,'W'],
   /* 2F kitchen: fridge and appliance cabinet on the back wall, bins at the end of the peninsula */
   ['fridge','fridgeL',1,538.5,42,'S'],['appl','applianceCabinet',1,451.5,30,'S'],['bins','binsDuo',1,320,205,'W'],
   /* 2F balcony */
@@ -416,11 +416,12 @@ fixture(1,Catalog.toilet(),WX(1,57),WZ(1,52),3); fixture(2,Catalog.toilet(),WX(2
 [[1,WX(1,115)-TI/2,WZ(1,95),2],[2,WX(2,115)-TI/2,WZ(2,95),2],[0,WX(0,0)+TE/2+0.015,WZ(0,415),0]].forEach(function(q){ fixture(q[0],Catalog.paperHolder(),q[1],q[2],q[3]); });   // every toilet: roll holder by the seat and a small sanitary bin
 [[1,WX(1,100),WZ(1,22),2],[2,WX(2,100),WZ(2,22),2],[0,WX(0,100),WZ(0,452),2]].forEach(function(q){ fixture(q[0],Catalog.sanitaryBin(),q[1],q[2],q[3]); });
 fixture(0,Catalog.wallFoldTable(1.0),WX(0,270)-TI/2,WZ(0,705),2);
-(function(){                                   // storage room south wall: suitcases parked on the floor under three wall-hung shelves of boxes
-  const x0=WX(0,355), x1=WX(0,512), zw=WZ(0,290)-TI/2, d=0.36, oc={cast:false}, boxC=[0xe9e4da,0xc9b79c,0x9fb0bf,0xd8cfc0,0xb8c7b0];
-  for(let x=x0+0.02;x<=x1;x+=0.52) bx(LG[0],x,x+0.02,zw-0.015,zw,0.82,2.3,M.steel,oc);
+(function(){                                   // storage room south wall: suitcases under wall-anchored shelves of light boxes with anti-fall rails; the cat rack in the corner stays clear in front
+  const x0=WX(0,398), x1=WX(0,512), zw=WZ(0,290)-TI/2, d=0.36, oc={cast:false}, boxC=[0xe9e4da,0xc9b79c,0x9fb0bf,0xd8cfc0,0xb8c7b0];
+  [x0+0.03,x1-0.05].forEach(function(x){ bx(LG[0],x,x+0.02,zw-0.015,zw,0.82,2.3,M.steel,oc); });
   [0.86,1.38,1.9].forEach(function(y,k){ bx(LG[0],x0,x1,zw-d,zw,y,y+0.025,M.cabF);
-    for(let i=0;i<4;i++){ const a=x0+0.03+i*(x1-x0-0.04)/4, b=a+(x1-x0-0.04)/4-0.03; bx(LG[0],a,b,zw-d+0.03,zw-0.02,y+0.025,y+0.3+0.04*((i+k)%2),lam(boxC[(i+k)%5],{roughness:0.8}),oc);
+    bx(LG[0],x0,x1,zw-d,zw-d+0.012,y+0.06,y+0.075,M.steel,oc);   // anti-fall rail
+    for(let i=0;i<3;i++){ const a=x0+0.03+i*(x1-x0-0.04)/3, b=a+(x1-x0-0.04)/3-0.03; bx(LG[0],a,b,zw-d+0.03,zw-0.02,y+0.025,y+0.3+0.04*((i+k)%2),lam(boxC[(i+k)%5],{roughness:0.8}),oc);
       bx(LG[0],(a+b)/2-0.05,(a+b)/2+0.05,zw-d+0.025,zw-d+0.03,y+0.13,y+0.17,lam(0xffffff),oc); } });
 })();
 (function(){                                   // 1F hall gallery: floating walnut console with under-glow, vase and books, a runner, cove light along the east wall
