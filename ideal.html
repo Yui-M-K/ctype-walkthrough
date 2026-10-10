@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261011l">
+<link rel="stylesheet" href="lib/storeys.css?v=20261011m">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,13 +67,13 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261011l"></script>
-<script src="lib/furniture.js?v=20261011l"></script>
-<script src="lib/catalog.js?v=20261011l"></script>
-<script src="lib/look.js?v=20261011l"></script>
-<script src="lib/perf.js?v=20261011l"></script>
-<script src="lib/finish.js?v=20261011l"></script>
-<script src="lib/storeys.js?v=20261011l"></script>
+<script src="lib/people.js?v=20261011m"></script>
+<script src="lib/furniture.js?v=20261011m"></script>
+<script src="lib/catalog.js?v=20261011m"></script>
+<script src="lib/look.js?v=20261011m"></script>
+<script src="lib/perf.js?v=20261011m"></script>
+<script src="lib/finish.js?v=20261011m"></script>
+<script src="lib/storeys.js?v=20261011m"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -416,6 +416,8 @@ fixtures:function(E){
   fixture(2,Catalog.handBasin(),WX(2,0)+TE/2,WZ(2,160),0);
 })();
 fixture(1,Catalog.toilet(),WX(1,57),WZ(1,52),3); fixture(2,Catalog.toilet(),WX(2,57),WZ(2,52),3);
+[[1,WX(1,115)-TI/2,WZ(1,95),2],[2,WX(2,115)-TI/2,WZ(2,95),2],[0,WX(0,0)+TE/2+0.015,WZ(0,415),0]].forEach(function(q){ fixture(q[0],Catalog.paperHolder(),q[1],q[2],q[3]); });   // every toilet: roll holder by the seat and a small sanitary bin
+[[1,WX(1,100),WZ(1,22),2],[2,WX(2,100),WZ(2,22),2],[0,WX(0,100),WZ(0,452),2]].forEach(function(q){ fixture(q[0],Catalog.sanitaryBin(),q[1],q[2],q[3]); });
 fixture(0,Catalog.wallFoldTable(1.0),WX(0,270)-TI/2,WZ(0,697),2);
 (function(){                                   // 1F hall gallery: floating walnut console with under-glow, vase and books, a runner, cove light along the east wall
   const xe=WX(0,270)-TI/2, zc=WZ(0,505), wal=lam(0x6a4732,{roughness:0.42}), glow=new THREE.MeshBasicMaterial({color:0xffdcaa}), oc={cast:false};
