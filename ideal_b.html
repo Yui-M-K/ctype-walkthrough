@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261012l">
+<link rel="stylesheet" href="lib/storeys.css?v=20261012m">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261012l"></script>
-<script src="lib/furniture.js?v=20261012l"></script>
-<script src="lib/catalog.js?v=20261012l"></script>
-<script src="lib/look.js?v=20261012l"></script>
-<script src="lib/houses.js?v=20261012l"></script>
-<script src="lib/perf.js?v=20261012l"></script>
-<script src="lib/finish.js?v=20261012l"></script>
-<script src="lib/storeys.js?v=20261012l"></script>
+<script src="lib/people.js?v=20261012m"></script>
+<script src="lib/furniture.js?v=20261012m"></script>
+<script src="lib/catalog.js?v=20261012m"></script>
+<script src="lib/look.js?v=20261012m"></script>
+<script src="lib/houses.js?v=20261012m"></script>
+<script src="lib/perf.js?v=20261012m"></script>
+<script src="lib/finish.js?v=20261012m"></script>
+<script src="lib/storeys.js?v=20261012m"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -125,9 +125,9 @@ rooms:[
   {l:1,x0:115,y0:225,x1:160,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},{l:1,x0:160,y0:170,x1:380,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},{l:1,x0:380,y0:490,x1:580,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},
   {l:1,x0:0,y0:850,x1:580,y1:940,n:'陽台',j:'曬衣・植物',w:'outside'},
   {l:2,x0:0,y0:0,x1:115,y1:150,n:'廁所',j:'3 樓・從洗面室進出',w:'wc'},
-  {l:2,x0:115,y0:0,x1:245,y1:165,n:'洗面室',j:'洗手台',w:'utility'},{l:2,x0:245,y0:0,x1:355,y1:130,n:'淋浴間',j:'淋浴',w:'bath'},
+  {l:2,x0:115,y0:0,x1:245,y1:150,n:'洗面室',j:'洗手台',w:'utility'},{l:2,x0:245,y0:0,x1:355,y1:130,n:'淋浴間',j:'淋浴',w:'bath'},
   {l:2,x0:0,y0:150,x1:115,y1:360,n:'階梯',j:'3 樓 ⇄ 2 樓',w:'hall'},{l:2,x0:0,y0:360,x1:115,y1:690,n:'階梯',j:'3 樓 ⇄ 2 樓',w:'hall'},
-  {l:2,x0:115,y0:165,x1:245,y1:690,n:'走廊',j:'廊下',w:'hall'},
+  {l:2,x0:115,y0:150,x1:245,y1:690,n:'走廊',j:'廊下',w:'hall'},
   {l:2,x0:355,y0:0,x1:580,y1:130,n:'書房',j:'約 6 帖・3D 列印機・日後可當小孩房',w:'mist'},{l:2,x0:245,y0:130,x1:580,y1:460,n:'書房',j:'約 6 帖・3D 列印機・日後可當小孩房',w:'mist'},
   {l:2,x0:245,y0:460,x1:580,y1:850,n:'主臥',j:'約 6.5 帖',w:'oat'},
   {l:2,x0:0,y0:690,x1:245,y1:850,n:'更衣間',j:'WIC',w:'dress'}
@@ -213,23 +213,20 @@ build:function(E){
   wall(2,580,0,580,850,TE,[{a:300,b:440},{a:600,b:760}]);
   wall(2,0,850,245,850,TE);
   wall(2,245,850,580,850,TE,[{a:260,b:560,sill:0.5,head:2.15}]);
-  /* 3F north (B): small toilet and a shower room, both off a powder room that opens to the hall through an arch; the study wraps round the shower */
+  /* 3F north (B): small toilet and a shower room, both off a powder room with its own door to the hall; the study wraps round the shower */
   wall(2,0,150,115,150,TI);
-  wall(2,115,0,115,165,TI,[{a:75,b:145,k:'door',hinge:'a',sw:-1}]);    // toilet door opens inward, clear of the seat
-  wall(2,115,165,245,165,TI,[{a:140,b:220,k:'open',head:2.1}]);
+  wall(2,115,0,115,150,TI,[{a:75,b:145,k:'door',hinge:'a',sw:-1}]);    // toilet door opens inward, clear of the seat
+  wall(2,115,150,245,150,TI,[{a:140,b:220,k:'door',hinge:'b',sw:-1}]);   // powder-room door opens inward, clear of the toilet door
   wall(2,245,0,245,130,TI,[{a:25,b:105,k:'slide',hinge:'b',face:-1,mat:M.frost}]);   // shower door slides along the powder-room side
   wall(2,245,130,355,130,TI); wall(2,355,0,355,130,TI);
   wall(2,245,130,245,460,TI,[{a:285,b:365,k:'door',hinge:'a',sw:1}]);
   wall(2,245,460,580,460,TI);
   wall(2,245,460,245,850,TI,[{a:482,b:562,k:'door',hinge:'a',sw:1}]);   // hinged at the corner so the open leaf folds back toward the headboard wall
-  (function(){ const b=base(2), x0=WX(2,140), x1=WX(2,220), r=(x1-x0)/2, sh=new THREE.Shape(); sh.moveTo(-r-0.001,0); sh.lineTo(r+0.001,0); sh.lineTo(r+0.001,r+0.03); sh.lineTo(-r-0.001,r+0.03); sh.closePath();
-    const hole=new THREE.Path(); hole.absarc(0,0,r,0,Math.PI,false); hole.lineTo(-r,0); sh.holes.push(hole);
-    const g=new THREE.ExtrudeGeometry(sh,{depth:TI+0.002,bevelEnabled:false,curveSegments:24}), m=new THREE.Mesh(g,M.trim); m.position.set((x0+x1)/2,b+2.1-r,WZ(2,165)-TI/2-0.001); m.receiveShadow=true; LG[2].add(m); })();
   wall(2,0,690,245,690,TI,[{a:145,b:240,k:'slide',hinge:'a',face:1}]);   // 95 cm closet door, parks inside the closet clear of the cubbies
   slab(2,0,0,580,360); slab(2,115,360,580,690); slab(2,0,690,580,850);
-  flr(2,0,0,115,150,FL.wc); flr(2,0,150,115,240,FL.wood); flr(2,115,0,245,165,FL.wc); flr(2,115,165,245,240,FL.wood); flr(2,245,0,355,130,FL.bath); flr(2,355,0,580,130,FL.wood); flr(2,245,130,580,240,FL.wood);
+  flr(2,0,0,115,150,FL.wc); flr(2,0,150,115,240,FL.wood); flr(2,115,0,245,150,FL.wc); flr(2,115,150,245,240,FL.wood); flr(2,245,0,355,130,FL.bath); flr(2,355,0,580,130,FL.wood); flr(2,245,130,580,240,FL.wood);
   flr(2,0,240,115,360,FL.wood); flr(2,115,240,245,690,FL.wood); flr(2,245,240,580,460,FL.wood); flr(2,245,460,580,850,FL.wood); flr(2,0,690,245,850,FL.woodD);
-  ceilingOf(2,0,0,115,150); ceilingOf(2,115,0,245,165); ceilingOf(2,115,165,245,240); ceilingOf(2,245,0,355,130); ceilingOf(2,355,0,580,130); ceilingOf(2,245,130,580,240); ceilingOf(2,0,150,115,360); ceilingOf(2,0,360,115,690);
+  ceilingOf(2,0,0,115,150); ceilingOf(2,115,0,245,150); ceilingOf(2,115,150,245,240); ceilingOf(2,245,0,355,130); ceilingOf(2,355,0,580,130); ceilingOf(2,245,130,580,240); ceilingOf(2,0,150,115,360); ceilingOf(2,0,360,115,690);
   ceilingOf(2,115,240,245,690); ceilingOf(2,245,240,580,460); ceilingOf(2,245,460,580,850); ceilingOf(2,0,690,245,850);
   /* facade: fine stucco (塗り壁) render, charcoal bands at each floor line, a stone plinth and a dark roof fascia */
   (function(){ const c=document.createElement('canvas'); c.width=c.height=512; const g=c.getContext('2d'), R=function(){ return Math.random(); };   // stucco: 1 m tile of fine grain, soft trowel arcs and faint mottling
