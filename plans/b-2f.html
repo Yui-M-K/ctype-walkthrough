@@ -479,7 +479,7 @@ ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; f
   <svg viewBox="-75 -70 735 1080" role="img" aria-label="提案 B3 二樓平面圖">
     <rect class="room" x="0" y="0" width="580" height="850"/>
     <rect class="wetroom" x="0" y="0" width="160" height="225"/>
-    <rect class="wetroom" x="160" y="0" width="220" height="225"/>
+    <rect class="wetroom" x="160" y="0" width="220" height="170"/>
     <rect class="wetroom" x="380" y="0" width="200" height="170"/>
     <rect class="void" x="0" y="335" width="110" height="325"/>
     <rect class="room" x="0" y="850" width="580" height="90" opacity=".7"/>
@@ -516,21 +516,22 @@ ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; f
       <rect x="-6.5" y="-6.5" width="593" height="13"/><rect x="-6.5" y="-6.5" width="13" height="863"/>
       <rect x="573.5" y="-6.5" width="13" height="863"/><rect x="-6.5" y="843.5" width="593" height="13"/>
       <rect x="-4.5" y="90.5" width="169" height="9"/>
-      <rect x="-4.5" y="220.5" width="389" height="9"/>
+      <rect x="-4.5" y="220.5" width="169" height="9"/>
+      <rect x="160" y="165.5" width="225" height="9"/>
       <rect x="155.5" y="0" width="9" height="229.5"/>
-      <rect x="375.5" y="0" width="9" height="229.5"/>
+      <rect x="375.5" y="0" width="9" height="174.5"/>
       <rect x="380" y="165.5" width="205" height="9"/>
       <rect x="110.5" y="335" width="9" height="335"/>
     </g>
     <!-- arch; sauna door swings out, toilet and bath doors fold -->
-    <rect x="230" y="219" width="90" height="12" class="room"/>
-    <path class="arch" d="M230 225 L230 221 M320 225 L320 221"/><text class="lbl2" x="275" y="247" style="fill:var(--wetInk)">拱門 900</text>
+    <rect x="230" y="164" width="90" height="12" class="room"/>
+    <path class="arch" d="M230 170 L230 166 M320 170 L320 166"/><text class="lbl2" x="275" y="192" style="fill:var(--wetInk)">拱門 900</text>
     <rect x="154" y="12" width="12" height="70" class="wetroom"/>
     <path class="leaf" d="M160 12 L178 29 L160 47 L178 64 L160 82" fill="none"/><text class="lbl2" x="190" y="100">摺疊門</text>
     <rect x="154" y="110" width="12" height="55" class="wetroom"/>
-    <line class="leaf" x1="160" y1="165" x2="215" y2="165"/><path class="swing" d="M215 165 A55 55 0 0 0 160 110"/><text class="lbl2" x="200" y="185">三溫暖門</text>
+    <line class="leaf" x1="160" y1="165" x2="215" y2="165"/><path class="swing" d="M215 165 A55 55 0 0 0 160 110"/><text class="lbl2" x="205" y="128">三溫暖門</text>
     <rect x="374" y="100" width="12" height="65" class="wetroom"/>
-    <path class="leaf" d="M380 100 L398 117 L380 133 L398 149 L380 165" fill="none"/><text class="lbl2" x="350" y="190">摺疊門</text>
+    <path class="leaf" d="M380 100 L398 117 L380 133 L398 149 L380 165" fill="none"/><text class="lbl2" x="352" y="112">摺疊門</text>
     <!-- windows -->
     <rect class="win" x="200" y="845" width="360" height="10"/><line class="leaf" x1="200" y1="850" x2="380" y2="850"/><rect class="win" x="25" y="845" width="70" height="10"/>
     <rect class="win" x="40" y="-5" width="70" height="10"/><rect class="win" x="430" y="-5" width="90" height="10"/><rect class="win" x="300" y="-5" width="70" height="10"/>
@@ -546,11 +547,11 @@ ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; f
     <path class="path" d="M57 327 L57 285 L230 285"/>
 
     <text class="lbl" x="480" y="125">浴室</text><text class="lbl2" x="480" y="152">2.0 × 1.7 m</text>
-    <text class="lbl" x="300" y="170">洗面室</text>
+    <text class="lbl" x="318" y="157">洗面室</text>
     <text class="lbl" x="100" y="78">廁所</text>
     <text class="lbl" x="160" y="300">平台</text><text class="lbl2" x="160" y="316">深 1.05 m</text>
     <text class="lbl" x="470" y="300">廚房</text>
-    <text class="lbl" x="200" y="420">餐廳・LDK</text><text class="lbl2" x="200" y="436">約 18.1 帖</text>
+    <text class="lbl" x="200" y="420">餐廳・LDK</text><text class="lbl2" x="200" y="436">約 18.8 帖</text>
     <text class="lbl" x="290" y="905">陽台</text>
 
     <g>
@@ -573,7 +574,7 @@ ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; f
         <li>從餐廳走進拱門，正前方是 100 cm 方形水槽洗手台，洗脫烘在旁邊。</li>
         <li>左手邊兩扇門：上面是廁所（摺疊門，北牆有窗），下面是三溫暖（往外開）。</li>
         <li>右手邊：浴室摺疊門，浴缸靠北牆，洗澡區在門口。</li>
-        <li>上樓後平台深 1.05 m，往東經過拱門前到餐廳。</li>
+        <li>洗面室南牆和浴室南牆對齊，拱門往北收 55 cm。拱門前和平台連成一條寬敞的走道，上樓後往東直接到餐廳。</li>
         <li>廚房：冰箱靠洗面室那面牆，家電櫃在東邊；垃圾桶做成流理台下的抽屜，在水槽和爐子之間。</li>
       </ul>
     </section>
@@ -581,11 +582,11 @@ ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; f
       <h2>尺寸</h2>
       <table>
         <tr><td>浴室</td><td class="n">2.0 × 1.7 m</td></tr>
-        <tr><td>洗面室</td><td class="n">2.2 × 2.25 m</td></tr>
+        <tr><td>洗面室</td><td class="n">2.2 × 1.7 m</td></tr>
         <tr><td>廁所</td><td class="n">內 1.5 × 0.85 m</td></tr>
         <tr><td>三溫暖房</td><td class="n">1.5 × 1.2 m</td></tr>
         <tr><td>樓梯平台</td><td class="n">深 1.05 m</td></tr>
-        <tr><td>LDK</td><td class="n">約 18.1 帖</td></tr>
+        <tr><td>LDK</td><td class="n">約 18.8 帖</td></tr>
       </table>
     </section>
     <section>
@@ -594,6 +595,7 @@ ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; f
         <li>只把下樓（往 1F）那段樓梯往南移 35 cm，上 3F 那段不動。1F 樓梯下端也會往南 35 cm，樓梯口到鞋櫃從 1.45 m 變成約 1.1 m。</li>
         <li>西側寬 1.6 m 剛好放得下三溫暖，廁所跟著變成 1.5 m 長，沒有多餘的收納。</li>
         <li>廁所門在洗手台左邊，門前約 50 cm，從洗面室中間轉進去。</li>
+        <li>三溫暖下半段（約 50 cm）會突出到拱門外的走道旁，外牆可以做成木格柵當裝飾。</li>
       </ul>
     </section>
   </aside>
