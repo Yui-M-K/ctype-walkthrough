@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261013w">
+<link rel="stylesheet" href="lib/storeys.css?v=20261013y">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261013w"></script>
-<script src="lib/furniture.js?v=20261013w"></script>
-<script src="lib/catalog.js?v=20261013w"></script>
-<script src="lib/look.js?v=20261013w"></script>
-<script src="lib/houses.js?v=20261013w"></script>
-<script src="lib/perf.js?v=20261013w"></script>
-<script src="lib/finish.js?v=20261013w"></script>
-<script src="lib/storeys.js?v=20261013w"></script>
+<script src="lib/people.js?v=20261013y"></script>
+<script src="lib/furniture.js?v=20261013y"></script>
+<script src="lib/catalog.js?v=20261013y"></script>
+<script src="lib/look.js?v=20261013y"></script>
+<script src="lib/houses.js?v=20261013y"></script>
+<script src="lib/perf.js?v=20261013y"></script>
+<script src="lib/finish.js?v=20261013y"></script>
+<script src="lib/storeys.js?v=20261013y"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -444,12 +444,11 @@ fixtures:function(E){
   })();
 })();
 (function(){                                   // 2F wet zone (B): bath (tub along the north at the west end, TV on the stone west wall), washroom, sauna room off the washroom
-  (function(){ const b=E.base(1), x0=WX(1,380)+TI/2, x1=WX(1,580)-TE/2, z0=WZ(1,0)+TE/2, z1=z0+0.78;   // 1.7 m tub against the west wall, a tiled ledge for bottles at its east end
-    fixture(1,Catalog.bathtub(1.7),x0+0.85,(z0+z1)/2,3);
-    bx(LG[1],x0+1.7,x1,z0,z1,b,b+0.55,lam(0xe8e1d6,{roughness:0.3})); addCol(1,x0+1.7,x1,z0,z1,b,b+0.55,'f'); })();
+  (function(){ const b=E.base(1), x0=WX(1,380)+TI/2, x1=WX(1,580)-TE/2, z0=WZ(1,0)+TE/2, z1=z0+0.78;   // 1.7 m tub against the west wall, its moulded ledge running on to the east wall
+    fixture(1,Catalog.bathtub(1.7,x1-x0-1.7,-1),x0+0.85,(z0+z1)/2,3); })();
   (function(){ const b=E.base(1), xw=WX(1,380)+TI/2;   // waterproof TV on the stone wall at the tub's end
-    bx(LG[1],xw+0.012,xw+0.052,WZ(1,16),WZ(1,74),b+1.05,b+1.39,lam(0x1c1e21,{roughness:0.4}));
-    bx(LG[1],xw+0.052,xw+0.054,WZ(1,18),WZ(1,72),b+1.07,b+1.37,new THREE.MeshStandardMaterial({color:0x06080c,roughness:0.06,metalness:0.3,envMapIntensity:1.5}),{cast:false});
+    bx(LG[1],xw+0.012,xw+0.052,WZ(1,16),WZ(1,74),b+0.82,b+1.16,lam(0x1c1e21,{roughness:0.4}));
+    bx(LG[1],xw+0.052,xw+0.054,WZ(1,18),WZ(1,72),b+0.84,b+1.14,new THREE.MeshStandardMaterial({color:0x06080c,roughness:0.06,metalness:0.3,envMapIntensity:1.5}),{cast:false});
   })();
   (function(){ const b=E.base(1), x0=WX(1,380)+TI/2, x1=WX(1,580)-TE/2, z0=WZ(1,0)+TE/2, z1=WZ(1,190)-TI/2, oc={cast:false}, e=0.004;   // bath finish, all stone: greige round the tub, travertine-look 60 x 120 tiles elsewhere, charcoal floor, a cove over the tub, shelves on the south wall
     const tiles=function(base,line,vein,cols,rows,n){ const c=document.createElement('canvas'); c.width=c.height=512; const g=c.getContext('2d'); g.fillStyle=base; g.fillRect(0,0,512,512);
