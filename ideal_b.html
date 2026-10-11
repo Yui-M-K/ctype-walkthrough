@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261012z">
+<link rel="stylesheet" href="lib/storeys.css?v=20261013a">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261012z"></script>
-<script src="lib/furniture.js?v=20261012z"></script>
-<script src="lib/catalog.js?v=20261012z"></script>
-<script src="lib/look.js?v=20261012z"></script>
-<script src="lib/houses.js?v=20261012z"></script>
-<script src="lib/perf.js?v=20261012z"></script>
-<script src="lib/finish.js?v=20261012z"></script>
-<script src="lib/storeys.js?v=20261012z"></script>
+<script src="lib/people.js?v=20261013a"></script>
+<script src="lib/furniture.js?v=20261013a"></script>
+<script src="lib/catalog.js?v=20261013a"></script>
+<script src="lib/look.js?v=20261013a"></script>
+<script src="lib/houses.js?v=20261013a"></script>
+<script src="lib/perf.js?v=20261013a"></script>
+<script src="lib/finish.js?v=20261013a"></script>
+<script src="lib/storeys.js?v=20261013a"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -135,7 +135,7 @@ rooms:[
 /* accent walls: TV wall in the living room (sage), head wall of the bedroom (mist), north wall of the study (peach) */
 accents:[{l:1,x0:560,x1:575,y0:250,y1:850,w:'sage'},{l:2,x0:245,x1:580,y0:465,y1:480,w:'mist'}],
 /* curtains: [storey, wall side, a, b, wall line, auto] — the master bedroom's follow the time of day (smart home) */
-curtains:[[0,'W',55,245,0,false,{color:0xf7f3ec,tie:true}],[1,'S',200,560,850],[2,'N',380,540,0],[2,'S',260,560,850,true],[2,'E',600,760,580,true],[2,'E',300,440,580]],
+curtains:[[0,'W',55,245,0,false,{color:0xf7f3ec,tie:true}],[1,'S',240,560,850],[2,'N',380,540,0],[2,'S',260,560,850,true],[2,'E',600,760,580,true],[2,'E',300,440,580]],
 /* teleport spots: [name, plan x, plan y, storey, view, yaw, (pitch)] */
 spots:[['玄關',172,1150,0,0,0],['鏡子房',60,250,0,0,-Math.PI*0.4],['緣側',-45,150,0,0,Math.PI/2],['庭院',-60,330,0,0,Math.PI*0.92,-0.12],['車庫',425,990,0,0,0],['LDK',200,600,1,1,-Math.PI/2],['廚房',450,310,1,1,Math.PI,-0.2],['陽台',290,830,1,1,0],['浴室',480,140,1,1,0,-0.3],['洗面室・三溫暖',300,150,1,1,0.4,-0.15],['洗面室（3F）',180,130,2,2,0,-0.2],['主臥',300,720,2,2,-Math.PI*0.25,-0.2],['書房',300,380,2,2,-Math.PI/2],['更衣間',180,710,2,2,Math.PI*0.9,-0.15]],
 /* furniture that exists only in layout 1 */
@@ -184,7 +184,7 @@ build:function(E){
   wall(1,0,0,580,0,TE,[{a:320,b:370,sill:1.5,head:2.0,frost:true},{a:430,b:550,sill:1.5,head:2.1,frost:true}]);
   wall(1,0,0,0,850,TE,[{a:150,b:205,sill:1.4,head:2.0,frost:true},{a:555,b:615,sill:1.5,head:2.3}]);
   wall(1,580,0,580,850,TE,[{a:80,b:150,sill:1.5,head:2.1,frost:true}]);
-  wall(1,0,850,580,850,TE,[{a:25,b:95,sill:1.0},{a:200,b:560,k:'slide2',mat:M.glass,head:2.15,screen:1}]);
+  wall(1,0,850,580,850,TE,[{a:240,b:560,k:'slide2',mat:M.glass,head:2.15,screen:1}]);
   /* B: the wet zone sits on 2F: sauna and toilet on the stair side, an open washroom in the middle, bath over the kitchen */
   wall(1,160,0,160,130,TI,[{a:5,b:125,k:'open',head:1.95}]);   // the sauna cabin's glass front fills this opening
   wall(1,160,130,160,225-TI*50,TI,[{a:155,b:220,k:'door',hinge:'a',sw:1}]);   // toilet door at the corner, opens out into the washroom (an inward swing leaves no room to close it)
@@ -390,11 +390,12 @@ layout:function(E){
   const {Catalog}=E;
 /* default furnishing: [id, type, storey, plan x, plan y, facing N/E/S/W, (make)] — everything here is movable in edit mode */
 return [
-  /* 2F living: corridor along the stair wall from the stair top to flight B; TV wall with the cat walkway on the east */
+  /* 2F living: corridor along the stair wall from the stair top to flight B; TV and clock on the east wall, cat walkway on the south wall beside the balcony door */
   ['tv','tv86',1,553,660,'W',function(){ return Catalog.tvBoard(86,0.16); }],['sofa','reclinerSofa',1,310,660,'E'],['lift','liftTable',1,420,720,'E'],['rugL','rugRound',1,420,720,'E'],['lampL','floorLamp',1,175,800,'E'],['massage','massageChair',1,300,470,'E'],
   ['map','worldMap',1,119.5,560,'E'],
-  ['catA','catStep',1,573.5,540,'W',function(){ return Catalog.catStep(1.85); }],['catHouse','catHouse',1,573.5,595,'W',function(){ return Catalog.catHouse(1.95); }],['catB','catStep',1,573.5,650,'W',function(){ return Catalog.catStep(2.0); }],
-  ['catBed','catBed',1,573.5,705,'W',function(){ return Catalog.catBed(2.05,'tabby'); }],['catC','catStep',1,573.5,760,'W',function(){ return Catalog.catStep(2.1); }],
+  ['clock','wallClock',1,573.5,660,'W'],
+  ['catA','catStep',1,220,843.5,'N',function(){ return Catalog.catStep(1.85); }],['catHouse','catHouse',1,175,843.5,'N',function(){ return Catalog.catHouse(1.95); }],['catB','catStep',1,130,843.5,'N',function(){ return Catalog.catStep(2.0); }],
+  ['catBed','catBed',1,85,843.5,'N',function(){ return Catalog.catBed(2.05,'tabby'); }],['catC','catStep',1,40,843.5,'N',function(){ return Catalog.catStep(2.1); }],
   ['cat','catGrey',1,160,740,'E'],['catBowls','catBowls',1,558,515,'W'],
   /* 2F dining (folding six-seat table on the north wall), robot vacuum docked by the TV; the litter box sits in the 1F hall */
   ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,247,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,40,812,'E'],['robot','robotVacuum',1,565.5,700,'W'],
