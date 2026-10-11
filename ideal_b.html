@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261012v">
+<link rel="stylesheet" href="lib/storeys.css?v=20261012w">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261012v"></script>
-<script src="lib/furniture.js?v=20261012v"></script>
-<script src="lib/catalog.js?v=20261012v"></script>
-<script src="lib/look.js?v=20261012v"></script>
-<script src="lib/houses.js?v=20261012v"></script>
-<script src="lib/perf.js?v=20261012v"></script>
-<script src="lib/finish.js?v=20261012v"></script>
-<script src="lib/storeys.js?v=20261012v"></script>
+<script src="lib/people.js?v=20261012w"></script>
+<script src="lib/furniture.js?v=20261012w"></script>
+<script src="lib/catalog.js?v=20261012w"></script>
+<script src="lib/look.js?v=20261012w"></script>
+<script src="lib/houses.js?v=20261012w"></script>
+<script src="lib/perf.js?v=20261012w"></script>
+<script src="lib/finish.js?v=20261012w"></script>
+<script src="lib/storeys.js?v=20261012w"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -388,7 +388,7 @@ layout:function(E){
 /* default furnishing: [id, type, storey, plan x, plan y, facing N/E/S/W, (make)] — everything here is movable in edit mode */
 return [
   /* 2F living: corridor along the stair wall from the stair top to flight B; TV wall with the cat walkway on the east */
-  ['tv','tv86',1,553,660,'W',function(){ return Catalog.tvBoard(86,0.16); }],['sofa','reclinerSofa',1,310,660,'E'],['lift','liftTable',1,420,720,'E'],['rugL','rugRound',1,420,720,'E'],['lampL','floorLamp',1,175,800,'E'],['massage','massageChair',1,298,465,'E',function(){ const p=Catalog.massageChair(); p.group.scale.z=1.2; p.cols.length=0; p.cols.push({x0:-0.65,x1:0.67,z0:-0.5,z1:0.5,kind:'f'}); return p; }],
+  ['tv','tv86',1,553,660,'W',function(){ return Catalog.tvBoard(86,0.16); }],['sofa','reclinerSofa',1,310,660,'E'],['lift','liftTable',1,420,720,'E'],['rugL','rugRound',1,420,720,'E'],['lampL','floorLamp',1,175,800,'E'],['massage','massageChair',1,268,465,'E',function(){ const p=Catalog.massageChair(); p.group.scale.z=1.2; p.cols.length=0; p.cols.push({x0:-0.65,x1:0.67,z0:-0.5,z1:0.5,kind:'f'}); return p; }],
   ['map','worldMap',1,119.5,560,'E'],
   ['catA','catStep',1,573.5,540,'W',function(){ return Catalog.catStep(1.85); }],['catHouse','catHouse',1,573.5,595,'W',function(){ return Catalog.catHouse(1.95); }],['catB','catStep',1,573.5,650,'W',function(){ return Catalog.catStep(2.0); }],
   ['catBed','catBed',1,573.5,705,'W',function(){ return Catalog.catBed(2.05,'tabby'); }],['catC','catStep',1,573.5,760,'W',function(){ return Catalog.catStep(2.1); }],
@@ -396,7 +396,7 @@ return [
   /* 2F dining (folding six-seat table on the north wall), robot vacuum docked by the TV; the litter box sits in the 1F hall */
   ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,247,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,40,812,'E'],['robot','robotVacuum',1,565.5,700,'W'],
   /* 2F kitchen: appliance cabinet and fridge against the bath wall, bins at the sink end of the peninsula */
-  ['fridge','fridgeL',1,538.5,230,'S'],['appl','applianceCabinet',1,450,217,'S'],['bins','binsDuo',1,334,352,'N'],
+  ['fridge','fridgeL',1,538.5,230,'S'],['appl','applianceCabinet',1,450,217,'S'],['bins','binsDuo',1,304,352,'N'],
   /* 2F balcony */
   ['plantB1','plant',1,495,895,'E'],['plantB2','plantS',1,553,895,'E'],
   /* garden BBQ deck */
@@ -423,10 +423,19 @@ fixtures:function(E){
   const {CH,Catalog,LG,M,TE,TI,WX,WZ,addCol,bx,doors,fab,fixture,furnAnims,furnThings,lam,toast}=E;
 /* built-in fixtures (part of the building): kitchen, bath, toilets, charger, cameras, mirror room */
 (function(){                                   // kitchen: one peninsula with the sink, dishwasher and IH hob, facing the living room
-  const X0=WX(1,383.5), Z0=WZ(1,365);
-  fixture(1,Catalog.sinkCounter(1.9,0.9,[0.1,0.7,0.1,0.5],[{k:'fill',w:0.05},{k:'sink',w:0.75},{k:'dw',w:0.45},{k:'drawers',w:0.6},{k:'fill',w:0.05}]),X0,Z0,0);   // 1.9 m so the massage chair fits at its west end
+  const X0=WX(1,353.5), Z0=WZ(1,365);
+  fixture(1,Catalog.sinkCounter(2.2,0.9,[0.1,0.7,0.1,0.5],[{k:'fill',w:0.05},{k:'sink',w:0.75},{k:'dw',w:0.45},{k:'fill',w:0.1},{k:'drawers',w:0.6},{k:'fill',w:0.25}]),X0,Z0,0);   // 2.2 m: the massage chair sits just west of it
   fixture(1,Catalog.mixerTap(),X0+0.4,Z0+0.565,0); fixture(1,Catalog.dishSoap(),X0+0.1,Z0+0.62,0);
-  fixture(1,Catalog.ihHob(),WX(1,538.5),WZ(1,410),0); fixture(1,Catalog.rangeHood(CH),WX(1,538.5),WZ(1,410),0); fixture(1,Catalog.seasoningTray(),X0+1.0,Z0+0.72,0);
+  fixture(1,Catalog.ihHob(),WX(1,518.5),WZ(1,410),0); fixture(1,Catalog.rangeHood(CH),WX(1,518.5),WZ(1,410),0); fixture(1,Catalog.seasoningTray(),X0+1.0,Z0+0.72,0);
+  (function(){ const b=E.base(1), xw=WX(1,580)-TE/2, x0=xw-0.2, z0=WZ(1,377), z1=WZ(1,443), y0=b+0.88, wht=lam(0xf4f4f2,{roughness:0.4});   // three-tier white spice rack on the worktop against the wall, left of the hob
+    [[x0,z0],[x0,z1-0.02],[xw-0.02,z0],[xw-0.02,z1-0.02]].forEach(function(q){ bx(LG[1],q[0],q[0]+0.02,q[1],q[1]+0.02,y0,y0+0.62,wht); });
+    const cols=[0x8a4b2a,0xc9a14a,0x6b7d3a,0xb5452f,0xe8e2d0,0x4a3a2a,0xd98a2b];
+    [0.02,0.22,0.42,0.6].forEach(function(h,k){ bx(LG[1],x0,xw,z0,z1,y0+h,y0+h+0.015,wht); if(k===3) return;
+      const n=k?7:5, r=k?0.024:0.034, hh=k?0.1:0.16;
+      for(let i=0;i<n;i++){ const z=z0+0.05+i*(z1-z0-0.1)/(n-1), x=x0+0.1, y=y0+h+0.015;
+        const jar=new THREE.Mesh(new THREE.CylinderGeometry(r,r,hh,14),lam(cols[(i+k*2)%cols.length],{roughness:0.5})); jar.position.set(x,y+hh/2,z); jar.castShadow=true; LG[1].add(jar);
+        const cap=new THREE.Mesh(new THREE.CylinderGeometry(r*1.04,r*1.04,0.02,14),M.steel); cap.position.set(x,y+hh+0.01,z); LG[1].add(cap); } });
+  })();
 })();
 (function(){                                   // 2F wet zone (B): bath (tub wall to wall along the north, TV on the oak west wall), washroom, sauna room off the washroom
   (function(){ const b=E.base(1), x0=WX(1,380)+TI/2, x1=WX(1,580)-TE/2, z0=WZ(1,0)+TE/2, z1=z0+0.78;   // 1.7 m tub against the east wall, a tiled ledge for bottles at its west end
