@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261012j">
+<link rel="stylesheet" href="lib/storeys.css?v=20261012l">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261012j"></script>
-<script src="lib/furniture.js?v=20261012j"></script>
-<script src="lib/catalog.js?v=20261012j"></script>
-<script src="lib/look.js?v=20261012j"></script>
-<script src="lib/houses.js?v=20261012j"></script>
-<script src="lib/perf.js?v=20261012j"></script>
-<script src="lib/finish.js?v=20261012j"></script>
-<script src="lib/storeys.js?v=20261012j"></script>
+<script src="lib/people.js?v=20261012l"></script>
+<script src="lib/furniture.js?v=20261012l"></script>
+<script src="lib/catalog.js?v=20261012l"></script>
+<script src="lib/look.js?v=20261012l"></script>
+<script src="lib/houses.js?v=20261012l"></script>
+<script src="lib/perf.js?v=20261012l"></script>
+<script src="lib/finish.js?v=20261012l"></script>
+<script src="lib/storeys.js?v=20261012l"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -118,11 +118,11 @@ rooms:[
   {l:0,x0:0,y0:700,x1:115,y1:790,n:'玄關',j:'鞋櫃',w:'hall'},{l:0,x0:115,y0:700,x1:270,y1:790,n:'玄關',j:'土間',w:'hall'},{l:0,x0:0,y0:790,x1:270,y1:850,n:'玄關門廊',j:'ポーチ（直通車庫）',w:'outside'},
   {l:0,x0:310,y0:290,x1:580,y1:850,n:'車庫',j:'Model 3＋充電樁',w:'outside'},{l:0,x0:270,y0:300,x1:310,y1:850,n:'車庫',j:'Model 3＋充電樁',w:'outside'},{l:0,x0:-90,y0:-10,x1:0,y1:310,n:'緣側',j:'縁側',w:'outside'},
   {l:1,x0:0,y0:0,x1:160,y1:130,n:'三溫暖',j:'1.5 × 1.2 m・從洗面室進出',w:'utility'},{l:1,x0:0,y0:130,x1:160,y1:225,n:'廁所',j:'2 樓・從洗面室進出',w:'wc'},
-  {l:1,x0:160,y0:0,x1:380,y1:170,n:'洗面室',j:'洗面・脫衣・洗衣',w:'utility'},{l:1,x0:160,y0:170,x1:230,y1:225,n:'洗面室',j:'洗面・脫衣・洗衣',w:'utility'},
+  {l:1,x0:160,y0:0,x1:380,y1:170,n:'洗面室',j:'開放式・洗面・洗衣',w:'utility'},
   {l:1,x0:0,y0:225,x1:115,y1:335,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓',w:'hall'},{l:1,x0:0,y0:335,x1:115,y1:690,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓',w:'hall'},{l:1,x0:0,y0:690,x1:115,y1:850,n:'階梯',j:'2 樓 → 3 樓',w:'hall'},
   {l:1,x0:380,y0:0,x1:580,y1:170,n:'浴室',j:'浴缸＋淋浴',w:'bath'},
   {l:1,x0:380,y0:170,x1:580,y1:490,n:'廚房',j:'LDK',w:'oat'},
-  {l:1,x0:115,y0:225,x1:230,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},{l:1,x0:230,y0:170,x1:380,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},{l:1,x0:380,y0:490,x1:580,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},
+  {l:1,x0:115,y0:225,x1:160,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},{l:1,x0:160,y0:170,x1:380,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},{l:1,x0:380,y0:490,x1:580,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},
   {l:1,x0:0,y0:850,x1:580,y1:940,n:'陽台',j:'曬衣・植物',w:'outside'},
   {l:2,x0:0,y0:0,x1:115,y1:150,n:'廁所',j:'3 樓・從洗面室進出',w:'wc'},
   {l:2,x0:115,y0:0,x1:245,y1:165,n:'洗面室',j:'洗手台',w:'utility'},{l:2,x0:245,y0:0,x1:355,y1:130,n:'淋浴間',j:'淋浴',w:'bath'},
@@ -185,22 +185,18 @@ build:function(E){
   wall(1,0,0,0,850,TE,[{a:150,b:205,sill:1.4,head:2.0,frost:true},{a:555,b:615,sill:1.5,head:2.3}]);
   wall(1,580,0,580,850,TE,[{a:80,b:150,sill:1.5,head:2.1,frost:true}]);
   wall(1,0,850,580,850,TE,[{a:25,b:95,sill:1.0},{a:200,b:560,k:'slide2',mat:M.glass,head:2.15,screen:1}]);
-  /* B: the wet zone sits on 2F: sauna and toilet on the stair side, washroom in the middle, bath over the kitchen; every door opens off the washroom */
+  /* B: the wet zone sits on 2F: sauna and toilet on the stair side, an open washroom in the middle, bath over the kitchen */
   wall(1,160,0,160,130,TI,[{a:5,b:125,k:'open',head:1.95}]);   // the sauna cabin's glass front fills this opening
-  wall(1,160,130,160,225,TI,[{a:135,b:200,k:'door',hinge:'b',sw:-1}]);   // toilet door opens inward, reached through a short passage off the washroom
+  wall(1,160,130,160,225,TI,[{a:135,b:200,k:'door',hinge:'b',sw:-1}]);   // toilet door opens inward
   wall(1,0,130,160,130,TI);
-  wall(1,0,225,230,225,TI); wall(1,230,170,230,225,TI);
-  wall(1,230,170,380,170,TI,[{a:250,b:340,k:'open',head:2.1}]);     // arched opening from the LDK into the washroom (header below)
+  wall(1,0,225,160,225,TI);
   wall(1,380,0,380,170,TI,[{a:95,b:165,k:'door',fold:1,hinge:'b',sw:1,mat:M.frost}]);   // bi-fold bath door, folding into the bath against its south wall
   wall(1,380,170,580,170,TI);
-  (function(){ const b=base(1), x0=WX(1,250), x1=WX(1,340), r=(x1-x0)/2, sh=new THREE.Shape(); sh.moveTo(-r-0.001,0); sh.lineTo(r+0.001,0); sh.lineTo(r+0.001,r+0.03); sh.lineTo(-r-0.001,r+0.03); sh.closePath();
-    const hole=new THREE.Path(); hole.absarc(0,0,r,0,Math.PI,false); hole.lineTo(-r,0); sh.holes.push(hole);
-    const g=new THREE.ExtrudeGeometry(sh,{depth:TI+0.002,bevelEnabled:false,curveSegments:24}), m=new THREE.Mesh(g,M.trim); m.position.set((x0+x1)/2,b+2.1-r,WZ(1,170)-TI/2-0.001); m.receiveShadow=true; LG[1].add(m); })();
   wall(1,115,335,115,670,TI);
   slab(1,0,0,580,335); slab(1,115,335,580,635); slab(1,0,635,580,850);
-  flr(1,0,225,115,335,FL.wood); flr(1,0,635,115,850,FL.wood); flr(1,0,0,160,130,FL.wc); flr(1,0,130,160,225,FL.wc); flr(1,160,0,380,170,FL.wc); flr(1,160,170,230,225,FL.wc); flr(1,380,0,580,170,FL.bath);
-  ldkFloors.push(flr(1,115,225,230,850,FL.wood),flr(1,230,170,580,850,FL.wood));
-  ceilingOf(1,0,225,115,360); ceilingOf(1,0,0,160,130); ceilingOf(1,0,130,160,225); ceilingOf(1,160,0,380,170); ceilingOf(1,160,170,230,225); ceilingOf(1,380,0,580,170); ceilingOf(1,115,225,230,850); ceilingOf(1,230,170,580,850); ceilingOf(1,0,690,115,850);
+  flr(1,0,225,115,335,FL.wood); flr(1,0,635,115,850,FL.wood); flr(1,0,0,160,130,FL.wc); flr(1,0,130,160,225,FL.wc); flr(1,160,0,380,170,FL.wc); flr(1,380,0,580,170,FL.bath);
+  ldkFloors.push(flr(1,115,225,160,850,FL.wood),flr(1,160,170,580,850,FL.wood));
+  ceilingOf(1,0,225,115,360); ceilingOf(1,0,0,160,130); ceilingOf(1,0,130,160,225); ceilingOf(1,160,0,380,170); ceilingOf(1,380,0,580,170); ceilingOf(1,115,225,160,850); ceilingOf(1,160,170,580,850); ceilingOf(1,0,690,115,850);
   /* balcony: 0.9 m deep across the whole front (also the canopy over the genkan and garage), 1.1 m glass rail */
   const bb=base(1), bx0=WX(1,0), bx1=WX(1,580), bz0=WZ(1,850), bz1=WZ(1,940);
   bx(LG[1],bx0-0.07,bx1+0.07,bz0,bz1+0.07,bb-SLAB,bb,M.slab); flr(1,0,855,580,940,FL.balc);
