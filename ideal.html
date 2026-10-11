@@ -338,13 +338,13 @@ site:function(E){
   bx(ground,GX1+0.13,GX1+0.27,LZ1+0.12,LZ1+0.135,1.15,1.29,lam(0x1b1d20,{roughness:0.3}),{cast:false}); bx(ground,GX1+0.17,GX1+0.23,LZ1+0.135,LZ1+0.14,1.22,1.26,lam(0x9fd6ff,{emissive:0x4aa8e8}),{cast:false});   // intercom by the gate
   (function(){ const x0=PX0+0.55, x1=GX0; for(let x=x0+0.02;x<x1-0.06;x+=0.1) bx(ground,x,x+0.07,LZ1-0.015,LZ1+0.015,0.05,1.25,fenceM);   // fixed slat panel, same as the gate leaves
     [0.2,1.1].forEach(function(y){ bx(ground,x0,x1,LZ1-0.045,LZ1-0.015,y-0.03,y+0.03,post); }); addCol(0,x0,x1,LZ1-0.05,LZ1+0.05,-0.3,1.25,'w'); })();
-  (function(){                                 // one wooden gate leaf hinged on the west pillar, opening into the lot
-    const w=(GX1-GX0)-0.01, mk=function(hx,sg){ const pv=new THREE.Group(); pv.userData.keep=true; pv.position.set(hx,0,LZ1); ground.add(pv);
+  (function(){                                 // one wooden gate leaf, in line with the fixed slat panel, opening into the lot
+    const w=(GX1-GX0)-0.08, mk=function(hx,sg){ const pv=new THREE.Group(); pv.userData.keep=true; pv.position.set(hx,0,LZ1); ground.add(pv);
       for(let x=0.02;x<w-0.04;x+=0.1){ const m=new THREE.Mesh(new THREE.BoxGeometry(0.07,1.2,0.03),fenceM); m.position.set(sg*(x+0.035),0.65,0); m.castShadow=true; pv.add(m); }
       [0.2,1.1].forEach(function(y){ const m=new THREE.Mesh(new THREE.BoxGeometry(w,0.06,0.03),post); m.position.set(sg*w/2,y,-0.03); pv.add(m); });
       [0.03,-0.06].forEach(function(z){ const h=new THREE.Mesh(new THREE.BoxGeometry(0.02,0.18,0.03),M.steel); h.position.set(sg*(w-0.05),0.9,z); pv.add(h); }); return pv; };
-    const L=mk(GX0+0.005,1); L.position.z=LZ1-0.06;
-    const col=addCol(0,GX0,GX1,LZ1-0.05,LZ1+0.05,-0.3,1.3,'d'), d={l:0,pv:L,th:Math.PI/2,open:false,t:0,col:col,mid:[(GX0+GX1)/2,LZ1],label:function(o){ return o?'關上門扉':'打開門扉'; }};
+    const L=mk(GX1-0.075,-1);   // hinged on the east pillar, so it swings away from the fixed slat panel
+    const col=addCol(0,GX0,GX1,LZ1-0.05,LZ1+0.05,-0.3,1.3,'d'), d={l:0,pv:L,th:-Math.PI/2,open:false,t:0,col:col,mid:[(GX0+GX1)/2,LZ1],label:function(o){ return o?'關上門扉':'打開門扉'; }};
     col.door=d; doors.push(d);
   })();
   (function(){                                 // telescopic (accordion) gate across the car apron, folds toward the east boundary
@@ -427,7 +427,7 @@ fixtures:function(E){
     const r=S.doorRect, b=E.base(2), x0=wx-r[3], x1=wx-r[2], z0=wz+r[0], z1=wz+r[1];
     const col=addCol(2,x0,x1,z0,z1,b,b+1.95,'d'), d={l:2,pv:S.doorPivot,th:Math.PI/2,open:false,t:0,col:col,mid:[(x0+x1)/2,(z0+z1)/2],label:function(o){ return o?'關上三溫暖門':'打開三溫暖門'; }};
     col.door=d; doors.push(d);
-    const b2=E.base(2), cedar=lam(0xd9b98a,{roughness:0.7}), bx0=WX(2,470), bx1=WX(2,560), bz1=WZ(2,240)-TI/2;   // cool-down bench (ととのい椅子) by the wall
+    const b2=E.base(2), cedar=lam(0xd9b98a,{roughness:0.7}), bx0=WX(2,505), bx1=WX(2,573), bz1=WZ(2,240)-TI/2;   // cool-down bench (ととのい椅子) by the wall
     for(let i=0;i<5;i++) bx(LG[2],bx0,bx1,bz1-0.4+i*0.08,bz1-0.4+i*0.08+0.065,b2+0.4,b2+0.43,cedar);
     [bx0+0.05,bx1-0.08].forEach(function(x){ bx(LG[2],x,x+0.03,bz1-0.38,bz1-0.02,b2,b2+0.4,lam(0x8a6a4c)); }); addCol(2,bx0,bx1,bz1-0.4,bz1,b2,b2+0.45,'f'); })();
   fixture(2,Catalog.bathWallSet(),WX(2,372),WZ(2,240)-TI/2,2);
