@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261013m">
+<link rel="stylesheet" href="lib/storeys.css?v=20261013n">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261013m"></script>
-<script src="lib/furniture.js?v=20261013m"></script>
-<script src="lib/catalog.js?v=20261013m"></script>
-<script src="lib/look.js?v=20261013m"></script>
-<script src="lib/houses.js?v=20261013m"></script>
-<script src="lib/perf.js?v=20261013m"></script>
-<script src="lib/finish.js?v=20261013m"></script>
-<script src="lib/storeys.js?v=20261013m"></script>
+<script src="lib/people.js?v=20261013n"></script>
+<script src="lib/furniture.js?v=20261013n"></script>
+<script src="lib/catalog.js?v=20261013n"></script>
+<script src="lib/look.js?v=20261013n"></script>
+<script src="lib/houses.js?v=20261013n"></script>
+<script src="lib/perf.js?v=20261013n"></script>
+<script src="lib/finish.js?v=20261013n"></script>
+<script src="lib/storeys.js?v=20261013n"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -189,8 +189,8 @@ build:function(E){
   wall(1,160,0,160,130,TI,[{a:5,b:125,k:'open',head:1.95}]);   // the sauna cabin's glass front fills this opening
   wall(1,160,130,160,225-TI*50,TI,[{a:150,b:210,k:'door',hinge:'b',sw:1}]);   // toilet door opens out, the leaf parking in the recess to the south so the way in stays clear (an inward swing leaves no room to close it)
   wall(1,0,130,160,130,TI);
-  wall(1,0,225,354+TI*50,225,TI,[{a:235,b:345,k:'open',head:2.1}]); wall(1,354,190+TI*50,354,225-TI*50,TI);   // washroom front flush with the toilet wall, stepping back to the bath line for the pantry; at corners one wall runs to the other's far face
-  (function(){ const b=base(1), x0=WX(1,235), x1=WX(1,345), r=(x1-x0)/2, sh=new THREE.Shape(); sh.moveTo(-r-0.001,0); sh.lineTo(r+0.001,0); sh.lineTo(r+0.001,r+0.03); sh.lineTo(-r-0.001,r+0.03); sh.closePath();
+  wall(1,0,225,354+TI*50,225,TI,[{a:205,b:315,k:'open',head:2.1}]); wall(1,354,190+TI*50,354,225-TI*50,TI);   // washroom front flush with the toilet wall, stepping back to the bath line for the pantry; at corners one wall runs to the other's far face
+  (function(){ const b=base(1), x0=WX(1,205), x1=WX(1,315), r=(x1-x0)/2, sh=new THREE.Shape(); sh.moveTo(-r-0.001,0); sh.lineTo(r+0.001,0); sh.lineTo(r+0.001,r+0.03); sh.lineTo(-r-0.001,r+0.03); sh.closePath();
     const hole=new THREE.Path(); hole.absarc(0,0,r,0,Math.PI,false); hole.lineTo(-r,0); sh.holes.push(hole);
     const g=new THREE.ExtrudeGeometry(sh,{depth:TI+0.002,bevelEnabled:false,curveSegments:24}), m=new THREE.Mesh(g,M.trim); m.position.set((x0+x1)/2,b+2.1-r,WZ(1,225)-TI/2-0.001); m.receiveShadow=true; LG[1].add(m); })();
   wall(1,380,0,380,190-TI*50,TI,[{a:105,b:175,k:'door',fold:1,hinge:'b',sw:1,mat:M.frost}]);   // bi-fold bath door, folding into the bath against its south wall
