@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261011x">
+<link rel="stylesheet" href="lib/storeys.css?v=20261011y">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261011x"></script>
-<script src="lib/furniture.js?v=20261011x"></script>
-<script src="lib/catalog.js?v=20261011x"></script>
-<script src="lib/look.js?v=20261011x"></script>
-<script src="lib/houses.js?v=20261011x"></script>
-<script src="lib/perf.js?v=20261011x"></script>
-<script src="lib/finish.js?v=20261011x"></script>
-<script src="lib/storeys.js?v=20261011x"></script>
+<script src="lib/people.js?v=20261011y"></script>
+<script src="lib/furniture.js?v=20261011y"></script>
+<script src="lib/catalog.js?v=20261011y"></script>
+<script src="lib/look.js?v=20261011y"></script>
+<script src="lib/houses.js?v=20261011y"></script>
+<script src="lib/perf.js?v=20261011y"></script>
+<script src="lib/finish.js?v=20261011y"></script>
+<script src="lib/storeys.js?v=20261011y"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -151,7 +151,7 @@ build:function(E){
   wall(0,0,300,310,300,TI,[{a:155,b:235,k:'door',hinge:'b',sw:-1}]);
   wall(0,115,300,115,600,TI,[{a:305,b:395,k:'slide'}]);   // powder room under the stair, entered from the hall
   wall(0,270,300,270,790,TI);
-  wall(0,310,0,310,300,TI,[{a:115,b:205,k:'slide'}]);   // storage room door
+  wall(0,310,0,310,300,TI,[{a:115,b:205,k:'slide',hinge:'b',face:-1}]);   // storage room door
   wall(0,310,290,580,290,TI);
   bx(LG[0],WX(0,0)-0.07,WX(0,115),WZ(0,0)-0.07,WZ(0,790),-SLAB,0,M.slab); bx(LG[0],WX(0,115),WX(0,270),WZ(0,0)-0.07,WZ(0,700),-SLAB,0,M.slab); bx(LG[0],WX(0,270),WX(0,310),WZ(0,0)-0.07,WZ(0,300),-SLAB,0,M.slab); bx(LG[0],WX(0,310),WX(0,580)+0.07,WZ(0,0)-0.07,WZ(0,290),-SLAB,0,M.slab);
   const GY=-0.27;                                                                                  // garage slab at grade (3 cm above the ground), so the car drives straight in
@@ -184,7 +184,7 @@ build:function(E){
   wall(1,580,0,580,850,TE,[{a:80,b:150,sill:1.1}]);
   wall(1,0,850,580,850,TE,[{a:25,b:95,sill:1.0},{a:200,b:560,k:'slide2',mat:M.glass,head:2.15,screen:1}]);
   wall(1,0,150,115,150,TI);
-  wall(1,115,0,115,150,TI,[{a:20,b:100,k:'door',hinge:'a',sw:-1}]);   // 2F toilet opens off the dining side, the seat facing the door
+  wall(1,115,0,115,150,TI,[{a:20,b:100,k:'door',hinge:'b',sw:1}]);   // 2F toilet opens off the dining side, the seat facing the door
   wall(1,115,300,115,670,TI);
   slab(1,0,0,580,300); slab(1,115,300,580,600); slab(1,0,600,580,850);
   flr(1,0,0,115,150,FL.wc); flr(1,0,150,115,300,FL.wood); flr(1,0,600,115,850,FL.wood);
@@ -212,13 +212,23 @@ build:function(E){
   wall(2,445,0,445,240,TI,[{a:165,b:235,k:'slide',mat:M.frost}]);
   wall(2,245,240,245,520,TI,[{a:285,b:365,k:'door',hinge:'a',sw:1}]);
   wall(2,245,520,580,520,TI);
-  wall(2,245,520,245,850,TI,[{a:530,b:610,k:'door',hinge:'a',sw:1}]);   // hinged at the corner so the open leaf folds back toward the headboard wall
+  wall(2,245,520,245,850,TI,[{a:542,b:622,k:'door',hinge:'a',sw:1}]);   // hinged at the corner so the open leaf folds back toward the headboard wall
   wall(2,0,690,245,690,TI,[{a:145,b:240,k:'slide',hinge:'a',face:1}]);   // 95 cm closet door, parks inside the closet clear of the cubbies
   slab(2,0,0,580,360); slab(2,115,360,580,690); slab(2,0,690,580,850);
   flr(2,0,0,115,240,FL.wc); flr(2,115,0,300,240,FL.wc); flr(2,300,0,445,240,FL.bath); flr(2,445,0,580,240,FL.wood);
   flr(2,0,240,115,360,FL.wood); flr(2,115,240,245,690,FL.wood); flr(2,245,240,580,520,FL.wood); flr(2,245,520,580,850,FL.wood); flr(2,0,690,245,850,FL.woodD);
   ceilingOf(2,0,0,115,240); ceilingOf(2,115,0,300,240); ceilingOf(2,300,0,445,240); ceilingOf(2,445,0,580,240); ceilingOf(2,0,240,115,360); ceilingOf(2,0,360,115,690);
   ceilingOf(2,115,240,245,690); ceilingOf(2,245,240,580,520); ceilingOf(2,245,520,580,850); ceilingOf(2,0,690,245,850);
+  /* facade: charcoal bands at each floor line and a stone plinth all round, a dark roof fascia, cedar cladding on the 3F street face */
+  (function(){ const X0=WX(0,0)-TE/2, X1=WX(0,580)+TE/2, Z0=WZ(0,0)-TE/2, Z1=WZ(0,850)+TE/2, d=0.018, band=lam(0x3b3e42,{roughness:0.55,metalness:0.15}), stone=lam(0x5a5752,{roughness:0.85}), oc={cast:false};
+    const ring=function(y0,y1,mt,zs,g){ const zb=zs===undefined?Z1:zs, G=g||LG[0]; bx(G,X0-d,X1+d,Z0-d,Z0,y0,y1,mt,oc); bx(G,X0-d,X0,Z0,zb,y0,y1,mt,oc); bx(G,X1,X1+d,Z0,zb,y0,y1,mt,oc); };
+    ring(-0.3,-0.02,stone,WZ(0,790)); bx(LG[0],X0-d,X0,WZ(0,790),Z1,-0.3,-0.02,stone,oc);                                    // plinth, west/north/east (the front is the porch and the garage mouth)
+    [1,2].forEach(function(l){ const y=base(l); ring(y-0.2,y-0.02,band,undefined,LG[l-1]); bx(LG[l-1],X0-d,X1+d,Z1,Z1+d,y-0.2,y-0.02,band,oc); });
+    const ry=base(2)+CH; [[X0-0.32,X1+0.32,Z0-0.32,Z0-0.3],[X0-0.32,X1+0.32,Z1+0.3,Z1+0.32],[X0-0.32,X0-0.3,Z0-0.3,Z1+0.3],[X1+0.3,X1+0.32,Z0-0.3,Z1+0.3]].forEach(function(r){ bx(LG[2],r[0],r[1],r[2],r[3],ry-0.02,ry+SLAB+0.07,band,oc); });
+    const b=base(2), cedar=lam(0xb07a4c,{roughness:0.7,map:M.oak.map||null}), xa=X0, xb=WX(2,245), wa=WX(2,30), wb=WX(2,100);   // vertical cedar boards, cut round the WIC window
+    for(let x=xa;x<xb-0.005;x+=0.105){ const x1=Math.min(x+0.09,xb); [[b,b+1.5],[b+2.0,b+CH]].forEach(function(r){ bx(LG[2],x,x1,Z1,Z1+0.02,r[0],r[1],cedar,oc); });
+      if(x1<=wa||x>=wb) bx(LG[2],x,x1,Z1,Z1+0.02,b+1.5,b+2.0,cedar,oc); }
+  })();
   /* roof */
   const ry=base(2)+CH; bx(LG[2],WX(2,0)-0.3,WX(2,580)+0.3,WZ(2,0)-0.3,WZ(2,850)+0.3,ry,ry+SLAB+0.05,M.roof);
 },
@@ -310,17 +320,20 @@ site:function(E){
   const capM=lam(0x6b6e72,{roughness:0.5,metalness:0.4}), lampM=lam(0xfff1d6,{emissive:0xffd9a0,emissiveIntensity:0.6});
   [[PX0,PX0+0.4],[GX1,PX1]].forEach(function(p){ bx(ground,p[0],p[1],LZ1-0.12,LZ1+0.12,-0.3,1.45,render); bx(ground,p[0],p[1],LZ1-0.13,LZ1+0.13,1.45,1.5,capM);
     bx(ground,p[0]+0.12,p[1]-0.12,LZ1-0.05,LZ1+0.05,1.5,1.62,lampM,{cast:false}); addCol(0,p[0],p[1],LZ1-0.12,LZ1+0.12,-0.3,1.45,'w'); });   // pillars with a lamp on each
-  bx(ground,PX0+0.06,PX0+0.34,LZ1+0.12,LZ1+0.14,0.7,1.0,lam(0x2a2d31,{roughness:0.4,metalness:0.3}),{cast:false});                                         // post box slot plate
+  (function(){ const x0=PX0+0.42, x1=x0+0.6, z0=LZ1-0.25, z1=LZ1+0.2, g=lam(0x3a3d41,{roughness:0.45,metalness:0.35}), ln=lam(0x24262a,{roughness:0.4}), oc={cast:false};   // 宅配ボックス built into the fence: mail slot on top, a large parcel locker below, keypad; collected from the lot side
+    bx(ground,x0,x1,z0,z1,-0.3,1.25,g); bx(ground,x0+0.04,x1-0.04,z1,z1+0.004,0.92,1.18,ln,oc); bx(ground,x0+0.12,x1-0.12,z1+0.004,z1+0.008,1.1,1.13,lam(0x9aa0a6,{metalness:0.8,roughness:0.3}),oc);
+    bx(ground,x0+0.04,x1-0.04,z1,z1+0.004,0.05,0.86,ln,oc); bx(ground,x1-0.12,x1-0.06,z1+0.004,z1+0.012,0.5,0.62,lam(0x111214,{roughness:0.2}),oc); bx(ground,x1-0.11,x1-0.07,z1+0.012,z1+0.013,0.58,0.6,lam(0x9fd6ff,{emissive:0x4aa8e8}),oc);
+    bx(ground,x0+0.06,x0+0.2,z1+0.004,z1+0.01,0.75,0.79,lam(0xe8e2d6),oc); addCol(0,x0,x1,z0,z1,-0.3,1.25,'w'); })();
   bx(ground,PX0+0.08,PX0+0.32,LZ1+0.12,LZ1+0.13,1.12,1.22,lam(0xc9a074,{roughness:0.5}),{cast:false});                                                       // house number
   bx(ground,GX1+0.13,GX1+0.27,LZ1+0.12,LZ1+0.135,1.15,1.29,lam(0x1b1d20,{roughness:0.3}),{cast:false}); bx(ground,GX1+0.17,GX1+0.23,LZ1+0.135,LZ1+0.14,1.22,1.26,lam(0x9fd6ff,{emissive:0x4aa8e8}),{cast:false});   // intercom by the gate
-  (function(){ const x0=PX0+0.4, x1=GX0; for(let x=x0+0.02;x<x1-0.06;x+=0.1) bx(ground,x,x+0.07,LZ1-0.015,LZ1+0.015,0.05,1.25,fenceM);   // fixed slat panel, same as the gate leaves
+  (function(){ const x0=PX0+0.4, x1=GX0; for(let x=x0+0.64;x<x1-0.06;x+=0.1) bx(ground,x,x+0.07,LZ1-0.015,LZ1+0.015,0.05,1.25,fenceM);   // fixed slat panel, same as the gate leaves
     [0.2,1.1].forEach(function(y){ bx(ground,x0,x1,LZ1-0.045,LZ1-0.015,y-0.03,y+0.03,post); }); addCol(0,x0,x1,LZ1-0.05,LZ1+0.05,-0.3,1.25,'w'); })();
   (function(){                                 // one wooden gate leaf hinged on the west pillar, opening into the lot
     const w=(GX1-GX0)-0.01, mk=function(hx,sg){ const pv=new THREE.Group(); pv.userData.keep=true; pv.position.set(hx,0,LZ1); ground.add(pv);
       for(let x=0.02;x<w-0.04;x+=0.1){ const m=new THREE.Mesh(new THREE.BoxGeometry(0.07,1.2,0.03),fenceM); m.position.set(sg*(x+0.035),0.65,0); m.castShadow=true; pv.add(m); }
       [0.2,1.1].forEach(function(y){ const m=new THREE.Mesh(new THREE.BoxGeometry(w,0.06,0.03),post); m.position.set(sg*w/2,y,-0.03); pv.add(m); });
       [0.03,-0.06].forEach(function(z){ const h=new THREE.Mesh(new THREE.BoxGeometry(0.02,0.18,0.03),M.steel); h.position.set(sg*(w-0.05),0.9,z); pv.add(h); }); return pv; };
-    const L=mk(GX0+0.005,1);
+    const L=mk(GX0+0.005,1); L.position.z=LZ1-0.06;
     const col=addCol(0,GX0,GX1,LZ1-0.05,LZ1+0.05,-0.3,1.3,'d'), d={l:0,pv:L,th:Math.PI/2,open:false,t:0,col:col,mid:[(GX0+GX1)/2,LZ1],label:function(o){ return o?'關上門扉':'打開門扉'; }};
     col.door=d; doors.push(d);
   })();
