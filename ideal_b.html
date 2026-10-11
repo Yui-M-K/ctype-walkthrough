@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261012m">
+<link rel="stylesheet" href="lib/storeys.css?v=20261012p">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261012m"></script>
-<script src="lib/furniture.js?v=20261012m"></script>
-<script src="lib/catalog.js?v=20261012m"></script>
-<script src="lib/look.js?v=20261012m"></script>
-<script src="lib/houses.js?v=20261012m"></script>
-<script src="lib/perf.js?v=20261012m"></script>
-<script src="lib/finish.js?v=20261012m"></script>
-<script src="lib/storeys.js?v=20261012m"></script>
+<script src="lib/people.js?v=20261012p"></script>
+<script src="lib/furniture.js?v=20261012p"></script>
+<script src="lib/catalog.js?v=20261012p"></script>
+<script src="lib/look.js?v=20261012p"></script>
+<script src="lib/houses.js?v=20261012p"></script>
+<script src="lib/perf.js?v=20261012p"></script>
+<script src="lib/finish.js?v=20261012p"></script>
+<script src="lib/storeys.js?v=20261012p"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -187,7 +187,7 @@ build:function(E){
   wall(1,0,850,580,850,TE,[{a:25,b:95,sill:1.0},{a:200,b:560,k:'slide2',mat:M.glass,head:2.15,screen:1}]);
   /* B: the wet zone sits on 2F: sauna and toilet on the stair side, an open washroom in the middle, bath over the kitchen */
   wall(1,160,0,160,130,TI,[{a:5,b:125,k:'open',head:1.95}]);   // the sauna cabin's glass front fills this opening
-  wall(1,160,130,160,225,TI,[{a:135,b:200,k:'door',hinge:'b',sw:-1}]);   // toilet door opens inward
+  wall(1,160,130,160,225,TI,[{a:155,b:220,k:'door',hinge:'a',sw:-1}]);   // toilet door at the corner, opens inward
   wall(1,0,130,160,130,TI);
   wall(1,0,225,160,225,TI);
   wall(1,380,0,380,170,TI,[{a:95,b:165,k:'door',fold:1,hinge:'b',sw:1,mat:M.frost}]);   // bi-fold bath door, folding into the bath against its south wall
@@ -213,10 +213,13 @@ build:function(E){
   wall(2,580,0,580,850,TE,[{a:300,b:440},{a:600,b:760}]);
   wall(2,0,850,245,850,TE);
   wall(2,245,850,580,850,TE,[{a:260,b:560,sill:0.5,head:2.15}]);
-  /* 3F north (B): small toilet and a shower room, both off a powder room with its own door to the hall; the study wraps round the shower */
+  /* 3F north (B): small toilet and a shower room, both off a powder room that opens to the hall through an arch; the study wraps round the shower */
   wall(2,0,150,115,150,TI);
-  wall(2,115,0,115,150,TI,[{a:75,b:145,k:'door',hinge:'a',sw:-1}]);    // toilet door opens inward, clear of the seat
-  wall(2,115,150,245,150,TI,[{a:140,b:220,k:'door',hinge:'b',sw:-1}]);   // powder-room door opens inward, clear of the toilet door
+  wall(2,115,0,115,150,TI,[{a:75,b:145,k:'slide'}]);    // toilet door slides, parking on whichever side is clear
+  wall(2,115,150,245,150,TI,[{a:140,b:220,k:'open',head:2.1}]);
+  (function(){ const b=base(2), x0=WX(2,140), x1=WX(2,220), r=(x1-x0)/2, sh=new THREE.Shape(); sh.moveTo(-r-0.001,0); sh.lineTo(r+0.001,0); sh.lineTo(r+0.001,r+0.03); sh.lineTo(-r-0.001,r+0.03); sh.closePath();
+    const hole=new THREE.Path(); hole.absarc(0,0,r,0,Math.PI,false); hole.lineTo(-r,0); sh.holes.push(hole);
+    const g=new THREE.ExtrudeGeometry(sh,{depth:TI+0.002,bevelEnabled:false,curveSegments:24}), m=new THREE.Mesh(g,M.trim); m.position.set((x0+x1)/2,b+2.1-r,WZ(2,150)-TI/2-0.001); m.receiveShadow=true; LG[2].add(m); })();
   wall(2,245,0,245,130,TI,[{a:25,b:105,k:'slide',hinge:'b',face:-1,mat:M.frost}]);   // shower door slides along the powder-room side
   wall(2,245,130,355,130,TI); wall(2,355,0,355,130,TI);
   wall(2,245,130,245,460,TI,[{a:285,b:365,k:'door',hinge:'a',sw:1}]);
@@ -450,14 +453,14 @@ fixtures:function(E){
     bx(LG[1],x0,x1,z0,z1,top-0.012,top-0.004,lam(0xe8d2a6,{map:M.oak.map||null,roughness:0.6}),oc);
     const glow=new THREE.MeshBasicMaterial({color:0xffe1b0}); bx(LG[1],x0+0.02,x1-0.02,z0+0.004,z0+0.05,top-0.08,top-0.07,M.trim,oc); bx(LG[1],x0+0.03,x1-0.03,z0+0.006,z0+0.045,top-0.085,top-0.08,glow,oc);
   })();
-  (function(){ const S=Catalog.homeSauna({depth:1.5}), wx=WX(1,162)-0.75, wz=WZ(1,67); fixture(1,S,wx,wz,0);   // 1.5 x 1.2 m cabin, glass front facing the washroom, door on its north (right-hand) half opening to the right
+  (function(){ const S=Catalog.homeSauna({depth:1.5,flip:true,hingeIn:true}), wx=WX(1,162)-0.75, wz=WZ(1,67); fixture(1,S,wx,wz,0);   // 1.5 x 1.2 m cabin facing the washroom: door on the left half, handle on the left, opening to the right
     const r=S.doorRect, b=E.base(1), x0=wx+r[0], x1=wx+r[1], z0=wz+r[2], z1=wz+r[3];
     const col=addCol(1,x0,x1,z0,z1,b,b+1.95,'d'), d={l:1,pv:S.doorPivot,th:S.doorTh,open:false,t:0,col:col,mid:[(x0+x1)/2,(z0+z1)/2],label:function(o){ return o?'關上三溫暖門':'打開三溫暖門'; }};
     col.door=d; doors.push(d); })();
   fixture(1,Catalog.bathWallSet(),WX(1,520),WZ(1,170)-TI/2,2);
   fixture(1,Catalog.bathStool(),WX(1,515),WZ(1,125),0); fixture(1,Catalog.washBowl(),WX(1,550),WZ(1,140),0);
-  fixture(1,Catalog.vanity(0.95,true),WX(1,264.5),WZ(1,34),3);
-  (function(){ const P=Catalog.soapDispenser(0.85); fixture(1,P,WX(1,226),WZ(1,54),3); P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); }); })();
+  fixture(1,Catalog.vanity(1.0,true),WX(1,261),WZ(1,34),3);
+  (function(){ const P=Catalog.soapDispenser(0.85); fixture(1,P,WX(1,221),WZ(1,54),3); P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); }); })();
   fixture(2,Catalog.vanity(),WX(2,160),WZ(2,34),3);                                              // 3F powder room: basin only
   (function(){ const P=Catalog.soapDispenser(0.85); fixture(2,P,WX(2,132),WZ(2,54),3); P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); }); })();
   fixture(2,Catalog.bathWallSet(),WX(2,355)-TI/2,WZ(2,65),3); fixture(2,Catalog.bathStool(),WX(2,325),WZ(2,100),0);   // shower room
