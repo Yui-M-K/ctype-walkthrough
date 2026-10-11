@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261013o">
+<link rel="stylesheet" href="lib/storeys.css?v=20261013q">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261013o"></script>
-<script src="lib/furniture.js?v=20261013o"></script>
-<script src="lib/catalog.js?v=20261013o"></script>
-<script src="lib/look.js?v=20261013o"></script>
-<script src="lib/houses.js?v=20261013o"></script>
-<script src="lib/perf.js?v=20261013o"></script>
-<script src="lib/finish.js?v=20261013o"></script>
-<script src="lib/storeys.js?v=20261013o"></script>
+<script src="lib/people.js?v=20261013q"></script>
+<script src="lib/furniture.js?v=20261013q"></script>
+<script src="lib/catalog.js?v=20261013q"></script>
+<script src="lib/look.js?v=20261013q"></script>
+<script src="lib/houses.js?v=20261013q"></script>
+<script src="lib/perf.js?v=20261013q"></script>
+<script src="lib/finish.js?v=20261013q"></script>
+<script src="lib/storeys.js?v=20261013q"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -391,7 +391,7 @@ layout:function(E){
 /* default furnishing: [id, type, storey, plan x, plan y, facing N/E/S/W, (make)] — everything here is movable in edit mode */
 return [
   /* 2F living: corridor along the stair wall from the stair top to flight B; TV and clock on the east wall, cat walkway on the south wall beside the balcony door */
-  ['tv','tv86',1,553,660,'W',function(){ return Catalog.tvBoard(86,0.16); }],['sofa','reclinerSofa',1,310,660,'E'],['lift','liftTable',1,420,720,'E'],['rugL','rugRound',1,420,720,'E'],['lampL','floorLamp',1,175,800,'E'],['massage','massageChair',1,300,470,'E'],
+  ['tv','tv86',1,553,660,'W',function(){ return Catalog.tvBoard(86,0.16); }],['sofa','reclinerSofa',1,310,660,'E'],['lift','liftTable',1,420,720,'E'],['rugL','rugRound',1,420,720,'E'],['lampL','floorLamp',1,175,800,'E'],['massage','massageChair',1,292,480,'E'],
   ['map','worldMap',1,119.5,560,'E'],
   ['clock','wallClock',1,573.5,660,'W'],
   ['catA','catStep',1,220,843.5,'N',function(){ return Catalog.catStep(1.85); }],['catHouse','catHouse',1,175,843.5,'N',function(){ return Catalog.catHouse(1.95); }],['catB','catStep',1,130,843.5,'N',function(){ return Catalog.catStep(2.0); }],
