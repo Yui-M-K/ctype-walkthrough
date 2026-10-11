@@ -218,14 +218,14 @@ ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; f
 </script>
 
 <header style="margin-top:56px">
-  <h1>提案 B ・ 三溫暖 1500×1200、浴室往樓梯側加大</h1>
-  <span class="sub">拱門靠樓梯側，正前方洗手台 ｜ 左：浴室 2.0 × 2.0 m ｜ 右：三溫暖房、廁所</span>
+  <h1>提案 B ・ 三溫暖 1500×1200、寬敞單人浴缸</h1>
+  <span class="sub">拱門靠樓梯側，正前方洗手台 ｜ 左：浴室 2.0 × 1.7 m（浴缸 1700×900） ｜ 右：三溫暖房、廁所</span>
 </header>
 <div class="sheet">
   <div class="plan">
   <svg viewBox="-75 -70 735 1080" role="img" aria-label="提案 B 二樓平面圖">
     <rect class="room" x="0" y="0" width="580" height="850"/>
-    <rect class="wetroom" x="0" y="0" width="200" height="200"/>
+    <rect class="wetroom" x="0" y="0" width="200" height="170"/>
     <rect class="wetroom" x="200" y="0" width="240" height="250"/>
     <rect class="wetroom" x="440" y="0" width="140" height="275"/>
     <rect class="void" x="0" y="300" width="110" height="360"/>
@@ -234,8 +234,9 @@ ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; f
     <text class="lbl2" x="55" y="455">樓梯</text><text class="lbl2" x="55" y="471">↑3F  ↓1F</text>
 
     <!-- bath 2.0 x 2.0: tub wall to wall along the north, washing area by the door -->
-    <rect class="fxw" x="7" y="7" width="188" height="78" rx="10"/><rect class="fxw" x="17" y="16" width="168" height="60" rx="18"/>
-    <circle class="fxw" cx="60" cy="190" r="5"/><circle class="fxw" cx="60" cy="155" r="11"/>
+    <rect class="fxw" x="7" y="7" width="170" height="90" rx="10"/><rect class="fxw" x="17" y="17" width="150" height="70" rx="22"/><text class="lbl2" x="92" y="56">浴缸 1700×900</text>
+    <rect class="fx" x="178" y="7" width="17" height="90"/>
+    <circle class="fxw" cx="20" cy="158" r="5"/><circle class="fxw" cx="45" cy="132" r="11"/>
     <!-- washroom: vanity ahead, washer beside it -->
     <rect class="fxw" x="215" y="7" width="76" height="56" rx="4"/><ellipse class="fxw" cx="253" cy="32" rx="20" ry="13"/>
     <rect class="fxw" x="300" y="7" width="64" height="72" rx="4"/><circle class="fxw" cx="332" cy="46" r="22"/>
@@ -263,7 +264,7 @@ ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; f
     <g class="wall">
       <rect x="-6.5" y="-6.5" width="593" height="13"/><rect x="-6.5" y="-6.5" width="13" height="863"/>
       <rect x="573.5" y="-6.5" width="13" height="863"/><rect x="-6.5" y="843.5" width="593" height="13"/>
-      <rect x="-4.5" y="195.5" width="209" height="9"/>
+      <rect x="-4.5" y="165.5" width="209" height="9"/>
       <rect x="195.5" y="0" width="9" height="254.5"/>
       <rect x="200" y="245.5" width="244.5" height="9"/>
       <rect x="435.5" y="160" width="9" height="119.5"/>
@@ -274,8 +275,8 @@ ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; f
     <!-- arch, bath door (opens into the bath), toilet door (opens into the washroom) -->
     <rect x="210" y="244" width="90" height="12" class="room"/>
     <path class="arch" d="M210 250 L210 246 M300 250 L300 246"/><text class="lbl2" x="255" y="272" style="fill:var(--wetInk)">拱門 900</text>
-    <rect x="194" y="110" width="12" height="80" class="wetroom"/>
-    <line class="leaf" x1="200" y1="190" x2="120" y2="190"/><path class="swing" d="M120 190 A80 80 0 0 1 200 110"/>
+    <rect x="194" y="100" width="12" height="65" class="wetroom"/>
+    <path class="leaf" d="M200 100 L182 117 L200 133 L182 149 L200 165" fill="none"/><text class="lbl2" x="232" y="135">摺疊門</text>
     <rect x="434" y="180" width="12" height="80" class="wetroom"/>
     <line class="leaf" x1="440" y1="180" x2="360" y2="180"/><path class="swing" d="M360 180 A80 80 0 0 0 440 260"/>
     <!-- windows -->
@@ -287,15 +288,15 @@ ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; f
 
     <!-- walking path -->
     <path class="path" d="M255 340 L255 140 L255 85"/>
-    <path class="path" d="M255 150 L165 150"/>
+    <path class="path" d="M255 132 L165 132"/>
     <path class="path" d="M255 120 L410 120"/>
     <path class="path" d="M255 210 L400 210"/>
-    <path class="path" d="M57 290 L57 250 L160 250 L200 300"/>
+    <path class="path" d="M57 290 L57 235 L160 235 L205 300"/>
 
-    <text class="lbl" x="120" y="122">浴室</text><text class="lbl2" x="120" y="138">2.0 × 2.0 m</text>
+    <text class="lbl" x="120" y="122">浴室</text><text class="lbl2" x="120" y="152">2.0 × 1.7 m</text>
     <text class="lbl" x="320" y="185">洗面室</text><text class="lbl2" x="320" y="201">洗手台・洗衣機</text>
     <text class="lbl" x="500" y="258">廁所</text>
-    <text class="lbl" x="57" y="238">平台</text><text class="lbl2" x="57" y="254">深 1.0 m</text>
+    <text class="lbl" x="57" y="222">平台</text><text class="lbl2" x="57" y="238">深 1.3 m</text>
     <text class="lbl" x="480" y="390">廚房</text>
     <text class="lbl" x="200" y="420">餐廳・LDK</text><text class="lbl2" x="200" y="436">約 17.3 帖</text>
     <text class="lbl" x="290" y="905">陽台</text>
@@ -305,8 +306,8 @@ ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; f
       <path class="dl" d="M0 -20 H580 M0 -26 V-14 M200 -26 V-14 M440 -26 V-14 M580 -26 V-14"/>
       <text class="dim" x="100" y="-24">2000</text><text class="dim" x="320" y="-24">2400</text><text class="dim" x="510" y="-24">1400</text>
       <path class="dl" d="M-45 0 V850 M-51 0 H-39 M-51 850 H-39"/><text class="dim" x="-52" y="430" transform="rotate(-90 -52 425)">8500</text>
-      <path class="dl" d="M-25 0 V300 M-31 0 H-19 M-31 200 H-19 M-31 300 H-19"/>
-      <text class="dim" x="-28" y="103" transform="rotate(-90 -28 100)">2000</text><text class="dim" x="-28" y="253" transform="rotate(-90 -28 250)">1000</text>
+      <path class="dl" d="M-25 0 V300 M-31 0 H-19 M-31 170 H-19 M-31 300 H-19"/>
+      <text class="dim" x="-28" y="88" transform="rotate(-90 -28 85)">1700</text><text class="dim" x="-28" y="238" transform="rotate(-90 -28 235)">1300</text>
       <path class="dl" d="M605 0 V275 M599 0 H611 M599 160 H611 M599 275 H611"/>
       <text class="dim" x="618" y="83" transform="rotate(90 618 80)">1600</text><text class="dim" x="618" y="221" transform="rotate(90 618 218)">1150</text>
     </g>
@@ -318,27 +319,27 @@ ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; f
       <h2>動線</h2>
       <ul>
         <li>從餐廳走進拱門，正前方是洗手台，洗衣機在旁邊靠北牆。</li>
-        <li>左轉：浴室門往浴室內開，進門是洗澡區，浴缸從牆到牆靠北側。</li>
+        <li>左轉：浴室是摺疊門，進門是洗澡區，寬敞浴缸 1700×900 靠北牆，旁邊有放沐浴用品的平台。</li>
         <li>右前方：三溫暖房，玻璃門正對洗面室。</li>
         <li>右手邊：廁所門往洗面室開。</li>
-        <li>上樓到平台後，往東穿過 0.85 m 寬的通道進餐廳。</li>
+        <li>上樓到平台（深 1.3 m）後，往東穿過 0.8 m 寬的通道進餐廳。</li>
       </ul>
     </section>
     <section>
       <h2>尺寸</h2>
       <table>
-        <tr><td>浴室</td><td class="n">內 1.9 × 1.9 m</td></tr>
+        <tr><td>浴室</td><td class="n">內 1.9 × 1.6 m</td></tr><tr><td>浴缸</td><td class="n">1.7 × 0.9 m</td></tr>
         <tr><td>洗面室</td><td class="n">2.4 × 2.5 m</td></tr>
         <tr><td>三溫暖房</td><td class="n">1.5 × 1.2 m</td></tr>
         <tr><td>廁所</td><td class="n">內 1.3 × 1.05 m</td></tr>
-        <tr><td>樓梯平台</td><td class="n">1.15 × 1.0 m</td></tr>
+        <tr><td>樓梯平台</td><td class="n">1.15 × 1.3 m</td></tr>
         <tr><td>LDK</td><td class="n">約 17.3 帖（−0.7）</td></tr>
       </table>
     </section>
     <section>
       <h2>要你決定的取捨</h2>
       <ul>
-        <li>浴室吃掉平台北半部，上樓後的平台只剩 1.0 m 深，柵欄門要改成往餐廳方向開。</li>
+        <li>浴缸以外的空間縮小（洗澡區深約 0.7 m），平台保留 1.3 m 深，貓咪柵欄照舊。</li>
         <li>三溫暖加大後右側比洗面室多出 25 cm，冰箱靠在廁所南牆，家電櫃靠洗面室牆，中間是通道。</li>
         <li>垃圾桶收進中島下方的櫃子。</li>
       </ul>
