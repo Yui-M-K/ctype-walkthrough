@@ -13,16 +13,16 @@
 <body>
 <script>
 /* House switcher: each house is its own standalone page, loaded in an iframe on first use and kept alive (hidden) so switching is instant. */
-const HOUSES=[
+const HOUSES=[                                 // parent = the version it branched from; one family shows as one menu button with a branch diagram
   {id:'ctype',name:'Ctype（現在的家）',src:'ctype.html'},
   {id:'town3f',name:'三層透天厝（草案）',src:'town3f.html'},
-  {id:'ideal',name:'理想之家（住宅要望書）',src:'ideal.html'},
-  {id:'idealB',name:'理想之家 B 版（浴室・三溫暖在 2 樓）',src:'ideal_b.html'},
-  {id:'idealWide',name:'理想之家（寬敞版）',src:'ideal_wide.html'}
+  {id:'idealWide',family:'理想之家',name:'理想之家（寬敞版）',short:'寬敞版',note:'依住宅要望書最初的設計，建物 6.3 × 8.5 m、土地約 52 坪',date:'2026-10-08',src:'ideal_wide.html'},
+  {id:'ideal',parent:'idealWide',name:'理想之家（住宅要望書）',short:'現行版',note:'縮成東京常見尺寸 5.8 × 8.5 m、土地約 27 坪，之後的修改都在這一版',date:'2026-10-09',src:'ideal.html'},
+  {id:'idealB',parent:'ideal',name:'理想之家 B 版（浴室・三溫暖在 2 樓）',short:'B 版',note:'浴室、三溫暖、洗面室搬到 2F 廁所旁，廚房往客廳移；3F 北側改成客房',date:'2026-10-11',src:'ideal_b.html'}
 ];
 const frames={}, params=new URLSearchParams(location.search);
 let cur=null;
-const VER='20261011w';                          // bump with the ?v= of the lib files so a house page and its libraries always load together
+const VER='20261011x';                          // bump with the ?v= of the lib files so a house page and its libraries always load together
 function frameQuery(){ const q=new URLSearchParams(params); q.delete('house'); q.set('v',VER); return '?'+q.toString()+location.hash; }
 function open(id){
   const h=HOUSES.find(function(x){ return x.id===id&&x.src&&!x.disabled; }); if(!h) return false;
@@ -35,7 +35,7 @@ function open(id){
   setTimeout(function(){ try{ frames[id].contentWindow.focus(); }catch(_){} },0);
   return true;
 }
-function sendList(win){ win.postMessage({type:'house-list',list:HOUSES.map(function(h){ return {id:h.id,name:h.name,disabled:!!h.disabled||!h.src}; }),current:cur},location.origin); }
+function sendList(win){ win.postMessage({type:'house-list',list:HOUSES.map(function(h){ return {id:h.id,name:h.name,disabled:!!h.disabled||!h.src,parent:h.parent,family:h.family,short:h.short,note:h.note,date:h.date}; }),current:cur},location.origin); }
 window.addEventListener('message',function(e){
   const d=e.data; if(e.origin!==location.origin||!d) return;
   const id=Object.keys(frames).find(function(k){ return frames[k].contentWindow===e.source; }); if(!id) return;
