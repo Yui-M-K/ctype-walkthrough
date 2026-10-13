@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261015d">
+<link rel="stylesheet" href="lib/storeys.css?v=20261015f">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261015d"></script>
-<script src="lib/furniture.js?v=20261015d"></script>
-<script src="lib/catalog.js?v=20261015d"></script>
-<script src="lib/look.js?v=20261015d"></script>
-<script src="lib/houses.js?v=20261015d"></script>
-<script src="lib/perf.js?v=20261015d"></script>
-<script src="lib/finish.js?v=20261015d"></script>
-<script src="lib/storeys.js?v=20261015d"></script>
+<script src="lib/people.js?v=20261015f"></script>
+<script src="lib/furniture.js?v=20261015f"></script>
+<script src="lib/catalog.js?v=20261015f"></script>
+<script src="lib/look.js?v=20261015f"></script>
+<script src="lib/houses.js?v=20261015f"></script>
+<script src="lib/perf.js?v=20261015f"></script>
+<script src="lib/finish.js?v=20261015f"></script>
+<script src="lib/storeys.js?v=20261015f"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -482,6 +482,7 @@ fixtures:function(E){
     col.door=d; doors.push(d); })();
   fixture(1,Catalog.bathWallSet({shelfFrom:722,mirror:'tall',mirrorH:1.12,mirrorX:0.435,mirrorY:0.85,barLeft:true,noSoap:true}),WX(1,580)-TE/2,WZ(1,134),3);   // shower on the east wall: a tall mirror over a short counter, the slide bar on the left, under the raised window
   fixture(1,Catalog.bathStool(),WX(1,525),WZ(1,177.5),1); fixture(1,Catalog.washBowl(),WX(1,555),WZ(1,108),0);   // stool facing the mirror, bowl by the wall
+  fixture(1,Catalog.laundryBasket(1.07),WX(1,344),WZ(1,36),0);   // laundry basket with mesh bags on top of the washer
   fixture(1,Catalog.vanity(1.0,true),WX(1,261),WZ(1,34),3);
   (function(){ const P=Catalog.soapDispenser(0.85); fixture(1,P,WX(1,300),WZ(1,19),3); P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); }); })();
   fixture(2,Catalog.vanity(),WX(2,160),WZ(2,34),3);                                              // 3F powder room: basin only
