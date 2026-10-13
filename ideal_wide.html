@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家（寬敞版） 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261014p">
+<link rel="stylesheet" href="lib/storeys.css?v=20261014q">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -55,14 +55,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261014p"></script>
-<script src="lib/furniture.js?v=20261014p"></script>
-<script src="lib/catalog.js?v=20261014p"></script>
-<script src="lib/look.js?v=20261014p"></script>
-<script src="lib/houses.js?v=20261014p"></script>
-<script src="lib/perf.js?v=20261014p"></script>
-<script src="lib/finish.js?v=20261014p"></script>
-<script src="lib/storeys.js?v=20261014p"></script>
+<script src="lib/people.js?v=20261014q"></script>
+<script src="lib/furniture.js?v=20261014q"></script>
+<script src="lib/catalog.js?v=20261014q"></script>
+<script src="lib/look.js?v=20261014q"></script>
+<script src="lib/houses.js?v=20261014q"></script>
+<script src="lib/perf.js?v=20261014q"></script>
+<script src="lib/finish.js?v=20261014q"></script>
+<script src="lib/storeys.js?v=20261014q"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -306,7 +306,7 @@ return [
   /* 2F living */
   /* 2F living: east-west circulation band z 300-440 from the washroom door to the kitchen; south band z 700-850 to the balcony door (240-410) */
   ['tv','tvBoard',1,603,545,'W'],['sofa','lSofa',1,315,575,'E'],['lift','liftTable',1,415,525,'E'],['rugL','rugRound',1,470,580,'E'],['lampL','floorLamp',1,225,790,'E'],
-  ['massage','massageChair',1,553,675,'W'],['pcdesk','liftDesk',1,170.5,450,'E',function(){ return Catalog.liftDesk(1.2); }],['pcchair','officeChair',1,237,450,'W'],
+  ['massage','massageChair',1,528,675,'W'],['pcdesk','liftDesk',1,170.5,450,'E',function(){ return Catalog.liftDesk(1.2); }],['pcchair','officeChair',1,237,450,'W'],
   ['map','worldMap',1,134.5,450,'E'],['fold1','foldTable',1,134.5,685,'E'],['robot','robotVacuum',1,16.5,820,'E'],['fanL','fan',1,165,528,'N'],['dehumL','dehumidifier',1,282,122,'E'],
   ['perch','catPerch',1,580,846.5,'N'],['catA','catStep',1,623.5,400,'W',function(){ return Catalog.catStep(1.45); }],['catHouse','catHouse',1,623.5,450,'W',function(){ return Catalog.catHouse(1.5); }],['catB','catStep',1,623.5,505,'W',function(){ return Catalog.catStep(1.75); }],
   ['catBed','catBed',1,623.5,560,'W',function(){ return Catalog.catBed(1.95,'tabby'); }],['catC','catStep',1,623.5,610,'W',function(){ return Catalog.catStep(1.75); }],
