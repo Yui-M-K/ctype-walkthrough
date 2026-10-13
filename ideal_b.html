@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261014q">
+<link rel="stylesheet" href="lib/storeys.css?v=20261015c">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261014q"></script>
-<script src="lib/furniture.js?v=20261014q"></script>
-<script src="lib/catalog.js?v=20261014q"></script>
-<script src="lib/look.js?v=20261014q"></script>
-<script src="lib/houses.js?v=20261014q"></script>
-<script src="lib/perf.js?v=20261014q"></script>
-<script src="lib/finish.js?v=20261014q"></script>
-<script src="lib/storeys.js?v=20261014q"></script>
+<script src="lib/people.js?v=20261015c"></script>
+<script src="lib/furniture.js?v=20261015c"></script>
+<script src="lib/catalog.js?v=20261015c"></script>
+<script src="lib/look.js?v=20261015c"></script>
+<script src="lib/houses.js?v=20261015c"></script>
+<script src="lib/perf.js?v=20261015c"></script>
+<script src="lib/finish.js?v=20261015c"></script>
+<script src="lib/storeys.js?v=20261015c"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -183,7 +183,7 @@ build:function(E){
   /* 2F: wet zone along the north, LDK over the rest (kitchen under the bath, living to the south), full-width balcony */
   wall(1,0,0,580,0,TE,[{a:320,b:370,sill:1.5,head:2.0,frost:true},{a:430,b:550,sill:1.5,head:2.1,frost:true}]);
   wall(1,0,0,0,850,TE,[{a:150,b:205,sill:1.4,head:2.0,frost:true},{a:555,b:615,sill:1.5,head:2.3}]);
-  wall(1,580,0,580,850,TE,[{a:80,b:150,sill:1.5,head:2.1,frost:true}]);
+  wall(1,580,0,580,850,TE,[{a:80,b:150,sill:1.75,head:2.3,frost:true}]);
   wall(1,0,850,580,850,TE,[{a:240,b:560,k:'slide2',mat:M.glass,head:2.15,screen:1}]);
   /* B: the wet zone sits on 2F: sauna and toilet on the stair side, an open washroom in the middle, bath over the kitchen */
   wall(1,160,0,160,130,TI,[{a:5,b:125,k:'open',head:1.95}]);   // the sauna cabin's glass front fills this opening
@@ -396,8 +396,8 @@ return [
   ['cat','catGrey',1,160,740,'E'],['catBowls','catBowls',1,558,515,'W'],
   /* 2F dining (folding six-seat table on the north wall), robot vacuum docked by the TV; the litter box sits in the 1F hall */
   ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,247,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,40,812,'E'],['robot','robotVacuum',1,565.5,700,'W'],
-  /* 2F kitchen: appliance cabinet and fridge against the bath wall, bins at the sink end of the peninsula */
-  ['fridge','fridgeL',1,538.5,244.5,'S',function(){ const p=Catalog.make('fridgeL'); p.doorMax=1.3; return p; }],['appl','applianceCabinet',1,434.5,237,'S'],['bins','binsDuo',1,294,352,'N'],
+  /* 2F kitchen: appliance cabinet (pull-out bins in its base) and fridge against the bath wall */
+  ['fridge','fridgeL',1,538.5,244.5,'S',function(){ const p=Catalog.make('fridgeL'); p.doorMax=1.3; return p; }],['appl','applianceCabinet',1,434.5,237,'S',function(){ return Catalog.applianceCabinet({bins:true}); }],
   /* 2F balcony */
   ['plantB1','plant',1,495,895,'E'],['plantB2','plantS',1,553,895,'E'],
   /* garden BBQ deck */
@@ -446,10 +446,14 @@ fixtures:function(E){
 })();
 (function(){                                   // 2F wet zone (B): bath (tub along the north at the west end, TV on the stone west wall), washroom, sauna room off the washroom
   (function(){ const b=E.base(1), x0=WX(1,380)+TI/2, x1=WX(1,580)-TE/2, z0=WZ(1,0)+TE/2, z1=z0+0.78;   // 1.7 m tub against the west wall, its moulded ledge running on to the east wall
-    fixture(1,Catalog.bathtub(1.7,x1-x0-1.7,-1),x0+0.85,(z0+z1)/2,3); })();
+    fixture(1,Catalog.bathtub(1.7,x1-x0-1.7,-1,-1),x0+0.85,(z0+z1)/2,3); })();
   (function(){ const b=E.base(1), xw=WX(1,380)+TI/2;   // waterproof TV on the stone wall at the tub's end
-    bx(LG[1],xw+0.012,xw+0.052,WZ(1,16),WZ(1,74),b+0.82,b+1.16,lam(0x1c1e21,{roughness:0.4}));
-    bx(LG[1],xw+0.052,xw+0.054,WZ(1,18),WZ(1,72),b+0.84,b+1.14,new THREE.MeshStandardMaterial({color:0x06080c,roughness:0.06,metalness:0.3,envMapIntensity:1.5}),{cast:false});
+    bx(LG[1],xw+0.012,xw+0.052,WZ(1,16),WZ(1,74),b+0.8,b+1.16,lam(0xf6f5f2,{roughness:0.3}));   // white waterproof frame, buttons along the bottom
+    const sm=new THREE.MeshStandardMaterial({color:0x06080c,roughness:0.06,metalness:0.3,envMapIntensity:1.5});
+    bx(LG[1],xw+0.052,xw+0.054,WZ(1,18),WZ(1,72),b+0.85,b+1.14,sm,{cast:false});
+    const led=new THREE.MeshBasicMaterial({color:0x3a3a3a});
+    [[WZ(1,58),led],[WZ(1,63),lam(0xc9ccd0)],[WZ(1,67),lam(0xc9ccd0)],[WZ(1,71),lam(0xc9ccd0)]].forEach(function(q){ const m=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.004,16),q[1]); m.rotation.z=Math.PI/2; m.position.set(xw+0.054,b+0.823,q[0]); LG[1].add(m); });
+    let on=false; furnThings.push({pt:[xw+0.7,WZ(1,45)],l:1,label:function(){ return on?'關掉浴室電視':'打開浴室電視'; },act:function(){ on=!on; sm.color.setHex(on?0x2a6f9a:0x06080c); sm.emissive.setHex(on?0x3b8ec4:0x000000); sm.emissiveIntensity=on?0.7:0; led.color.setHex(on?0x5fe08a:0x3a3a3a); }});
   })();
   (function(){ const b=E.base(1), x0=WX(1,380)+TI/2, x1=WX(1,580)-TE/2, z0=WZ(1,0)+TE/2, z1=WZ(1,205)-TI/2, oc={cast:false}, e=0.004;   // bath finish, all stone: greige round the tub, travertine-look 60 x 120 tiles elsewhere, charcoal floor, a cove over the tub, shelves on the south wall
     const tiles=function(base,line,vein,cols,rows,n){ const c=document.createElement('canvas'); c.width=c.height=512; const g=c.getContext('2d'); g.fillStyle=base; g.fillRect(0,0,512,512);
@@ -459,9 +463,9 @@ fixtures:function(E){
     const wallT=tiles('#d8cbb6','#b5a58c','#8f7d64',2,1,40), accT=tiles('#7d756c','#5f5952','#a59c90',2,1,50), floorT=tiles('#56595c','#3a3c3e','#8c9093',4,2,60);
     const skin=function(t,w,h,r){ const q=t.clone(); q.needsUpdate=true; q.repeat.set(w/1.2,h/1.2); return lam(0xffffff,{map:q,roughness:r}); };
     const panel=function(a0,a1,y0,y1,alongX,c0,c1,t){ const w=a1-a0, h=y1-y0, m=skin(t||wallT,w,h,0.35); if(alongX) bx(LG[1],a0,a1,c0,c1,y0,y1,m,oc); else bx(LG[1],c0,c1,a0,a1,y0,y1,m,oc); };
-    const wa=WX(1,430), wb=WX(1,550), ea=WZ(1,80), eb=WZ(1,150), lo=b+1.5, hi=b+2.1, top=b+CH;
+    const wa=WX(1,430), wb=WX(1,550), ea=WZ(1,80), eb=WZ(1,150), lo=b+1.5, hi=b+2.1, elo=b+1.75, ehi=b+2.3, top=b+CH;
     [[x0,x1,b,lo],[x0,x1,hi,top],[x0,wa,lo,hi],[wb,x1,lo,hi]].forEach(function(q){ panel(q[0],q[1],q[2],q[3],true,z0,z0+e,accT); });
-    [[z0,z1,b,lo],[z0,z1,hi,top],[z0,ea,lo,hi],[eb,z1,lo,hi]].forEach(function(q){ panel(q[0],q[1],q[2],q[3],false,x1-e,x1); });
+    [[z0,z1,b,elo],[z0,z1,ehi,top],[z0,ea,elo,ehi],[eb,z1,elo,ehi]].forEach(function(q){ panel(q[0],q[1],q[2],q[3],false,x1-e,x1); });
     panel(x0,x1,b,top,true,z1-e,z1);
     const da=WZ(1,105), db=WZ(1,185);
     [[z0,da,b,top,accT],[da,db,b+2.05,top,accT],[db,z1,b,top]].forEach(function(q){ panel(q[0],q[1],q[2],q[3],false,x0,x0+e,q[4]); });
@@ -476,8 +480,8 @@ fixtures:function(E){
     const r=S.doorRect, b=E.base(1), x0=wx+r[0], x1=wx+r[1], z0=wz+r[2], z1=wz+r[3];
     const col=addCol(1,x0,x1,z0,z1,b,b+1.95,'d'), d={l:1,pv:S.doorPivot,th:S.doorTh*0.94,open:false,t:0,col:col,mid:[(x0+x1)/2,(z0+z1)/2],label:function(o){ return o?'關上三溫暖門':'打開三溫暖門'; }};
     col.door=d; doors.push(d); })();
-  fixture(1,Catalog.bathWallSet({shelfFrom:722,mirror:true}),WX(1,580)-TE/2,WZ(1,134),3);   // shower on the east wall with a short counter and a mirror, the riser just right of and below the window
-  fixture(1,Catalog.bathStool(),WX(1,525),WZ(1,134),0); fixture(1,Catalog.washBowl(),WX(1,490),WZ(1,160),0);
+  fixture(1,Catalog.bathWallSet({shelfFrom:722,mirror:'tall',barLeft:true}),WX(1,580)-TE/2,WZ(1,134),3);   // shower on the east wall: a tall mirror over a short counter, the slide bar on the left, under the raised window
+  fixture(1,Catalog.bathStool(),WX(1,525),WZ(1,139),1); fixture(1,Catalog.washBowl(),WX(1,555),WZ(1,180),0);   // stool facing the mirror, bowl by the wall
   fixture(1,Catalog.vanity(1.0,true),WX(1,261),WZ(1,34),3);
   (function(){ const P=Catalog.soapDispenser(0.85); fixture(1,P,WX(1,300),WZ(1,19),3); P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); }); })();
   fixture(2,Catalog.vanity(),WX(2,160),WZ(2,34),3);                                              // 3F powder room: basin only
