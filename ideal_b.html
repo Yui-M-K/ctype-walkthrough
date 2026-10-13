@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261015w">
+<link rel="stylesheet" href="lib/storeys.css?v=20261015y">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261015w"></script>
-<script src="lib/furniture.js?v=20261015w"></script>
-<script src="lib/catalog.js?v=20261015w"></script>
-<script src="lib/look.js?v=20261015w"></script>
-<script src="lib/houses.js?v=20261015w"></script>
-<script src="lib/perf.js?v=20261015w"></script>
-<script src="lib/finish.js?v=20261015w"></script>
-<script src="lib/storeys.js?v=20261015w"></script>
+<script src="lib/people.js?v=20261015y"></script>
+<script src="lib/furniture.js?v=20261015y"></script>
+<script src="lib/catalog.js?v=20261015y"></script>
+<script src="lib/look.js?v=20261015y"></script>
+<script src="lib/houses.js?v=20261015y"></script>
+<script src="lib/perf.js?v=20261015y"></script>
+<script src="lib/finish.js?v=20261015y"></script>
+<script src="lib/storeys.js?v=20261015y"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -424,10 +424,13 @@ fixtures:function(E){
   const {CH,Catalog,LG,M,TE,TI,WX,WZ,addCol,bx,doors,fab,fixture,furnAnims,furnThings,lam,toast}=E;
 /* built-in fixtures (part of the building): kitchen, bath, toilets, charger, cameras, mirror room */
 (function(){                                   // kitchen: one peninsula with the sink, dishwasher and IH hob, facing the living room
-  const X0=WX(1,343.5), Z0=WZ(1,394.5);
+  const X0=WX(1,343.5), Z0=WZ(1,379.5);
   fixture(1,Catalog.sinkCounter(2.3,0.6,[0.1,0.7,0.1,0.45],[{k:'fill',w:0.05},{k:'sink',w:0.75},{k:'dw',w:0.6},{k:'fill',w:0.05},{k:'drawers',w:0.6},{k:'spice',w:0.25}]),X0,Z0,0);   // 2.3 m: the massage chair sits just west of it
+  (function(){ const b=E.base(1), x=X0+1.15, z=Z0+0.3, wood=lam(0xd9bf96,{roughness:0.5}), oc={cast:false};   // paper napkins in a wooden box on the worktop
+    bx(LG[1],x-0.13,x+0.13,z-0.07,z+0.07,b+0.88,b+0.96,wood); bx(LG[1],x-0.1,x+0.1,z-0.045,z+0.045,b+0.96,b+0.961,lam(0x6b4a35),oc);
+    const t=new THREE.Mesh(new THREE.SphereGeometry(0.04,12,8),lam(0xfbfbfa,{roughness:0.9})); t.scale.set(1.6,0.9,0.6); t.position.set(x,b+0.975,z); LG[1].add(t); })();
   fixture(1,Catalog.mixerTap(),X0+0.4,Z0+0.52,0); fixture(1,Catalog.dishSoap(true),X0+0.1,Z0+0.52,0); fixture(1,Catalog.sinkSponge(),X0+0.66,Z0+0.445,0);
-  fixture(1,Catalog.ihHob(),WX(1,518.5),WZ(1,424.5),0); fixture(1,Catalog.rangeHood(CH),WX(1,518.5),WZ(1,424.5),0);
+  fixture(1,Catalog.ihHob(),WX(1,518.5),WZ(1,409.5),0); fixture(1,Catalog.rangeHood(CH),WX(1,518.5),WZ(1,409.5),0);
   fixture(1,Catalog.pantryCabinet(0.3),WX(1,357.5),WZ(1,244.5),3);   // shallow food pantry against the washroom wall, its front flush with the appliance cabinet
   (function(){ const b=E.base(1), seam=M.dark, oc={cast:false};   // washroom tall unit beside the vanity
     (function(){ const x0=WX(1,165), x1=WX(1,210), z0=WZ(1,0)+TE/2, z1=WZ(1,50), vc=lam(0xf1eee8,{roughness:0.45}), t=0.018, frost=lam(0xf4f6f6,{transparent:true,opacity:0.6,roughness:0.6});   // washroom tall unit matching the vanity: doors below, open towel niche, frosted cabinet above
@@ -626,7 +629,7 @@ lighting:function(E){
 [[155,180,0],[57,665,0],[192,480,0],[57,310,0,0.25],[192,700,0],[445,145,0],[425,600,0],
  [80,177,1,0.3],[57,280,1],[260,95,1,0.3],[480,110,1,0.3],[450,310,1],[207,330,1],[350,660,1],[57,705,1],
  [57,65,2,0.3],[180,85,2,0.3],[300,75,2,0.3],[465,65,2],[60,300,2],[165,420,2],[410,330,2],[412,650,2],[120,770,2]].forEach(function(p){ light(p[2],p[0],p[1],0xffe2b8,p[3]||0.5,7); });
-pendant(1,420,424.5); pendant(1,480,424.5);
+pendant(1,420,409.5); pendant(1,480,409.5);
 cove(1,200,850,580,850,-1); cove(1,580,300,580,850,-1); cove(1,115,345,115,655,1);
 cove(2,245,520,580,520,1);
 },
