@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261018q">
+<link rel="stylesheet" href="lib/storeys.css?v=20261018r">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261018q"></script>
-<script src="lib/furniture.js?v=20261018q"></script>
-<script src="lib/catalog.js?v=20261018q"></script>
-<script src="lib/look.js?v=20261018q"></script>
-<script src="lib/houses.js?v=20261018q"></script>
-<script src="lib/perf.js?v=20261018q"></script>
-<script src="lib/finish.js?v=20261018q"></script>
-<script src="lib/storeys.js?v=20261018q"></script>
+<script src="lib/people.js?v=20261018r"></script>
+<script src="lib/furniture.js?v=20261018r"></script>
+<script src="lib/catalog.js?v=20261018r"></script>
+<script src="lib/look.js?v=20261018r"></script>
+<script src="lib/houses.js?v=20261018r"></script>
+<script src="lib/perf.js?v=20261018r"></script>
+<script src="lib/finish.js?v=20261018r"></script>
+<script src="lib/storeys.js?v=20261018r"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -429,7 +429,7 @@ fixtures:function(E){
   fixture(1,Catalog.sinkCounter(2.55,0.6,[0.05,0.8,0.1,0.45],[{k:'sink',w:0.85},{k:'dw',w:0.6},{k:'slim',w:0.3},{k:'drawers',w:0.6},{k:'spice',w:0.2}]),X0,Z0,0);   // 2.55 m with a 75 cm sink; the massage chair sits just west of it
   fixture(1,Catalog.mixerTap(),X0+0.425,Z0+0.52,0); fixture(1,Catalog.dishSoap(true),X0+0.1,Z0+0.52,0); fixture(1,Catalog.sinkSponge(),X0+0.75,Z0+0.445,0);
   fixture(1,Catalog.ihHob(),WX(1,523.5),WZ(1,412.5),0); fixture(1,Catalog.rangeHood(CH),WX(1,523.5),WZ(1,412.5),0);
-  fixture(1,Catalog.pantryCabinet(0.5,0.5,true),WX(1,360),WZ(1,254.5),3);   // pantry against the washroom wall, front flush with the fridge; the robot vacuum docks in its open base
+  fixture(1,Catalog.pantryCabinet(0.5,0.5,true),WX(1,360),WZ(1,258),3);   // pantry against the washroom wall, front flush with the fridge; the robot vacuum docks in its open base
   (function(){ const b=E.base(1), z1=WZ(1,850)-TE/2, x=WX(1,220), pm=lam(0xf4f4f2,{roughness:0.35}), sm=lam(0x1a1a1a), oc={cast:false};   // double socket low on the solid wall west of the balcony door, for the hair-dryer stand
     bx(LG[1],x-0.04,x+0.04,z1-0.008,z1,b+0.19,b+0.31,pm,oc);
     [0.275,0.225].forEach(function(y){ [-1,1].forEach(function(sd){ bx(LG[1],x+sd*0.009-0.0015,x+sd*0.009+0.0015,z1-0.0095,z1-0.008,b+y-0.008,b+y+0.008,sm,oc); }); bx(LG[1],x-0.003,x+0.003,z1-0.0095,z1-0.008,b+y-0.02,b+y-0.014,sm,oc); }); })();
