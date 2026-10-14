@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261018v">
+<link rel="stylesheet" href="lib/storeys.css?v=20261018w">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261018v"></script>
-<script src="lib/furniture.js?v=20261018v"></script>
-<script src="lib/catalog.js?v=20261018v"></script>
-<script src="lib/look.js?v=20261018v"></script>
-<script src="lib/houses.js?v=20261018v"></script>
-<script src="lib/perf.js?v=20261018v"></script>
-<script src="lib/finish.js?v=20261018v"></script>
-<script src="lib/storeys.js?v=20261018v"></script>
+<script src="lib/people.js?v=20261018w"></script>
+<script src="lib/furniture.js?v=20261018w"></script>
+<script src="lib/catalog.js?v=20261018w"></script>
+<script src="lib/look.js?v=20261018w"></script>
+<script src="lib/houses.js?v=20261018w"></script>
+<script src="lib/perf.js?v=20261018w"></script>
+<script src="lib/finish.js?v=20261018w"></script>
+<script src="lib/storeys.js?v=20261018w"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -389,7 +389,7 @@ layout:function(E){
 return [
   /* 2F living: corridor along the stair wall from the stair top to flight B; TV and clock on the east wall, cat walkway on the south wall beside the balcony door */
   ['tv','tv86',1,553,660,'W',function(){ const p=Catalog.tvBoard(85,0,true,{w:1.891,h:1.135,d:0.43,len:2.4}), on=function(){ return document.getElementById('tTv').getAttribute('aria-pressed')==='true'; };   // standing back from the TV shows its size and switches it
-    p.actions.push({x:-1.5,z:0,label:function(){ return '85 吋電視・'+(on()?'關掉':'打開'); },act:function(){ E.setTv(!on()); }}); return p; }],['sofa','reclinerSofa',1,300,660,'E'],['lift','liftDining',1,436,660,'E'],['rugL','rugRound',1,436,660,'E'],['purifL','airPurifier',1,148,470,'E'],['purifB','airPurifier',2,275,822,'E'],['dryer','dryerStandPink',1,273,830,'N',function(){ return Catalog.dryerStand({pink:true,plug:[-0.13,0.225,-0.53]}); }],['massage','massageChair',1,435,487,'E'],
+    p.actions.push({x:-1.5,z:0,label:function(){ return '85 吋電視・'+(on()?'關掉':'打開'); },act:function(){ E.setTv(!on()); }}); return p; }],['sofa','reclinerSofa',1,280,660,'E'],['lift','liftDining',1,436,660,'E'],['rugL','rugRound',1,436,660,'E'],['purifL','airPurifier',1,148,470,'E'],['purifB','airPurifier',2,275,822,'E'],['dryer','dryerStandPink',1,273,830,'N',function(){ return Catalog.dryerStand({pink:true,plug:[-0.13,0.225,-0.53]}); }],['massage','massageChair',1,435,487,'E'],
   ['map','worldMap',1,119.5,560,'E'],
   ['clock','wallClock',1,119.5,400,'E',function(){ return Catalog.wallClock('oak'); }],
   ['catA','catStep',1,220,843.5,'N',function(){ return Catalog.catStep(1.85); }],['catHouse','catHouse',1,175,843.5,'N',function(){ return Catalog.catHouse(1.95); }],['catB','catStep',1,130,843.5,'N',function(){ return Catalog.catStep(2.0); }],
@@ -689,7 +689,7 @@ function applyDaily(){
   workerG.visible=E.dailyOn&&usable('duo'); viewerG.visible=E.dailyOn&&usable(sid);
   if(E.dailyOn){
     const w=at('duo',2,500,365.5); workerM.position.set(w[0],0.52,w[1]); workerM.rotation.y=w[2];
-    const v=at(sid,1,292,660); viewerF.position.set(v[0],0.5,v[1]); viewerF.rotation.y=v[2];
+    const v=at(sid,1,272,660); viewerF.position.set(v[0],0.5,v[1]); viewerF.rotation.y=v[2];
     toast('日常模式：他在 3F 書桌工作，她在 2F 沙發看電視');
   }
   setTv(E.dailyOn); E.renderer.shadowMap.needsUpdate=true;
