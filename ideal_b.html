@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261017v">
+<link rel="stylesheet" href="lib/storeys.css?v=20261017x">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261017v"></script>
-<script src="lib/furniture.js?v=20261017v"></script>
-<script src="lib/catalog.js?v=20261017v"></script>
-<script src="lib/look.js?v=20261017v"></script>
-<script src="lib/houses.js?v=20261017v"></script>
-<script src="lib/perf.js?v=20261017v"></script>
-<script src="lib/finish.js?v=20261017v"></script>
-<script src="lib/storeys.js?v=20261017v"></script>
+<script src="lib/people.js?v=20261017x"></script>
+<script src="lib/furniture.js?v=20261017x"></script>
+<script src="lib/catalog.js?v=20261017x"></script>
+<script src="lib/look.js?v=20261017x"></script>
+<script src="lib/houses.js?v=20261017x"></script>
+<script src="lib/perf.js?v=20261017x"></script>
+<script src="lib/finish.js?v=20261017x"></script>
+<script src="lib/storeys.js?v=20261017x"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -389,7 +389,7 @@ layout:function(E){
 return [
   /* 2F living: corridor along the stair wall from the stair top to flight B; TV and clock on the east wall, cat walkway on the south wall beside the balcony door */
   ['tv','tv86',1,553,660,'W',function(){ const p=Catalog.tvBoard(85,0,true,{w:1.891,h:1.135,d:0.43,len:2.4}), on=function(){ return document.getElementById('tTv').getAttribute('aria-pressed')==='true'; };   // standing back from the TV shows its size and switches it
-    p.actions.push({x:-1.5,z:0,label:function(){ return '85 吋電視・'+(on()?'關掉':'打開'); },act:function(){ E.setTv(!on()); }}); return p; }],['sofa','reclinerSofa',1,300,660,'E'],['lift','liftTable',1,436,660,'E'],['rugL','rugRound',1,436,660,'E'],['dryer','dryerStandPink',1,273,780,'N'],['massage','massageChair',1,278,480,'E'],
+    p.actions.push({x:-1.5,z:0,label:function(){ return '85 吋電視・'+(on()?'關掉':'打開'); },act:function(){ E.setTv(!on()); }}); return p; }],['sofa','reclinerSofa',1,300,660,'E'],['lift','liftTable',1,436,660,'E'],['rugL','rugRound',1,436,660,'E'],['dryer','dryerStandPink',1,273,780,'N',function(){ return Catalog.dryerStand({pink:true,plug:[-0.605,0.225,-0.53]}); }],['massage','massageChair',1,278,480,'E'],
   ['map','worldMap',1,119.5,560,'E'],
   ['clock','wallClock',1,119.5,400,'E',function(){ return Catalog.wallClock('oak'); }],
   ['catA','catStep',1,220,843.5,'N',function(){ return Catalog.catStep(1.85); }],['catHouse','catHouse',1,175,843.5,'N',function(){ return Catalog.catHouse(1.95); }],['catB','catStep',1,130,843.5,'N',function(){ return Catalog.catStep(2.0); }],
@@ -430,6 +430,9 @@ fixtures:function(E){
   fixture(1,Catalog.mixerTap(),X0+0.425,Z0+0.52,0); fixture(1,Catalog.dishSoap(true),X0+0.1,Z0+0.52,0); fixture(1,Catalog.sinkSponge(),X0+0.75,Z0+0.445,0);
   fixture(1,Catalog.ihHob(),WX(1,523.5),WZ(1,412.5),0); fixture(1,Catalog.rangeHood(CH),WX(1,523.5),WZ(1,412.5),0);
   fixture(1,Catalog.pantryCabinet(0.5,0.5,true),WX(1,360),WZ(1,254.5),3);   // pantry against the washroom wall, front flush with the fridge; the robot vacuum docks in its open base
+  (function(){ const b=E.base(1), z1=WZ(1,850)-TE/2, x=WX(1,220), pm=lam(0xf4f4f2,{roughness:0.35}), sm=lam(0x1a1a1a), oc={cast:false};   // double socket low on the solid wall west of the balcony door, for the hair-dryer stand
+    bx(LG[1],x-0.04,x+0.04,z1-0.008,z1,b+0.19,b+0.31,pm,oc);
+    [0.275,0.225].forEach(function(y){ [-1,1].forEach(function(sd){ bx(LG[1],x+sd*0.009-0.0015,x+sd*0.009+0.0015,z1-0.0095,z1-0.008,b+y-0.008,b+y+0.008,sm,oc); }); bx(LG[1],x-0.003,x+0.003,z1-0.0095,z1-0.008,b+y-0.02,b+y-0.014,sm,oc); }); })();
   (function(){ const b=E.base(1), seam=M.dark, oc={cast:false};   // washroom tall unit beside the vanity
     (function(){ const x0=WX(1,165), x1=WX(1,210), z0=WZ(1,0)+TE/2, z1=WZ(1,50), vc=lam(0xf1eee8,{roughness:0.45}), t=0.018, frost=lam(0xf4f6f6,{transparent:true,opacity:0.6,roughness:0.6});   // washroom tall unit matching the vanity: doors below, open towel niche, frosted cabinet above
       bx(LG[1],x0,x0+t,z0,z1,b,b+2.0,vc); bx(LG[1],x1-t,x1,z0,z1,b,b+2.0,vc); bx(LG[1],x0,x1,z0,z0+t,b,b+2.0,vc); bx(LG[1],x0,x1,z0,z1,b+1.98,b+2.0,vc); addCol(1,x0,x1,z0,z1,b,b+2.0,'f');
