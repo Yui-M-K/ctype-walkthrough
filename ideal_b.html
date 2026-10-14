@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261018m">
+<link rel="stylesheet" href="lib/storeys.css?v=20261018n">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261018m"></script>
-<script src="lib/furniture.js?v=20261018m"></script>
-<script src="lib/catalog.js?v=20261018m"></script>
-<script src="lib/look.js?v=20261018m"></script>
-<script src="lib/houses.js?v=20261018m"></script>
-<script src="lib/perf.js?v=20261018m"></script>
-<script src="lib/finish.js?v=20261018m"></script>
-<script src="lib/storeys.js?v=20261018m"></script>
+<script src="lib/people.js?v=20261018n"></script>
+<script src="lib/furniture.js?v=20261018n"></script>
+<script src="lib/catalog.js?v=20261018n"></script>
+<script src="lib/look.js?v=20261018n"></script>
+<script src="lib/houses.js?v=20261018n"></script>
+<script src="lib/perf.js?v=20261018n"></script>
+<script src="lib/finish.js?v=20261018n"></script>
+<script src="lib/storeys.js?v=20261018n"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -492,6 +492,7 @@ fixtures:function(E){
   fixture(1,Catalog.bathDryer(CH),WX(1,500),WZ(1,120),0); fixture(1,Catalog.laundryPole(CH,1.1),WX(1,490),WZ(1,160),1);   // ceiling dryer over the bath, the drying pole along the south side
   [[0,155,180],[0,192,560],[0,445,145],[0,57,385],[1,350,600],[1,470,250],[1,260,95],[1,57,280],[2,412,590],[2,440,300],[2,180,480],[2,300,75]].forEach(function(q){ fixture(q[0],Catalog.smokeAlarm(CH),WX(q[0],q[1]),WZ(q[0],q[2]),0); });
   fixture(1,Catalog.wallAC(2.22),WX(1,580)-TE/2,WZ(1,440),2); fixture(2,Catalog.wallAC(2.4),WX(2,245)+TI/2,WZ(2,780),0); fixture(2,Catalog.wallAC(2.4),WX(2,245)+TI/2,WZ(2,420),0); fixture(0,Catalog.wallAC(2.4),WX(0,310)-TI/2,WZ(0,250),2);   // living, bedroom, study, mirror room
+  fixture(2,Catalog.acRemote(),WX(2,245)+TI/2,WZ(2,700),0); fixture(2,Catalog.acRemote(),WX(2,245)+TI/2,WZ(2,445),0); fixture(0,Catalog.acRemote(),WX(0,310)-TI/2,WZ(0,170),2);   // AC remotes beside each unit's door-side wall
   fixture(1,Catalog.laundryBasket(1.07),WX(1,344),WZ(1,36),0);   // laundry basket with mesh bags on top of the washer
   fixture(1,Catalog.vanity(1.0,true),WX(1,261),WZ(1,34),3);
   (function(){ const P=Catalog.soapDispenser(0.85); fixture(1,P,WX(1,300),WZ(1,19),3); P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); }); })();
