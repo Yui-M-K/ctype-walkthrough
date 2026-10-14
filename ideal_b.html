@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261016z">
+<link rel="stylesheet" href="lib/storeys.css?v=20261017a">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -57,7 +57,7 @@
     <div class="seg"><button type="button" class="tog" id="dOpen">全部打開</button><button type="button" class="tog" id="dClose">全部關上</button></div>
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
-    <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿，兩指一起拖曳可轉向與抬頭低頭；電腦：滑鼠拖曳轉向，WASD／方向鍵移動，Shift 加速。走近門並面向它，畫面下方會出現開關按鈕（電腦可按 F）。階梯直接走上去就會換樓層。「俯瞰」可選擇看哪一層（屋頂與上層會被拿掉）。</p>
+    <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿，兩指一起拖曳可轉向與抬頭低頭；電腦：滑鼠拖曳轉向，WASD／方向鍵移動，Shift 加速，Ctrl 蹲下（再按一次站起來）。走近門並面向它，畫面下方會出現開關按鈕（電腦可按 F）。階梯直接走上去就會換樓層。「俯瞰」可選擇看哪一層（屋頂與上層會被拿掉）。</p>
     <p class="help"><b>這棟房子：</b>【二樓浴室版】以理想之家現實版為基礎：2F 北側是從餐廚以拱門進出的洗面脫衣室（洗臉台、三溫暖房、西側洗衣角落），浴室從洗面室進出，廁所在樓梯平台旁，廚房往客廳方向移；3F 北側改成洗面室（洗手台）＋淋浴間＋廁所，主臥加大到約 8 帖。以下為共通說明：依「住宅要望書」設計、東京常見尺寸的三層透天：建物 5.8 × 8.5 m（每層約 49 m²，三層合計約 148 m²・約 45 坪）、土地約 27 坪。1F 鏡子房（北牆整面鏡子＋可拉下遮住的捲簾、緣側）、拉門儲藏室（收納櫃・層架・貓砂盆）、鏡子房門旁附小洗手台的廁所、玄關廳前方的土間（附門的鞋櫃、可收起的置物架、鑰匙掛架）與內退 60 cm 的玄關門廊（出門左轉直接進車庫、不淋雨）、3 m 寬車庫（Tesla 充電樁、按鈕開關車門）；2F 約 23 帖的整層 LDK（水槽與 IH 爐在同一座對面式半島、北牆摺疊六人餐桌、86 吋電視、電動躺椅沙發、胡桃木升降茶几、斜放的高級按摩椅、地暖、間接照明、貓走道）與廁所、陽台（一整扇大落地門、1.1 m 玻璃欄杆）；3F 主臥（約 6.5 帖）＋更衣間、書房（約 6 帖、3D 列印機，日後可當小孩房）、洗面脫衣室（洗臉台與洗衣機並排）、從浴室進出的三溫暖室（附休息長椅）、加大的浴室，以及從樓梯平台進出、附洗手台的廁所；二樓往三樓的樓梯往南移 60 cm，上樓後有 1.2 m 的平台。庭院的主樹可在櫻花／紅葉之間切換，擺設可選「木平台＋桌椅」「只有烤肉架」「全部收起來」，有烤肉架時可以開「烤肉模式」。全室無段差、拉門為主、樓梯雙側扶手與感應腳燈，貓用柵欄裝在 2F 往 1F 的樓梯口（貓咪不下 1F）。鄰地三面 1.8 m 木格柵、臨路矮牆＋門扉＋伸縮門。主臥的窗簾會依「日照時間」自動開關。原本較寬敞的版本在選單「理想之家（寬敞版）」。</p>
   </div>
 </div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261016z"></script>
-<script src="lib/furniture.js?v=20261016z"></script>
-<script src="lib/catalog.js?v=20261016z"></script>
-<script src="lib/look.js?v=20261016z"></script>
-<script src="lib/houses.js?v=20261016z"></script>
-<script src="lib/perf.js?v=20261016z"></script>
-<script src="lib/finish.js?v=20261016z"></script>
-<script src="lib/storeys.js?v=20261016z"></script>
+<script src="lib/people.js?v=20261017a"></script>
+<script src="lib/furniture.js?v=20261017a"></script>
+<script src="lib/catalog.js?v=20261017a"></script>
+<script src="lib/look.js?v=20261017a"></script>
+<script src="lib/houses.js?v=20261017a"></script>
+<script src="lib/perf.js?v=20261017a"></script>
+<script src="lib/finish.js?v=20261017a"></script>
+<script src="lib/storeys.js?v=20261017a"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -397,7 +397,7 @@ return [
   /* 2F dining (folding six-seat table on the north wall); the litter box sits in the 1F hall */
   ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,247,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,40,812,'E'],['robot','robotVacuum',1,360,240,'S'],
   /* 2F kitchen: appliance cabinet (dish cupboard in its base) and fridge against the bath wall, bins beside the peninsula */
-  ['fridge','fridgeL',1,538.5,244.5,'S',function(){ const p=Catalog.make('fridgeL'); p.doorMax=1.3; return p; }],['bins','binCabinet',1,300,409.5,'W',function(){ return Catalog.binCabinet(true); }],['appl','applianceCabinet',1,444.25,237,'S',function(){ return Catalog.applianceCabinet({dishes:true,full:true}); }],
+  ['fridge','fridgeL',1,538.5,244.5,'S',function(){ const p=Catalog.make('fridgeL'); p.doorMax=1.3; return p; }],['bins','binCabinet',1,300,412.5,'W',function(){ return Catalog.binCabinet(true); }],['appl','applianceCabinet',1,444.25,244.5,'S',function(){ return Catalog.applianceCabinet({dishes:true,full:true,depth:0.7}); }],
   /* 2F balcony */
   ['plantB1','plant',1,495,895,'E'],['plantB2','plantS',1,553,895,'E'],
   /* garden BBQ deck */
@@ -424,10 +424,10 @@ fixtures:function(E){
   const {CH,Catalog,LG,M,TE,TI,WX,WZ,addCol,bx,doors,fab,fixture,furnAnims,furnThings,lam,toast}=E;
 /* built-in fixtures (part of the building): kitchen, bath, toilets, charger, cameras, mirror room */
 (function(){                                   // kitchen: one peninsula with the sink, dishwasher and IH hob, facing the living room
-  const X0=WX(1,318.5), Z0=WZ(1,379.5);
+  const X0=WX(1,318.5), Z0=WZ(1,382.5);
   fixture(1,Catalog.sinkCounter(2.55,0.6,[0.05,0.8,0.1,0.45],[{k:'sink',w:0.85},{k:'dw',w:0.6},{k:'slim',w:0.3},{k:'drawers',w:0.6},{k:'spice',w:0.2}]),X0,Z0,0);   // 2.55 m with a 75 cm sink; the massage chair sits just west of it
   fixture(1,Catalog.mixerTap(),X0+0.425,Z0+0.52,0); fixture(1,Catalog.dishSoap(true),X0+0.1,Z0+0.52,0); fixture(1,Catalog.sinkSponge(),X0+0.75,Z0+0.445,0);
-  fixture(1,Catalog.ihHob(),WX(1,523.5),WZ(1,409.5),0); fixture(1,Catalog.rangeHood(CH),WX(1,523.5),WZ(1,409.5),0);
+  fixture(1,Catalog.ihHob(),WX(1,523.5),WZ(1,412.5),0); fixture(1,Catalog.rangeHood(CH),WX(1,523.5),WZ(1,412.5),0);
   fixture(1,Catalog.pantryCabinet(0.5,0.5,true),WX(1,360),WZ(1,254.5),3);   // pantry against the washroom wall, front flush with the fridge; the robot vacuum docks in its open base
   (function(){ const b=E.base(1), seam=M.dark, oc={cast:false};   // washroom tall unit beside the vanity
     (function(){ const x0=WX(1,165), x1=WX(1,210), z0=WZ(1,0)+TE/2, z1=WZ(1,50), vc=lam(0xf1eee8,{roughness:0.45}), t=0.018, frost=lam(0xf4f6f6,{transparent:true,opacity:0.6,roughness:0.6});   // washroom tall unit matching the vanity: doors below, open towel niche, frosted cabinet above
@@ -626,7 +626,7 @@ lighting:function(E){
 [[155,180,0],[57,665,0],[192,480,0],[57,310,0,0.25],[192,700,0],[445,145,0],[425,600,0],
  [80,177,1,0.3],[57,280,1],[260,95,1,0.3],[480,110,1,0.3],[450,310,1],[207,330,1],[350,660,1],[57,705,1],
  [57,65,2,0.3],[180,85,2,0.3],[300,75,2,0.3],[465,65,2],[60,300,2],[165,420,2],[410,330,2],[412,650,2],[120,770,2]].forEach(function(p){ light(p[2],p[0],p[1],0xffe2b8,p[3]||0.5,7); });
-pendant(1,420,409.5); pendant(1,485,409.5);
+pendant(1,420,412.5); pendant(1,485,412.5);
 cove(1,200,850,580,850,-1); cove(1,580,300,580,850,-1); cove(1,115,345,115,655,1);
 cove(2,245,520,580,520,1);
 },

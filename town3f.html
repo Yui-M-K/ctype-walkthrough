@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>三層透天厝 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261016z">
+<link rel="stylesheet" href="lib/storeys.css?v=20261017a">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -44,7 +44,7 @@
     <div class="seg"><button type="button" class="tog" id="dOpen">全部打開</button><button type="button" class="tog" id="dClose">全部關上</button></div>
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
-    <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿，兩指一起拖曳可轉向與抬頭低頭；電腦：滑鼠拖曳轉向，WASD／方向鍵移動，Shift 加速。走近門並面向它，畫面下方會出現開關按鈕（電腦可按 F）。階梯直接走上去就會換樓層。「俯瞰」可選擇看哪一層（屋頂與上層會被拿掉）。</p>
+    <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿，兩指一起拖曳可轉向與抬頭低頭；電腦：滑鼠拖曳轉向，WASD／方向鍵移動，Shift 加速，Ctrl 蹲下（再按一次站起來）。走近門並面向它，畫面下方會出現開關按鈕（電腦可按 F）。階梯直接走上去就會換樓層。「俯瞰」可選擇看哪一層（屋頂與上層會被拿掉）。</p>
     <p class="help"><b>注意：</b>這是依參考格局圖（比例尺不精細）推算的草案。尺寸由各室帖數反推（約 8.3 mm／像素，建物約 4.8 × 8.8 m），樓高 2.7 m、天花板 2.5 m、牆厚為推測；樓梯在原圖是折返式，這裡簡化為上下疊合的直跑梯，一樓的廁所／衣櫃也因此改了位置。</p>
   </div>
 </div>
@@ -54,14 +54,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261016z"></script>
-<script src="lib/furniture.js?v=20261016z"></script>
-<script src="lib/catalog.js?v=20261016z"></script>
-<script src="lib/look.js?v=20261016z"></script>
-<script src="lib/houses.js?v=20261016z"></script>
-<script src="lib/perf.js?v=20261016z"></script>
-<script src="lib/finish.js?v=20261016z"></script>
-<script src="lib/storeys.js?v=20261016z"></script>
+<script src="lib/people.js?v=20261017a"></script>
+<script src="lib/furniture.js?v=20261017a"></script>
+<script src="lib/catalog.js?v=20261017a"></script>
+<script src="lib/look.js?v=20261017a"></script>
+<script src="lib/houses.js?v=20261017a"></script>
+<script src="lib/perf.js?v=20261017a"></script>
+<script src="lib/finish.js?v=20261017a"></script>
+<script src="lib/storeys.js?v=20261017a"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
