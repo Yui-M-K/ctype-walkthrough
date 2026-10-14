@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261018j">
+<link rel="stylesheet" href="lib/storeys.css?v=20261018k">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261018j"></script>
-<script src="lib/furniture.js?v=20261018j"></script>
-<script src="lib/catalog.js?v=20261018j"></script>
-<script src="lib/look.js?v=20261018j"></script>
-<script src="lib/houses.js?v=20261018j"></script>
-<script src="lib/perf.js?v=20261018j"></script>
-<script src="lib/finish.js?v=20261018j"></script>
-<script src="lib/storeys.js?v=20261018j"></script>
+<script src="lib/people.js?v=20261018k"></script>
+<script src="lib/furniture.js?v=20261018k"></script>
+<script src="lib/catalog.js?v=20261018k"></script>
+<script src="lib/look.js?v=20261018k"></script>
+<script src="lib/houses.js?v=20261018k"></script>
+<script src="lib/perf.js?v=20261018k"></script>
+<script src="lib/finish.js?v=20261018k"></script>
+<script src="lib/storeys.js?v=20261018k"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -626,14 +626,24 @@ fixture(0,Catalog.keyRack(),WX(0,270)-TI/2,WZ(0,725),2);
 })();
 },
 lighting:function(E){
-  const {cove,light,pendant}=E;
-[[155,180,0],[57,665,0],[192,480,0],[57,310,0,0.25],[192,700,0],[445,145,0],[425,600,0],
- [80,177,1,0.3],[57,280,1],[260,95,1,0.3],[480,110,1,0.3],[450,310,1],[207,330,1],[350,660,1],[57,705,1],
- [57,65,2,0.3],[180,85,2,0.3],[300,75,2,0.3],[465,65,2],[60,300,2],[165,420,2],[410,330,2],[412,650,2],[120,770,2]].forEach(function(p){ light(p[2],p[0],p[1],0xffe2b8,p[3]||0.5,7); });
-pendant(1,420,412.5); pendant(1,485,412.5);
-cove(1,200,850,580,850,-1); cove(1,580,300,580,850,-1); cove(1,115,345,115,655,1);
-cove(2,245,520,580,520,1);
+  const {cove,light,pendant,downlight,batten}=E;
+  /* 1F: battens in the garage and storage room, downlights along the hall and in the small rooms, a round light in the mirror room */
+  light(0,155,180,0xffe2b8,0.5,7);
+  batten(0,445,145,1.2,true,0.45); batten(0,350,570,1.2,false,0.5); batten(0,500,570,1.2,false,0.5);
+  [[192,400],[192,560],[192,720]].forEach(function(p){ downlight(0,p[0],p[1],0.35); }); downlight(0,57,385,0.25); downlight(0,57,700,0.3);
+  /* 2F: round smart lights over the living and dining, downlights along the kitchen counter and in the wet rooms, pendants over the island */
+  light(1,350,660,0xffe2b8,0.5,7); light(1,207,330,0xffe2b8,0.5,7);
+  [[400,310],[470,310],[540,310]].forEach(function(p){ downlight(1,p[0],p[1],0.3); });
+  downlight(1,80,177,0.25); downlight(1,57,280,0.3); [[220,95],[320,95]].forEach(function(p){ downlight(1,p[0],p[1],0.3); }); downlight(1,480,110,0.35,5); downlight(1,57,750,0.3);
+  pendant(1,420,412.5); pendant(1,485,412.5);
+  /* 3F: round lights in the bedroom and study, downlights in the hall, closet and wet rooms */
+  light(2,412,650,0xffe2b8,0.5,7); light(2,440,300,0xffe2b8,0.5,7);
+  downlight(2,57,65,0.3); downlight(2,180,85,0.3); downlight(2,300,75,0.3); downlight(2,465,65,0.35);
+  [[60,300],[180,330],[180,480],[180,620]].forEach(function(p){ downlight(2,p[0],p[1],0.3); }); [[80,770],[170,770]].forEach(function(p){ downlight(2,p[0],p[1],0.3); });
+  cove(1,200,850,580,850,-1); cove(1,580,210,580,850,-1); cove(1,115,345,115,655,1);
+  cove(2,245,520,580,520,1);
 },
+
 modes:function(E){
   const {$,Catalog,FL,LG,LI,M,PLI,People,S1,TAU,WX,WZ,amb,at,base,btn,clamp,fab,fills,hemi,lam,lampMat,ldkFloors,liftId,modeAnims,modeGroup,mover,pointLights,rebuild,scene,setSun,setTv,syncFold,toast,usable}=E;
 (function(){                                   // stair handrails can be taken off from the menu (kept per viewer)
