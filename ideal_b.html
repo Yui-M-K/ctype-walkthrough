@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261016u">
+<link rel="stylesheet" href="lib/storeys.css?v=20261016v">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -28,7 +28,7 @@
       <button id="tTv" class="tog" type="button" aria-pressed="false">電視開機</button>
       <button id="tCurt" class="tog" type="button" aria-pressed="false">窗簾全部拉上</button>
       <button id="tHeat" class="tog" type="button" aria-pressed="false">顯示地暖範圍（客廳）</button>
-      <button id="tRail" class="tog" type="button" aria-pressed="true">樓梯扶手</button>
+      <button id="tRail" class="tog" type="button" aria-pressed="true">樓梯扶手：單側（西側）</button>
       <button id="tDaily" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">日常模式（他在 3F 工作、她在 2F 看電視）</button>
       <button id="tCook" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">料理模式（她做菜、他喝啤酒）</button>
       <button id="tSleep" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">睡覺模式（3F 洋室2，只開小夜燈）</button>
@@ -58,7 +58,7 @@
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
     <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿，兩指一起拖曳可轉向與抬頭低頭；電腦：滑鼠拖曳轉向，WASD／方向鍵移動，Shift 加速，Ctrl 蹲下（再按一次站起來）。走近門或家具並面向它，畫面下方會列出操作按鈕；電腦上也可以把滑鼠移到東西上（會亮框並顯示動作）直接點擊，或按 E 互動（沒指著東西時 E 操作列表第一個，1–3 鍵選列表）。方向鍵左右可原地轉向。階梯直接走上去就會換樓層。「俯瞰」可選擇看哪一層（屋頂與上層會被拿掉）。</p>
-    <p class="help"><b>這棟房子：</b>【二樓浴室版】以理想之家現實版為基礎：2F 北側是從餐廚以拱門進出的洗面脫衣室（洗臉台、三溫暖房、西側洗衣角落），浴室從洗面室進出，廁所在樓梯平台旁，廚房往客廳方向移；3F 北側改成洗面室（洗手台）＋淋浴間，廁所設在樓梯上來的平台北半段，書房因此成為完整長方形，主臥加大到約 8 帖。以下為共通說明：依「住宅要望書」設計、東京常見尺寸的三層透天：建物 5.8 × 8.5 m（每層約 49 m²，三層合計約 148 m²・約 45 坪）、土地約 27 坪。1F 鏡子房（北牆整面鏡子＋可拉下遮住的捲簾、緣側）、拉門儲藏室（收納櫃・層架・貓砂盆）、鏡子房門旁附小洗手台的廁所、玄關廳前方的土間（附門的鞋櫃、可收起的置物架、鑰匙掛架）與內退 60 cm 的玄關門廊（出門左轉直接進車庫、不淋雨）、3 m 寬車庫（Tesla 充電樁、按鈕開關車門）；2F 約 23 帖的整層 LDK（水槽與 IH 爐在同一座對面式半島、北牆摺疊六人餐桌、86 吋電視、電動躺椅沙發、胡桃木升降茶几、斜放的高級按摩椅、地暖、間接照明、貓走道）與廁所、陽台（一整扇大落地門、1.1 m 玻璃欄杆）；3F 主臥（約 6.5 帖）＋更衣間、書房（約 9 帖、3D 列印機，日後可當小孩房）、洗面脫衣室（洗臉台與洗衣機並排）、從浴室進出的三溫暖室（附休息長椅）、加大的浴室，以及從樓梯平台進出、附洗手台的廁所；二樓往三樓的樓梯往南移 60 cm，上樓後有 1.2 m 的平台。庭院的主樹可在櫻花／紅葉之間切換，擺設可選「木平台＋桌椅」「只有烤肉架」「全部收起來」，有烤肉架時可以開「烤肉模式」。全室無段差、拉門為主、樓梯雙側扶手與感應腳燈，貓用柵欄裝在 2F 往 1F 的樓梯口（貓咪不下 1F）。鄰地三面 1.8 m 木格柵、臨路矮牆＋門扉＋伸縮門。主臥的窗簾會依「日照時間」自動開關。原本較寬敞的版本在選單「理想之家（寬敞版）」。</p>
+    <p class="help"><b>這棟房子：</b>【二樓浴室版】以理想之家現實版為基礎：2F 北側是從餐廚以拱門進出的洗面脫衣室（洗臉台、三溫暖房、西側洗衣角落），浴室從洗面室進出，廁所在樓梯平台旁，廚房往客廳方向移；3F 北側改成洗面室（洗手台）＋淋浴間，廁所設在樓梯上來的平台北半段，書房因此成為完整長方形，主臥加大到約 8 帖。以下為共通說明：依「住宅要望書」設計、東京常見尺寸的三層透天：建物 5.8 × 8.5 m（每層約 49 m²，三層合計約 148 m²・約 45 坪）、土地約 27 坪。1F 鏡子房（北牆整面鏡子＋可拉下遮住的捲簾、緣側）、拉門儲藏室（收納櫃・層架・貓砂盆）、鏡子房門旁附小洗手台的廁所、玄關廳前方的土間（附門的鞋櫃、可收起的置物架、鑰匙掛架）與內退 60 cm 的玄關門廊（出門左轉直接進車庫、不淋雨）、3 m 寬車庫（Tesla 充電樁、按鈕開關車門）；2F 約 23 帖的整層 LDK（水槽與 IH 爐在同一座對面式半島、北牆摺疊六人餐桌、86 吋電視、電動躺椅沙發、胡桃木升降茶几、斜放的高級按摩椅、地暖、間接照明、貓走道）與廁所、陽台（一整扇大落地門、1.1 m 玻璃欄杆）；3F 主臥（約 6.5 帖）＋更衣間、書房（約 9 帖、3D 列印機，日後可當小孩房）、洗面脫衣室（洗臉台與洗衣機並排）、從浴室進出的三溫暖室（附休息長椅）、加大的浴室，以及從樓梯平台進出、附洗手台的廁所；二樓往三樓的樓梯往南移 60 cm，上樓後有 1.2 m 的平台。庭院的主樹可在櫻花／紅葉之間切換，擺設可選「木平台＋桌椅」「只有烤肉架」「全部收起來」，有烤肉架時可以開「烤肉模式」。全室無段差、拉門為主、樓梯單側扶手（下樓時的右手邊・西側外牆，選單可切換兩側）與感應腳燈，貓用柵欄裝在 2F 往 1F 的樓梯口（貓咪不下 1F）。鄰地三面 1.8 m 木格柵、臨路矮牆＋門扉＋伸縮門。主臥的窗簾會依「日照時間」自動開關。原本較寬敞的版本在選單「理想之家（寬敞版）」。</p>
   </div>
 </div>
 <div id="load">載入 3D 場景…<small>首次開啟需要幾秒鐘</small></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261016u"></script>
-<script src="lib/furniture.js?v=20261016u"></script>
-<script src="lib/catalog.js?v=20261016u"></script>
-<script src="lib/look.js?v=20261016u"></script>
-<script src="lib/houses.js?v=20261016u"></script>
-<script src="lib/perf.js?v=20261016u"></script>
-<script src="lib/finish.js?v=20261016u"></script>
-<script src="lib/storeys.js?v=20261016u"></script>
+<script src="lib/people.js?v=20261016v"></script>
+<script src="lib/furniture.js?v=20261016v"></script>
+<script src="lib/catalog.js?v=20261016v"></script>
+<script src="lib/look.js?v=20261016v"></script>
+<script src="lib/houses.js?v=20261016v"></script>
+<script src="lib/perf.js?v=20261016v"></script>
+<script src="lib/finish.js?v=20261016v"></script>
+<script src="lib/storeys.js?v=20261016v"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -711,10 +711,11 @@ lighting:function(E){
 
 modes:function(E){
   const {$,Catalog,FL,LG,LI,M,PLI,People,S1,TAU,WX,WZ,amb,at,base,btn,clamp,fab,fills,hemi,lam,lampMat,ldkFloors,liftId,modeAnims,modeGroup,mover,pointLights,rebuild,scene,setSun,setTv,syncFold,toast,usable}=E;
-(function(){                                   // stair handrails can be taken off from the menu (kept per viewer)
-  let on=true; try{ on=localStorage.getItem('idealRails')!=='0'; }catch(_){}
-  const apply=function(){ E.railGroups.forEach(function(g){ g.visible=on; }); btn('tRail',on); E.renderer.shadowMap.needsUpdate=true; try{ localStorage.setItem('idealRails',on?'1':'0'); }catch(_){} };
-  $('tRail').addEventListener('click',function(){ on=!on; apply(); toast(on?'樓梯扶手已裝上':'樓梯扶手已拆下'); }); apply();
+(function(){                                   // stair handrails from the menu: both sides, west side only (on the right going down), or none; kept per viewer
+  const modes=['west','both','off'], label={west:'樓梯扶手：單側（西側）',both:'樓梯扶手：兩側',off:'樓梯扶手：拆下'};
+  let mode='west'; try{ const v=localStorage.getItem('idealRailMode'); if(modes.indexOf(v)>=0) mode=v; }catch(_){}
+  const apply=function(){ E.railGroups.forEach(function(g){ g.visible=mode==='both'||(mode==='west'&&g.userData.sd>0); }); const b=$('tRail'); b.textContent=label[mode]; btn('tRail',mode!=='off'); E.renderer.shadowMap.needsUpdate=true; try{ localStorage.setItem('idealRailMode',mode); }catch(_){} };
+  $('tRail').addEventListener('click',function(){ mode=modes[(modes.indexOf(mode)+1)%modes.length]; apply(); toast(label[mode]); }); apply();
 })();
 (function(){                                   // floor heating: show the heated zone as a warm glow on the living room floor
   const warm=FL.wood.clone(); warm.emissive.setHex(0x5a2e10); warm.emissiveIntensity=0.35;
