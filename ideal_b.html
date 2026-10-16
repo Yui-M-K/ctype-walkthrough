@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261016b">
+<link rel="stylesheet" href="lib/storeys.css?v=20261016c">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261016b"></script>
-<script src="lib/furniture.js?v=20261016b"></script>
-<script src="lib/catalog.js?v=20261016b"></script>
-<script src="lib/look.js?v=20261016b"></script>
-<script src="lib/houses.js?v=20261016b"></script>
-<script src="lib/perf.js?v=20261016b"></script>
-<script src="lib/finish.js?v=20261016b"></script>
-<script src="lib/storeys.js?v=20261016b"></script>
+<script src="lib/people.js?v=20261016c"></script>
+<script src="lib/furniture.js?v=20261016c"></script>
+<script src="lib/catalog.js?v=20261016c"></script>
+<script src="lib/look.js?v=20261016c"></script>
+<script src="lib/houses.js?v=20261016c"></script>
+<script src="lib/perf.js?v=20261016c"></script>
+<script src="lib/finish.js?v=20261016c"></script>
+<script src="lib/storeys.js?v=20261016c"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -136,6 +136,41 @@ rooms:[
 accents:[{l:1,x0:560,x1:575,y0:250,y1:850,w:'sage'},{l:2,x0:245,x1:580,y0:465,y1:480,w:'mist'}],
 /* curtains: [storey, wall side, a, b, wall line, auto] — the master bedroom's follow the time of day (smart home) */
 curtains:[[0,'W',55,245,0,false,{color:0xf7f3ec,tie:true}],[1,'S',240,560,850],[2,'N',380,540,0],[2,'S',260,560,850,true],[2,'E',600,760,580,true],[2,'E',300,440,580]],
+/* equipment notes in the menu: [storey, plan x, plan y, name, note] for built-ins; placed furniture is listed automatically (noteText[id]: note or [name, note]) */
+notes:[
+  [1,300,600,'床暖房（地暖）','LDK 全面鋪設。選單「顯示地暖範圍（客廳）」可看到範圍'],
+  [1,361,434.5,'抽拉式水龍頭','蓮蓬頭可拉出：拉出斜沖 → 換角度沖 → 收回，附金屬軟管'],
+  [1,361,417.5,'廚餘處理機','裝在水槽下，排水口是橡膠防濺蓋；台面有氣壓開關，打開水槽下櫃可看到本體'],
+  [1,433.5,385,'嵌入式洗碗機','抽屜式深型 45 cm，放得下盤子、碗和杯子'],
+  [1,523.5,412.5,'IH 爐＋抽油煙機','三口 IH，與水槽在同一座半島'],
+  [1,360,258,'食品收納櫃','深 50 cm、與冰箱齊平；下方是掃地機器人的基地，米和麵條放在層架'],
+  [1,470,40,'浴缸','1.7 m，洗澡時可看牆上電視'],
+  [1,500,120,'浴室乾燥機','天花板暖風乾燥，下雨天可在浴室曬衣'],
+  [1,490,160,'浴室曬衣桿','搭配乾燥機使用'],
+  [1,150,67,'家用三溫暖','1.5 × 1.2 m 杉木房，從洗面室進出，附休息長椅'],
+  [1,261,34,'洗臉台','1 m 寬，附收納'],
+  [1,57,345,'貓用柵欄','裝在 2F 往 1F 的樓梯口，貓咪不下 1F'],
+  [1,575,440,'冷氣（客廳）','壁掛式'],
+  [2,250,780,'冷氣（主臥）','壁掛式，旁邊牆上掛遙控器'],[2,250,420,'冷氣（書房）','壁掛式，旁邊牆上掛遙控器'],[0,305,250,'冷氣（鏡子房）','壁掛式，旁邊牆上掛遙控器'],
+  [0,155,180,'火災警報器','天花板'],[0,192,560,'火災警報器','天花板'],[1,350,600,'火災警報器','天花板'],[1,470,250,'火災警報器','天花板'],[1,57,280,'火災警報器','天花板'],[2,412,590,'火災警報器','天花板'],[2,440,300,'火災警報器','天花板'],[2,180,480,'火災警報器','天花板'],
+  [2,160,34,'洗手台（3F）','只有洗手盆'],
+  [0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
+  [0,155,30,'壁掛喇叭','鏡子房兩側'],
+  [0,580,345,'Tesla 充電樁','車庫牆上'],
+  [0,240,850,'監視攝影機','玄關門廊與車庫外各一台'],
+  [0,445,140,'除濕機・加濕機','收在儲藏室，換季時拿出來']
+],
+noteText:{
+  tv:['85 吋電視＋落地電視櫃','電視櫃長 240 cm，下掀門內有插座和電視盒，兩側收納書和桌遊'],
+  sofa:'210 × 97 × 100 cm，中間有杯架小桌、扶手有 USB；電源與吹風機共用插座',
+  lift:'茶几／餐桌／書桌三段高度，四張同尺寸凳子收在桌下',
+  massage:'HY-5018：直立 146 × 74.5 × 114.5 cm，躺平 169 cm，腳靠會伸縮',
+  dryer:'坐在沙發上就能吹頭髮，插座在旁邊牆上',
+  appl:'深 70 cm 與冰箱齊平，放家電的層板可拉出，電線收在背後',
+  robot:'基地在食品收納櫃下方',
+  catBowls:'自動飼料機＋罐頭碗＋水碗',
+  rugL:null, rugBed:null, rugS:null, mat:null, cat:null, headboard:null
+},
 /* teleport spots: [name, plan x, plan y, storey, view, yaw, (pitch)] */
 spots:[['玄關',172,1150,0,0,0],['鏡子房',60,250,0,0,-Math.PI*0.4],['緣側',-45,150,0,0,Math.PI/2],['庭院',-60,330,0,0,Math.PI*0.92,-0.12],['車庫',425,990,0,0,0],['LDK',200,600,1,1,-Math.PI/2],['廚房',450,310,1,1,Math.PI,-0.2],['陽台',290,830,1,1,0],['浴室',480,140,1,1,0,-0.3],['洗面室・三溫暖',300,150,1,1,0.4,-0.15],['洗面室（3F）',180,130,2,2,0,-0.2],['主臥',300,720,2,2,-Math.PI*0.25,-0.2],['書房',300,380,2,2,-Math.PI/2],['更衣間',180,710,2,2,Math.PI*0.9,-0.15]],
 /* furniture that exists only in layout 1 */
