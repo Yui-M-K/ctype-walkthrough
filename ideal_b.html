@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261016s">
+<link rel="stylesheet" href="lib/storeys.css?v=20261016t">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261016s"></script>
-<script src="lib/furniture.js?v=20261016s"></script>
-<script src="lib/catalog.js?v=20261016s"></script>
-<script src="lib/look.js?v=20261016s"></script>
-<script src="lib/houses.js?v=20261016s"></script>
-<script src="lib/perf.js?v=20261016s"></script>
-<script src="lib/finish.js?v=20261016s"></script>
-<script src="lib/storeys.js?v=20261016s"></script>
+<script src="lib/people.js?v=20261016t"></script>
+<script src="lib/furniture.js?v=20261016t"></script>
+<script src="lib/catalog.js?v=20261016t"></script>
+<script src="lib/look.js?v=20261016t"></script>
+<script src="lib/houses.js?v=20261016t"></script>
+<script src="lib/perf.js?v=20261016t"></script>
+<script src="lib/finish.js?v=20261016t"></script>
+<script src="lib/storeys.js?v=20261016t"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -173,6 +173,7 @@ noteText:{
   cat:['咘咘','白底虎斑：額頭白色倒 V、瞇瞇眼、粉紅大鼻子，肩背和屁股各一塊虎斑'],
   wbench:'窗台下的收納長椅：左抽屜放睡衣、中間是開放書櫃、右抽屜放乳液等保養品，上面有坐墊可以坐',
   purifB:'臥室的 Dyson，兼電風扇',
+  headboard:'中間的雙孔插座由床頭板西側牆上的插座供電（電線從床頭板底部西端穿出，沿踢腳板接上）',
   litter:'PURA MAX：W62 × D55.2 × H53.8 cm，入口 20 × 22.5 cm，內部 76 L，集便盒 7 L（最多約 15 天）',
   rugL:null, rugBed:null, rugS:null, mat:null, cat:null, headboard:null
 },
@@ -467,6 +468,12 @@ fixtures:function(E){
   fixture(1,Catalog.pullDownTap(),X0+0.425,Z0+0.52,0); fixture(1,Catalog.dishSoap(true),X0+0.1,Z0+0.52,0); fixture(1,Catalog.sinkSponge(),X0+0.75,Z0+0.445,0);
   fixture(1,Catalog.ihHob(),WX(1,523.5),WZ(1,412.5),0); fixture(1,Catalog.rangeHood(CH),WX(1,523.5),WZ(1,412.5),0);
   fixture(1,Catalog.pantryCabinet(0.5,0.5,true),WX(1,360),WZ(1,258),3);   // pantry against the washroom wall, front flush with the fridge; the robot vacuum docks in its open base
+  (function(){ const b=E.base(2), zf=WZ(2,460)+TI/2, x=WX(2,318), pm=lam(0xf4f4f2,{roughness:0.35}), sm=lam(0x1a1a1a), oc={cast:false};   // 3F bedroom: wall socket just west of the headboard; the headboard's 2-gang outlet is fed from it
+    bx(LG[2],x-0.04,x+0.04,zf,zf+0.008,b+0.19,b+0.31,pm,oc);
+    [0.275,0.225].forEach(function(y){ [-1,1].forEach(function(sd){ bx(LG[2],x+sd*0.009-0.0015,x+sd*0.009+0.0015,zf+0.008,zf+0.0095,b+y-0.008,b+y+0.008,sm,oc); }); bx(LG[2],x-0.003,x+0.003,zf+0.008,zf+0.0095,b+y-0.02,b+y-0.014,sm,oc); });
+    const pl=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.04,0.028),pm); pl.position.set(x,b+0.275,zf+0.022); LG[2].add(pl);
+    const pts=[[x,b+0.275,zf+0.036],[x+0.01,b+0.12,zf+0.05],[x+0.04,b+0.008,zf+0.04],[WX(2,330),b+0.006,zf+0.04],[WX(2,336),b+0.03,zf+0.08]].map(function(q){ return new THREE.Vector3(q[0],q[1],q[2]); });
+    LG[2].add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),40,0.0035,6),lam(0xe9e8e4,{roughness:0.5}))); })();
   (function(){ const b=E.base(1), z1=WZ(1,850)-TE/2, x=WX(1,220), pm=lam(0xf4f4f2,{roughness:0.35}), sm=lam(0x1a1a1a), oc={cast:false};   // double socket low on the solid wall west of the balcony door, for the hair-dryer stand
     bx(LG[1],x-0.04,x+0.04,z1-0.008,z1,b+0.19,b+0.31,pm,oc);
     [0.275,0.225].forEach(function(y){ [-1,1].forEach(function(sd){ bx(LG[1],x+sd*0.009-0.0015,x+sd*0.009+0.0015,z1-0.0095,z1-0.008,b+y-0.008,b+y+0.008,sm,oc); }); bx(LG[1],x-0.003,x+0.003,z1-0.0095,z1-0.008,b+y-0.02,b+y-0.014,sm,oc); }); })();
