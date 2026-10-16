@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261016q">
+<link rel="stylesheet" href="lib/storeys.css?v=20261016r">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261016q"></script>
-<script src="lib/furniture.js?v=20261016q"></script>
-<script src="lib/catalog.js?v=20261016q"></script>
-<script src="lib/look.js?v=20261016q"></script>
-<script src="lib/houses.js?v=20261016q"></script>
-<script src="lib/perf.js?v=20261016q"></script>
-<script src="lib/finish.js?v=20261016q"></script>
-<script src="lib/storeys.js?v=20261016q"></script>
+<script src="lib/people.js?v=20261016r"></script>
+<script src="lib/furniture.js?v=20261016r"></script>
+<script src="lib/catalog.js?v=20261016r"></script>
+<script src="lib/look.js?v=20261016r"></script>
+<script src="lib/houses.js?v=20261016r"></script>
+<script src="lib/perf.js?v=20261016r"></script>
+<script src="lib/finish.js?v=20261016r"></script>
+<script src="lib/storeys.js?v=20261016r"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -171,6 +171,9 @@ noteText:{
   robot:'基地在食品收納櫃下方',
   catBowls:'自動飼料機＋罐頭碗＋水碗',
   cat:['咘咘','白底虎斑：額頭白色倒 V、瞇瞇眼、粉紅大鼻子，肩背和屁股各一塊虎斑'],
+  bed:'床尾兩側各兩個大抽屜，放換季寢具',
+  wbench:'窗台下的收納長椅，三個抽屜放毯子和衣物，上面有坐墊可以坐',
+  purifB:'臥室的 Dyson，兼電風扇',
   litter:'PURA MAX：W62 × D55.2 × H53.8 cm，入口 20 × 22.5 cm，內部 76 L，集便盒 7 L（最多約 15 天）',
   rugL:null, rugBed:null, rugS:null, mat:null, cat:null, headboard:null
 },
@@ -424,7 +427,7 @@ layout:function(E){
 return [
   /* 2F living: corridor along the stair wall from the stair top to flight B; TV and clock on the east wall, cat walkway on the south wall beside the balcony door */
   ['tv','tv86',1,553,660,'W',function(){ const p=Catalog.tvBoard(85,0,true,{w:1.891,h:1.135,d:0.43,len:2.4}), on=function(){ return document.getElementById('tTv').getAttribute('aria-pressed')==='true'; };   // standing back from the TV shows its size and switches it
-    p.actions.push({x:-1.5,z:0,part:p.tvParts,label:function(){ return '85 吋電視・'+(on()?'關掉':'打開'); },act:function(){ E.setTv(!on()); }}); return p; }],['sofa','reclinerSofa',1,280,660,'E'],['lift','liftDining',1,436,660,'E'],['rugL','rugRound',1,436,660,'E'],['purifL','airPurifier',1,148,470,'E'],['purifB','airPurifier',2,275,822,'E'],['dryer','dryerStandPink',1,273,830,'N',function(){ return Catalog.dryerStand({pink:true,plug:[-0.13,0.225,-0.53]}); }],['massage','massageChair',1,435,482,'E'],
+    p.actions.push({x:-1.5,z:0,part:p.tvParts,label:function(){ return '85 吋電視・'+(on()?'關掉':'打開'); },act:function(){ E.setTv(!on()); }}); return p; }],['sofa','reclinerSofa',1,280,660,'E'],['lift','liftDining',1,436,660,'E'],['rugL','rugRound',1,436,660,'E'],['purifL','airPurifier',1,148,470,'E'],['purifB','airPurifier',2,545,815,'W'],['dryer','dryerStandPink',1,273,830,'N',function(){ return Catalog.dryerStand({pink:true,plug:[-0.13,0.225,-0.53]}); }],['massage','massageChair',1,435,482,'E'],
   ['map','worldMap',1,119.5,560,'E'],
   ['clock','wallClock',1,119.5,400,'E',function(){ return Catalog.wallClock('oak'); }],
   ['catA','catStep',1,220,843.5,'N',function(){ return Catalog.catStep(1.85); }],['catHouse','catHouse',1,175,843.5,'N',function(){ return Catalog.catHouse(1.95); }],['catB','catStep',1,130,843.5,'N',function(){ return Catalog.catStep(2.0); }],
@@ -443,8 +446,8 @@ return [
   ['artHall1','artLand',0,265.5,505,'W'],['plantH','plant',0,240,330,'W'],
   ['car','car',0,424,565,'S'],
   /* 3F bedroom */
-  ['bed','bed',2,415,590,'S'],['headboard','headboard',2,415,464.5,'S'],['side','bedside',2,545.5,487,'S',function(){ return Catalog.bedsideTable(true,0.6,0.45,0.55); }],['rugBed','rugBed',2,415,630,'E'],
-  ['fanB','fan',2,550,820,'W'],['artBed','artPortrait',2,249.5,760,'E'],
+  ['bed','bedStorage',2,415,590,'S'],['headboard','headboard',2,415,464.5,'S'],['side','bedside',2,545.5,487,'S',function(){ return Catalog.bedsideTable(true,0.6,0.45,0.55); }],['rugBed','rugBed',2,415,630,'E'],
+  ['wbench','windowBench',2,385,822.5,'N'],['artBed','artPortrait',2,249.5,760,'E'],
   /* 3F walk-in closet, study, hall, washroom */
   ['mirrorW','fullMirror',2,238.5,740,'W'],
   ['duo','duoDesk',2,455,420.5,'N'],['printer','printerCart',2,325,432,'N'],['shelf3','bookshelf',2,465,20.5,'S'],['rugS','rugRoundSun',2,450,250,'E'],['plant3','plantS',2,545,160,'E'],['artHall','artSmall',2,240.5,450,'W'],
