@@ -56,3 +56,5 @@ button{font:inherit;color:inherit;cursor:pointer}
 .note b{font-size:13.5px;font-weight:700}
 .note span{font-size:11.5px;color:var(--muted)}
 .note small{font-size:12px;line-height:1.5;color:var(--ink);opacity:.85}
+#hovTip{position:fixed;padding:4px 10px;border-radius:999px;background:var(--ink);color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;pointer-events:none;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+#hovTip::after{content:'  E';opacity:.6;font-family:var(--font-num)}
