@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261016j">
+<link rel="stylesheet" href="lib/storeys.css?v=20261016k">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261016j"></script>
-<script src="lib/furniture.js?v=20261016j"></script>
-<script src="lib/catalog.js?v=20261016j"></script>
-<script src="lib/look.js?v=20261016j"></script>
-<script src="lib/houses.js?v=20261016j"></script>
-<script src="lib/perf.js?v=20261016j"></script>
-<script src="lib/finish.js?v=20261016j"></script>
-<script src="lib/storeys.js?v=20261016j"></script>
+<script src="lib/people.js?v=20261016k"></script>
+<script src="lib/furniture.js?v=20261016k"></script>
+<script src="lib/catalog.js?v=20261016k"></script>
+<script src="lib/look.js?v=20261016k"></script>
+<script src="lib/houses.js?v=20261016k"></script>
+<script src="lib/perf.js?v=20261016k"></script>
+<script src="lib/finish.js?v=20261016k"></script>
+<script src="lib/storeys.js?v=20261016k"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -170,6 +170,7 @@ noteText:{
   appl:'深 70 cm 與冰箱齊平，放家電的層板可拉出，電線收在背後',
   robot:'基地在食品收納櫃下方',
   catBowls:'自動飼料機＋罐頭碗＋水碗',
+  litter:'PURA MAX：W62 × D55.2 × H53.8 cm，入口 20 × 22.5 cm，內部 76 L，集便盒 7 L（最多約 15 天）',
   rugL:null, rugBed:null, rugS:null, mat:null, cat:null, headboard:null
 },
 /* teleport spots: [name, plan x, plan y, storey, view, yaw, (pitch)] */
