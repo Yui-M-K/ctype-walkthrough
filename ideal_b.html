@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261016o">
+<link rel="stylesheet" href="lib/storeys.css?v=20261016p">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261016o"></script>
-<script src="lib/furniture.js?v=20261016o"></script>
-<script src="lib/catalog.js?v=20261016o"></script>
-<script src="lib/look.js?v=20261016o"></script>
-<script src="lib/houses.js?v=20261016o"></script>
-<script src="lib/perf.js?v=20261016o"></script>
-<script src="lib/finish.js?v=20261016o"></script>
-<script src="lib/storeys.js?v=20261016o"></script>
+<script src="lib/people.js?v=20261016p"></script>
+<script src="lib/furniture.js?v=20261016p"></script>
+<script src="lib/catalog.js?v=20261016p"></script>
+<script src="lib/look.js?v=20261016p"></script>
+<script src="lib/houses.js?v=20261016p"></script>
+<script src="lib/perf.js?v=20261016p"></script>
+<script src="lib/finish.js?v=20261016p"></script>
+<script src="lib/storeys.js?v=20261016p"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -251,13 +251,10 @@ build:function(E){
   wall(2,580,0,580,850,TE,[{a:300,b:440},{a:600,b:760}]);
   wall(2,0,850,245,850,TE);
   wall(2,245,850,580,850,TE,[{a:260,b:560,sill:0.5,head:2.15}]);
-  /* 3F north (B): a shower room and a small toilet, both off a powder room that opens to the hall through an arch; the study wraps round the toilet */
+  /* 3F north (B): a shower room and a small toilet, both off a powder room with a hinged door to the hall; the study wraps round the toilet */
   wall(2,0,150,115,150,TI);
   wall(2,115,0,115,150,TI,[{a:75,b:145,k:'slide',mat:M.frost}]);    // shower door slides, parking on whichever side is clear
-  wall(2,115,150,245,150,TI,[{a:140,b:220,k:'open',head:2.1}]);
-  (function(){ const b=base(2), x0=WX(2,140), x1=WX(2,220), r=(x1-x0)/2, sh=new THREE.Shape(); sh.moveTo(-r-0.001,0); sh.lineTo(r+0.001,0); sh.lineTo(r+0.001,r+0.03); sh.lineTo(-r-0.001,r+0.03); sh.closePath();
-    const hole=new THREE.Path(); hole.absarc(0,0,r,0,Math.PI,false); hole.lineTo(-r,0); sh.holes.push(hole);
-    const g=new THREE.ExtrudeGeometry(sh,{depth:TI+0.002,bevelEnabled:false,curveSegments:24}), m=new THREE.Mesh(g,M.trim); m.position.set((x0+x1)/2,b+2.1-r,WZ(2,150)-TI/2-0.001); m.receiveShadow=true; LG[2].add(m); })();
+  wall(2,115,150,245,150,TI,[{a:145,b:225,k:'door',hinge:'b',sw:-1}]);
   wall(2,245,0,245,130,TI,[{a:60,b:125,k:'slide'}]);   // toilet door slides, parking on whichever side is clear
   wall(2,245,150,355+TI*50,150,TI); wall(2,355,0,355,150-TI*50,TI);
   wall(2,245,130,245,460,TI,[{a:285,b:365,k:'door',hinge:'a',sw:1}]);
