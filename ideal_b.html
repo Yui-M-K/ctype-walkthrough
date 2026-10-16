@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261016l">
+<link rel="stylesheet" href="lib/storeys.css?v=20261016m">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -67,14 +67,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261016l"></script>
-<script src="lib/furniture.js?v=20261016l"></script>
-<script src="lib/catalog.js?v=20261016l"></script>
-<script src="lib/look.js?v=20261016l"></script>
-<script src="lib/houses.js?v=20261016l"></script>
-<script src="lib/perf.js?v=20261016l"></script>
-<script src="lib/finish.js?v=20261016l"></script>
-<script src="lib/storeys.js?v=20261016l"></script>
+<script src="lib/people.js?v=20261016m"></script>
+<script src="lib/furniture.js?v=20261016m"></script>
+<script src="lib/catalog.js?v=20261016m"></script>
+<script src="lib/look.js?v=20261016m"></script>
+<script src="lib/houses.js?v=20261016m"></script>
+<script src="lib/perf.js?v=20261016m"></script>
+<script src="lib/finish.js?v=20261016m"></script>
+<script src="lib/storeys.js?v=20261016m"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -170,6 +170,7 @@ noteText:{
   appl:'深 70 cm 與冰箱齊平，放家電的層板可拉出，電線收在背後',
   robot:'基地在食品收納櫃下方',
   catBowls:'自動飼料機＋罐頭碗＋水碗',
+  cat:['咘咘','白底虎斑：額頭白色倒 V、瞇瞇眼、粉紅大鼻子，肩背和屁股各一塊虎斑'],
   litter:'PURA MAX：W62 × D55.2 × H53.8 cm，入口 20 × 22.5 cm，內部 76 L，集便盒 7 L（最多約 15 天）',
   rugL:null, rugBed:null, rugS:null, mat:null, cat:null, headboard:null
 },
@@ -430,8 +431,8 @@ return [
   ['map','worldMap',1,119.5,560,'E'],
   ['clock','wallClock',1,119.5,400,'E',function(){ return Catalog.wallClock('oak'); }],
   ['catA','catStep',1,220,843.5,'N',function(){ return Catalog.catStep(1.85); }],['catHouse','catHouse',1,175,843.5,'N',function(){ return Catalog.catHouse(1.95); }],['catB','catStep',1,130,843.5,'N',function(){ return Catalog.catStep(2.0); }],
-  ['catBed','catBed',1,85,843.5,'N',function(){ return Catalog.catBed(2.05,'tabby'); }],['catC','catStep',1,40,843.5,'N',function(){ return Catalog.catStep(2.1); }],
-  ['cat','catGrey',1,160,740,'E'],['catBowls','catFeedStation',1,558,468,'W'],
+  ['catBed','catBed',1,85,843.5,'N',function(){ return Catalog.catBed(2.05); }],['catC','catStep',1,40,843.5,'N',function(){ return Catalog.catStep(2.1); }],
+  ['cat','catBubu',1,160,740,'E'],['catBowls','catFeedStation',1,558,468,'W'],
   /* 2F dining (folding six-seat table on the north wall); the litter box sits in the 1F hall */
   ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,247,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,40,812,'E'],['robot','robotVacuum',1,360,240,'S'],
   /* 2F kitchen: appliance cabinet (dish cupboard in its base) and fridge against the bath wall, bins beside the peninsula */
@@ -719,7 +720,7 @@ $('tSport').addEventListener('click',function(){ E.sportOn=!E.sportOn; btn('tSpo
 const workerG=modeGroup(2), viewerG=modeGroup(1);
 const workerM=People.sit(1.69,0.52,0xe2b890,0x3c4a5c,0x2f3a4a,0x1f1a16,false,People.poses.typing); workerG.add(workerM);
 const viewerF=People.sit(1.63,0.40,0xf1c9a5,0xf4f1ec,0x7f8fa8,0x3a2a22,true,People.poses.lapArms); viewerG.add(viewerF);
-(function(){ const H=new THREE.Group(); H.position.set(-0.05,0.13,0); viewerF.add(H); const c=Catalog.catModel(0xa07a55,0xf6f2ec,'#4a3626'); H.add(c.group); modeAnims.push(function(t){ if(viewerG.visible) c.anim(t); }); })();
+(function(){ const H=new THREE.Group(); H.position.set(-0.05,0.13,0); viewerF.add(H); const c=Catalog.bubuModel(0.8); c.group.position.set(0.12,0.0,0); c.group.rotation.y=Math.PI/2+0.35; H.add(c.group); modeAnims.push(function(t){ if(viewerG.visible) c.anim(t); }); })();
 function applyDaily(){
   if(E.dailyOn) offOthers('daily');
   const sid='sofa';
