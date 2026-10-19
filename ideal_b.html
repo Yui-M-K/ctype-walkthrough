@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261019q">
+<link rel="stylesheet" href="lib/storeys.css?v=20261019r">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -68,14 +68,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261019q"></script>
-<script src="lib/furniture.js?v=20261019q"></script>
-<script src="lib/catalog.js?v=20261019q"></script>
-<script src="lib/look.js?v=20261019q"></script>
-<script src="lib/houses.js?v=20261019q"></script>
-<script src="lib/perf.js?v=20261019q"></script>
-<script src="lib/finish.js?v=20261019q"></script>
-<script src="lib/storeys.js?v=20261019q"></script>
+<script src="lib/people.js?v=20261019r"></script>
+<script src="lib/furniture.js?v=20261019r"></script>
+<script src="lib/catalog.js?v=20261019r"></script>
+<script src="lib/look.js?v=20261019r"></script>
+<script src="lib/houses.js?v=20261019r"></script>
+<script src="lib/perf.js?v=20261019r"></script>
+<script src="lib/finish.js?v=20261019r"></script>
+<script src="lib/storeys.js?v=20261019r"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -179,7 +179,7 @@ noteText:{
   purifL:'客廳的 Dyson；插在正後方樓梯側牆的低位插座',
   purifB:'臥室的 Dyson，兼電風扇；插在正後方東牆的低位插座',
   headboard:'中間的雙孔插座由床頭板西側牆上的插座供電（電線從床頭板底部西端穿出，沿踢腳板接上）',
-  litter:'PURA MAX：W62 × D55.2 × H53.8 cm，入口 20 × 22.5 cm，內部 76 L，集便盒 7 L（最多約 15 天）',
+  litter:'Purobot Max Pro 2（AI 攝影機）：W65.7 × D53.8 × H60.3 cm，入口寬 26.7 cm',
   rugL:null, rugBed:null, rugS:null, mat:null, cat:null, headboard:null
 },
 /* teleport spots: [name, plan x, plan y, storey, view, yaw, (pitch)] */
@@ -443,7 +443,7 @@ return [
   ['catBed','catBed',1,85,843.5,'N',function(){ return Catalog.catBed(2.05); }],['catC','catStep',1,40,843.5,'N',function(){ return Catalog.catStep(2.1); }],
   ['cat','catBubu',1,160,740,'E'],['catBowls','catFeedStation',1,558,468,'W'],
   /* 2F dining (folding six-seat table on the north wall); the litter box sits in the 1F hall */
-  ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,247,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,40,812,'E'],['robot','robotVacuum',1,346,240,'S'],
+  ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,247,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,40,809,'E'],['robot','robotVacuum',1,346,240,'S'],
   /* 2F kitchen: appliance cabinet (dish cupboard in its base) and fridge against the bath wall, bins beside the peninsula */
   ['fridge','fridgeL',1,538.5,244.5,'S',function(){ const p=Catalog.make('fridgeL'); p.doorMax=1.3; return p; }],['bins','binCabinet',1,300,412.5,'W',function(){ return Catalog.binCabinet(true); }],['appl','applianceCabinet',1,437.25,244.5,'S',function(){ return Catalog.applianceCabinet({dishes:true,full:true,depth:0.7,width:1.325}); }],
   /* 2F balcony */
