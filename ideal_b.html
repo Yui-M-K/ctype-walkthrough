@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261019p">
+<link rel="stylesheet" href="lib/storeys.css?v=20261019q">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -68,14 +68,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261019p"></script>
-<script src="lib/furniture.js?v=20261019p"></script>
-<script src="lib/catalog.js?v=20261019p"></script>
-<script src="lib/look.js?v=20261019p"></script>
-<script src="lib/houses.js?v=20261019p"></script>
-<script src="lib/perf.js?v=20261019p"></script>
-<script src="lib/finish.js?v=20261019p"></script>
-<script src="lib/storeys.js?v=20261019p"></script>
+<script src="lib/people.js?v=20261019q"></script>
+<script src="lib/furniture.js?v=20261019q"></script>
+<script src="lib/catalog.js?v=20261019q"></script>
+<script src="lib/look.js?v=20261019q"></script>
+<script src="lib/houses.js?v=20261019q"></script>
+<script src="lib/perf.js?v=20261019q"></script>
+<script src="lib/finish.js?v=20261019q"></script>
+<script src="lib/storeys.js?v=20261019q"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -451,7 +451,7 @@ return [
   /* garden BBQ deck */
   ['outdoor','outdoorSet',0,-130,610,'E'],['bbq','bbqGrill',0,-50,690,'E'],
   /* 1F genkan, mirror room, garage */
-  ['shoeRack','shoeCabinet',0,57,764.5,'N',function(){ return Catalog.shoeCabinet(1.0,1.9); }],['mat','doormat',0,200,755,'N',function(){ return Catalog.doormat(0.6,1.0); }],['umbrella','umbrellaStand',0,128,772,'N'],['shoesW','shoesHer',0,180,734,'W'],['shoesM','shoesHim',0,208,734,'W'],
+  ['shoeRack','shoeCabinet',0,57,764.5,'N',function(){ return Catalog.shoeCabinet(1.0,1.9); }],['mat','doormat',0,200,755,'N',function(){ return Catalog.doormat(0.6,1.0); }],['umbrella','umbrellaStand',0,128,772,'N'],['keys','keyRack',0,265.5,725,'W',null,{off:true}],['shoesW','shoesHer',0,180,734,'W'],['shoesM','shoesHim',0,208,734,'W'],
   ['artHall1','artLand',0,265.5,505,'W'],['plantH','plant',0,240,330,'W'],
   ['car','car',0,424,565,'S'],
   /* 3F bedroom */
@@ -603,7 +603,6 @@ fixture(0,Catalog.wallFoldTable(1.0),WX(0,270)-TI/2,WZ(0,705),2);
   bx(LG[0],xe-0.02,xe,WZ(0,300)+TI/2,WZ(0,700),CH-0.1,CH-0.02,M.trim,oc); bx(LG[0],xe-0.03,xe-0.02,WZ(0,300)+TI/2+0.02,WZ(0,700)-0.02,CH-0.1,CH-0.095,glow,oc);
   const rx0=WX(0,150), rx1=WX(0,232); bx(LG[0],rx0,rx1,WZ(0,330),WZ(0,620),0.003,0.009,lam(0xcfc3ae,{roughness:0.95}),oc); bx(LG[0],rx0+0.05,rx1-0.05,WZ(0,335),WZ(0,615),0.009,0.0095,lam(0xe8e0d0,{roughness:0.95}),oc);
 })();                             // genkan: fold-down shelf for parcels, key rack above it
-fixture(0,Catalog.keyRack(),WX(0,270)-TI/2,WZ(0,725),2);
 (function(){ const d=doors.find(function(q){ return q.kp; }); if(!d) return;   // smart lock: the slide cover drops to show the keypad
   let v=0, tg=0, last=null; const y0=d.kp.cover.position.y;
   furnThings.push({pt:[d.kp.at[0],d.kp.at[1]+d.kp.out*0.4],l:0,on:function(){ return !d.open; },label:function(){ return tg?'蓋上密碼鎖':'打開密碼鎖蓋'; },act:function(){ tg=tg?0:1; last=null; }});
