@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261016w">
+<link rel="stylesheet" href="lib/storeys.css?v=20261019a">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -68,14 +68,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261016w"></script>
-<script src="lib/furniture.js?v=20261016w"></script>
-<script src="lib/catalog.js?v=20261016w"></script>
-<script src="lib/look.js?v=20261016w"></script>
-<script src="lib/houses.js?v=20261016w"></script>
-<script src="lib/perf.js?v=20261016w"></script>
-<script src="lib/finish.js?v=20261016w"></script>
-<script src="lib/storeys.js?v=20261016w"></script>
+<script src="lib/people.js?v=20261019a"></script>
+<script src="lib/furniture.js?v=20261019a"></script>
+<script src="lib/catalog.js?v=20261019a"></script>
+<script src="lib/look.js?v=20261019a"></script>
+<script src="lib/houses.js?v=20261019a"></script>
+<script src="lib/perf.js?v=20261019a"></script>
+<script src="lib/finish.js?v=20261019a"></script>
+<script src="lib/storeys.js?v=20261019a"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -161,7 +161,7 @@ notes:[
   [0,580,345,'Tesla 充電樁','車庫牆上'],
   [0,240,850,'監視攝影機','玄關門廊與車庫外各一台'],
   [1,555,815,'肯蒂亞椰子','美化佈置：客廳角落的大型植栽，對貓無毒'],[1,225,895,'橄欖樹','美化佈置：陽台門外，對貓無毒'],[1,565,505,'吊蘭（懸掛）','美化佈置：麻繩吊盆，對貓無毒'],[1,436,660,'和紙吊燈','美化佈置：茶几／餐桌上方'],[1,255,540,'閱讀立燈','美化佈置：沙發旁'],
-  [1,575,660,'木格柵電視牆','美化佈置：炭灰底板＋橡木格柵'],[2,412,465,'鼠尾草綠主牆','美化佈置：主臥床頭那面牆'],[2,240,420,'照片牆','美化佈置：3F 走廊，咘咘和旅行照片'],[0,190,745,'磨石子玄關','美化佈置：土間地板'],[0,30,860,'門牌','美化佈置：門柱上的咘咘門牌'],
+  [1,575,660,'木格柵電視牆','美化佈置：炭灰底板＋橡木格柵'],[2,412,465,'鼠尾草綠主牆','美化佈置：主臥床頭那面牆'],[2,240,420,'照片牆','美化佈置：3F 走廊，咘咘和旅行照片'],[0,190,745,'玄關大板石材磚','美化佈置：土間地板，60 × 60 cm 暖灰石紋磚'],[0,30,860,'門牌','美化佈置：門柱上的咘咘門牌'],
   [0,445,140,'除濕機・加濕機','收在儲藏室，換季時拿出來']
 ],
 noteText:{
@@ -328,8 +328,8 @@ site:function(E){
   /* porch: 60 cm porcelain tiles from the set-back door out under the balcony, one stone step down to a gravel forecourt with stepping slabs to the gate */
   const PZ0=WZ(0,790)+TE/2, PZ1=WZ(1,940), PX0w=WX(0,0)-TE/2, PX1w=WX(0,270), tileM=lam(0xffffff,{map:tileT,roughness:0.55});
   tileT.repeat.set((PX1w-PX0w)/1.2,(PZ1-PZ0)/1.2);
-  bx(ground,PX0w,PX1w,PZ0,PZ1,-0.3,-0.21,lam(0xb3aea5,{roughness:0.85}),{cast:false}); bx(ground,PX0w,PX1w,PZ0,PZ1,-0.21,-0.198,tileM,{cast:false}); floorRects.push({l:0,x0:PX0w,x1:PX1w,z0:PZ0,z1:PZ1,y:-0.198});
-  bx(ground,PX0w,PX1w,PZ1-0.03,PZ1+0.005,-0.3,-0.196,lam(0x6f6a64,{roughness:0.6}),{cast:false});
+  bx(ground,PX0w,PX1w,PZ0,PZ1,-0.3,-0.162,lam(0xb3aea5,{roughness:0.85}),{cast:false}); bx(ground,PX0w,PX1w,PZ0,PZ1,-0.162,-0.15,tileM,{cast:false}); floorRects.push({l:0,x0:PX0w,x1:PX1w,z0:PZ0,z1:PZ1,y:-0.15});   // flush with the door sill and the genkan: no step at the front door
+  bx(ground,PX0w,PX1w,PZ1-0.03,PZ1+0.005,-0.3,-0.148,lam(0x6f6a64,{roughness:0.6}),{cast:false});
   gravelT.repeat.set((PX1w-PX0w)/0.8,(LZ1-PZ1)/0.8);
   bx(ground,PX0w,PX1w,PZ1,LZ1-0.09,-0.3,-0.29,lam(0xffffff,{map:gravelT,roughness:0.95}),{cast:false});
   const GC=WX(0,123)+0.5, slabM=lam(0xc9c3b8,{roughness:0.8});
@@ -372,7 +372,7 @@ site:function(E){
     for(let i=0;i<=L/1.8+0.01;i++){ const a=Math.min((horiz?x0:z0)+i*1.8,horiz?x1:z1); if(horiz) bx(ground,a-0.04,a+0.04,z0-0.04,z0+0.04,0.1,1.55,post); else bx(ground,x0-0.04,x0+0.04,a-0.04,a+0.04,0.1,1.55,post); }
     if(horiz) addCol(0,x0,x1,z0-0.07,z0+0.07,-0.3,1.5,'w'); else addCol(0,x0-0.07,x0+0.07,z0,z1,-0.3,1.5,'w'); };
   screen(LX0,LZ0,LX0,LZ1); screen(LX0,LZ0,LX1,LZ0); screen(LX1,LZ0,LX1,LZ1);
-  const PX0=WX(0,0)-TE/2, GX0=WX(0,123), GX1=GX0+1.0, PX1=GX1+0.4, CX0=PX1+0.03;   // matching pillars framing the house front: a fixed slat panel and a double gate centred on the porch
+  const PX0=WX(0,0)-TE/2, GX0=WX(0,123), GX1=GX0+1.0, PX1=GX1+0.4, CX0=PX1+0.03;   // matching pillars framing the house front: a double gate (main leaf + side leaf) between them
   const lowWall=function(x0,x1){ bx(ground,x0,x1,LZ1-0.08,LZ1+0.08,-0.3,0.3,render); bx(ground,x0-0.01,x1+0.01,LZ1-0.09,LZ1+0.09,0.3,0.34,render,{cast:false});
     slats(x0,LZ1,x1,LZ1,0.34,1.2,0.16); addCol(0,x0,x1,LZ1-0.09,LZ1+0.09,-0.3,1.2,'w'); };
   lowWall(LX0,PX0);
@@ -390,16 +390,16 @@ site:function(E){
     bx(ground,x1-0.05,x1-0.03,zb-0.03,zb-0.01,0.45,0.7,dk,oc); bx(ground,x1-0.05,x1-0.03,zb-0.03,zb-0.01,1.1,1.2,dk,oc);
     bx(ground,x0+0.05,x0+0.11,zb-0.012,zb-0.01,0.84,0.9,dk,oc); })();   // dial lock
   bx(ground,GX1+0.13,GX1+0.27,LZ1+0.12,LZ1+0.135,1.15,1.29,lam(0x1b1d20,{roughness:0.3}),{cast:false}); bx(ground,GX1+0.17,GX1+0.23,LZ1+0.135,LZ1+0.14,1.22,1.26,lam(0x9fd6ff,{emissive:0x4aa8e8}),{cast:false});   // intercom by the gate
-  (function(){ const x0=PX0+0.55, x1=GX0; for(let x=x0+0.02;x<x1-0.06;x+=0.1) bx(ground,x,x+0.07,LZ1-0.015,LZ1+0.015,0.05,1.25,fenceM);   // fixed slat panel, same as the gate leaves
-    [0.2,1.1].forEach(function(y){ bx(ground,x0,x1,LZ1-0.045,LZ1-0.015,y-0.03,y+0.03,post); }); addCol(0,x0,x1,LZ1-0.05,LZ1+0.05,-0.3,1.25,'w'); })();
-  (function(){                                 // one wooden gate leaf, in line with the fixed slat panel, opening into the lot
-    const w=(GX1-GX0)-0.08, mk=function(hx,sg){ const pv=new THREE.Group(); pv.userData.keep=true; pv.position.set(hx,0,LZ1); ground.add(pv);
+  (function(){                                 // double gate (親子門): the main leaf for everyday use, the side leaf held by a drop bolt and opened for moving large things
+    const SX=PX0+0.55, mk=function(hx,sg,w,main){ const pv=new THREE.Group(); pv.userData.keep=true; pv.position.set(hx,0,LZ1); ground.add(pv);
       for(let x=0.02;x<w-0.04;x+=0.1){ const m=new THREE.Mesh(new THREE.BoxGeometry(0.07,1.2,0.03),fenceM); m.position.set(sg*(x+0.035),0.65,0); m.castShadow=true; pv.add(m); }
       [0.2,1.1].forEach(function(y){ const m=new THREE.Mesh(new THREE.BoxGeometry(w,0.06,0.03),post); m.position.set(sg*w/2,y,-0.03); pv.add(m); });
-      [0.03,-0.06].forEach(function(z){ const h=new THREE.Mesh(new THREE.BoxGeometry(0.02,0.18,0.03),M.steel); h.position.set(sg*(w-0.05),0.9,z); pv.add(h); }); return pv; };
-    const L=mk(GX1-0.075,-1);   // hinged on the east pillar, so it swings away from the fixed slat panel
-    const col=addCol(0,GX0,GX1,LZ1-0.05,LZ1+0.05,-0.3,1.3,'d'), d={l:0,pv:L,th:-Math.PI/2,open:false,t:0,col:col,mid:[(GX0+GX1)/2,LZ1],label:function(o){ return o?'關上門扉':'打開門扉'; }};
-    col.door=d; doors.push(d);
+      if(main) [0.03,-0.06].forEach(function(z){ const h=new THREE.Mesh(new THREE.BoxGeometry(0.02,0.18,0.03),M.steel); h.position.set(sg*(w-0.05),0.9,z); pv.add(h); });
+      else { const r=new THREE.Mesh(new THREE.CylinderGeometry(0.007,0.007,0.3,8),M.steel); r.position.set(sg*(w-0.04),0.1,-0.05); pv.add(r); const k=new THREE.Mesh(new THREE.BoxGeometry(0.04,0.012,0.012),M.steel); k.position.set(sg*(w-0.04)+0.02*sg,0.2,-0.05); pv.add(k); }   // drop bolt into the ground
+      return pv; };
+    const add=function(pv,th,a,b,label){ const col=addCol(0,a,b,LZ1-0.05,LZ1+0.05,-0.3,1.3,'d'), d={l:0,pv:pv,th:th,open:false,t:0,col:col,mid:[(a+b)/2,LZ1],label:label}; col.door=d; doors.push(d); };
+    add(mk(GX1-0.075,-1,(GX1-GX0)-0.08,true),-Math.PI/2,GX0,GX1,function(o){ return o?'關上門扉':'打開門扉'; });
+    add(mk(SX+0.03,1,GX0-SX-0.035,false),Math.PI/2,SX,GX0,function(o){ return o?'關上側門扉（放下門栓）':'打開側門扉（搬大型物品）'; });
   })();
   (function(){                                 // telescopic (accordion) gate across the car apron, folds toward the east boundary
     const L=LX1-0.08-CX0, acc=new THREE.Group(); acc.userData.keep=true; acc.position.set(LX1-0.08,0,LZ1); ground.add(acc);
@@ -746,7 +746,7 @@ modes:function(E){
     [[0.12,1.0,0.05],[-0.1,1.15,-0.06],[0.02,1.3,0.08]].forEach(function(c){ for(let k=0;k<70;k++){ const a=rnd()*Math.PI*2, r=rnd()*0.22*sc, h=(rnd()-0.5)*0.25*sc;
       const l=new T.Mesh(new T.SphereGeometry(0.03*sc,6,4),k%3?lv:lv2); l.scale.set(1,0.25,0.35); l.position.set(x+c[0]*sc+Math.cos(a)*r,top+c[1]*sc+h,z+c[2]*sc+Math.sin(a)*r); l.rotation.set(rnd()*3,rnd()*3,rnd()*3); g.add(l); } }); };
   palm(DG[1],WX(1,555),WZ(1,815),b[1]);
-  olive(DG[1],WX(1,225),WZ(1,895),b[1],1); olive(DG[0],WX(0,258),WZ(0,815),b[0]-0.198,0.8);
+  olive(DG[1],WX(1,225),WZ(1,895),b[1],1); olive(DG[0],WX(0,258),WZ(0,815),b[0]-0.15,0.8);
   (function(){ const g=DG[1], x=WX(1,565), z=WZ(1,505), y=b[1]+1.85, cord=M2(0xe8dcc4);   // spider plant in a macrame hanger
     for(let k=0;k<4;k++){ const a=k*Math.PI/2+0.4, c=new T.Mesh(new T.CylinderGeometry(0.003,0.003,b[1]+CH-y-0.1,4),cord); c.position.set(x+Math.cos(a)*0.06,(y+0.1+b[1]+CH)/2,z+Math.sin(a)*0.06); c.rotation.set(Math.sin(a)*0.06,0,-Math.cos(a)*0.06); g.add(c); }
     const bw=new T.Mesh(new T.SphereGeometry(0.11,20,12,0,Math.PI*2,Math.PI/2,Math.PI/2),M2(0xf0ebe2,{roughness:0.5,side:T.DoubleSide})); bw.position.set(x,y+0.1,z); g.add(bw);
@@ -786,11 +786,13 @@ modes:function(E){
     frame(WZ(2,195),yc+0.08,0.34,0.44,'bubu'); frame(WZ(2,250),yc-0.02,0.3,0.24,'fuji');
     frame(WZ(2,395),yc+0.12,0.3,0.24,'sea'); frame(WZ(2,395),yc-0.18,0.3,0.24,'tower');
     frame(WZ(2,600),yc+0.05,0.4,0.52,'sakura'); frame(WZ(2,650),yc+0.16,0.24,0.3,'bubu'); frame(WZ(2,650),yc-0.16,0.24,0.24,'sea'); })();
-  /* E. terrazzo genkan floor */
-  (function(){ const a=WX(0,115), c=WX(0,270), d=WZ(0,700), e=WZ(0,790), tx=canvasTex(512,512,function(g,w,h){ g.fillStyle='#ece6db'; g.fillRect(0,0,w,h);
-      const cols=['#8d8a85','#c8714f','#8fa58e','#3d3a36','#d9c7b0','#b9b3aa']; for(let k=0;k<900;k++){ g.fillStyle=cols[k%cols.length]; const x=rnd()*w, y=rnd()*h, r=1.5+rnd()*(k%9?3:9); g.beginPath(); for(let j=0;j<5;j++){ const t=j/5*7, rr=r*(0.6+rnd()*0.6); g.lineTo(x+Math.cos(t)*rr,y+Math.sin(t)*rr); } g.fill(); } });
-    tx.wrapS=tx.wrapT=T.RepeatWrapping; tx.repeat.set((c-a)/0.9,(e-d)/0.9);
-    const m=new T.Mesh(new T.PlaneGeometry(c-a,e-d),new T.MeshStandardMaterial({map:tx,roughness:0.45,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2})); m.rotation.x=-Math.PI/2; m.position.set((a+c)/2,b[0]-0.1465,(d+e)/2); m.receiveShadow=true; DG[0].add(m); })();
+  /* E. genkan floor: large-format warm greige stone tiles, 60 x 60 cm with fine joints */
+  (function(){ const a=WX(0,115), c=WX(0,270), d=WZ(0,700), e=WZ(0,790), tx=canvasTex(512,512,function(g,w,h){ g.fillStyle='#b9b2a7'; g.fillRect(0,0,w,h);
+      for(let i=0;i<2;i++) for(let j=0;j<2;j++){ const v=0.95+rnd()*0.06, x0=i*256+2, y0=j*256+2; g.fillStyle='rgb('+(214*v|0)+','+(207*v|0)+','+(196*v|0)+')'; g.fillRect(x0,y0,252,252);
+        for(let k=0;k<500;k++){ g.fillStyle='rgba(120,110,98,'+(0.03+rnd()*0.05)+')'; g.fillRect(x0+rnd()*248,y0+rnd()*248,1+rnd()*2,1+rnd()*2); }
+        g.strokeStyle='rgba(150,140,128,0.25)'; g.lineWidth=1.2; g.beginPath(); let px=x0+rnd()*252, py=y0; g.moveTo(px,py); for(let k=0;k<8;k++){ px+=(rnd()-0.5)*50; py+=32; g.lineTo(Math.max(x0,Math.min(x0+252,px)),Math.min(y0+252,py)); } g.stroke(); } });   // faint veins
+    tx.wrapS=tx.wrapT=T.RepeatWrapping; tx.repeat.set((c-a)/1.2,(e-d)/1.2);
+    const m=new T.Mesh(new T.PlaneGeometry(c-a,e-d),new T.MeshStandardMaterial({map:tx,roughness:0.6,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2})); m.rotation.x=-Math.PI/2; m.position.set((a+c)/2,b[0]-0.1465,(d+e)/2); m.receiveShadow=true; DG[0].add(m); })();
   /* F. cedar cladding up the solid west bay of the south front; a cat house-sign on the gate pillar */
   (function(){ const z=WZ(1,850)+TE/2+0.02, x0=WX(1,0)-TE/2-0.02, x1=WX(1,240), y0=b[1]-0.2, y1=b[2]+CH+0.15;
     for(let x=x0;x<x1-0.05;x+=0.128){ const t=0.85+rnd()*0.25; B(DG[1],x,x+0.12,y0,y1,z,z+0.016,lam(new T.Color(0xa9743f).multiplyScalar(t).getHex(),{roughness:0.85}),true); } })();
