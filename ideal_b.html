@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261019e">
+<link rel="stylesheet" href="lib/storeys.css?v=20261019f">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -68,14 +68,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261019e"></script>
-<script src="lib/furniture.js?v=20261019e"></script>
-<script src="lib/catalog.js?v=20261019e"></script>
-<script src="lib/look.js?v=20261019e"></script>
-<script src="lib/houses.js?v=20261019e"></script>
-<script src="lib/perf.js?v=20261019e"></script>
-<script src="lib/finish.js?v=20261019e"></script>
-<script src="lib/storeys.js?v=20261019e"></script>
+<script src="lib/people.js?v=20261019f"></script>
+<script src="lib/furniture.js?v=20261019f"></script>
+<script src="lib/catalog.js?v=20261019f"></script>
+<script src="lib/look.js?v=20261019f"></script>
+<script src="lib/houses.js?v=20261019f"></script>
+<script src="lib/perf.js?v=20261019f"></script>
+<script src="lib/finish.js?v=20261019f"></script>
+<script src="lib/storeys.js?v=20261019f"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -160,8 +160,8 @@ notes:[
   [0,155,30,'壁掛喇叭','鏡子房兩側'],
   [0,580,345,'Tesla 充電樁','車庫牆上'],
   [0,240,850,'監視攝影機','玄關門廊與車庫外各一台'],
-  [1,555,815,'肯蒂亞椰子','美化佈置：客廳角落的大型植栽，對貓無毒'],[1,225,895,'橄欖樹','美化佈置：陽台門外，對貓無毒'],[1,565,505,'吊蘭（懸掛）','美化佈置：麻繩吊盆，對貓無毒'],[1,436,660,'和紙吊燈','美化佈置：茶几／餐桌上方'],[1,255,540,'閱讀立燈','美化佈置：沙發旁'],
-  [1,575,660,'木格柵電視牆','美化佈置：炭灰底板＋橡木格柵'],[2,412,465,'鼠尾草綠主牆','美化佈置：主臥床頭那面牆'],[2,240,420,'照片牆','美化佈置：3F 走廊，咘咘和旅行照片'],[0,190,745,'玄關大板石材磚','美化佈置：土間地板，60 × 60 cm 暖灰石紋磚'],[0,30,860,'門牌','美化佈置：門柱上的咘咘門牌'],
+  [1,555,815,'肯蒂亞椰子','美化佈置：客廳角落的大型植栽，對貓無毒'],[1,225,895,'橄欖樹','美化佈置：陽台門外，對貓無毒'],[1,436,660,'橡木吊燈','美化佈置：茶几／餐桌上方，Ø40 cm 扁圓燈罩'],[1,255,540,'閱讀立燈','美化佈置：沙發旁'],
+  [2,412,465,'鼠尾草綠主牆','美化佈置：主臥床頭那面牆'],[2,240,420,'照片牆','美化佈置：3F 走廊，咘咘和旅行照片'],[0,190,745,'玄關大板石材磚','美化佈置：土間地板，60 × 60 cm 暖灰石紋磚'],[0,30,860,'門牌','美化佈置：門柱上的咘咘門牌'],
   [0,445,140,'除濕機・加濕機','收在儲藏室，換季時拿出來']
 ],
 noteText:{
@@ -724,17 +724,14 @@ modes:function(E){
   const B=function(g,x0,x1,y0,y1,z0,z1,m,cast){ const o=new T.Mesh(new T.BoxGeometry(x1-x0,y1-y0,z1-z0),m); o.position.set((x0+x1)/2,(y0+y1)/2,(z0+z1)/2); o.castShadow=!!cast; o.receiveShadow=true; g.add(o); return o; };
   const canvasTex=function(w,h,draw){ const c=document.createElement('canvas'); c.width=w; c.height=h; draw(c.getContext('2d'),w,h); const t=new T.CanvasTexture(c); t.colorSpace=T.SRGBColorSpace; return t; };
   let sd=5; const rnd=function(){ sd=(sd*16807)%2147483647; return sd/2147483647; };
-  /* A. sage accent wall behind the bed; oak slats on a charcoal backer behind the TV */
+  /* A. sage accent wall behind the bed */
   (function(){ const zf=WZ(2,460)+TI/2; B(DG[2],WX(2,245)+TI/2,WX(2,580)-TE/2,b[2],b[2]+CH,zf,zf+0.003,M2(0x9aa894,{roughness:0.9})); })();
-  (function(){ const xf=WX(1,580)-TE/2, z0=WZ(1,495), z1=WZ(1,840), g=DG[1];
-    B(g,xf-0.006,xf,b[1]+0.08,b[1]+2.42,z0,z1,M2(0x35332f));
-    for(let z=z0+0.008;z<z1-0.03;z+=0.045){ const t=0.92+rnd()*0.12; B(g,xf-0.022,xf-0.006,b[1]+0.08,b[1]+2.42,z,z+0.03,lam(new T.Color(0xc9a77c).multiplyScalar(t).getHex(),{roughness:0.6}),true); } })();
   /* cushions against the sofa arms and a knitted throw over one arm; they ride with the sofa */
   (function(){ const m=mover('sofa'); if(!m) return; const G=new T.Group(); m.piece.group.add(G); parts.push(G);
     [[0.74,0x8fa58e],[-0.74,0xc8714f],[0.6,0xe7dcc8]].forEach(function(q,i){ const c=new T.Mesh(new T.SphereGeometry(0.22,24,16),fab?fab(q[1]):M2(q[1])); c.scale.set(0.95,0.92,0.3); c.position.set(i===2?0.02:-0.1,0.66,q[0]-(i===2?0.08:0)); c.rotation.set(0,i===2?0.35:0,Math.sign(q[0])*0.12); c.castShadow=true; G.add(c); });
     const knit=fab?fab(0xd9c2a0):M2(0xd9c2a0); B(G,-0.15,0.3,0.585,0.6,-1.06,-0.86,knit,true); B(G,-0.15,0.3,0.25,0.6,-1.075,-1.06,knit,true);
     for(let i=0;i<5;i++) B(G,-0.15+i*0.1,-0.15+i*0.1+0.012,0.25,0.601,-1.077,-0.86,M2(0xb79a74),false); })();
-  /* B. cat-safe plants: kentia palm in the living corner, olive tree on the balcony and one at the porch, a hanging spider plant */
+  /* B. cat-safe plants: kentia palm in the living corner, olive tree on the balcony and one at the porch */
   const pot=function(g,x,z,y,r,h,col){ const pm=new T.Mesh(new T.CylinderGeometry(r,r*0.82,h,28),M2(col,{roughness:0.6})); pm.position.set(x,y+h/2,z); pm.castShadow=true; g.add(pm); const so=new T.Mesh(new T.CylinderGeometry(r*0.92,r*0.92,0.01,24),M2(0x3b2e24)); so.position.set(x,y+h-0.03,z); g.add(so); return y+h-0.03; };
   const palm=function(g,x,z,y){ const top=pot(g,x,z,y,0.17,0.36,0xe9e4da), fm=lam(0x5f8f45,{roughness:0.6}), sm=M2(0x6b6a3e);
     for(let f=0;f<11;f++){ const a=f/11*Math.PI*2+rnd()*0.4, rise=0.8+rnd()*0.7, reach=0.5+rnd()*0.3, ca=Math.cos(a), sa=Math.sin(a);
@@ -750,23 +747,14 @@ modes:function(E){
       const l=new T.Mesh(new T.SphereGeometry(0.03*sc,6,4),k%3?lv:lv2); l.scale.set(1,0.25,0.35); l.position.set(x+c[0]*sc+Math.cos(a)*r,top+c[1]*sc+h,z+c[2]*sc+Math.sin(a)*r); l.rotation.set(rnd()*3,rnd()*3,rnd()*3); g.add(l); } }); };
   palm(DG[1],WX(1,555),WZ(1,815),b[1]);
   olive(DG[1],WX(1,225),WZ(1,895),b[1],1); olive(DG[0],WX(0,258),WZ(0,815),b[0]-0.15,0.8);
-  (function(){ const g=DG[1], x=WX(1,565), z=WZ(1,505), y=b[1]+1.85, cord=M2(0xe8dcc4);   // spider plant in a macrame hanger
-    for(let k=0;k<4;k++){ const a=k*Math.PI/2+0.4, c=new T.Mesh(new T.CylinderGeometry(0.003,0.003,b[1]+CH-y-0.1,4),cord); c.position.set(x+Math.cos(a)*0.06,(y+0.1+b[1]+CH)/2,z+Math.sin(a)*0.06); c.rotation.set(Math.sin(a)*0.06,0,-Math.cos(a)*0.06); g.add(c); }
-    const bw=new T.Mesh(new T.SphereGeometry(0.11,20,12,0,Math.PI*2,Math.PI/2,Math.PI/2),M2(0xf0ebe2,{roughness:0.5,side:T.DoubleSide})); bw.position.set(x,y+0.1,z); g.add(bw);
-    const lm=lam(0x8fbf5a,{roughness:0.6}), lm2=lam(0xd6e6b8,{roughness:0.6});
-    for(let k=0;k<44;k++){ const a=rnd()*Math.PI*2, out=0.15+rnd()*0.2, up=0.06+rnd()*0.12, droop=0.05+rnd()*0.25;
-      const cv=new T.QuadraticBezierCurve3(new T.Vector3(x,y+0.09,z),new T.Vector3(x+Math.cos(a)*out*0.6,y+0.09+up,z+Math.sin(a)*out*0.6),new T.Vector3(x+Math.cos(a)*out,y+0.09-droop,z+Math.sin(a)*out));
-      g.add(new T.Mesh(new T.TubeGeometry(cv,8,0.0035,3),k%4?lm:lm2)); }
-    for(let k=0;k<4;k++){ const a=k*1.6+0.3, ex=x+Math.cos(a)*0.28, ez=z+Math.sin(a)*0.28, ey=y-0.35-k*0.08;   // runners with baby plantlets
-      g.add(new T.Mesh(new T.TubeGeometry(new T.QuadraticBezierCurve3(new T.Vector3(x,y+0.08,z),new T.Vector3(x+Math.cos(a)*0.2,y+0.05,z+Math.sin(a)*0.2),new T.Vector3(ex,ey,ez)),10,0.002,3),M2(0xc9d6a0)));
-      for(let j=0;j<8;j++){ const a2=j/8*Math.PI*2; g.add(new T.Mesh(new T.TubeGeometry(new T.QuadraticBezierCurve3(new T.Vector3(ex,ey,ez),new T.Vector3(ex+Math.cos(a2)*0.04,ey+0.03,ez+Math.sin(a2)*0.04),new T.Vector3(ex+Math.cos(a2)*0.07,ey-0.02,ez+Math.sin(a2)*0.07)),5,0.0025,3),lm)); } } })();
-  /* C. washi paper lantern over the lift table, a reading lamp beside the sofa */
-  (function(){ const g=DG[1], x=WX(1,436), z=WZ(1,660), y=b[1]+CH-0.62, lm=new T.MeshStandardMaterial({color:0xfbf6ec,emissive:0xffe6c2,emissiveIntensity:0.55,roughness:0.9});
-    const sp=new T.Mesh(new T.SphereGeometry(0.25,32,20),lm); sp.scale.y=0.92; sp.position.set(x,y,z); g.add(sp);
-    for(let k=-3;k<=3;k++){ const r=Math.sqrt(1-(k/3.6)*(k/3.6))*0.252, ring=new T.Mesh(new T.TorusGeometry(r,0.0016,4,48),M2(0xe0d6c4)); ring.rotation.x=Math.PI/2; ring.position.set(x,y+k*0.065*0.92,z); g.add(ring); }
-    const cd=new T.Mesh(new T.CylinderGeometry(0.003,0.003,b[1]+CH-y-0.23,4),M2(0x2a2a2a)); cd.position.set(x,(y+0.23+b[1]+CH)/2,z); g.add(cd);
+  /* C. oak dome pendant over the lift table, a reading lamp beside the sofa */
+  (function(){ const g=DG[1], x=WX(1,436), z=WZ(1,660), y=b[1]+CH-0.7, oak=lam(0xc9a77c,{roughness:0.55,side:T.DoubleSide});   // low, wide oak dome pendant (Ø 40 cm) with an opal diffuser
+    const dome=new T.Mesh(new T.SphereGeometry(0.2,40,12,0,Math.PI*2,0,Math.PI*0.42),oak); dome.scale.y=0.6; dome.position.set(x,y,z); dome.castShadow=true; g.add(dome);
+    const dif=new T.Mesh(new T.CircleGeometry(0.19,40),new T.MeshStandardMaterial({color:0xfdf8ee,emissive:0xffe2b8,emissiveIntensity:0.9,side:T.DoubleSide})); dif.rotation.x=Math.PI/2; dif.position.set(x,y+0.2*0.6*Math.cos(Math.PI*0.42),z); g.add(dif);
+    const cap=new T.Mesh(new T.CylinderGeometry(0.02,0.02,0.03,16),M2(0x2a2a2a)); cap.position.set(x,y+0.13,z); g.add(cap);
+    const cd=new T.Mesh(new T.CylinderGeometry(0.0025,0.0025,b[1]+CH-y-0.145,4),M2(0x2a2a2a)); cd.position.set(x,(y+0.145+b[1]+CH)/2,z); g.add(cd);
     B(g,x-0.05,x+0.05,b[1]+CH-0.015,b[1]+CH,z-0.05,z+0.05,M2(0xf4f2ee));
-    const L=new T.PointLight(0xffd9a8,0.55,4.5,2); L.position.set(x,y-0.05,z); g.add(L); lights.push(L); })();
+    const L=new T.PointLight(0xffd9a8,0.55,4.5,2); L.position.set(x,y-0.02,z); g.add(L); lights.push(L); })();
   (function(){ const P=Catalog.floorLamp(); P.group.position.set(WX(1,255),b[1],WZ(1,540)); DG[1].add(P.group); const L=new T.PointLight(0xffd9a8,0.35,3.5,2); L.position.set(WX(1,255),b[1]+1.45,WZ(1,540)); DG[1].add(L); lights.push(L); })();
   /* D. photo wall on the 3F hall: framed prints and photos of 咘咘, oak frames with white mats */
   (function(){ const g=DG[2], xf=WX(2,245)-TI/2, oak=lam(0xc9a77c,{roughness:0.55}), mat=M2(0xfbfaf6);
