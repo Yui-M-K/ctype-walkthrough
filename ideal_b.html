@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261019c">
+<link rel="stylesheet" href="lib/storeys.css?v=20261019d">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -68,14 +68,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261019c"></script>
-<script src="lib/furniture.js?v=20261019c"></script>
-<script src="lib/catalog.js?v=20261019c"></script>
-<script src="lib/look.js?v=20261019c"></script>
-<script src="lib/houses.js?v=20261019c"></script>
-<script src="lib/perf.js?v=20261019c"></script>
-<script src="lib/finish.js?v=20261019c"></script>
-<script src="lib/storeys.js?v=20261019c"></script>
+<script src="lib/people.js?v=20261019d"></script>
+<script src="lib/furniture.js?v=20261019d"></script>
+<script src="lib/catalog.js?v=20261019d"></script>
+<script src="lib/look.js?v=20261019d"></script>
+<script src="lib/houses.js?v=20261019d"></script>
+<script src="lib/perf.js?v=20261019d"></script>
+<script src="lib/finish.js?v=20261019d"></script>
+<script src="lib/storeys.js?v=20261019d"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -144,7 +144,7 @@ notes:[
   [1,361,417.5,'廚餘處理機','裝在水槽下，排水口是橡膠防濺蓋；台面有氣壓開關，打開水槽下櫃可看到本體'],
   [1,433.5,385,'嵌入式洗碗機','抽屜式深型 45 cm，放得下盤子、碗和杯子'],
   [1,523.5,412.5,'IH 爐＋抽油煙機','三口 IH，與水槽在同一座半島'],
-  [1,360,258,'食品收納櫃','深 50 cm、與冰箱齊平；下方是掃地機器人的基地，米和麵條放在層架'],
+  [1,346,258,'食品收納櫃','深 50 cm、與冰箱齊平；下方是掃地機器人的基地，米和麵條放在層架'],
   [1,470,40,'浴缸','1.7 m，洗澡時可看牆上電視'],
   [1,500,120,'浴室乾燥機','天花板暖風乾燥，下雨天可在浴室曬衣'],
   [1,490,160,'浴室曬衣桿','搭配乾燥機使用'],
@@ -170,7 +170,7 @@ noteText:{
   lift:'茶几／餐桌／書桌三段高度，四張同尺寸凳子收在桌下',
   massage:'HY-5018：直立 146 × 74.5 × 114.5 cm，躺平 169 cm，腳靠會伸縮',
   dryer:'坐在沙發上就能吹頭髮，插座在旁邊牆上',
-  appl:'深 70 cm 與冰箱齊平，放家電的層板可拉出，電線收在背後',
+  appl:'寬 132.5 cm、深 70 cm 與冰箱齊平；上下兩層層板整層拉出，下層右端放果汁機；電線收在背後',
   robot:'基地在食品收納櫃下方',
   catBowls:'自動飼料機＋罐頭碗＋水碗',
   cat:['咘咘','白底虎斑：額頭白色倒 V、瞇瞇眼、粉紅大鼻子，肩背和屁股各一塊虎斑'],
@@ -438,9 +438,9 @@ return [
   ['catBed','catBed',1,85,843.5,'N',function(){ return Catalog.catBed(2.05); }],['catC','catStep',1,40,843.5,'N',function(){ return Catalog.catStep(2.1); }],
   ['cat','catBubu',1,160,740,'E'],['catBowls','catFeedStation',1,558,468,'W'],
   /* 2F dining (folding six-seat table on the north wall); the litter box sits in the 1F hall */
-  ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,247,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,40,812,'E'],['robot','robotVacuum',1,360,240,'S'],
+  ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,247,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,40,812,'E'],['robot','robotVacuum',1,346,240,'S'],
   /* 2F kitchen: appliance cabinet (dish cupboard in its base) and fridge against the bath wall, bins beside the peninsula */
-  ['fridge','fridgeL',1,538.5,244.5,'S',function(){ const p=Catalog.make('fridgeL'); p.doorMax=1.3; return p; }],['bins','binCabinet',1,300,412.5,'W',function(){ return Catalog.binCabinet(true); }],['appl','applianceCabinet',1,444.25,244.5,'S',function(){ return Catalog.applianceCabinet({dishes:true,full:true,depth:0.7}); }],
+  ['fridge','fridgeL',1,538.5,244.5,'S',function(){ const p=Catalog.make('fridgeL'); p.doorMax=1.3; return p; }],['bins','binCabinet',1,300,412.5,'W',function(){ return Catalog.binCabinet(true); }],['appl','applianceCabinet',1,437.25,244.5,'S',function(){ return Catalog.applianceCabinet({dishes:true,full:true,depth:0.7,width:1.325}); }],
   /* 2F balcony */
   ['plantB1','plant',1,495,895,'E'],['plantB2','plantS',1,553,895,'E'],
   /* garden BBQ deck */
@@ -471,7 +471,7 @@ fixtures:function(E){
   fixture(1,Catalog.sinkCounter(2.55,0.6,[0.05,0.8,0.1,0.45],[{k:'sink',w:0.85},{k:'dw',w:0.6},{k:'slim',w:0.3},{k:'drawers',w:0.6},{k:'spice',w:0.2}],{disposer:true}),X0,Z0,0);   // 2.55 m with a 75 cm sink; the massage chair sits just west of it
   fixture(1,Catalog.pullDownTap(),X0+0.425,Z0+0.52,0); fixture(1,Catalog.dishSoap(true),X0+0.1,Z0+0.52,0); fixture(1,Catalog.sinkSponge(),X0+0.75,Z0+0.445,0);
   fixture(1,Catalog.ihHob(),WX(1,523.5),WZ(1,412.5),0); fixture(1,Catalog.rangeHood(CH),WX(1,523.5),WZ(1,412.5),0);
-  fixture(1,Catalog.pantryCabinet(0.5,0.5,true),WX(1,360),WZ(1,258),3);   // pantry against the washroom wall, front flush with the fridge; the robot vacuum docks in its open base
+  fixture(1,Catalog.pantryCabinet(0.5,0.5,true),WX(1,346),WZ(1,258),3);   // pantry against the washroom wall, front flush with the fridge; the robot vacuum docks in its open base
   (function(){ const pm=lam(0xf4f4f2,{roughness:0.35}), sm=lam(0x1a1a1a), cordM=lam(0xe9e8e4,{roughness:0.5}), oc={cast:false};   // a low socket on the wall behind each Dyson, plugged in
     const sock=function(l,wx,wz,nx,nz,fx,fz){ const b=E.base(l), G=new THREE.Group(); G.position.set(wx,b,wz); G.rotation.y=Math.atan2(nx,nz); LG[l].add(G);   // local +z = out of the wall
       const box=function(w,h,d,x,y,z,mt){ const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mt); m.position.set(x,y,z); G.add(m); return m; };
