@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261019f">
+<link rel="stylesheet" href="lib/storeys.css?v=20261019g">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -68,14 +68,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261019f"></script>
-<script src="lib/furniture.js?v=20261019f"></script>
-<script src="lib/catalog.js?v=20261019f"></script>
-<script src="lib/look.js?v=20261019f"></script>
-<script src="lib/houses.js?v=20261019f"></script>
-<script src="lib/perf.js?v=20261019f"></script>
-<script src="lib/finish.js?v=20261019f"></script>
-<script src="lib/storeys.js?v=20261019f"></script>
+<script src="lib/people.js?v=20261019g"></script>
+<script src="lib/furniture.js?v=20261019g"></script>
+<script src="lib/catalog.js?v=20261019g"></script>
+<script src="lib/look.js?v=20261019g"></script>
+<script src="lib/houses.js?v=20261019g"></script>
+<script src="lib/perf.js?v=20261019g"></script>
+<script src="lib/finish.js?v=20261019g"></script>
+<script src="lib/storeys.js?v=20261019g"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -126,8 +126,8 @@ rooms:[
   {l:1,x0:115,y0:225,x1:380,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},{l:1,x0:380,y0:490,x1:580,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},
   {l:1,x0:0,y0:850,x1:580,y1:940,n:'陽台',j:'曬衣・植物',w:'outside'},
   {l:2,x0:0,y0:0,x1:115,y1:150,n:'淋浴間',j:'淋浴',w:'bath'},
-  {l:2,x0:115,y0:0,x1:245,y1:150,n:'洗面室',j:'洗手台',w:'utility'},{l:2,x0:0,y0:150,x1:115,y1:280,n:'廁所',j:'3 樓・樓梯平台旁',w:'wc'},
-  {l:2,x0:0,y0:280,x1:115,y1:360,n:'階梯',j:'3 樓 ⇄ 2 樓',w:'hall'},{l:2,x0:0,y0:360,x1:115,y1:690,n:'階梯',j:'3 樓 ⇄ 2 樓',w:'hall'},
+  {l:2,x0:115,y0:0,x1:245,y1:150,n:'洗面室',j:'洗手台',w:'utility'},{l:2,x0:0,y0:150,x1:115,y1:270,n:'廁所',j:'3 樓・樓梯平台旁',w:'wc'},
+  {l:2,x0:0,y0:270,x1:115,y1:360,n:'階梯',j:'3 樓 ⇄ 2 樓',w:'hall'},{l:2,x0:0,y0:360,x1:115,y1:690,n:'階梯',j:'3 樓 ⇄ 2 樓',w:'hall'},
   {l:2,x0:115,y0:150,x1:245,y1:690,n:'走廊',j:'廊下',w:'hall'},
   {l:2,x0:245,y0:0,x1:580,y1:150,n:'書房',j:'約 9 帖・3D 列印機・日後可當小孩房',w:'mist'},{l:2,x0:245,y0:150,x1:580,y1:460,n:'書房',j:'約 9 帖・3D 列印機・日後可當小孩房',w:'mist'},
   {l:2,x0:245,y0:460,x1:580,y1:850,n:'主臥',j:'約 6.5 帖',w:'oat'},
@@ -263,15 +263,15 @@ build:function(E){
   wall(2,115,0,115,150,TI,[{a:75,b:145,k:'slide',mat:M.frost}]);    // shower door slides, parking on whichever side is clear
   wall(2,115,150,245,150,TI,[{a:145,b:225,k:'door',hinge:'b',sw:-1}]);
   wall(2,245,0,245,130,TI);
-  wall(2,0,280,115,280,TI); wall(2,115,150,115,280,TI,[{a:170,b:245,k:'slide'}]);   // toilet on the north half of the stair-top landing, sliding door to the hall
+  wall(2,0,270,115,270,TI); wall(2,115,150,115,270,TI,[{a:170,b:245,k:'slide'}]);   // toilet on the north half of the stair-top landing, sliding door to the hall
   wall(2,245,130,245,460,TI,[{a:285,b:365,k:'door',hinge:'a',sw:1}]);
   wall(2,245,460,580,460,TI);
   wall(2,245,460,245,850,TI,[{a:482,b:562,k:'door',hinge:'a',sw:1}]);   // hinged at the corner so the open leaf folds back toward the headboard wall
   wall(2,0,690,245,690,TI,[{a:145,b:240,k:'slide',hinge:'a',face:1}]);   // 95 cm closet door, parks inside the closet clear of the cubbies
   slab(2,0,0,580,360); slab(2,115,360,580,690); slab(2,0,690,580,850);
-  flr(2,0,0,115,150,FL.bath); flr(2,0,150,115,280,FL.wc); flr(2,115,0,245,150,FL.wc); flr(2,115,150,245,240,FL.wood); flr(2,245,0,580,150,FL.wood); flr(2,245,150,580,240,FL.wood);
-  flr(2,0,280,115,360,FL.wood); flr(2,115,240,245,690,FL.wood); flr(2,245,240,580,460,FL.wood); flr(2,245,460,580,850,FL.wood); flr(2,0,690,245,850,FL.woodD);
-  ceilingOf(2,0,0,115,150); ceilingOf(2,115,0,245,150); ceilingOf(2,115,150,245,240); ceilingOf(2,245,0,580,150); ceilingOf(2,245,150,580,240); ceilingOf(2,0,150,115,280); ceilingOf(2,0,280,115,360); ceilingOf(2,0,360,115,690);
+  flr(2,0,0,115,150,FL.bath); flr(2,0,150,115,270,FL.wc); flr(2,115,0,245,150,FL.wc); flr(2,115,150,245,240,FL.wood); flr(2,245,0,580,150,FL.wood); flr(2,245,150,580,240,FL.wood);
+  flr(2,0,270,115,360,FL.wood); flr(2,115,240,245,690,FL.wood); flr(2,245,240,580,460,FL.wood); flr(2,245,460,580,850,FL.wood); flr(2,0,690,245,850,FL.woodD);
+  ceilingOf(2,0,0,115,150); ceilingOf(2,115,0,245,150); ceilingOf(2,115,150,245,240); ceilingOf(2,245,0,580,150); ceilingOf(2,245,150,580,240); ceilingOf(2,0,150,115,270); ceilingOf(2,0,270,115,360); ceilingOf(2,0,360,115,690);
   ceilingOf(2,115,240,245,690); ceilingOf(2,245,240,580,460); ceilingOf(2,245,460,580,850); ceilingOf(2,0,690,245,850);
   /* facade: fine stucco (塗り壁) render, charcoal bands at each floor line, a stone plinth and a dark roof fascia */
   (function(){ const c=document.createElement('canvas'); c.width=c.height=512; const g=c.getContext('2d'), R=function(){ return Math.random(); };   // stucco: 1 m tile of fine grain, soft trowel arcs and faint mottling
@@ -573,9 +573,9 @@ fixture(1,Catalog.toilet(),WX(1,43.5),WZ(1,177.5),0);
       if(horiz) bx(LG[2],p0,p1,zf-0.02,zf,b+2.03,CH+b-0.01,M.cab); else bx(LG[2],xf,xf+0.02,p0,p1,b+2.03,CH+b-0.01,M.cab); } };
   doorsU(xw,xe,true); doorsU(zn,zf-0.02,false); bx(LG[2],xw,xe,zf,zs,b+2.025,CH+b,W,oc); bx(LG[2],xw,xf,zn,zf,b+2.025,CH+b,W,oc);
   addCol(2,xw,xe,zf,zs,b,b+2.0,'w'); addCol(2,xw,xf,zn,zf,b,b+2.0,'w');
-})(); fixture(2,Catalog.toilet(),WX(2,0)+TE/2+0.37,WZ(2,215),0);
-[[1,WX(1,80),WZ(1,130)+TI/2,3],[2,WX(2,38),WZ(2,280)-TI/2,1],[0,WX(0,0)+TE/2+0.015,WZ(0,415),0]].forEach(function(q){ fixture(q[0],Catalog.paperHolder(),q[1],q[2],q[3]); });   // every toilet: roll holder by the seat and a small sanitary bin
-[[1,WX(1,20),WZ(1,146),3],[2,WX(2,18),WZ(2,262),0],[0,WX(0,100),WZ(0,452),2]].forEach(function(q){ fixture(q[0],Catalog.sanitaryBin(),q[1],q[2],q[3]); });
+})(); fixture(2,Catalog.toilet(),WX(2,0)+TE/2+0.37,WZ(2,210),0);
+[[1,WX(1,80),WZ(1,130)+TI/2,3],[2,WX(2,38),WZ(2,270)-TI/2,1],[0,WX(0,0)+TE/2+0.015,WZ(0,415),0]].forEach(function(q){ fixture(q[0],Catalog.paperHolder(),q[1],q[2],q[3]); });   // every toilet: roll holder by the seat and a small sanitary bin
+[[1,WX(1,20),WZ(1,146),3],[2,WX(2,18),WZ(2,252),0],[0,WX(0,100),WZ(0,452),2]].forEach(function(q){ fixture(q[0],Catalog.sanitaryBin(),q[1],q[2],q[3]); });
 fixture(0,Catalog.wallFoldTable(1.0),WX(0,270)-TI/2,WZ(0,705),2);
 (function(){                                   // storage room south wall: suitcases under wall-anchored shelves of light boxes with anti-fall rails; the cat rack in the corner stays clear in front
   const x0=WX(0,398), x1=WX(0,512), zw=WZ(0,290)-TI/2, d=0.36, oc={cast:false}, boxC=[0xe9e4da,0xc9b79c,0x9fb0bf,0xd8cfc0,0xb8c7b0];
@@ -709,7 +709,7 @@ lighting:function(E){
   pendant(1,420,412.5); pendant(1,485,412.5);
   /* 3F: round lights in the bedroom and study, downlights in the hall, closet and wet rooms */
   light(2,412,650,0xffe2b8,0.5,7); light(2,440,300,0xffe2b8,0.5,7);
-  downlight(2,57,65,0.3); downlight(2,180,85,0.3); downlight(2,57,215,0.3); downlight(2,465,65,0.35);
+  downlight(2,57,65,0.3); downlight(2,180,85,0.3); downlight(2,57,210,0.3); downlight(2,465,65,0.35);
   [[60,320],[180,330],[180,480],[180,620]].forEach(function(p){ downlight(2,p[0],p[1],0.3); }); [[80,770],[170,770]].forEach(function(p){ downlight(2,p[0],p[1],0.3); });
   cove(1,200,850,580,850,-1); cove(1,580,210,580,850,-1); cove(1,115,345,115,655,1);
   cove(2,245,520,580,520,1);
