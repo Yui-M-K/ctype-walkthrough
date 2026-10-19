@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261019a">
+<link rel="stylesheet" href="lib/storeys.css?v=20261019b">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -68,14 +68,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261019a"></script>
-<script src="lib/furniture.js?v=20261019a"></script>
-<script src="lib/catalog.js?v=20261019a"></script>
-<script src="lib/look.js?v=20261019a"></script>
-<script src="lib/houses.js?v=20261019a"></script>
-<script src="lib/perf.js?v=20261019a"></script>
-<script src="lib/finish.js?v=20261019a"></script>
-<script src="lib/storeys.js?v=20261019a"></script>
+<script src="lib/people.js?v=20261019b"></script>
+<script src="lib/furniture.js?v=20261019b"></script>
+<script src="lib/catalog.js?v=20261019b"></script>
+<script src="lib/look.js?v=20261019b"></script>
+<script src="lib/houses.js?v=20261019b"></script>
+<script src="lib/perf.js?v=20261019b"></script>
+<script src="lib/finish.js?v=20261019b"></script>
+<script src="lib/storeys.js?v=20261019b"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -589,9 +589,12 @@ fixture(0,Catalog.wallFoldTable(1.0),WX(0,270)-TI/2,WZ(0,705),2);
   const xe=WX(0,270)-TI/2, zc=WZ(0,505), wal=lam(0x6a4732,{roughness:0.42}), glow=new THREE.MeshBasicMaterial({color:0xffdcaa}), oc={cast:false};
   bx(LG[0],xe-0.26,xe,zc-0.6,zc+0.6,0.78,0.82,wal); bx(LG[0],xe-0.24,xe-0.02,zc-0.57,zc+0.57,0.774,0.78,glow,oc); addCol(0,xe-0.26,xe,zc-0.6,zc+0.6,0.6,0.82,'f');
   const vase=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.075,0.3,24),lam(0x2f3a3a,{roughness:0.35})); vase.position.set(xe-0.13,0.97,zc-0.35); LG[0].add(vase);
-  for(let i=0;i<5;i++){ const br=new THREE.Mesh(new THREE.CylinderGeometry(0.004,0.006,0.6,5),lam(0x5a4636)); br.position.set(xe-0.13+(i-2)*0.02,1.35,zc-0.35+(i%2?0.02:-0.02)); br.rotation.set((i-2)*0.1,0,(i-2)*0.16); LG[0].add(br); }
+  [[-0.02,-0.012,0.55,0.12,-0.1],[0.01,0.015,0.62,-0.06,0.08],[0.0,-0.02,0.5,0.02,-0.16],[0.018,0.008,0.58,-0.13,0.03],[-0.012,0.02,0.46,0.09,0.14]].forEach(function(q){   // dried branches rising from inside the vase mouth, fanning slightly
+    const vx=xe-0.13, vz=zc-0.35, a0=new THREE.Vector3(vx+q[0],0.98,vz+q[1]), a1=new THREE.Vector3(vx+q[3]*0.5,1.12+q[2]*0.5,vz+q[4]*0.5), a2=new THREE.Vector3(vx+q[3],1.12+q[2],vz+q[4]);
+    LG[0].add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(a0,a1,a2),12,0.004,5),lam(0x5a4636,{roughness:0.8})));
+    const tw=a1.clone().lerp(a2,0.4); LG[0].add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(tw,tw.clone().add(new THREE.Vector3(q[3]*0.3,0.06,q[4]*0.3)),tw.clone().add(new THREE.Vector3(q[3]*0.6+0.02,0.1,q[4]*0.6-0.02))),6,0.0025,4),lam(0x5a4636,{roughness:0.8}))); });
   [[0.035,0xe9e3d6],[0.03,0x8a9a86],[0.025,0xc9a87a]].forEach(function(b,i){ bx(LG[0],xe-0.22,xe-0.05,zc+0.1,zc+0.36,0.82+i*0.035,0.82+i*0.035+b[0],lam(b[1],{roughness:0.7}),oc); });
-  const ob=new THREE.Mesh(new THREE.SphereGeometry(0.06,20,14),lam(0xd8c08a,{metalness:0.8,roughness:0.25})); ob.position.set(xe-0.13,0.98,zc+0.22); LG[0].add(ob);
+  const ob=new THREE.Mesh(new THREE.SphereGeometry(0.06,20,14),lam(0xd8c08a,{metalness:0.8,roughness:0.25})); ob.position.set(xe-0.13,0.975,zc+0.22); LG[0].add(ob);
   bx(LG[0],xe-0.02,xe,WZ(0,300)+TI/2,WZ(0,700),CH-0.1,CH-0.02,M.trim,oc); bx(LG[0],xe-0.03,xe-0.02,WZ(0,300)+TI/2+0.02,WZ(0,700)-0.02,CH-0.1,CH-0.095,glow,oc);
   const rx0=WX(0,150), rx1=WX(0,232); bx(LG[0],rx0,rx1,WZ(0,330),WZ(0,620),0.003,0.009,lam(0xcfc3ae,{roughness:0.95}),oc); bx(LG[0],rx0+0.05,rx1-0.05,WZ(0,335),WZ(0,615),0.009,0.0095,lam(0xe8e0d0,{roughness:0.95}),oc);
 })();                             // genkan: fold-down shelf for parcels, key rack above it
