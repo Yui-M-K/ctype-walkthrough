@@ -18,11 +18,12 @@ const HOUSES=[                                 // parent = the version it branch
   {id:'town3f',name:'三層透天厝（草案）',src:'town3f.html'},
   {id:'idealWide',family:'理想之家',name:'理想之家（寬敞版）',short:'寬敞版',note:'依住宅要望書最初的設計，建物 6.3 × 8.5 m、土地約 52 坪',date:'2026-10-08',src:'ideal_wide.html'},
   {id:'ideal',parent:'idealWide',name:'理想之家（現實版）',short:'現實版',note:'縮成東京常見尺寸 5.8 × 8.5 m、土地約 27 坪，之後的修改都在這一版',date:'2026-10-09',src:'ideal.html'},
-  {id:'idealB',parent:'ideal',name:'理想之家（二樓浴室版）',short:'二樓浴室版',note:'2F 北側：三溫暖・廁所在樓梯側，拱門進出的洗面室居中，浴室在廚房上方；3F 改成洗手台洗面室＋淋浴間，主臥加大',date:'2026-10-11',src:'ideal_b.html'}
+  {id:'idealB',parent:'ideal',name:'理想之家（二樓浴室版）',short:'二樓浴室版',note:'2F 北側：三溫暖・廁所在樓梯側，拱門進出的洗面室居中，浴室在廚房上方；3F 改成洗手台洗面室＋淋浴間，主臥加大',date:'2026-10-11',src:'ideal_b.html'},
+  {id:'idealC',parent:'idealB',name:'理想之家（家事動線版）',short:'家事動線版',note:'由二樓浴室版延伸：浴室・三溫暖・廁所・洗面室與洗衣更衣間（洗脫烘）都搬到 3F，和主臥同層；2F 北側改成書房＋淋浴間・廁所・洗面室；玄關加穿鞋椅',date:'2026-10-20',src:'ideal_c.html'}
 ];
 const frames={}, params=new URLSearchParams(location.search);
 let cur=null;
-const VER='20261020e';                          // bump with the ?v= of the lib files so a house page and its libraries always load together
+const VER='20261020f';                          // bump with the ?v= of the lib files so a house page and its libraries always load together
 function frameQuery(){ const q=new URLSearchParams(params); q.delete('house'); q.set('v',VER); return '?'+q.toString()+location.hash; }
 function open(id){
   const h=HOUSES.find(function(x){ return x.id===id&&x.src&&!x.disabled; }); if(!h) return false;
