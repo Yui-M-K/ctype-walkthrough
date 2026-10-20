@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261020m">
+<link rel="stylesheet" href="lib/storeys.css?v=20261020n">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261020m"></script>
-<script src="lib/furniture.js?v=20261020m"></script>
-<script src="lib/catalog.js?v=20261020m"></script>
-<script src="lib/look.js?v=20261020m"></script>
-<script src="lib/houses.js?v=20261020m"></script>
-<script src="lib/perf.js?v=20261020m"></script>
-<script src="lib/finish.js?v=20261020m"></script>
-<script src="lib/storeys.js?v=20261020m"></script>
+<script src="lib/people.js?v=20261020n"></script>
+<script src="lib/furniture.js?v=20261020n"></script>
+<script src="lib/catalog.js?v=20261020n"></script>
+<script src="lib/look.js?v=20261020n"></script>
+<script src="lib/houses.js?v=20261020n"></script>
+<script src="lib/perf.js?v=20261020n"></script>
+<script src="lib/finish.js?v=20261020n"></script>
+<script src="lib/storeys.js?v=20261020n"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -160,7 +160,7 @@ notes:[
   [2,250,780,'冷氣（主臥）','壁掛式，旁邊牆上掛遙控器'],[1,250,120,'冷氣（書房）','壁掛式，旁邊牆上掛遙控器'],[0,305,250,'冷氣（鏡子房）','壁掛式，旁邊牆上掛遙控器'],
   [0,155,180,'火災警報器','天花板'],[0,192,560,'火災警報器','天花板'],[1,350,600,'火災警報器','天花板'],[1,470,330,'火災警報器','天花板'],[1,57,280,'火災警報器','天花板'],[2,412,590,'火災警報器','天花板'],[2,440,300,'火災警報器','天花板'],[2,180,480,'火災警報器','天花板'],[1,412,110,'火災警報器','天花板'],
   [1,213,70,'洗手台（2F）','只有洗手盆，靠東牆'],[0,37,764,'玄關系統櫃','做到天花板：底部懸空放每天穿的鞋（下方 LED）、下段鞋櫃有通風溝槽、中段開放檯面放鑰匙（LED）、上段門片是鏡子；層板孔每 3.2 cm 一格可調高度，右下留給靴子'],[0,92,756,'穿鞋椅','和鞋櫃一體：座面下有放拖鞋的抽屜，旁邊有起身扶手，上方吊櫃附 LED'],[0,73,808,'固定式傘架','玄關門外，不鏽鋼，鎖在外牆和地面上不怕風吹；直立傘 6 格＋折疊傘專用格（附掛勾），底部接水盤'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
-  [0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
+  [0,20,365,'擦手巾','每個洗手台旁和廚房水槽下的櫃門都有毛巾桿，掛著擦手巾'],[0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
   [0,155,30,'壁掛喇叭','鏡子房兩側'],
   [0,580,345,'Tesla 充電樁','車庫牆上'],
   [0,240,850,'監視攝影機','玄關門廊與車庫外各一台'],
@@ -270,7 +270,7 @@ build:function(E){
   wall(2,0,130,160,130,TI);
   wall(2,0,225,380+TI*50,225,TI,[{a:165,b:240,k:'slide',hinge:'a',face:1,outset:1},{a:290,b:365,k:'door',hinge:'b',sw:1}]);   // washroom doors: to the hall, and through to the laundry closet
   wall(2,380-TI*50,205,580,205,TI);
-  wall(2,380,0,380,225-TI*50,TI,[{a:105,b:185,k:'door',fold:1,hinge:'b',sw:-1,mat:lam(0xf2f1ee,{roughness:0.35})}]);   // bi-fold bath door, folding into the bath
+  wall(2,380,0,380,225-TI*50,TI,[{a:105,b:185,k:'door',fold:1,hinge:'b',sw:1,mat:lam(0xf2f1ee,{roughness:0.35})}]);   // bi-fold bath door, folding into the bath
   wall(2,245,225,245,460,TI,[{a:285,b:365,k:'door',hinge:'a',sw:1}]);
   wall(2,245,460,580,460,TI);
   wall(2,245,460,245,850,TI,[{a:482,b:562,k:'door',hinge:'a',sw:1}]);   // hinged at the corner so the open leaf folds back toward the headboard wall
@@ -643,6 +643,19 @@ fixture(2,Catalog.toilet(),WX(2,43.5),WZ(2,177.5),0);
 [[2,WX(2,80),WZ(2,130)+TI/2,3],[1,WX(1,38),WZ(1,225)-TI/2,1],[0,WX(0,0)+TE/2+0.015,WZ(0,415),0]].forEach(function(q){ fixture(q[0],Catalog.paperHolder(),q[1],q[2],q[3]); });   // every toilet: roll holder by the seat and a small sanitary bin
 [[2,WX(2,20),WZ(2,146),3],[1,WX(1,18),WZ(1,207),0],[0,WX(0,100),WZ(0,452),2]].forEach(function(q){ fixture(q[0],Catalog.sanitaryBin(),q[1],q[2],q[3]); });
 fixture(0,Catalog.wallFoldTable(1.0),WX(0,270)-TI/2,WZ(0,705),2);
+(function(){                                   // hand towels on a short bar beside every basin and by the kitchen sink: [storey, x, z, wall normal angle, bar height, colour]
+  const bar=lam(0xc3c6c9,{metalness:0.85,roughness:0.3}), oc={cast:false};
+  const towel=function(l,x,z,ang,y,c){ const G=new THREE.Group(); G.position.set(x,E.base(l)+y,z); G.rotation.y=ang; LG[l].add(G);   // local +z points out of the wall
+    [-0.16,0.16].forEach(function(u){ const m=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.05,10),bar); m.rotation.x=Math.PI/2; m.position.set(u,0,0.025); G.add(m); });
+    const r=new THREE.Mesh(new THREE.CylinderGeometry(0.009,0.009,0.36,12),bar); r.rotation.z=Math.PI/2; r.position.set(0,0,0.05); G.add(r);
+    const cl=fab(c), tw=0.26;
+    [[0.038,0.34],[0.062,0.28]].forEach(function(q){ const m=new THREE.Mesh(new THREE.BoxGeometry(tw,q[1],0.006),cl); m.position.set(0,-q[1]/2+0.008,q[0]); m.castShadow=true; G.add(m); });   // folded over the bar: back layer longer than the front
+    const top=new THREE.Mesh(new THREE.CylinderGeometry(0.013,0.013,tw,12,1,false,0,Math.PI),cl); top.rotation.z=Math.PI/2; top.rotation.x=Math.PI/2; top.position.set(0,0.004,0.05); G.add(top); };
+  towel(0,WX(0,0)+TE/2,WZ(0,365),Math.PI/2,1.0,0xe8d9c8);                    // 1F powder room, west wall south of the basin
+  towel(1,WX(1,245)-TI/2,WZ(1,140),-Math.PI/2,1.0,0xd9e4ec);                 // 2F washroom, east wall south of the basin
+  towel(2,WX(2,345),WZ(2,0)+TE/2,0,1.05,0xf2ede4);                           // 3F washroom, north wall east of the vanity
+  towel(1,WX(1,333),WZ(1,382.5)-0.012,Math.PI,0.72,0xb7c9b0);                // kitchen: on the sink cupboard's front, kitchen side
+})();
 (function(){                                   // genkan built-in (system unit): floor-to-ceiling shoe cabinet with a lit open niche, floating base and mirrored upper doors; a bench joined to it with a drawer, a grab bar and a cupboard above
   const x0=WX(0,0)+TE/2, xa=WX(0,68), xb=WX(0,113), z1=WZ(0,790)-TE/2, D=0.38, zf=z1-D, zb=WZ(0,727), top=CH-0.005, oc={cast:false};
   const body=lam(0xebe6dc,{roughness:0.7}), inner=lam(0xf3f0ea,{roughness:0.8}), glow=new THREE.MeshBasicMaterial({color:0xffe3b8}), seam=lam(0x8f887d), t=0.018;

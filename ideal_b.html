@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261020m">
+<link rel="stylesheet" href="lib/storeys.css?v=20261020n">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261020m"></script>
-<script src="lib/furniture.js?v=20261020m"></script>
-<script src="lib/catalog.js?v=20261020m"></script>
-<script src="lib/look.js?v=20261020m"></script>
-<script src="lib/houses.js?v=20261020m"></script>
-<script src="lib/perf.js?v=20261020m"></script>
-<script src="lib/finish.js?v=20261020m"></script>
-<script src="lib/storeys.js?v=20261020m"></script>
+<script src="lib/people.js?v=20261020n"></script>
+<script src="lib/furniture.js?v=20261020n"></script>
+<script src="lib/catalog.js?v=20261020n"></script>
+<script src="lib/look.js?v=20261020n"></script>
+<script src="lib/houses.js?v=20261020n"></script>
+<script src="lib/perf.js?v=20261020n"></script>
+<script src="lib/finish.js?v=20261020n"></script>
+<script src="lib/storeys.js?v=20261020n"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -242,7 +242,7 @@ build:function(E){
   wall(1,0,130,160,130,TI);
   wall(1,0,225,380+TI*50,225,TI,[{a:211,b:311,k:'slide',hinge:'a',face:1,outset:1}]);   // washroom front (sliding door); the bath's south wall sits 20 cm further north
   wall(1,380-TI*50,205,580,205,TI);
-  wall(1,380,0,380,225-TI*50,TI,[{a:105,b:185,k:'door',fold:1,hinge:'b',sw:-1,mat:lam(0xf2f1ee,{roughness:0.35})}]);   // bi-fold bath door, folding into the bath against its south wall
+  wall(1,380,0,380,225-TI*50,TI,[{a:105,b:185,k:'door',fold:1,hinge:'b',sw:1,mat:lam(0xf2f1ee,{roughness:0.35})}]);   // bi-fold bath door, folding into the bath against its south wall
   wall(1,115,345,115,670,TI);
   slab(1,0,0,580,345); slab(1,115,345,580,645); slab(1,0,645,580,850);
   flr(1,0,225,115,345,FL.wood); flr(1,0,645,115,850,FL.wood); flr(1,0,0,160,130,FL.wc); flr(1,0,130,160,225,FL.wc); flr(1,160,0,380,190,FL.wc); flr(1,160,190,380,225,FL.wc); flr(1,380,0,580,205,FL.bath);
