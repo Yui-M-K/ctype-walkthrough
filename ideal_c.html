@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261021l">
+<link rel="stylesheet" href="lib/storeys.css?v=20261021m">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261021l"></script>
-<script src="lib/furniture.js?v=20261021l"></script>
-<script src="lib/catalog.js?v=20261021l"></script>
-<script src="lib/look.js?v=20261021l"></script>
-<script src="lib/houses.js?v=20261021l"></script>
-<script src="lib/perf.js?v=20261021l"></script>
-<script src="lib/finish.js?v=20261021l"></script>
-<script src="lib/storeys.js?v=20261021l"></script>
+<script src="lib/people.js?v=20261021m"></script>
+<script src="lib/furniture.js?v=20261021m"></script>
+<script src="lib/catalog.js?v=20261021m"></script>
+<script src="lib/look.js?v=20261021m"></script>
+<script src="lib/houses.js?v=20261021m"></script>
+<script src="lib/perf.js?v=20261021m"></script>
+<script src="lib/finish.js?v=20261021m"></script>
+<script src="lib/storeys.js?v=20261021m"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -162,7 +162,7 @@ notes:[
   [2,250,780,'冷氣（主臥）','壁掛式，旁邊牆上掛遙控器'],[1,190,110,'冷氣（書房）','壁掛式，旁邊牆上掛遙控器'],[0,305,250,'冷氣（鏡子房）','壁掛式，旁邊牆上掛遙控器'],
   [0,155,180,'火災警報器','天花板'],[0,192,560,'火災警報器','天花板'],[1,350,600,'火災警報器','天花板'],[1,470,330,'火災警報器','天花板'],[1,57,280,'火災警報器','天花板'],[2,412,590,'火災警報器','天花板'],[2,440,300,'火災警報器','天花板'],[2,180,480,'火災警報器','天花板'],[1,412,110,'火災警報器','天花板'],
   [1,50,140,'洗手台（2F 廁所）','廁所裡馬桶旁的懸空橡木檯面，檯面下式小洗手盆'],[1,150,110,'脫衣間（2F）','淋浴間前方，摺疊門'],[0,37,764,'玄關系統櫃','寬 59 cm（加側邊淺櫃共 78 cm，和土間邊切齊），懸空底座（下方 LED）；下櫃和上櫃中間是 47 cm 高的開放置物檯（橡木檯面、LED），放鑰匙和小盆栽；上下櫃都能打開，按壓式門片、細橡木邊，上櫃門片是鏡子；層板孔每 3.2 cm 一格可調高度，下櫃右側留給靴子；靠土間的側面另有一組淺櫃（上下兩門），上下櫃完全分開，放鞋油、拖鞋和備用鞋盒'],[0,242,756,'穿鞋椅','玄關門東側的土間上，深度和土間一樣、前緣對齊台階邊；座面離木地板 45 cm（一般椅子高度）；下方三層開放格放每天穿的鞋，旁邊牆上兩個掛勾'],[0,65,808,'固定式傘架','玄關門外，不鏽鋼，鎖在外牆和地面上不怕風吹；奶油色鐵管架，鎖在外牆上不怕風吹；上方 12 格每把傘一格：左邊 6 格長傘直接立在地磚上，右邊 6 格折疊傘放在腰高的接水盤上，不用彎腰拿'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
-  [2,410,880,'出窗（腰掛け出窓）','主臥南面的三面出窗（兩側斜 45°、四坡屋頂），牆面寬 2.2 m、往外凸 55 cm；座面 42 cm 坐得下兩個人，附坐墊和抱枕；下方左右抽屜放睡衣和保養品，中間是開放書櫃'],[0,20,365,'擦手巾','每個洗手台旁和廚房水槽下的櫃門都有毛巾桿，掛著擦手巾'],[0,115,560,'樓梯下收納','樓梯下方較高的一段：兩扇和牆面齊平、同色的按壓門（凹槽把手），放直立吸塵器、拖把、防災用品和囤貨；最矮的一段直接是牆'],[0,40,320,'一樓洗手台','沿馬桶旁西牆的懸空長橡木檯面：靠門那端是檯面下式洗手盆，中段開放格放衛生紙，兩端抽屜，檯面放盆栽和小托盤'],[0,98,305,'馬桶刷收納（每間廁所）','每間廁所牆裡嵌入的細長收納（門片和牆面齊平），上下兩扇門、中間封板隔開：下格放馬桶刷，上格放清潔濕紙巾和備用衛生紙'],[1,345,410,'水槽下清潔用品架','打開水槽下櫃後可以把兩層網籃拉出來，放洗碗精補充瓶、酒精噴霧和海綿'],[0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
+  [2,410,880,'出窗（腰掛け出窓）','主臥南面的方形出窗（三面玻璃、四坡屋頂），牆面寬 2.2 m、往外凸 55 cm；座面 42 cm 坐得下兩個人，附坐墊和抱枕；下方左右抽屜放睡衣和保養品，中間是開放書櫃'],[0,20,365,'擦手巾','每個洗手台旁和廚房水槽下的櫃門都有毛巾桿，掛著擦手巾'],[0,115,560,'樓梯下收納','樓梯下方較高的一段：兩扇和牆面齊平、同色的按壓門（凹槽把手），放直立吸塵器、拖把、防災用品和囤貨；最矮的一段直接是牆'],[0,40,320,'一樓洗手台','沿馬桶旁西牆的懸空長橡木檯面：靠門那端是檯面下式洗手盆，中段開放格放衛生紙，兩端抽屜，檯面放盆栽和小托盤'],[0,98,305,'馬桶刷收納（每間廁所）','每間廁所牆裡嵌入的細長收納（門片和牆面齊平），上下兩扇門、中間封板隔開：下格放馬桶刷，上格放清潔濕紙巾和備用衛生紙'],[1,345,410,'水槽下清潔用品架','打開水槽下櫃後可以把兩層網籃拉出來，放洗碗精補充瓶、酒精噴霧和海綿'],[0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
   [0,155,30,'壁掛喇叭','鏡子房兩側'],
   [0,580,345,'Tesla 充電樁','車庫牆上'],
   [0,240,850,'監視攝影機','玄關門廊與車庫外各一台'],
@@ -690,12 +690,12 @@ fixture(2,Catalog.toilet(),WX(2,43.5),WZ(2,177.5),0);
 })(); fixture(1,Catalog.toilet(),WX(1,0)+TE/2+0.37,WZ(1,172.5),0);
 [[2,WX(2,80),WZ(2,130)+TI/2,3],[1,WX(1,38),WZ(1,225)-TI/2,1]].forEach(function(q){ fixture(q[0],Catalog.paperHolder(),q[1],q[2],q[3]); });   // every toilet: roll holder by the seat and a small sanitary bin
 [[2,WX(2,20),WZ(2,146),3],[1,WX(1,18),WZ(1,207),0],[0,WX(0,100),WZ(0,452),2]].forEach(function(q){ fixture(q[0],Catalog.sanitaryBin(),q[1],q[2],q[3]); });
-(function(){                                   // 3F master bedroom: an angled bay (三面出窓) 2.2 m at the wall, 55 cm out, sides at 45°; a 42 cm seat for two with drawers and a book bay, a hipped metal roof
-  const b=E.base(2), x0=WX(2,300), x1=WX(2,520), zc=WZ(2,850), zi=zc-TE/2, zo=zc+TE/2, P=0.55, zg=zo+P, fx0=x0+P, fx1=x1-P, SEAT=0.42, HEAD=2.15, oc={cast:false};
+(function(){                                   // 3F master bedroom: a box bay (角出窓) 2.2 m wide, 55 cm out, glazed on three sides; a 42 cm seat for two with drawers and a book bay, a hipped metal roof
+  const b=E.base(2), x0=WX(2,300), x1=WX(2,520), zc=WZ(2,850), zi=zc-TE/2, zo=zc+TE/2, P=0.55, zg=zo+P, fx0=x0, fx1=x1, SEAT=0.42, HEAD=2.15, oc={cast:false};
   const W=M.cabF, oakE=lam(0xd9bf96,{roughness:0.45,map:M.oak.map||null}), trim=lam(0xf6f5f1,{roughness:0.5}), roofM=lam(0x8a6f78,{roughness:0.45,metalness:0.35}), white=lam(0xf4f2ee,{roughness:0.7});
   const V=function(x,z){ return new THREE.Vector2(x,-z); };
   const slab=function(pts,y0,y1,mt,cast){ const m=new THREE.Mesh(new THREE.ExtrudeGeometry(new THREE.Shape(pts),{depth:y1-y0,bevelEnabled:false}),mt); m.rotation.x=-Math.PI/2; m.position.y=y0; m.castShadow=cast!==false; m.receiveShadow=true; LG[2].add(m); return m; };
-  const plan=function(d){ return [V(x0-d,zo),V(x1+d,zo),V(fx1+d*0.41,zg+d),V(fx0-d*0.41,zg+d)]; };   // trapezoid grown by d all round
+  const plan=function(d){ return [V(x0-d,zo),V(x1+d,zo),V(fx1+d,zg+d),V(fx0-d,zg+d)]; };   // footprint grown by d all round
   slab(plan(0.06),b-0.3,b+SEAT-0.03,M.ext); slab([V(x0,zi),V(x1,zi),V(x1,zo),V(fx1,zg-0.03),V(fx0,zg-0.03),V(x0,zo)],b+SEAT-0.05,b+SEAT-0.02,oakE);   // base with panels, oak seat top
   slab(plan(0.08),b+HEAD,b+HEAD+0.1,trim); slab(plan(0.0),b+HEAD-0.005,b+HEAD,white,false);
   (function(){ const p=plan(0.12), ry=b+HEAD+0.1, apexY=ry+0.32, ax=(x0+x1)/2, az=zo+0.05, geo=new THREE.BufferGeometry(), pos=[];   // hipped roof falling to three sides
@@ -722,7 +722,7 @@ fixture(2,Catalog.toilet(),WX(2,43.5),WZ(2,177.5),0);
   /* the seat: cushion and two pillows; drawers and a book bay face the room */
   slab([V(x0+0.03,zi+0.02),V(x1-0.03,zi+0.02),V(x1-0.03,zo),V(fx1-0.02,zg-0.06),V(fx0+0.02,zg-0.06),V(x0+0.03,zo)],b+SEAT-0.02,b+SEAT+0.06,fab(0xe7dcc8),false);
   bx(LG[2],x0,x1,zi,zo,b,b+SEAT-0.05,W); addCol(2,x0,x1,zi-0.01,zg,b,b+SEAT,'f');
-  [[fx0-0.05,0x9aa894],[fx1+0.05,0xc8714f]].forEach(function(q){ const c=new THREE.Mesh(new THREE.BoxGeometry(0.42,0.36,0.12),fab(q[1])); c.position.set(q[0],b+SEAT+0.24,zg-0.2); c.rotation.x=-0.18; c.rotation.y=q[0]<(x0+x1)/2?0.5:-0.5; c.castShadow=true; LG[2].add(c); });
+  [[fx0+0.3,0x9aa894],[fx1-0.3,0xc8714f]].forEach(function(q){ const c=new THREE.Mesh(new THREE.BoxGeometry(0.42,0.36,0.12),fab(q[1])); c.position.set(q[0],b+SEAT+0.24,zg-0.2); c.rotation.x=-0.18; c.rotation.y=q[0]<(x0+x1)/2?0.25:-0.25; c.castShadow=true; LG[2].add(c); });
   const L=x1-x0, seam=lam(0x8f887d);
   [[0,0.36,'d'],[0.36,0.64,'o'],[0.64,1,'d']].forEach(function(q){ const a=x0+L*q[0], c=x0+L*q[1];
     if(q[2]==='o'){ bx(LG[2],a,c,zi-0.002,zi,b+0.06,b+SEAT-0.08,lam(0xf0ede6),oc); for(let k=0;k<12;k++) bx(LG[2],a+0.04+k*(c-a-0.08)/12,a+0.04+k*(c-a-0.08)/12+0.03,zi-0.001,zi+0.001,b+0.07,b+0.07+0.2+(k%3)*0.03,lam([0x8d6a47,0x5f6f82,0xb26b5a,0xd8d2c6][k%4],{roughness:0.8}),oc); return; }
