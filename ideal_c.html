@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261021j">
+<link rel="stylesheet" href="lib/storeys.css?v=20261021k">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261021j"></script>
-<script src="lib/furniture.js?v=20261021j"></script>
-<script src="lib/catalog.js?v=20261021j"></script>
-<script src="lib/look.js?v=20261021j"></script>
-<script src="lib/houses.js?v=20261021j"></script>
-<script src="lib/perf.js?v=20261021j"></script>
-<script src="lib/finish.js?v=20261021j"></script>
-<script src="lib/storeys.js?v=20261021j"></script>
+<script src="lib/people.js?v=20261021k"></script>
+<script src="lib/furniture.js?v=20261021k"></script>
+<script src="lib/catalog.js?v=20261021k"></script>
+<script src="lib/look.js?v=20261021k"></script>
+<script src="lib/houses.js?v=20261021k"></script>
+<script src="lib/perf.js?v=20261021k"></script>
+<script src="lib/finish.js?v=20261021k"></script>
+<script src="lib/storeys.js?v=20261021k"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -142,7 +142,7 @@ rooms:[
 /* accent walls: TV wall in the living room (sage), head wall of the bedroom (mist), north wall of the study (peach) */
 accents:[{l:1,x0:560,x1:575,y0:250,y1:850,w:'sage'},{l:2,x0:245,x1:580,y0:465,y1:480,w:'mist'}],
 /* curtains: [storey, wall side, a, b, wall line, auto] — the master bedroom's follow the time of day (smart home) */
-curtains:[[0,'W',55,245,0,false,{color:0xf7f3ec,tie:true}],[1,'S',240,560,850],[1,'E',60,170,580],[2,'S',260,560,850,true],[2,'E',600,760,580,true],[2,'E',300,440,580]],
+curtains:[[0,'W',55,245,0,false,{color:0xf7f3ec,tie:true}],[1,'S',240,560,850],[1,'E',60,170,580],[2,'S',300,520,850,true,undefined,{off:-0.42,top:2.1,bottom:0.5}],[2,'E',600,760,580,true],[2,'E',300,440,580]],
 /* equipment notes in the menu: [storey, plan x, plan y, name, note] for built-ins; placed furniture is listed automatically (noteText[id]: note or [name, note]) */
 notes:[
   [1,300,600,'床暖房（地暖）','LDK 全面鋪設。選單「顯示地暖範圍（客廳）」可看到範圍'],
