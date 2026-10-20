@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261019s">
+<link rel="stylesheet" href="lib/storeys.css?v=20261020a">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -23,6 +23,7 @@
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
       <button id="tAO" class="tog" style="grid-column:1/-1" type="button" aria-pressed="false">環境光遮蔽（角落與接縫的陰影，較耗效能）</button>
       <button id="tPerf" class="tog" style="grid-column:1/-1" type="button" aria-pressed="false">顯示效能資訊（FPS・繪製次數）</button>
+      <button id="tStyle" class="tog" style="grid-column:1/-1" type="button" aria-pressed="false" hidden>畫面風格：新海誠風（測試）</button>
       <button id="tFurn" class="tog" type="button" aria-pressed="true">參考家具</button>
       <button id="tEdit" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">擺放家具（拖曳移動、旋轉、從型錄拿新的）</button>
       <button id="tTv" class="tog" type="button" aria-pressed="false">電視開機</button>
@@ -68,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261019s"></script>
-<script src="lib/furniture.js?v=20261019s"></script>
-<script src="lib/catalog.js?v=20261019s"></script>
-<script src="lib/look.js?v=20261019s"></script>
-<script src="lib/houses.js?v=20261019s"></script>
-<script src="lib/perf.js?v=20261019s"></script>
-<script src="lib/finish.js?v=20261019s"></script>
-<script src="lib/storeys.js?v=20261019s"></script>
+<script src="lib/people.js?v=20261020a"></script>
+<script src="lib/furniture.js?v=20261020a"></script>
+<script src="lib/catalog.js?v=20261020a"></script>
+<script src="lib/look.js?v=20261020a"></script>
+<script src="lib/houses.js?v=20261020a"></script>
+<script src="lib/perf.js?v=20261020a"></script>
+<script src="lib/finish.js?v=20261020a"></script>
+<script src="lib/storeys.js?v=20261020a"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -85,8 +86,11 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
+import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
+import {ShaderPass} from 'three/addons/postprocessing/ShaderPass.js';
+import {SMAAPass} from 'three/addons/postprocessing/SMAAPass.js';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
-Walk.Storeys({THREE:THREE,EffectComposer:EffectComposer,RenderPass:RenderPass,GTAOPass:GTAOPass,OutputPass:OutputPass,HDRLoader:HDRLoader,mergeGeometries:mergeGeometries,KTX2Loader:KTX2Loader},
+Walk.Storeys({THREE:THREE,EffectComposer:EffectComposer,RenderPass:RenderPass,GTAOPass:GTAOPass,OutputPass:OutputPass,HDRLoader:HDRLoader,mergeGeometries:mergeGeometries,KTX2Loader:KTX2Loader,UnrealBloomPass:UnrealBloomPass,ShaderPass:ShaderPass,SMAAPass:SMAAPass},
 {
 /* house id (layout memory) and the furniture edit store */
 id:"idealB",
