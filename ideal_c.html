@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261020q">
+<link rel="stylesheet" href="lib/storeys.css?v=20261020r">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261020q"></script>
-<script src="lib/furniture.js?v=20261020q"></script>
-<script src="lib/catalog.js?v=20261020q"></script>
-<script src="lib/look.js?v=20261020q"></script>
-<script src="lib/houses.js?v=20261020q"></script>
-<script src="lib/perf.js?v=20261020q"></script>
-<script src="lib/finish.js?v=20261020q"></script>
-<script src="lib/storeys.js?v=20261020q"></script>
+<script src="lib/people.js?v=20261020r"></script>
+<script src="lib/furniture.js?v=20261020r"></script>
+<script src="lib/catalog.js?v=20261020r"></script>
+<script src="lib/look.js?v=20261020r"></script>
+<script src="lib/houses.js?v=20261020r"></script>
+<script src="lib/perf.js?v=20261020r"></script>
+<script src="lib/finish.js?v=20261020r"></script>
+<script src="lib/storeys.js?v=20261020r"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -159,7 +159,7 @@ notes:[
   [1,575,440,'冷氣（客廳）','壁掛式'],
   [2,250,780,'冷氣（主臥）','壁掛式，旁邊牆上掛遙控器'],[1,250,120,'冷氣（書房）','壁掛式，旁邊牆上掛遙控器'],[0,305,250,'冷氣（鏡子房）','壁掛式，旁邊牆上掛遙控器'],
   [0,155,180,'火災警報器','天花板'],[0,192,560,'火災警報器','天花板'],[1,350,600,'火災警報器','天花板'],[1,470,330,'火災警報器','天花板'],[1,57,280,'火災警報器','天花板'],[2,412,590,'火災警報器','天花板'],[2,440,300,'火災警報器','天花板'],[2,180,480,'火災警報器','天花板'],[1,412,110,'火災警報器','天花板'],
-  [1,213,70,'洗手台（2F）','只有洗手盆，靠東牆'],[0,37,764,'玄關系統櫃','從懸空的底座一路做到天花板（下方 LED）；按壓式門片、細橡木邊，上段門片是全身鏡；層板孔每 3.2 cm 一格可調高度，右下留給靴子'],[0,92,756,'穿鞋椅','接在鞋櫃側邊、同色同邊條；座面離地 40 cm（離土間 55 cm），下方兩層放每天穿的鞋，上方牆面兩個掛勾'],[0,73,808,'固定式傘架','玄關門外，不鏽鋼，鎖在外牆和地面上不怕風吹；直立傘 6 格＋折疊傘專用格（附掛勾），底部接水盤'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
+  [1,213,70,'洗手台（2F）','只有洗手盆，靠東牆'],[0,37,764,'玄關系統櫃','從懸空的底座一路做到天花板（下方 LED）；按壓式門片、細橡木邊，上段門片是全身鏡；層板孔每 3.2 cm 一格可調高度，右下留給靴子'],[0,92,756,'穿鞋椅','接在鞋櫃側邊、同色同邊條；座面離地 40 cm（離土間 55 cm），下方兩層放每天穿的鞋，上方牆面兩個掛勾'],[0,73,808,'固定式傘架','玄關門外，不鏽鋼，鎖在外牆和地面上不怕風吹；每把傘一格：長傘 6 格從接水盤直立，折疊傘 4 格放在中段的高架層，不用彎腰拿'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
   [2,410,880,'出窗（腰掛け出窓）','主臥南面，寬 2.2 m、往外凸 55 cm；座面 42 cm 坐得下兩個人，附坐墊和抱枕；下方左右抽屜放睡衣和保養品，中間是開放書櫃'],[0,20,365,'擦手巾','每個洗手台旁和廚房水槽下的櫃門都有毛巾桿，掛著擦手巾'],[0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
   [0,155,30,'壁掛喇叭','鏡子房兩側'],
   [0,580,345,'Tesla 充電樁','車庫牆上'],
@@ -738,27 +738,25 @@ fixture(0,Catalog.wallFoldTable(1.0),WX(0,270)-TI/2,WZ(0,705),2);
   /* two coat hooks on the wall above the bench */
   [[(xa+xb)/2-0.1],[(xa+xb)/2+0.1]].forEach(function(q){ bx(LG[0],q[0]-0.02,q[0]+0.02,z1-0.012,z1,1.61,1.69,oakE,oc); const h=new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.07,12),oakE); h.rotation.x=Math.PI/2; h.position.set(q[0],1.65,z1-0.035); LG[0].add(h); });
 })();
-(function(){                                   // porch: wall-mounted stainless umbrella rack beside the front door, bolted to the wall and the tiles so wind cannot move it; six long umbrellas and a pocket for folding ones
-  const y=-0.15, x0=WX(0,30), xs=WX(0,85), x1=WX(0,116), zw=WZ(0,790)+TE/2, D=0.24, st=lam(0xc3c6c9,{metalness:0.85,roughness:0.3}), oc={cast:false};
-  bx(LG[0],x0,x1,zw,zw+D,y,y+0.03,st); bx(LG[0],x0,x1,zw,zw+0.006,y,y+0.66,st);                    // drain tray and wall plate
-  [[x0,x0+0.01],[x1-0.01,x1]].forEach(function(r){ bx(LG[0],r[0],r[1],zw,zw+D,y,y+0.66,st); });
-  bx(LG[0],x0,xs,zw+D-0.01,zw+D,y+0.6,y+0.64,st); bx(LG[0],x0,x1,zw+D-0.01,zw+D,y+0.03,y+0.07,st);
-  [[x0+0.1,zw+0.003],[x1-0.08,zw+0.003]].forEach(function(q){ [0.2,0.55].forEach(function(h){ const b=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.012,10),M.steel); b.rotation.x=Math.PI/2; b.position.set(q[0],y+h,zw+0.009); LG[0].add(b); }); });   // anchor bolts
-  const cols=[0x35506b,0xd8453c,0x2a2a2a,0xe8c547,0x8fa58e,0x6b4a35], n=3, used=[[0,0],[1,1],[2,0],[0,1]];
-  for(let r=0;r<2;r++) for(let i=0;i<n;i++){ const x=x0+(i+0.5)*(xs-x0)/n, z=zw+0.07+r*0.1;
-    const ring=new THREE.Mesh(new THREE.TorusGeometry(0.034,0.004,6,18),st); ring.rotation.x=Math.PI/2; ring.position.set(x,y+0.62,z); LG[0].add(ring);
-    if(!used.some(function(u){ return u[0]===i&&u[1]===r; })) continue; const g=new THREE.Group(); g.position.set(x,y+0.03,z); g.rotation.z=(i-1)*0.04; LG[0].add(g);
+(function(){                                   // porch: a fixed umbrella stand bolted to the wall and the tiles: one cell each, six long umbrellas from the drip tray, four folding ones on a raised tier at hand height
+  const y=-0.15, x0=WX(0,30), xs=WX(0,92), x1=WX(0,122), zw=WZ(0,790)+TE/2, D=0.24, H=0.7, MID=0.42, f=0.018, oc={cast:false};
+  const st=lam(0x2b2d30,{roughness:0.45,metalness:0.4}), tray=lam(0x55585c,{roughness:0.5,metalness:0.3}), z0=zw+0.01, z1=zw+D;
+  bx(LG[0],x0,x1,z0,z1,y,y+0.05,st); bx(LG[0],x0+0.012,x1-0.012,z0+0.012,z1-0.012,y+0.05,y+0.052,tray,oc);       // drip tray
+  bx(LG[0],x0,x1,zw,zw+0.01,y,y+H,st);                                                                       // back plate on the wall
+  [x0,xs,x1-0.012].forEach(function(x){ bx(LG[0],x,x+0.012,z0,z1,y+0.05,y+H,st); });                         // side and divider panels
+  const grid=function(a,b,yy,nx){ bx(LG[0],a,b,z0,z0+f,yy-f,yy,st); bx(LG[0],a,b,z1-f,z1,yy-f,yy,st); bx(LG[0],a,b,(z0+z1)/2-f/2,(z0+z1)/2+f/2,yy-f,yy,st);   // square cells, two deep
+    for(let k=1;k<nx;k++){ const x=a+(b-a)*k/nx; bx(LG[0],x-f/2,x+f/2,z0,z1,yy-f,yy,st); } };
+  grid(x0,xs,y+H,3); grid(xs,x1,y+H,2); grid(xs,x1,y+MID,2); bx(LG[0],xs,x1,z0,z1,y+MID-0.06,y+MID-0.05,tray,oc);   // raised tier: a cup under each cell
+  const cell=function(a,b,nx,i,r){ return [a+(b-a)*(i+0.5)/nx,z0+(z1-z0)*(r+0.5)/2]; };
+  const cols=[0x35506b,0xd8453c,0x2a2a2a,0xe8c547,0x8fa58e,0x6b4a35];
+  [[0,0],[1,1],[2,0],[0,1]].forEach(function(q,k){ const c=cell(x0,xs,3,q[0],q[1]), g=new THREE.Group(); g.position.set(c[0],y+0.052,c[1]); LG[0].add(g);   // four long umbrellas in their cells
     const sh=new THREE.Mesh(new THREE.CylinderGeometry(0.004,0.004,0.85,6),M.steel); sh.position.y=0.42; g.add(sh);
-    const can=new THREE.Mesh(new THREE.ConeGeometry(0.03,0.6,8),lam(cols[i+r*3],{roughness:0.6})); can.position.y=0.4; can.rotation.x=Math.PI; g.add(can);
-    const hd=new THREE.Mesh(new THREE.TorusGeometry(0.03,0.007,6,12,Math.PI),lam(0x6b4a35)); hd.position.set(0.03,0.86,0); g.add(hd); }
-  /* folding umbrellas: a slotted pocket on the tray and two hooks above it for the ones with a strap */
-  bx(LG[0],xs,xs+0.008,zw,zw+D,y,y+0.66,st); bx(LG[0],xs,x1,zw+D-0.008,zw+D,y,y+0.3,st);
-  for(let k=0;k<3;k++) bx(LG[0],xs+0.04,x1-0.04,zw+D,zw+D+0.002,y+0.08+k*0.07,y+0.1+k*0.07,lam(0x7d8186,{metalness:0.6}),oc);   // drain slots
-  [[0.045,0x35506b],[0.11,0xb07ad8],[0.175,0x8fa58e]].forEach(function(q,k){ const f=new THREE.Mesh(new THREE.CylinderGeometry(0.024,0.024,0.26,10),lam(q[1],{roughness:0.7})); f.position.set(xs+0.05+k*0.075,y+0.16,zw+0.09+(k%2)*0.07); f.rotation.z=(k-1)*0.08; f.castShadow=true; LG[0].add(f); });
-  [xs+0.08,x1-0.07].forEach(function(x,k){ const hk=new THREE.Mesh(new THREE.TorusGeometry(0.018,0.004,6,10,Math.PI),st); hk.rotation.z=Math.PI; hk.position.set(x,y+0.58,zw+0.03); LG[0].add(hk);
-    if(k) return; const strap=new THREE.Mesh(new THREE.BoxGeometry(0.006,0.08,0.006),lam(0x2a2a2a)); strap.position.set(x,y+0.53,zw+0.03); LG[0].add(strap);
-    const f=new THREE.Mesh(new THREE.CylinderGeometry(0.022,0.022,0.24,10),lam(0xd8453c,{roughness:0.7})); f.position.set(x,y+0.37,zw+0.03); f.castShadow=true; LG[0].add(f); });
-  addCol(0,x0,x1,zw,zw+D,y,y+0.66,'f');
+    const can=new THREE.Mesh(new THREE.ConeGeometry(0.03,0.6,8),lam(cols[k],{roughness:0.6})); can.position.y=0.4; can.rotation.x=Math.PI; g.add(can);
+    const hd=new THREE.Mesh(new THREE.TorusGeometry(0.03,0.007,6,12,Math.PI),lam(0x6b4a35)); hd.position.set(0.03,0.86,0); g.add(hd); });
+  [[0,0,0x35506b],[1,0,0xb07ad8],[0,1,0x8fa58e]].forEach(function(q){ const c=cell(xs,x1,2,q[0],q[1]), u=new THREE.Mesh(new THREE.CylinderGeometry(0.024,0.024,0.26,10),lam(q[2],{roughness:0.7})); u.position.set(c[0],y+MID-0.05+0.13,c[1]); u.castShadow=true; LG[0].add(u);   // three folding umbrellas standing on the raised tier
+    const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.016,0.016,0.03,10),M.steel); cap.position.set(c[0],y+MID-0.05+0.275,c[1]); LG[0].add(cap); });
+  [[x0+0.1,0.2],[x1-0.08,0.55]].forEach(function(q){ const b=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.012,10),M.steel); b.rotation.x=Math.PI/2; b.position.set(q[0],y+q[1],zw+0.011); LG[0].add(b); });   // anchor bolts
+  addCol(0,x0,x1,zw,zw+D,y,y+H,'f');
 })();
 (function(){                                   // storage room south wall: suitcases under wall-anchored shelves of light boxes with anti-fall rails; the cat rack in the corner stays clear in front
   const x0=WX(0,398), x1=WX(0,512), zw=WZ(0,290)-TI/2, d=0.36, oc={cast:false}, boxC=[0xe9e4da,0xc9b79c,0x9fb0bf,0xd8cfc0,0xb8c7b0];
