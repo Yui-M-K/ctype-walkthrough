@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261021c">
+<link rel="stylesheet" href="lib/storeys.css?v=20261021d">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261021c"></script>
-<script src="lib/furniture.js?v=20261021c"></script>
-<script src="lib/catalog.js?v=20261021c"></script>
-<script src="lib/look.js?v=20261021c"></script>
-<script src="lib/houses.js?v=20261021c"></script>
-<script src="lib/perf.js?v=20261021c"></script>
-<script src="lib/finish.js?v=20261021c"></script>
-<script src="lib/storeys.js?v=20261021c"></script>
+<script src="lib/people.js?v=20261021d"></script>
+<script src="lib/furniture.js?v=20261021d"></script>
+<script src="lib/catalog.js?v=20261021d"></script>
+<script src="lib/look.js?v=20261021d"></script>
+<script src="lib/houses.js?v=20261021d"></script>
+<script src="lib/perf.js?v=20261021d"></script>
+<script src="lib/finish.js?v=20261021d"></script>
+<script src="lib/storeys.js?v=20261021d"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -758,7 +758,8 @@ fixture(2,Catalog.toilet(),WX(2,43.5),WZ(2,177.5),0);
   /* a shallow side unit facing the doma, same lines: lower and upper cupboards with a plain panel between (no niche) */
   (function(){ const sx=xa, sx1=xa+0.18, S={leaves:[],parts:[]};
     const sbox=function(y0,y1){ bx(LG[0],sx,sx1,zf,zf+t,y0,y1,W); bx(LG[0],sx,sx1,z1-t,z1,y0,y1,W); bx(LG[0],sx,sx1,zf,z1,y0,y0+t,W); bx(LG[0],sx,sx1,zf,z1,y1-t,y1,W);
-      [y0+(y1-y0)*0.36,y0+(y1-y0)*0.68].forEach(function(y){ bx(LG[0],sx,sx1-0.02,zf+t,z1-t,y,y+t,W,oc); }); };
+      if(y0>1) [y0+(y1-y0)*0.36,y0+(y1-y0)*0.68].forEach(function(y){ bx(LG[0],sx,sx1-0.02,zf+t,z1-t,y,y+t,W,oc); });
+      [sx+0.004,sx1-0.024].forEach(function(x){ [zf+0.05,z1-0.05].forEach(function(z){ for(let y=y0+0.06;y<y1-0.05;y+=0.032) bx(LG[0],x,x+0.003,z-0.003,z+0.003,y-0.003,y+0.003,seam,oc); }); }); };
     sbox(FLOAT,LO); sbox(HI,top); bx(LG[0],sx,sx1+t,zf-0.005,z1,LO,LO+0.025,M.oak);
     bx(LG[0],sx+0.03,sx1-0.03,zf+0.03,z1-0.03,FLOAT-0.012,FLOAT-0.006,glow,oc);
     [[FLOAT+t,0x2a2d31],[FLOAT+(LO-FLOAT)*0.36+t,0xb9a184],[HI+t,0xd9cfc0]].forEach(function(q){ bx(LG[0],sx+0.02,sx1-0.04,zf+0.05,z1-0.05,q[0],q[0]+0.1,lam(q[1],{roughness:0.7}),oc); });   // shoe care kit, slippers, spare boxes
@@ -766,12 +767,18 @@ fixture(2,Catalog.toilet(),WX(2,43.5),WZ(2,177.5),0);
       const m=new THREE.Mesh(new THREE.BoxGeometry(t,r[1]-r[0]-0.006,w),W); m.position.set(t/2,(r[0]+r[1])/2,-w/2); m.castShadow=true; pv.add(m); S.parts.push(m);
       const e=new THREE.Mesh(new THREE.BoxGeometry(t+0.001,r[1]-r[0]-0.006,0.006),oakE); e.position.set(t/2,(r[0]+r[1])/2,-w+0.003); pv.add(e); S.leaves.push(pv); });
     addCol(0,sx,sx1+t,zf,z1,0,LO,'w'); addCol(0,sx,sx1+t,zf,z1,HI,top,'w');
+    const AG=new THREE.Group(); AG.userData.keep=true; LG[0].add(AG);   // the lower cupboard's middle shelf sits on pins: up for tall boots-care sprays, down for more slippers
+    (function(){ const m=new THREE.Mesh(new THREE.BoxGeometry(sx1-sx-0.02,t,z1-zf-2*t),W); m.position.set((sx+sx1-0.02)/2,0,(zf+z1)/2); AG.add(m);
+      [[-0.08,0xd8d2c6],[0.08,0x9fb0bf]].forEach(function(q){ const o=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.07,0.14),lam(q[1],{roughness:0.7})); o.position.set((sx+sx1-0.02)/2,t/2+0.035,(zf+z1)/2+q[0]); AG.add(o); }); })();
+    const A_HI=FLOAT+(LO-FLOAT)*0.68, A_LO=FLOAT+(LO-FLOAT)*0.4; let aU=1, aT=1, aP=1, aL=null; const aSet=function(){ AG.position.set(0.06*Math.sin(Math.PI*aP),A_LO+(A_HI-A_LO)*aU,0); }; aSet();
     let cur=0, tg=0, last=null;
-    furnThings.push({pt:[sx1+0.5,(zf+z1)/2],l:0,part:S.parts,on:function(){ return true; },label:function(){ return tg?'關上側邊收納':'打開側邊收納'; },act:function(){ tg=tg?0:1; last=null; }});
+    furnThings.push({pt:[sx1+0.3,(zf+z1)/2],l:0,part:S.parts,on:function(){ return true; },label:function(){ return tg?'關上側邊收納':'打開側邊收納（層板可調）'; },act:function(){ tg=tg?0:1; last=null; }});
+    furnThings.push({pt:[sx1+0.28,(zf+z1)/2+0.05],l:0,on:function(){ return cur>0.9; },label:function(){ return aT?'側邊層板調低':'側邊層板調高'; },act:function(){ aT=aT?0:1; aP=0; aL=null; }});
+    furnAnims.push({live:function(){ return aP<1; },f:function(t2){ if(aL===null) aL=t2; const dt=Math.min(0.05,t2-aL); aL=t2; aP=Math.min(1,aP+dt*0.9); aU=aP<0.25?1-aT:aP>0.75?aT:(1-aT)+(2*aT-1)*(aP-0.25)/0.5; aSet(); E.renderer.shadowMap.needsUpdate=true; return true; }});
     furnAnims.push({live:function(){ return cur!==tg; },f:function(t2){ if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*2?tg:cur+Math.sign(tg-cur)*dt*2; S.leaves.forEach(function(pv){ pv.rotation.y=cur*1.6; }); E.renderer.shadowMap.needsUpdate=true; return true; }}); })();
-  const loOpen=opener('lo',[xm,zf-0.5],'打開下層鞋櫃（層板可調）','關上下層鞋櫃');
-  opener('hi',[xm,zf-0.55],'打開上層鞋櫃','關上上層鞋櫃');
-  furnThings.push({pt:[xm+0.05,zf-0.4],l:0,on:function(){ return loOpen()>0.9; },label:function(){ return shT?'層板調低（多放兩雙鞋）':'層板調高（放靴子）'; },act:function(){ shT=shT?0:1; shP=0; shLast=null; }});
+  const loOpen=opener('lo',[xm,zf-0.28],'打開下層鞋櫃（層板可調）','關上下層鞋櫃');
+  opener('hi',[xm-0.06,zf-0.3],'打開上層鞋櫃','關上上層鞋櫃');
+  furnThings.push({pt:[xm+0.06,zf-0.26],l:0,on:function(){ return loOpen()>0.9; },label:function(){ return shT?'層板調低（多放兩雙鞋）':'層板調高（放靴子）'; },act:function(){ shT=shT?0:1; shP=0; shLast=null; }});
   furnAnims.push({live:function(){ return shP<1; },f:function(t2){ if(shLast===null) shLast=t2; const dt=Math.min(0.05,t2-shLast); shLast=t2;   // pull the shelf out, move it to the next pin row, push it back
     shP=Math.min(1,shP+dt*0.9); shU=shP<0.25?1-shT:shP>0.75?shT:(1-shT)+(shT-(1-shT))*(shP-0.25)/0.5; shSet(); E.renderer.shadowMap.needsUpdate=true; return true; }});
   /* bench on the doma east of the door, the cabinet's white with an oak seat edge; open toward the door for everyday shoes, hooks on the wall above */
