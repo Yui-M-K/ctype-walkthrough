@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261020f">
+<link rel="stylesheet" href="lib/storeys.css?v=20261020g">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261020f"></script>
-<script src="lib/furniture.js?v=20261020f"></script>
-<script src="lib/catalog.js?v=20261020f"></script>
-<script src="lib/look.js?v=20261020f"></script>
-<script src="lib/houses.js?v=20261020f"></script>
-<script src="lib/perf.js?v=20261020f"></script>
-<script src="lib/finish.js?v=20261020f"></script>
-<script src="lib/storeys.js?v=20261020f"></script>
+<script src="lib/people.js?v=20261020g"></script>
+<script src="lib/furniture.js?v=20261020g"></script>
+<script src="lib/catalog.js?v=20261020g"></script>
+<script src="lib/look.js?v=20261020g"></script>
+<script src="lib/houses.js?v=20261020g"></script>
+<script src="lib/perf.js?v=20261020g"></script>
+<script src="lib/finish.js?v=20261020g"></script>
+<script src="lib/storeys.js?v=20261020g"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -238,10 +238,10 @@ build:function(E){
   wall(1,0,850,580,850,TE,[{a:240,b:560,k:'slide2',mat:M.glass,head:2.15,screen:1}]);
   /* C: 2F north: shower room and toilet off a small washroom on the stair side, the study over the kitchen */
   wall(1,0,120,115,120,TI);
-  wall(1,115,0,115,120,TI,[{a:28,b:93,k:'door',hinge:'a',sw:1,mat:M.frost}]);
+  wall(1,115,0,115,120,TI,[{a:58,b:116,k:'slide',mat:M.frost}]);   // shower door south of the basin, sliding so it never meets the vanity
   wall(1,115,120,115,225-TI*50,TI,[{a:138,b:208,k:'door',hinge:'b',sw:1}]);
   wall(1,245,0,245,225-TI*50,TI);
-  wall(1,0,225,380+TI*50,225,TI,[{a:150,b:225,k:'door',hinge:'a',sw:-1},{a:255,b:330,k:'door',hinge:'b',sw:-1}]);
+  wall(1,0,225,380+TI*50,225,TI,[{a:150,b:225,k:'slide',hinge:'a',face:1,outset:1},{a:255,b:330,k:'door',hinge:'b',sw:-1}]);
   wall(1,380-TI*50,205,580,205,TI); wall(1,380,205,380,225,TI);
   wall(1,115,345,115,670,TI);
   slab(1,0,0,580,345); slab(1,115,345,580,645); slab(1,0,645,580,850);
@@ -268,7 +268,7 @@ build:function(E){
   wall(2,160,0,160,130,TI,[{a:5,b:125,k:'open',head:1.95}]);   // the sauna cabin's glass front fills this opening
   wall(2,160,130,160,225-TI*50,TI,[{a:142,b:212,k:'door',hinge:'a',sw:1}]);
   wall(2,0,130,160,130,TI);
-  wall(2,0,225,380+TI*50,225,TI,[{a:165,b:240,k:'door',hinge:'a',sw:-1},{a:290,b:365,k:'door',hinge:'b',sw:1}]);   // washroom doors: to the hall, and through to the laundry closet
+  wall(2,0,225,380+TI*50,225,TI,[{a:165,b:240,k:'slide',hinge:'a',face:1,outset:1},{a:290,b:365,k:'door',hinge:'b',sw:1}]);   // washroom doors: to the hall, and through to the laundry closet
   wall(2,380-TI*50,205,580,205,TI);
   wall(2,380,0,380,225-TI*50,TI,[{a:105,b:185,k:'door',fold:1,hinge:'b',sw:-1,mat:lam(0xf2f1ee,{roughness:0.35})}]);   // bi-fold bath door, folding into the bath
   wall(2,245,225,245,460,TI,[{a:285,b:365,k:'door',hinge:'a',sw:1}]);
@@ -458,7 +458,7 @@ return [
   ['outdoor','outdoorSet',0,-130,610,'E'],['bbq','bbqGrill',0,-50,690,'E'],
   /* 1F genkan, mirror room, garage */
   ['shoeRack','shoeCabinet',0,38,764.5,'N',function(){ return Catalog.shoeCabinet(0.62,1.9); }],['mat','doormat',0,200,755,'N',function(){ return Catalog.doormat(0.6,1.0); }],['umbrella','umbrellaStand',0,257,774,'N'],['keys','keyRack',0,265.5,725,'W',null,{off:true}],['shoesW','shoesHer',0,180,734,'W'],['shoesM','shoesHim',0,208,734,'W'],
-  ['artHall1','artLand',0,265.5,505,'W'],['plantH','plant',0,150,330,'W'],
+  ['artHall1','artLand',0,265.5,505,'W'],['plantH','plant',0,248,385,'W'],
   ['car','car',0,424,565,'S'],
   /* 3F bedroom */
   ['bed','bed',2,415,590,'S'],['headboard','headboard',2,415,464.5,'S'],['side','bedside',2,545.5,487,'S',function(){ return Catalog.bedsideTable(true,0.6,0.45,0.55); }],['rugBed','rugBed',2,415,630,'E'],
