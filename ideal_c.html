@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261020i">
+<link rel="stylesheet" href="lib/storeys.css?v=20261020j">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261020i"></script>
-<script src="lib/furniture.js?v=20261020i"></script>
-<script src="lib/catalog.js?v=20261020i"></script>
-<script src="lib/look.js?v=20261020i"></script>
-<script src="lib/houses.js?v=20261020i"></script>
-<script src="lib/perf.js?v=20261020i"></script>
-<script src="lib/finish.js?v=20261020i"></script>
-<script src="lib/storeys.js?v=20261020i"></script>
+<script src="lib/people.js?v=20261020j"></script>
+<script src="lib/furniture.js?v=20261020j"></script>
+<script src="lib/catalog.js?v=20261020j"></script>
+<script src="lib/look.js?v=20261020j"></script>
+<script src="lib/houses.js?v=20261020j"></script>
+<script src="lib/perf.js?v=20261020j"></script>
+<script src="lib/finish.js?v=20261020j"></script>
+<script src="lib/storeys.js?v=20261020j"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -159,7 +159,7 @@ notes:[
   [1,575,440,'冷氣（客廳）','壁掛式'],
   [2,250,780,'冷氣（主臥）','壁掛式，旁邊牆上掛遙控器'],[1,250,120,'冷氣（書房）','壁掛式，旁邊牆上掛遙控器'],[0,305,250,'冷氣（鏡子房）','壁掛式，旁邊牆上掛遙控器'],
   [0,155,180,'火災警報器','天花板'],[0,192,560,'火災警報器','天花板'],[1,350,600,'火災警報器','天花板'],[1,470,250,'火災警報器','天花板'],[1,57,280,'火災警報器','天花板'],[2,412,590,'火災警報器','天花板'],[2,440,300,'火災警報器','天花板'],[2,180,480,'火災警報器','天花板'],[1,412,110,'火災警報器','天花板'],
-  [1,160,34,'洗手台（2F）','只有洗手盆'],[0,37,764,'玄關系統櫃','做到天花板：底部懸空放每天穿的鞋（下方 LED）、下段鞋櫃有通風溝槽、中段開放檯面放鑰匙（LED）、上段門片是鏡子；層板孔每 3.2 cm 一格可調高度，右下留給靴子'],[0,92,756,'穿鞋椅','和鞋櫃一體：座面下有放拖鞋的抽屜，旁邊有起身扶手，上方吊櫃附 LED'],[0,73,808,'固定式傘架','玄關門外，不鏽鋼，鎖在外牆和地面上不怕風吹；直立傘 6 格＋折疊傘專用格（附掛勾），底部接水盤'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
+  [1,213,70,'洗手台（2F）','只有洗手盆，靠東牆'],[0,37,764,'玄關系統櫃','做到天花板：底部懸空放每天穿的鞋（下方 LED）、下段鞋櫃有通風溝槽、中段開放檯面放鑰匙（LED）、上段門片是鏡子；層板孔每 3.2 cm 一格可調高度，右下留給靴子'],[0,92,756,'穿鞋椅','和鞋櫃一體：座面下有放拖鞋的抽屜，旁邊有起身扶手，上方吊櫃附 LED'],[0,73,808,'固定式傘架','玄關門外，不鏽鋼，鎖在外牆和地面上不怕風吹；直立傘 6 格＋折疊傘專用格（附掛勾），底部接水盤'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
   [0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
   [0,155,30,'壁掛喇叭','鏡子房兩側'],
   [0,580,345,'Tesla 充電樁','車庫牆上'],
@@ -238,10 +238,10 @@ build:function(E){
   wall(1,0,850,580,850,TE,[{a:240,b:560,k:'slide2',mat:M.glass,head:2.15,screen:1}]);
   /* C: 2F north: shower room and toilet off a small washroom on the stair side, the study over the kitchen */
   wall(1,0,120,115,120,TI);
-  wall(1,115,0,115,120,TI,[{a:58,b:116,k:'slide',mat:M.frost}]);   // shower door south of the basin, sliding so it never meets the vanity
+  wall(1,115,0,115,120,TI,[{a:15,b:95,k:'slide',mat:M.frost}]);   // shower door opposite the vanity on the east wall
   wall(1,115,120,115,225-TI*50,TI,[{a:138,b:208,k:'door',hinge:'b',sw:1}]);
   wall(1,245,0,245,225-TI*50,TI);
-  wall(1,0,225,380+TI*50,225,TI,[{a:150,b:225,k:'slide',hinge:'a',face:1,outset:1},{a:255,b:330,k:'door',hinge:'b',sw:-1}]);
+  wall(1,0,225,380+TI*50,225,TI,[{a:150,b:225,k:'slide',hinge:'a',face:1,outset:1},{a:250,b:330,k:'slide',hinge:'b',face:-1}]);   // study door slides inside the study, clear of the pantry
   wall(1,380-TI*50,205,580,205,TI); wall(1,380,205,380,225,TI);
   wall(1,115,345,115,670,TI);
   slab(1,0,0,580,345); slab(1,115,345,580,645); slab(1,0,645,580,850);
@@ -467,7 +467,7 @@ return [
   ['mirrorW','fullMirror',2,238.5,740,'W'],
   ['artHall','artSmall',2,240.5,450,'W'],
   /* 2F study */
-  ['duo','duoDesk',1,480,165.5,'N'],['printer','printerCart',1,320,40,'S'],['shelf3','bookshelf',1,265.5,90,'E'],['rugS','rugRoundSun',1,430,80,'E'],['plant3','plantS',1,555,25,'E'],
+  ['duo','duoDesk',1,440,41.5,'S'],['printer','printerCart',1,545,175,'W'],['shelf3','bookshelf',1,265.5,90,'E'],['rugS','rugRoundSun',1,420,135,'E'],['plant3','plantS',1,555,25,'E'],
   ['washer','washer',2,540,243.5,'S',function(){ return Catalog.washer(); }]
 ];
 },
@@ -571,8 +571,8 @@ fixtures:function(E){
   fixture(2,Catalog.laundryBasket(1.07),WX(2,540),WZ(2,239),0);   // laundry basket with mesh bags on top of the washer-dryer
   fixture(2,Catalog.vanity(1.0,true),WX(2,261),WZ(2,34),3);
   (function(){ const P=Catalog.soapDispenser(0.85); fixture(2,P,WX(2,300),WZ(2,19),3); P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); }); })();
-  fixture(1,Catalog.vanity(),WX(1,160),WZ(1,34),3);                                              // 2F washroom: basin only
-  (function(){ const P=Catalog.soapDispenser(0.85); fixture(1,P,WX(1,132),WZ(1,54),3); P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); }); })();
+  fixture(1,Catalog.vanity(),WX(1,213),WZ(1,70),2);                                              // 2F washroom: basin on the east wall, facing the shower and toilet doors
+  (function(){ const P=Catalog.soapDispenser(0.85); fixture(1,P,WX(1,193),WZ(1,42),2); P.anims.forEach(function(f){ furnAnims.push({live:function(){ return true; },f:f}); }); })();
   fixture(1,Catalog.bathWallSet(),WX(1,0)+TE/2,WZ(1,60),1); fixture(1,Catalog.bathStool(),WX(1,45),WZ(1,80),0);   // 2F shower room
 })();
 fixture(2,Catalog.toilet(),WX(2,43.5),WZ(2,177.5),0);
@@ -916,7 +916,7 @@ function applyDaily(){
   const sid='sofa';
   workerG.visible=E.dailyOn&&usable('duo'); viewerG.visible=E.dailyOn&&usable(sid);
   if(E.dailyOn){
-    const w=at('duo',1,525,110.5); workerM.position.set(w[0],0.52,w[1]); workerM.rotation.y=w[2];
+    const w=at('duo',1,395,96.5); workerM.position.set(w[0],0.52,w[1]); workerM.rotation.y=w[2];
     const v=at(sid,1,272,660); viewerF.position.set(v[0],0.5,v[1]); viewerF.rotation.y=v[2];
     toast('日常模式：他在 2F 書房工作，她在 2F 沙發看電視');
   }
