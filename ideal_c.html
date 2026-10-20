@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261020y">
+<link rel="stylesheet" href="lib/storeys.css?v=20261020z">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261020y"></script>
-<script src="lib/furniture.js?v=20261020y"></script>
-<script src="lib/catalog.js?v=20261020y"></script>
-<script src="lib/look.js?v=20261020y"></script>
-<script src="lib/houses.js?v=20261020y"></script>
-<script src="lib/perf.js?v=20261020y"></script>
-<script src="lib/finish.js?v=20261020y"></script>
-<script src="lib/storeys.js?v=20261020y"></script>
+<script src="lib/people.js?v=20261020z"></script>
+<script src="lib/furniture.js?v=20261020z"></script>
+<script src="lib/catalog.js?v=20261020z"></script>
+<script src="lib/look.js?v=20261020z"></script>
+<script src="lib/houses.js?v=20261020z"></script>
+<script src="lib/perf.js?v=20261020z"></script>
+<script src="lib/finish.js?v=20261020z"></script>
+<script src="lib/storeys.js?v=20261020z"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -159,7 +159,7 @@ notes:[
   [1,575,440,'冷氣（客廳）','壁掛式'],
   [2,250,780,'冷氣（主臥）','壁掛式，旁邊牆上掛遙控器'],[1,250,120,'冷氣（書房）','壁掛式，旁邊牆上掛遙控器'],[0,305,250,'冷氣（鏡子房）','壁掛式，旁邊牆上掛遙控器'],
   [0,155,180,'火災警報器','天花板'],[0,192,560,'火災警報器','天花板'],[1,350,600,'火災警報器','天花板'],[1,470,330,'火災警報器','天花板'],[1,57,280,'火災警報器','天花板'],[2,412,590,'火災警報器','天花板'],[2,440,300,'火災警報器','天花板'],[2,180,480,'火災警報器','天花板'],[1,412,110,'火災警報器','天花板'],
-  [1,213,70,'洗手台（2F）','只有洗手盆，靠東牆'],[0,37,764,'玄關系統櫃','寬 78 cm，懸空底座（下方 LED）；下櫃和上櫃中間是 47 cm 高的開放置物檯（橡木檯面、LED），放鑰匙和小盆栽；上下櫃都能打開，按壓式門片、細橡木邊，上櫃門片是鏡子；層板孔每 3.2 cm 一格可調高度，下櫃右側留給靴子'],[0,242,756,'穿鞋椅','玄關門東側，下方是延伸出來的木地板，從室內就能坐上去、腳放土間穿鞋；座面離木地板 30 cm、離土間 45 cm（一般椅子高度）；下方放每天穿的鞋，旁邊牆上兩個掛勾'],[0,65,808,'固定式傘架','玄關門外，不鏽鋼，鎖在外牆和地面上不怕風吹；奶油色鐵管架，鎖在外牆上不怕風吹；上方 12 格每把傘一格：左邊 6 格長傘直接立在地磚上，右邊 6 格折疊傘放在腰高的接水盤上，不用彎腰拿'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
+  [1,213,70,'洗手台（2F）','只有洗手盆，靠東牆'],[0,37,764,'玄關系統櫃','寬 78 cm，懸空底座（下方 LED）；下櫃和上櫃中間是 47 cm 高的開放置物檯（橡木檯面、LED），放鑰匙和小盆栽；上下櫃都能打開，按壓式門片、細橡木邊，上櫃門片是鏡子；層板孔每 3.2 cm 一格可調高度，下櫃右側留給靴子；靠土間的側面另有一組淺櫃（上下兩門、中段封板），放鞋油、拖鞋和備用鞋盒'],[0,242,756,'穿鞋椅','玄關門東側，下方是延伸出來的木地板，從室內就能坐上去、腳放土間穿鞋；座面離木地板 30 cm、離土間 45 cm（一般椅子高度）；下方放每天穿的鞋，旁邊牆上兩個掛勾'],[0,65,808,'固定式傘架','玄關門外，不鏽鋼，鎖在外牆和地面上不怕風吹；奶油色鐵管架，鎖在外牆上不怕風吹；上方 12 格每把傘一格：左邊 6 格長傘直接立在地磚上，右邊 6 格折疊傘放在腰高的接水盤上，不用彎腰拿'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
   [2,410,880,'出窗（腰掛け出窓）','主臥南面，寬 2.2 m、往外凸 55 cm；座面 42 cm 坐得下兩個人，附坐墊和抱枕；下方左右抽屜放睡衣和保養品，中間是開放書櫃'],[0,20,365,'擦手巾','每個洗手台旁和廚房水槽下的櫃門都有毛巾桿，掛著擦手巾'],[0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
   [0,155,30,'壁掛喇叭','鏡子房兩側'],
   [0,580,345,'Tesla 充電樁','車庫牆上'],
@@ -733,6 +733,20 @@ fixture(0,Catalog.wallFoldTable(1.0),WX(0,270)-TI/2,WZ(0,640),2);
     furnThings.push({pt:pt,l:0,part:S.parts,on:function(){ return true; },label:function(){ return tg?off:on; },act:function(){ tg=tg?0:1; last=null; }});
     furnAnims.push({live:function(){ return cur!==tg; },f:function(t2){ if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*2?tg:cur+Math.sign(tg-cur)*dt*2; S.leaves.forEach(function(q){ q.pv.rotation.y=q.sg*cur*1.6; }); E.renderer.shadowMap.needsUpdate=true; return true; }});
     return function(){ return cur; }; };
+  /* a shallow side unit facing the doma, same lines: lower and upper cupboards with a plain panel between (no niche) */
+  (function(){ const sx=xa, sx1=xa+0.18, S={leaves:[],parts:[]};
+    const sbox=function(y0,y1){ bx(LG[0],sx,sx1,zf,zf+t,y0,y1,W); bx(LG[0],sx,sx1,z1-t,z1,y0,y1,W); bx(LG[0],sx,sx1,zf,z1,y0,y0+t,W); bx(LG[0],sx,sx1,zf,z1,y1-t,y1,W);
+      [y0+(y1-y0)*0.36,y0+(y1-y0)*0.68].forEach(function(y){ bx(LG[0],sx,sx1-0.02,zf+t,z1-t,y,y+t,W,oc); }); };
+    sbox(FLOAT,LO); sbox(HI,top); bx(LG[0],sx,sx1,zf,z1,LO,HI,W);
+    bx(LG[0],sx+0.03,sx1-0.03,zf+0.03,z1-0.03,FLOAT-0.012,FLOAT-0.006,glow,oc);
+    [[FLOAT+t,0x2a2d31],[FLOAT+(LO-FLOAT)*0.36+t,0xb9a184],[HI+t,0xd9cfc0]].forEach(function(q){ bx(LG[0],sx+0.02,sx1-0.04,zf+0.05,z1-0.05,q[0],q[0]+0.1,lam(q[1],{roughness:0.7}),oc); });   // shoe care kit, slippers, spare boxes
+    [[FLOAT,LO],[HI,top]].forEach(function(r){ const pv=new THREE.Group(); pv.userData.keep=true; pv.position.set(sx1,0,z1); LG[0].add(pv); const w=z1-zf-0.003;
+      const m=new THREE.Mesh(new THREE.BoxGeometry(t,r[1]-r[0]-0.006,w),W); m.position.set(t/2,(r[0]+r[1])/2,-w/2); m.castShadow=true; pv.add(m); S.parts.push(m);
+      const e=new THREE.Mesh(new THREE.BoxGeometry(t+0.001,r[1]-r[0]-0.006,0.006),oakE); e.position.set(t/2,(r[0]+r[1])/2,-w+0.003); pv.add(e); S.leaves.push(pv); });
+    addCol(0,sx,sx1+t,zf,z1,0,top,'w');
+    let cur=0, tg=0, last=null;
+    furnThings.push({pt:[sx1+0.5,(zf+z1)/2],l:0,part:S.parts,on:function(){ return true; },label:function(){ return tg?'關上側邊收納':'打開側邊收納'; },act:function(){ tg=tg?0:1; last=null; }});
+    furnAnims.push({live:function(){ return cur!==tg; },f:function(t2){ if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*2?tg:cur+Math.sign(tg-cur)*dt*2; S.leaves.forEach(function(pv){ pv.rotation.y=cur*1.6; }); E.renderer.shadowMap.needsUpdate=true; return true; }}); })();
   const loOpen=opener('lo',[xm,zf-0.5],'打開下層鞋櫃（層板可調）','關上下層鞋櫃');
   opener('hi',[xm,zf-0.55],'打開上層鞋櫃','關上上層鞋櫃');
   furnThings.push({pt:[xm+0.05,zf-0.4],l:0,on:function(){ return loOpen()>0.9; },label:function(){ return shT?'層板調低（多放兩雙鞋）':'層板調高（放靴子）'; },act:function(){ shT=shT?0:1; shP=0; shLast=null; }});
