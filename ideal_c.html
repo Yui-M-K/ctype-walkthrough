@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261021f">
+<link rel="stylesheet" href="lib/storeys.css?v=20261021g">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261021f"></script>
-<script src="lib/furniture.js?v=20261021f"></script>
-<script src="lib/catalog.js?v=20261021f"></script>
-<script src="lib/look.js?v=20261021f"></script>
-<script src="lib/houses.js?v=20261021f"></script>
-<script src="lib/perf.js?v=20261021f"></script>
-<script src="lib/finish.js?v=20261021f"></script>
-<script src="lib/storeys.js?v=20261021f"></script>
+<script src="lib/people.js?v=20261021g"></script>
+<script src="lib/furniture.js?v=20261021g"></script>
+<script src="lib/catalog.js?v=20261021g"></script>
+<script src="lib/look.js?v=20261021g"></script>
+<script src="lib/houses.js?v=20261021g"></script>
+<script src="lib/perf.js?v=20261021g"></script>
+<script src="lib/finish.js?v=20261021g"></script>
+<script src="lib/storeys.js?v=20261021g"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -149,7 +149,7 @@ notes:[
   [1,361,417.5,'廚餘處理機','裝在水槽下，排水口是橡膠防濺蓋；台面有氣壓開關，打開水槽下櫃可看到本體'],
   [1,433.5,385,'嵌入式洗碗機','抽屜式深型 45 cm，放得下盤子、碗和杯子'],
   [1,523.5,412.5,'IH 爐＋抽油煙機','三口 IH，與水槽在同一座半島'],
-  [1,346,258,'食品收納櫃（系統櫃）','白色，和家電櫃、冰箱、半島同一種白；踢腳 10 cm、檯面 85 cm、吊櫃下緣 196 cm 三條線拉齊；中段是開放檯面（附 LED），上方櫃的層板可調；最下方是掃地機器人的基地'],[1,500,240,'上方吊櫃（家電櫃・冰箱・食品櫃）','做到天花板不積灰，可打開；冰箱上方留散熱空間'],
+  [1,346,258,'食品收納櫃（系統櫃）','白色，和家電櫃、冰箱、半島同一種白；踢腳 10 cm、檯面 85 cm、吊櫃下緣 196 cm 三條線拉齊；中段是開放檯面（附 LED），上方櫃的層板可調；下櫃是掃地機器人的家：裡面放自動集塵的大型基地，機器人從門下方 13 cm 的開口自己進出'],[1,500,240,'上方吊櫃（家電櫃・冰箱・食品櫃）','做到天花板不積灰，可打開；冰箱上方留散熱空間'],
   [2,470,40,'浴缸','1.6 m，洗澡時可看牆上電視'],
   [2,500,120,'浴室乾燥機','天花板暖風乾燥，下雨天可在浴室曬衣'],
   [2,490,160,'浴室曬衣桿','搭配乾燥機使用'],
@@ -484,7 +484,7 @@ return [
   ['catBed','catBed',1,85,843.5,'N',function(){ return Catalog.catBed(2.05); }],['catC','catStep',1,40,843.5,'N',function(){ return Catalog.catStep(2.1); }],
   ['cat','catBubu',1,160,740,'E'],['catBowls','catFeedStation',1,558,468,'W'],
   /* 2F dining (folding six-seat table on the north wall); the litter box sits in the 1F hall */
-  ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,150,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,40,809,'E'],['robot','robotVacuum',1,346,240,'S'],
+  ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,150,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,40,809,'E'],['robot','robotVacuum',1,346,262,'S'],
   /* 2F kitchen: appliance cabinet (dish cupboard in its base) and fridge against the bath wall, bins beside the peninsula */
   ['fridge','fridgeL',1,538.5,244.5,'S',function(){ const p=Catalog.make('fridgeL'); p.doorMax=1.3; return p; }],['bins','binCabinet',1,300,412.5,'W',function(){ return Catalog.binCabinet(true); }],['appl','applianceCabinet',1,437.25,244.5,'S',function(){ return Catalog.applianceCabinet({dishes:true,full:true,depth:0.7,width:1.325}); }],
   /* 2F balcony */
@@ -532,13 +532,14 @@ fixtures:function(E){
     const carcass=function(a,c,z0,y0,y1){ bx(LG[1],a,c,z0,z0+t,y0,y1,inner,oc); bx(LG[1],a,a+t,z0,zf,y0,y1,W); bx(LG[1],c-t,c,z0,zf,y0,y1,W); bx(LG[1],a,c,z0,zf,y0,y0+t,W); bx(LG[1],a,c,z0,zf,y1-t,y1,W); };
     const pins=function(a,c,z0,y0,y1){ [a+t,c-t-0.003].forEach(function(x){ [z0+0.06,zf-0.05].forEach(function(z){ for(let y=y0+0.06;y<y1-0.05;y+=0.032) bx(LG[1],x,x+0.003,z-0.003,z+0.003,y-0.003,y+0.003,seam,oc); }); }); };   // shelf-pin holes every 32 mm
     /* pantry: robot-vacuum bay in the kick line, lower cupboard, open counter, a cupboard above it, then the band */
-    bx(LG[1],x0,x0+t,zb,zf,b,b+BAYH,M.dark); bx(LG[1],x1-t,x1,zb,zf,b,b+BAYH,M.dark); bx(LG[1],x0+t,x1-t,zb,zb+t,b,b+BAYH,M.dark,oc); bx(LG[1],x0+t,x1-t,zb,zf-0.04,b,b+0.002,M.dark,oc);   // black kick recess, same as the appliance cabinet's
-    carcass(x0,x1,zb,b+BAYH,b+CT-0.02); bx(LG[1],x0,x1,zb,zf+0.005,b+CT-0.02,b+CT,W);
+    bx(LG[1],x0,x0+t,zb,zf,b,b+CT-0.02,W); bx(LG[1],x1-t,x1,zb,zf,b,b+CT-0.02,W); bx(LG[1],x0+t,x1-t,zb,zb+t,b,b+CT-0.02,inner,oc); bx(LG[1],x0,x1,zb,zf,b+CT-0.02-t,b+CT-0.02,W);   // robot station cupboard: no floor, the robot drives in under the door
+    bx(LG[1],x0+t,x1-t,zf-0.03,zf,b+0.1,b+0.13,W); bx(LG[1],x0+0.05,x1-0.05,zb+0.03,zb+0.39,b,b+0.5,lam(0xf4f4f2,{roughness:0.35})); bx(LG[1],x0+0.12,x1-0.12,zb+0.39,zb+0.392,b+0.38,b+0.44,lam(0x1d1f22,{roughness:0.3}),oc);   // rail over the robot's way in; a self-emptying base station inside
+    bx(LG[1],x0,x1,zb,zf+0.005,b+CT-0.02,b+CT,W);
     bx(LG[1],x0,x0+t,zb,zf,b+CT,b+NI,W); bx(LG[1],x1-t,x1,zb,zf,b+CT,b+NI,W); bx(LG[1],x0+t,x1-t,zb,zb+t,b+CT,b+NI,inner,oc);
     carcass(x0,x1,zb,b+NI,b+BAND); carcass(x0,x1,zb,b+BAND,top);
-    pins(x0,x1,zb,b+BAYH,b+CT-0.02); pins(x0,x1,zb,b+NI,b+BAND); pins(x0,x1,zb,b+BAND,top);
+    pins(x0,x1,zb,b+0.55,b+CT-0.02); pins(x0,x1,zb,b+NI,b+BAND); pins(x0,x1,zb,b+BAND,top);
     bx(LG[1],x0+0.02,x1-0.02,zf-0.03,zf-0.01,b+NI-0.008,b+NI-0.002,glow,oc);                                          // LED over the counter
-    bx(LG[1],x0+t,x1-t,zb+t,zf-0.03,b+0.47,b+0.47+t,inner,oc); bx(LG[1],x0+0.05,x1-0.05,zb+0.05,zb+0.3,b+0.47+t,b+0.47+t+0.16,lam(0xd8453c,{roughness:0.7}),oc);   // in line with the appliance cabinet's shelf
+    bx(LG[1],x0+t,x1-t,zb+t,zf-0.03,b+0.6,b+0.6+t,inner,oc); bx(LG[1],x0+0.05,x1-0.05,zb+0.05,zb+0.3,b+0.6+t,b+0.6+t+0.1,lam(0xd8453c,{roughness:0.7}),oc);   // in line with the appliance cabinet's shelf
     const jar=function(x,z,y,h,c){ const m=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.045,h,16),lam(c,{roughness:0.3})); m.position.set(x,y+h/2,z); LG[1].add(m); };
     jar(x0+0.12,zb+0.2,b+CT,0.2,0xe9e4da); jar(x0+0.25,zb+0.2,b+CT,0.16,0xc9b79c); jar(x0+0.37,zb+0.2,b+CT,0.12,0x9fb0bf);   // canisters on the counter
     const SG=new THREE.Group(); SG.userData.keep=true; LG[1].add(SG);                                               // the adjustable shelf in the cupboard over the counter, with cereal boxes on it
@@ -558,7 +559,7 @@ fixtures:function(E){
       const m=new THREE.Mesh(new THREE.BoxGeometry(lw,y1-y0-0.006,t),W); m.position.set(sg*lw/2,(y0+y1)/2,t/2); m.castShadow=true; pv.add(m);
       const py=pullLow?y0+0.12:(y0+y1)/2; const h=new THREE.Mesh(new THREE.BoxGeometry(0.012,0.14,0.012),M.steel); h.position.set(sg*(lw-0.05),Math.min(py,y1-0.1),t+0.012); pv.add(h);
       (groups[key]=groups[key]||[]).push({pv:pv,sg:sg}); (parts[key]=parts[key]||[]).push(m,h); };
-    leaf('pan',x0,1,x1-x0,b+BAYH,b+CT-0.02,false); leaf('pan',x0,1,x1-x0,b+NI,b+BAND,true);
+    leaf('pan',x0,1,x1-x0,b+0.13,b+CT-0.02,false); leaf('pan',x0,1,x1-x0,b+NI,b+BAND,true);
     leaf('band',x0,1,x1-x0,b+BAND,top,true);
     const aw=(ax1-ax0)/2; leaf('band',ax0,1,aw,b+BAND,top,true); leaf('band',ax1,-1,aw,b+BAND,top,true);
     const fw=(fx1-ax1)/2; leaf('band',ax1,1,fw,b+BAND,top,true); leaf('band',fx1,-1,fw,b+BAND,top,true);
