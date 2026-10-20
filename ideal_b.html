@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 二樓浴室版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261020g">
+<link rel="stylesheet" href="lib/storeys.css?v=20261020h">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261020g"></script>
-<script src="lib/furniture.js?v=20261020g"></script>
-<script src="lib/catalog.js?v=20261020g"></script>
-<script src="lib/look.js?v=20261020g"></script>
-<script src="lib/houses.js?v=20261020g"></script>
-<script src="lib/perf.js?v=20261020g"></script>
-<script src="lib/finish.js?v=20261020g"></script>
-<script src="lib/storeys.js?v=20261020g"></script>
+<script src="lib/people.js?v=20261020h"></script>
+<script src="lib/furniture.js?v=20261020h"></script>
+<script src="lib/catalog.js?v=20261020h"></script>
+<script src="lib/look.js?v=20261020h"></script>
+<script src="lib/houses.js?v=20261020h"></script>
+<script src="lib/perf.js?v=20261020h"></script>
+<script src="lib/finish.js?v=20261020h"></script>
+<script src="lib/storeys.js?v=20261020h"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -735,11 +735,6 @@ modes:function(E){
   let sd=5; const rnd=function(){ sd=(sd*16807)%2147483647; return sd/2147483647; };
   /* A. sage accent wall behind the bed */
   (function(){ const zf=WZ(2,460)+TI/2; B(DG[2],WX(2,245)+TI/2,WX(2,580)-TE/2,b[2],b[2]+CH,zf,zf+0.003,M2(0x9aa894,{roughness:0.9})); })();
-  /* cushions against the sofa arms and a knitted throw over one arm; they ride with the sofa */
-  (function(){ const m=mover('sofa'); if(!m) return; const G=new T.Group(); m.piece.group.add(G); parts.push(G);
-    [[0.74,0x8fa58e],[-0.74,0xc8714f],[0.6,0xe7dcc8]].forEach(function(q,i){ const c=new T.Mesh(new T.SphereGeometry(0.22,24,16),fab?fab(q[1]):M2(q[1])); c.scale.set(0.95,0.92,0.3); c.position.set(i===2?0.02:-0.1,0.66,q[0]-(i===2?0.08:0)); c.rotation.set(0,i===2?0.35:0,Math.sign(q[0])*0.12); c.castShadow=true; G.add(c); });
-    const knit=fab?fab(0xd9c2a0):M2(0xd9c2a0); B(G,-0.15,0.3,0.585,0.6,-1.06,-0.86,knit,true); B(G,-0.15,0.3,0.25,0.6,-1.075,-1.06,knit,true);
-    for(let i=0;i<5;i++) B(G,-0.15+i*0.1,-0.15+i*0.1+0.012,0.25,0.601,-1.077,-0.86,M2(0xb79a74),false); })();
   /* B. cat-safe plants: kentia palm in the living corner, olive tree on the balcony and one at the porch */
   const pot=function(g,x,z,y,r,h,col){ const pm=new T.Mesh(new T.CylinderGeometry(r,r*0.82,h,28),M2(col,{roughness:0.6})); pm.position.set(x,y+h/2,z); pm.castShadow=true; g.add(pm); const so=new T.Mesh(new T.CylinderGeometry(r*0.92,r*0.92,0.01,24),M2(0x3b2e24)); so.position.set(x,y+h-0.03,z); g.add(so); return y+h-0.03; };
   const palm=function(g,x,z,y){ const top=pot(g,x,z,y,0.17,0.36,0xe9e4da), fm=lam(0x5f8f45,{roughness:0.6}), sm=M2(0x6b6a3e);
