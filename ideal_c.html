@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261020j">
+<link rel="stylesheet" href="lib/storeys.css?v=20261020k">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261020j"></script>
-<script src="lib/furniture.js?v=20261020j"></script>
-<script src="lib/catalog.js?v=20261020j"></script>
-<script src="lib/look.js?v=20261020j"></script>
-<script src="lib/houses.js?v=20261020j"></script>
-<script src="lib/perf.js?v=20261020j"></script>
-<script src="lib/finish.js?v=20261020j"></script>
-<script src="lib/storeys.js?v=20261020j"></script>
+<script src="lib/people.js?v=20261020k"></script>
+<script src="lib/furniture.js?v=20261020k"></script>
+<script src="lib/catalog.js?v=20261020k"></script>
+<script src="lib/look.js?v=20261020k"></script>
+<script src="lib/houses.js?v=20261020k"></script>
+<script src="lib/perf.js?v=20261020k"></script>
+<script src="lib/finish.js?v=20261020k"></script>
+<script src="lib/storeys.js?v=20261020k"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -202,7 +202,7 @@ build:function(E){
   wall(0,270,850,580,850,TE,[{a:276,b:575,k:'open',head:2.25}]);
   wall(0,580,0,580,850,TE,[{a:300,b:400,sill:1.6,head:2.1}]);
   wall(0,0,300,310,300,TI,[{a:188,b:266,k:'door',hinge:'b',sw:-1}]);
-  wall(0,115,300,115,645,TI,[{a:305,b:395,k:'slide'}]);   // powder room under the stair, entered from the hall
+  wall(0,115,300,115,470,TI,[{a:305,b:395,k:'slide'}]);   // powder room under the stair, entered from the hall; beside the lower flight the wall gives way to a guard
   wall(0,270,300,270,790,TI);
   wall(0,310,0,310,300,TI,[{a:205,b:290,k:'slide',hinge:'a',face:-1}]);   // storage room door; with the mirror room door it falls inside a future lobby (see notes)
   wall(0,310,290,580,290,TI);
@@ -310,7 +310,19 @@ stairExtras:function(E){
   bx(LG[l],xi-TI/2,xi+TI/2,z0,z1,y0,y1,WM.hall,{cast:false});
 });
 handrail(0,TE/2,1,WZ(0,345)+TI/2+0.01); handrail(1,TE/2,1);
-[0,1].forEach(function(l){ handrail(l,WX(0,115)-TI/2,-1,WZ(l,l?360:345)+0.03,WZ(l,l?670:645)-0.03); });
+[0,1].forEach(function(l){ handrail(l,WX(0,115)-TI/2,-1,WZ(l,l?360:345)+0.03,WZ(l,l?670:470)-0.03); });
+(function(){                                   // 1F: the lower flight opens to the hall: a white stringer wall under the pitch, oak slats under a rounded oak cap above it (as on the 3F hall)
+  const FZ=E.flightZ(0), k=(base(1)-base(0))/(FZ.zs-FZ.zn), x=WX(0,115), za=WZ(0,470)+TI/2, zb=FZ.zs, line=function(z){ return base(0)+(FZ.zs-z)*k; };
+  const sh=new THREE.Shape([new THREE.Vector2(za,0),new THREE.Vector2(zb,0),new THREE.Vector2(zb,0.06),new THREE.Vector2(za,line(za)+0.06)]);
+  const pan=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:TI,bevelEnabled:false}),WM.hall); pan.rotation.y=-Math.PI/2; pan.position.x=x+TI/2; pan.castShadow=pan.receiveShadow=true; LG[0].add(pan);
+  const bar=function(a,c,w,h){ const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,a.distanceTo(c)),M.oak); m.position.copy(a).lerp(c,0.5); m.lookAt(c); m.castShadow=true; LG[0].add(m); return m; };
+  const H=0.9, V=function(z,dy){ return new THREE.Vector3(x,line(z)+dy,z); };
+  bar(V(za,0.06),V(zb,0.06),0.06,0.03);                                                            // shoe rail on the stringer
+  for(let z=za+0.05;z<zb-0.03;z+=0.085){ const y0=line(z+0.016)+0.075, y1=line(z+0.016)+H-0.04; bx(LG[0],x-0.014,x+0.014,z,z+0.032,y0,y1,M.oak); }
+  bar(V(za,H-0.026),V(zb,H-0.026),0.1,0.028); bar(V(za,H-0.006),V(zb,H-0.006),0.084,0.012);   // rounded oak cap
+  [za+0.01,zb-0.03].forEach(function(z){ bx(LG[0],x-0.03,x+0.03,z,z+0.04,0,line(z+0.02)+H,M.oak); });   // newel at each end
+  addCol(0,x-0.05,x+0.05,za,zb,0,base(1),'w');
+})();
 (function(){                                   // 3F hall beside the stairwell: waist-high guard (1.1 m) of slim oak slats under a rounded oak cap, open above
   const b=base(2), x=WX(2,115)-0.035, z0=E.flightZ(1).zn, z1=WZ(2,690)-TI/2, H=1.1, glow=new THREE.MeshBasicMaterial({color:0xffe3b8});
   bx(LG[2],x-0.03,x+0.03,z0,z1,b,b+0.06,M.oak);
