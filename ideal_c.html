@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261021m">
+<link rel="stylesheet" href="lib/storeys.css?v=20261021n">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261021m"></script>
-<script src="lib/furniture.js?v=20261021m"></script>
-<script src="lib/catalog.js?v=20261021m"></script>
-<script src="lib/look.js?v=20261021m"></script>
-<script src="lib/houses.js?v=20261021m"></script>
-<script src="lib/perf.js?v=20261021m"></script>
-<script src="lib/finish.js?v=20261021m"></script>
-<script src="lib/storeys.js?v=20261021m"></script>
+<script src="lib/people.js?v=20261021n"></script>
+<script src="lib/furniture.js?v=20261021n"></script>
+<script src="lib/catalog.js?v=20261021n"></script>
+<script src="lib/look.js?v=20261021n"></script>
+<script src="lib/houses.js?v=20261021n"></script>
+<script src="lib/perf.js?v=20261021n"></script>
+<script src="lib/finish.js?v=20261021n"></script>
+<script src="lib/storeys.js?v=20261021n"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -126,7 +126,7 @@ rooms:[
   {l:0,x0:0,y0:700,x1:85,y1:790,n:'玄關',j:'鞋櫃',w:'hall'},{l:0,x0:85,y0:700,x1:115,y1:720,n:'玄關',j:'鞋櫃',w:'hall'},{l:0,x0:85,y0:720,x1:270,y1:790,n:'玄關',j:'土間',w:'hall'},{l:0,x0:0,y0:790,x1:270,y1:850,n:'玄關門廊',j:'ポーチ（直通車庫）',w:'outside'},
   {l:0,x0:310,y0:290,x1:580,y1:850,n:'車庫',j:'Model 3＋充電樁',w:'outside'},{l:0,x0:270,y0:300,x1:310,y1:850,n:'車庫',j:'Model 3＋充電樁',w:'outside'},{l:0,x0:-90,y0:-10,x1:0,y1:310,n:'緣側',j:'縁側',w:'outside'},
   {l:1,x0:0,y0:0,x1:115,y1:120,n:'淋浴間',j:'2 樓・從脫衣間進出',w:'bath'},{l:1,x0:0,y0:120,x1:115,y1:225,n:'廁所',j:'2 樓・附小洗手台',w:'wc'},
-  {l:1,x0:115,y0:0,x1:185,y1:120,n:'脫衣間',j:'淋浴前・摺疊門',w:'utility'},{l:1,x0:115,y0:120,x1:185,y1:225,n:'走道',j:'通往廁所・脫衣間',w:'hall'},{l:1,x0:185,y0:0,x1:580,y1:205,n:'書房',j:'約 5.3 帖・3D 列印機',w:'mist'},{l:1,x0:185,y0:205,x1:380,y1:225,n:'書房',j:'約 5.3 帖・3D 列印機',w:'mist'},
+  {l:1,x0:115,y0:0,x1:215,y1:120,n:'脫衣間',j:'淋浴前・摺疊門',w:'utility'},{l:1,x0:115,y0:120,x1:215,y1:225,n:'走道',j:'通往廁所・脫衣間',w:'hall'},{l:1,x0:215,y0:0,x1:580,y1:205,n:'書房',j:'約 4.8 帖・3D 列印機',w:'mist'},{l:1,x0:215,y0:205,x1:380,y1:225,n:'書房',j:'約 4.8 帖・3D 列印機',w:'mist'},
   {l:1,x0:0,y0:225,x1:115,y1:345,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓',w:'hall'},{l:1,x0:0,y0:345,x1:115,y1:690,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓',w:'hall'},{l:1,x0:0,y0:690,x1:115,y1:850,n:'階梯',j:'2 樓 → 3 樓',w:'hall'},
   {l:1,x0:380,y0:205,x1:580,y1:490,n:'廚房',j:'LDK',w:'oat'},
   {l:1,x0:115,y0:225,x1:380,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},{l:1,x0:380,y0:490,x1:580,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},
@@ -159,7 +159,7 @@ notes:[
   [2,261,34,'洗臉台','1 m 寬，附收納'],[2,430,320,'室內曬衣桿','洗衣更衣間天花板，不能烘的衣物掛這裡'],[2,410,420,'吊衣桿（洗衣更衣間）','上下兩層，烘好的衣服直接掛上去'],
   [1,57,345,'貓用柵欄','裝在 2F 往 1F 的樓梯口，貓咪不下 1F'],
   [1,575,440,'冷氣（客廳）','壁掛式'],
-  [2,250,780,'冷氣（主臥）','壁掛式，旁邊牆上掛遙控器'],[1,190,110,'冷氣（書房）','壁掛式，旁邊牆上掛遙控器'],[0,305,250,'冷氣（鏡子房）','壁掛式，旁邊牆上掛遙控器'],
+  [2,250,780,'冷氣（主臥）','壁掛式，旁邊牆上掛遙控器'],[1,220,110,'冷氣（書房）','壁掛式，旁邊牆上掛遙控器'],[0,305,250,'冷氣（鏡子房）','壁掛式，旁邊牆上掛遙控器'],
   [0,155,180,'火災警報器','天花板'],[0,192,560,'火災警報器','天花板'],[1,350,600,'火災警報器','天花板'],[1,470,330,'火災警報器','天花板'],[1,57,280,'火災警報器','天花板'],[2,412,590,'火災警報器','天花板'],[2,440,300,'火災警報器','天花板'],[2,180,480,'火災警報器','天花板'],[1,412,110,'火災警報器','天花板'],
   [1,50,140,'洗手台（2F 廁所）','廁所裡馬桶旁的懸空橡木檯面，檯面下式小洗手盆'],[1,150,110,'脫衣間（2F）','淋浴間前方，摺疊門'],[0,37,764,'玄關系統櫃','寬 59 cm（加側邊淺櫃共 78 cm，和土間邊切齊），懸空底座（下方 LED）；下櫃和上櫃中間是 47 cm 高的開放置物檯（橡木檯面、LED），放鑰匙和小盆栽；上下櫃都能打開，按壓式門片、細橡木邊，上櫃門片是鏡子；層板孔每 3.2 cm 一格可調高度，下櫃右側留給靴子；靠土間的側面另有一組淺櫃（上下兩門），上下櫃完全分開，放鞋油、拖鞋和備用鞋盒'],[0,242,756,'穿鞋椅','玄關門東側的土間上，深度和土間一樣、前緣對齊台階邊；座面離木地板 45 cm（一般椅子高度）；下方三層開放格放每天穿的鞋，旁邊牆上兩個掛勾'],[0,65,808,'固定式傘架','玄關門外，不鏽鋼，鎖在外牆和地面上不怕風吹；奶油色鐵管架，鎖在外牆上不怕風吹；上方 12 格每把傘一格：左邊 6 格長傘直接立在地磚上，右邊 6 格折疊傘放在腰高的接水盤上，不用彎腰拿'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
   [2,410,880,'出窗（腰掛け出窓）','主臥南面的方形出窗（三面玻璃、四坡屋頂），牆面寬 2.2 m、往外凸 55 cm；座面 42 cm 坐得下兩個人，附坐墊和抱枕；下方左右抽屜放睡衣和保養品，中間是開放書櫃'],[0,20,365,'擦手巾','每個洗手台旁和廚房水槽下的櫃門都有毛巾桿，掛著擦手巾'],[0,115,560,'樓梯下收納','樓梯下方較高的一段：兩扇和牆面齊平、同色的按壓門（凹槽把手），放直立吸塵器、拖把、防災用品和囤貨；最矮的一段直接是牆'],[0,40,320,'一樓洗手台','沿馬桶旁西牆的懸空長橡木檯面：靠門那端是檯面下式洗手盆，中段開放格放衛生紙，兩端抽屜，檯面放盆栽和小托盤'],[0,98,305,'馬桶刷收納（每間廁所）','每間廁所牆裡嵌入的細長收納（門片和牆面齊平），上下兩扇門、中間封板隔開：下格放馬桶刷，上格放清潔濕紙巾和備用衛生紙'],[1,345,410,'水槽下清潔用品架','打開水槽下櫃後可以把兩層網籃拉出來，放洗碗精補充瓶、酒精噴霧和海綿'],[0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
@@ -240,17 +240,17 @@ build:function(E){
   wall(1,580,0,580,850,TE,[{a:60,b:170,sill:0.9,head:2.0}]);
   wall(1,0,850,580,850,TE,[{a:240,b:560,k:'slide2',mat:M.glass,head:2.15,screen:1}]);
   /* C: 2F north: shower room and toilet off a small washroom on the stair side, the study over the kitchen */
-  wall(1,0,120,115,120,TI); wall(1,115,120,185,120,TI,[{a:118,b:182,k:'door',fold:1,hinge:'a',sw:-1,mat:lam(0xf2f1ee,{roughness:0.35})}]);   // changing room: bi-fold door
+  wall(1,0,120,115,120,TI); wall(1,115,120,215,120,TI,[{a:125,b:205,k:'door',fold:1,hinge:'a',sw:-1,mat:lam(0xf2f1ee,{roughness:0.35})}]);   // changing room: bi-fold door
   wall(1,115,0,115,120,TI,[{a:15,b:95,k:'slide',mat:M.frost}]);   // shower door from the changing room
   wall(1,115,120,115,225-TI*50,TI,[{a:140,b:210,k:'door',hinge:'b',sw:-1}]);   // toilet door opens out into the passage
-  wall(1,185,0,185,225-TI*50,TI);
-  wall(1,0,225,380+TI*50,225,TI,[{a:80,b:108,k:'open',sill:0.12,head:1.32},{a:119,b:181,k:'slide',hinge:'a',face:1,outset:1},{a:250,b:320,k:'slide',hinge:'b',face:-1}]);   // study door slides inside the study, clear of the pantry
+  wall(1,215,0,215,225-TI*50,TI);
+  wall(1,0,225,380+TI*50,225,TI,[{a:80,b:108,k:'open',sill:0.12,head:1.32},{a:125,b:205,k:'slide',hinge:'a',face:1,outset:1},{a:228,b:308,k:'slide',hinge:'b',face:-1}]);   // study door slides inside the study, clear of the pantry
   wall(1,380-TI*50,205,580,205,TI); wall(1,380,205,380,225,TI);
   wall(1,115,345,115,670,TI);
   slab(1,0,0,580,345); slab(1,115,345,580,645); slab(1,0,645,580,850);
-  flr(1,0,225,115,345,FL.wood); flr(1,0,645,115,850,FL.wood); flr(1,0,0,115,120,FL.bath); flr(1,0,120,115,225,FL.wc); flr(1,115,0,185,120,FL.wc); flr(1,115,120,185,225,FL.wood); flr(1,185,0,580,205,FL.wood); flr(1,185,205,380,225,FL.wood);
+  flr(1,0,225,115,345,FL.wood); flr(1,0,645,115,850,FL.wood); flr(1,0,0,115,120,FL.bath); flr(1,0,120,115,225,FL.wc); flr(1,115,0,215,120,FL.wc); flr(1,115,120,215,225,FL.wood); flr(1,215,0,580,205,FL.wood); flr(1,215,205,380,225,FL.wood);
   ldkFloors.push(flr(1,115,225,380,850,FL.wood),flr(1,380,205,580,850,FL.wood));
-  ceilingOf(1,0,225,115,360); ceilingOf(1,0,0,115,120); ceilingOf(1,0,120,115,225); ceilingOf(1,115,0,185,120); ceilingOf(1,115,120,185,225); ceilingOf(1,185,0,580,205); ceilingOf(1,185,205,380,225); ceilingOf(1,115,225,380,850); ceilingOf(1,380,205,580,850); ceilingOf(1,0,690,115,850);
+  ceilingOf(1,0,225,115,360); ceilingOf(1,0,0,115,120); ceilingOf(1,0,120,115,225); ceilingOf(1,115,0,215,120); ceilingOf(1,115,120,215,225); ceilingOf(1,215,0,580,205); ceilingOf(1,215,205,380,225); ceilingOf(1,115,225,380,850); ceilingOf(1,380,205,580,850); ceilingOf(1,0,690,115,850);
   /* balcony: 0.9 m deep across the whole front (also the canopy over the genkan and garage), 1.1 m glass rail */
   const bb=base(1), bx0=WX(1,0), bx1=WX(1,580), bz0=WZ(1,850), bz1=WZ(1,940);
   bx(LG[1],bx0-0.07,bx1+0.07,bz0,bz1+0.07,bb-SLAB,bb,M.slab); flr(1,0,855,580,940,FL.balc);
@@ -504,7 +504,7 @@ return [
   ['mirrorW','fullMirror',2,238.5,740,'W'],
   ['artHall','artSmall',2,240.5,450,'W'],
   /* 2F study */
-  ['duo','duoDesk',1,381.5,41.5,'S',function(){ const P=Catalog.liftDesk(3.84), fr=E.lam(0x2a2d31,{roughness:0.4}), lift=[], legs=[];   // wall-to-wall desk: one 3.24 m top on three synchronised lifting legs
+  ['duo','duoDesk',1,396.5,41.5,'S',function(){ const P=Catalog.liftDesk(3.54), fr=E.lam(0x2a2d31,{roughness:0.4}), lift=[], legs=[];   // wall-to-wall desk: one 3.24 m top on three synchronised lifting legs
     P.box(-0.04,0.04,-0.05,0.05,0.05,0.72,fr); P.box(-0.03,0.03,-0.33,0.33,0,0.04,fr);
     P.group.children.forEach(function(m){ if(!m.isMesh) return; const bb=new THREE.Box3().setFromObject(m); if(bb.min.y>0.6) lift.push([m,m.position.y]); else if(bb.max.y>0.6&&bb.min.y<0.1) legs.push([m,m.position.y,bb.max.y-bb.min.y]); });
     P.attach(Catalog.officeChair(),-0.45,0.55,0); P.attach(Catalog.officeChair(),0.45,0.55,0);
@@ -655,8 +655,8 @@ fixtures:function(E){
   fixture(2,Catalog.bathStool(),WX(2,455),WZ(2,120),2); fixture(2,Catalog.washBowl(),WX(2,555),WZ(2,108),0);   // stool facing the mirror, bowl by the wall
   fixture(2,Catalog.bathDryer(CH),WX(2,500),WZ(2,120),0); fixture(2,Catalog.laundryPole(CH,1.1),WX(2,490),WZ(2,160),1);   // ceiling dryer over the bath, the drying pole along the south side
   [[0,155,180],[0,192,560],[1,350,600],[1,470,330],[1,57,280],[2,412,590],[2,440,300],[2,180,480],[1,412,110]].forEach(function(q){ fixture(q[0],Catalog.smokeAlarm(CH),WX(q[0],q[1]),WZ(q[0],q[2]),0); });
-  fixture(1,Catalog.wallAC(2.22),WX(1,580)-TE/2,WZ(1,440),2); fixture(2,Catalog.wallAC(2.4),WX(2,245)+TI/2,WZ(2,780),0); fixture(1,Catalog.wallAC(2.22),WX(1,185)+TI/2,WZ(1,110),0); fixture(0,Catalog.wallAC(2.4),WX(0,310)-TI/2,WZ(0,250),2);   // living, bedroom, study (2F), mirror room
-  fixture(2,Catalog.acRemote(),WX(2,245)+TI/2,WZ(2,700),0); fixture(1,Catalog.acRemote(),WX(1,185)+TI/2,WZ(1,190),0); fixture(0,Catalog.acRemote(),WX(0,310)-TI/2,WZ(0,170),2);   // AC remotes beside each unit's door-side wall
+  fixture(1,Catalog.wallAC(2.22),WX(1,580)-TE/2,WZ(1,440),2); fixture(2,Catalog.wallAC(2.4),WX(2,245)+TI/2,WZ(2,780),0); fixture(1,Catalog.wallAC(2.22),WX(1,215)+TI/2,WZ(1,110),0); fixture(0,Catalog.wallAC(2.4),WX(0,310)-TI/2,WZ(0,250),2);   // living, bedroom, study (2F), mirror room
+  fixture(2,Catalog.acRemote(),WX(2,245)+TI/2,WZ(2,700),0); fixture(1,Catalog.acRemote(),WX(1,215)+TI/2,WZ(1,190),0); fixture(0,Catalog.acRemote(),WX(0,310)-TI/2,WZ(0,170),2);   // AC remotes beside each unit's door-side wall
   (function(){ const zs=WZ(2,460)-TI/2, xw=WX(2,245)+TI/2, xe=WX(2,580)-TE/2;   // laundry closet: two-tier rail along the south wall, drying pole over the walkway
     fixture(2,Catalog.clothesRack(xe-xw-0.02,true,true),(xw+xe)/2,zs-0.3,0); fixture(2,Catalog.laundryPole(CH,1.8),WX(2,430),WZ(2,320),1); })();
   fixture(2,Catalog.laundryBasket(1.07),WX(2,540),WZ(2,239),0);   // laundry basket with mesh bags on top of the washer-dryer
@@ -775,7 +775,7 @@ fixture(2,Catalog.toilet(),WX(2,43.5),WZ(2,177.5),0);
     [[0.038,0.34],[0.062,0.28]].forEach(function(q){ const m=new THREE.Mesh(new THREE.BoxGeometry(tw,q[1],0.006),cl); m.position.set(0,-q[1]/2+0.008,q[0]); m.castShadow=true; G.add(m); });   // folded over the bar: back layer longer than the front
     const top=new THREE.Mesh(new THREE.CylinderGeometry(0.013,0.013,tw,12,1,false,0,Math.PI),cl); top.rotation.z=Math.PI/2; top.rotation.x=Math.PI/2; top.position.set(0,0.004,0.05); G.add(top); };
   towel(0,WX(0,55),WZ(0,300)+TI/2,0,1.05,0xe8dcc6);                          // 1F powder room, north wall beside the basin
-  towel(1,WX(1,185)-TI/2,WZ(1,60),-Math.PI/2,1.1,0xe8dcc6);                  // 2F changing room, a bath towel by the shower
+  towel(1,WX(1,215)-TI/2,WZ(1,60),-Math.PI/2,1.1,0xe8dcc6);                  // 2F changing room, a bath towel by the shower
   towel(2,WX(2,345),WZ(2,0)+TE/2,0,1.05,0xe8dcc6);                           // 3F washroom, north wall east of the vanity
   towel(1,WX(1,321),WZ(1,258),-Math.PI/2,1.0,0xe8dcc6);                       // kitchen: on the pantry's west side, a step from the sink
 })();
