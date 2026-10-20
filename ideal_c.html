@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261020p">
+<link rel="stylesheet" href="lib/storeys.css?v=20261020q">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261020p"></script>
-<script src="lib/furniture.js?v=20261020p"></script>
-<script src="lib/catalog.js?v=20261020p"></script>
-<script src="lib/look.js?v=20261020p"></script>
-<script src="lib/houses.js?v=20261020p"></script>
-<script src="lib/perf.js?v=20261020p"></script>
-<script src="lib/finish.js?v=20261020p"></script>
-<script src="lib/storeys.js?v=20261020p"></script>
+<script src="lib/people.js?v=20261020q"></script>
+<script src="lib/furniture.js?v=20261020q"></script>
+<script src="lib/catalog.js?v=20261020q"></script>
+<script src="lib/look.js?v=20261020q"></script>
+<script src="lib/houses.js?v=20261020q"></script>
+<script src="lib/perf.js?v=20261020q"></script>
+<script src="lib/finish.js?v=20261020q"></script>
+<script src="lib/storeys.js?v=20261020q"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -397,12 +397,12 @@ site:function(E){
     for(let i=0;i<=L/1.8+0.01;i++){ const a=Math.min((horiz?x0:z0)+i*1.8,horiz?x1:z1); if(horiz) bx(ground,a-0.04,a+0.04,z0-0.04,z0+0.04,0.1,1.55,post); else bx(ground,x0-0.04,x0+0.04,a-0.04,a+0.04,0.1,1.55,post); }
     if(horiz) addCol(0,x0,x1,z0-0.07,z0+0.07,-0.3,1.5,'w'); else addCol(0,x0-0.07,x0+0.07,z0,z1,-0.3,1.5,'w'); };
   screen(LX0,LZ0,LX0,LZ1); screen(LX0,LZ0,LX1,LZ0); screen(LX1,LZ0,LX1,LZ1);
-  const IP0=LX0+0.02, IP1=IP0+0.4, GX0=IP1, GX1=GX0+0.92, PP0=GX1+0.56, PP1=PP0+0.55, CX0=WX(0,123)+1.43;   // west of the house front: intercom pillar, main leaf, side leaf, parcel-box pillar
+  const IP0=LX0+0.02, IP1=IP0+0.4, GX0=IP1, GX1=GX0+1.0, PP0=GX1, PP1=PP0+0.55, CX0=WX(0,123)+1.43, CP0=CX0-0.3;   // west of the house front: intercom pillar, a single gate leaf, parcel-box pillar; a pillar where the low wall meets the car gate
   const lowWall=function(x0,x1){ bx(ground,x0,x1,LZ1-0.08,LZ1+0.08,-0.3,0.3,render); bx(ground,x0-0.01,x1+0.01,LZ1-0.09,LZ1+0.09,0.3,0.34,render,{cast:false});
     slats(x0,LZ1,x1,LZ1,0.34,1.2,0.16); addCol(0,x0,x1,LZ1-0.09,LZ1+0.09,-0.3,1.2,'w'); };
-  lowWall(PP1,CX0);
+  lowWall(PP1,CP0);
   const capM=lam(0x6b6e72,{roughness:0.5,metalness:0.4}), lampM=lam(0xfff1d6,{emissive:0xffd9a0,emissiveIntensity:0.6});
-  [[IP0,IP1,0.12],[PP0,PP1,0.18]].forEach(function(p){ const h=p[2]; bx(ground,p[0],p[1],LZ1-h,LZ1+h,-0.3,1.45,render); bx(ground,p[0],p[1],LZ1-h-0.01,LZ1+h+0.01,1.45,1.5,capM);
+  [[IP0,IP1,0.12],[PP0,PP1,0.18],[CP0,CX0,0.12]].forEach(function(p){ const h=p[2]; bx(ground,p[0],p[1],LZ1-h,LZ1+h,-0.3,1.45,render); bx(ground,p[0],p[1],LZ1-h-0.01,LZ1+h+0.01,1.45,1.5,capM);
     bx(ground,(p[0]+p[1])/2-0.08,(p[0]+p[1])/2+0.08,LZ1-0.05,LZ1+0.05,1.5,1.62,lampM,{cast:false}); addCol(0,p[0],p[1],LZ1-h,LZ1+h,-0.3,1.45,'w'); });   // pillars with a lamp on each; the west one is a 機能門柱 with the parcel box built in   // pillars with a lamp on each
   (function(){ const x0=PP0+0.06, x1=PP0+0.49, zf=LZ1+0.18, st=lam(0xb9bec4,{metalness:0.8,roughness:0.32}), dk=lam(0x2a2d31,{roughness:0.4}), oc={cast:false};   // built-in parcel box (宅配ボックス) and mail slot, flush in the pillar's street face
     bx(ground,x0,x1,zf,zf+0.006,0.18,1.3,dk,oc); bx(ground,x0+0.015,x1-0.015,zf+0.006,zf+0.01,0.2,0.98,st,oc); bx(ground,x0+0.015,x1-0.015,zf+0.006,zf+0.01,1.02,1.28,st,oc);
@@ -415,7 +415,7 @@ site:function(E){
     bx(ground,x1-0.05,x1-0.03,zb-0.03,zb-0.01,0.45,0.7,dk,oc); bx(ground,x1-0.05,x1-0.03,zb-0.03,zb-0.01,1.1,1.2,dk,oc);
     bx(ground,x0+0.05,x0+0.11,zb-0.012,zb-0.01,0.84,0.9,dk,oc); })();   // dial lock
   bx(ground,IP0+0.13,IP0+0.27,LZ1+0.12,LZ1+0.135,1.15,1.29,lam(0x1b1d20,{roughness:0.3}),{cast:false}); bx(ground,IP0+0.17,IP0+0.23,LZ1+0.135,LZ1+0.14,1.22,1.26,lam(0x9fd6ff,{emissive:0x4aa8e8}),{cast:false});   // intercom by the gate
-  (function(){                                 // double gate (親子門): the main leaf for everyday use, the side leaf held by a drop bolt and opened for moving large things
+  (function(){                                 // one wooden gate leaf, hinged on the intercom pillar
     const mk=function(hx,sg,w,main){ const pv=new THREE.Group(); pv.userData.keep=true; pv.position.set(hx,0,LZ1); ground.add(pv);
       for(let x=0.02;x<w-0.04;x+=0.1){ const m=new THREE.Mesh(new THREE.BoxGeometry(0.07,1.2,0.03),fenceM); m.position.set(sg*(x+0.035),0.65,0); m.castShadow=true; pv.add(m); }
       [0.2,1.1].forEach(function(y){ const m=new THREE.Mesh(new THREE.BoxGeometry(w,0.06,0.03),post); m.position.set(sg*w/2,y,-0.03); pv.add(m); });
@@ -424,7 +424,6 @@ site:function(E){
       return pv; };
     const add=function(pv,th,a,b,label){ const col=addCol(0,a,b,LZ1-0.05,LZ1+0.05,-0.3,1.3,'d'), d={l:0,pv:pv,th:th,open:false,t:0,col:col,mid:[(a+b)/2,LZ1],label:label}; col.door=d; doors.push(d); };
     add(mk(GX0+0.075,1,(GX1-GX0)-0.08,true),Math.PI/2,GX0,GX1,function(o){ return o?'關上門扉':'打開門扉'; });
-    add(mk(PP0-0.03,-1,PP0-GX1-0.035,false),-Math.PI/2,GX1,PP0,function(o){ return o?'關上側門扉（放下門栓）':'打開側門扉（搬大型物品）'; });
   })();
   (function(){                                 // telescopic (accordion) gate across the car apron, folds toward the east boundary
     const L=LX1-0.08-CX0, acc=new THREE.Group(); acc.userData.keep=true; acc.position.set(LX1-0.08,0,LZ1); ground.add(acc);
@@ -965,7 +964,7 @@ modes:function(E){
   /* F. cedar cladding up the solid west bay of the south front; a cat house-sign on the gate pillar */
   (function(){ const z=WZ(1,850)+TE/2+0.02, x0=WX(1,0)-TE/2-0.02, x1=WX(1,240), y0=b[1]-0.2, y1=b[2]+CH+0.15;
     for(let x=x0;x<x1-0.05;x+=0.128){ const t=0.85+rnd()*0.25; B(DG[1],x,x+0.12,y0,y1,z,z+0.016,lam(new T.Color(0xa9743f).multiplyScalar(t).getHex(),{roughness:0.85}),true); } })();
-  (function(){ const LZ1=WZ(0,850)+1.5, x=-2.2+0.02+1.88+0.275, z=LZ1+0.181;   // on the parcel-box pillar west of the house front
+  (function(){ const LZ1=WZ(0,850)+1.5, x=-2.2+1.42+0.275, z=LZ1+0.181;   // on the parcel-box pillar west of the house front
     const tx=canvasTex(320,160,function(g,w,h){ g.fillStyle='#c9a77c'; g.fillRect(0,0,w,h); g.fillStyle='#2f2a25'; g.beginPath(); g.ellipse(70,98,34,26,0,0,7); g.fill(); g.beginPath(); g.arc(70,62,22,0,7); g.fill();
       g.beginPath(); g.moveTo(52,52); g.lineTo(56,28); g.lineTo(68,44); g.fill(); g.beginPath(); g.moveTo(88,52); g.lineTo(84,28); g.lineTo(72,44); g.fill(); g.font='bold 54px sans-serif'; g.textBaseline='middle'; g.fillText('BUBU',118,92); });
     const m=new T.Mesh(new T.BoxGeometry(0.3,0.15,0.012),[M2(0xb08d62),M2(0xb08d62),M2(0xb08d62),M2(0xb08d62),new T.MeshStandardMaterial({map:tx,roughness:0.6}),M2(0xb08d62)]); m.position.set(x,b[0]+0.95,z+0.006); DG[0].add(m); })();
