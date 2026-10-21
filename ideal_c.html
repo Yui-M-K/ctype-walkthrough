@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261021t">
+<link rel="stylesheet" href="lib/storeys.css?v=20261021u">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261021t"></script>
-<script src="lib/furniture.js?v=20261021t"></script>
-<script src="lib/catalog.js?v=20261021t"></script>
-<script src="lib/look.js?v=20261021t"></script>
-<script src="lib/houses.js?v=20261021t"></script>
-<script src="lib/perf.js?v=20261021t"></script>
-<script src="lib/finish.js?v=20261021t"></script>
-<script src="lib/storeys.js?v=20261021t"></script>
+<script src="lib/people.js?v=20261021u"></script>
+<script src="lib/furniture.js?v=20261021u"></script>
+<script src="lib/catalog.js?v=20261021u"></script>
+<script src="lib/look.js?v=20261021u"></script>
+<script src="lib/houses.js?v=20261021u"></script>
+<script src="lib/perf.js?v=20261021u"></script>
+<script src="lib/finish.js?v=20261021u"></script>
+<script src="lib/storeys.js?v=20261021u"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -168,7 +168,8 @@ notes:[
   [0,240,850,'監視攝影機','玄關門廊與車庫外各一台'],
   [1,555,815,'肯蒂亞椰子','美化佈置：客廳角落的大型植栽，對貓無毒'],[2,275,895,'橄欖樹','美化佈置：3F 陽台的西端，對貓無毒'],[1,436,660,'橡木吊燈','美化佈置：茶几／餐桌上方，Ø40 cm 扁圓燈罩'],[1,255,540,'閱讀立燈','美化佈置：沙發旁'],
   [2,412,465,'鼠尾草綠主牆','美化佈置：主臥床頭那面牆'],[2,240,420,'照片牆','美化佈置：3F 走廊，咘咘和旅行照片'],[0,-3,1010,'門牌','美化佈置：宅配箱門柱上的咘咘門牌'],
-  [0,445,140,'除濕機・加濕機','收在儲藏室，換季時拿出來']
+  [0,445,140,'除濕機・加濕機','收在儲藏室，換季時拿出來'],
+  [0,265,505,'玄關廳飾り棚ニッチ','牆面嵌入式壁龕 120 × 30 cm（離地 1 m），上緣內藏暖色 LED 燈條往下打亮背板，放細長花瓶插一枝乾燥枝、兩個小陶器和一個相框；上方掛畫。背面是車庫牆，實際施工時壁龕背面需補防火板'],
 ],
 noteText:{
   fridge:['日立 冰箱 R-HZC54Y','540 L・真空冰溫・寬 65 × 深 69.9 × 高 184.3 cm・水晶白玻璃門；上面是對開門的冷藏室，下面依序是製冰室／切換室、蔬果室、冷凍室，全部可以打開'],
@@ -205,7 +206,7 @@ build:function(E){
   wall(0,580,0,580,850,TE,[{a:300,b:400,sill:1.6,head:2.1}]);
   wall(0,0,300,310,300,TI,[{a:84,b:112,k:'open',sill:0.12,head:1.225,jamb:false},{a:188,b:266,k:'door',hinge:'b',sw:-1}]);   // toilet-brush niche in the powder room's north wall
   wall(0,115,300,115,392,TI,[{a:303,b:388,k:'door',hinge:'a',sw:1}]);   // powder room under the stair, entered from the hall; beside the lower flight the wall gives way to a guard
-  wall(0,270,300,270,790,TI);
+  wall(0,270,300,270,790,TI,[{a:445,b:565,k:'open',sill:1.0,head:1.3,jamb:false}]);   // hall niche (飾り棚ニッチ), closed by a back panel on the garage side
   wall(0,310,0,310,300,TI,[{a:205,b:290,k:'slide',hinge:'a',face:-1}]);   // storage room door; with the mirror room door it falls inside a future lobby (see notes)
   wall(0,310,290,580,290,TI);
   bx(LG[0],WX(0,0)-0.07,WX(0,85),WZ(0,0)-0.07,WZ(0,790),-SLAB,0,M.slab); bx(LG[0],WX(0,85),WX(0,115),WZ(0,0)-0.07,WZ(0,720),-SLAB,0,M.slab); bx(LG[0],WX(0,115),WX(0,270),WZ(0,0)-0.07,WZ(0,720),-SLAB,0,M.slab); bx(LG[0],WX(0,270),WX(0,310),WZ(0,0)-0.07,WZ(0,300),-SLAB,0,M.slab); bx(LG[0],WX(0,310),WX(0,580)+0.07,WZ(0,0)-0.07,WZ(0,290),-SLAB,0,M.slab);
@@ -507,7 +508,7 @@ return [
   ['outdoor','outdoorSet',0,-130,610,'E'],['bbq','bbqGrill',0,-50,690,'E'],
   /* 1F genkan, mirror room, garage */
   ['keys','keyRack',0,265.5,725,'W',null,{off:true}],['shoesW','shoesHer',0,145,734,'W'],['shoesM','shoesHim',0,173,734,'W'],
-  ['artHall1','artLand',0,265.5,505,'W'],['plantH','plant',0,248,385,'W'],
+  ['artHall1','artLand',0,265.5,505,'W',function(){ return Catalog.picture(1.0,0.5,1.7); }],['plantH','plant',0,248,385,'W'],
   ['car','car',0,424,565,'S'],
   /* 3F bedroom */
   ['bed','bed',2,415,590,'S'],['headboard','headboard',2,415,464.5,'S'],['side','bedside',2,545.5,487,'S',function(){ return Catalog.bedsideTable(true,0.6,0.45,0.55); }],['rugBed','rugBed',2,415,630,'E'],
@@ -532,7 +533,7 @@ layout2:function(E){
 return [['fold2','foldTable',1,119.5,430,'E',function(){ const p=Catalog.foldTable(); p.open.table=true; return p; }]];
 },
 fixtures:function(E){
-  const {CH,Catalog,LG,M,TE,TI,WX,WZ,addCol,bx,doors,fab,fixture,furnAnims,furnThings,lam,toast}=E;
+  const {CH,Catalog,LG,M,TE,TI,WM,WX,WZ,addCol,bx,doors,fab,fixture,furnAnims,furnThings,lam,toast}=E;
 /* built-in fixtures (part of the building): kitchen, bath, toilets, charger, cameras, mirror room */
 (function(){                                   // kitchen: one peninsula with the sink, dishwasher and IH hob, facing the living room
   const X0=WX(1,318.5), Z0=WZ(1,382.5);
@@ -914,16 +915,23 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,225)-TI/2-WZ(2,17
     for(let i=0;i<3;i++){ const a=x0+0.03+i*(x1-x0-0.04)/3, b=a+(x1-x0-0.04)/3-0.03; bx(LG[0],a,b,zw-d+0.03,zw-0.02,y+0.025,y+0.3+0.04*((i+k)%2),lam(boxC[(i+k)%5],{roughness:0.8}),oc);
       bx(LG[0],(a+b)/2-0.05,(a+b)/2+0.05,zw-d+0.025,zw-d+0.03,y+0.13,y+0.17,lam(0xffffff),oc); } });
 })();
-(function(){                                   // 1F hall gallery: floating walnut console with under-glow, vase and books, a runner, cove light along the east wall
-  const xe=WX(0,270)-TI/2, zc=WZ(0,505), wal=lam(0x6a4732,{roughness:0.42}), glow=new THREE.MeshBasicMaterial({color:0xffdcaa}), oc={cast:false};
-  bx(LG[0],xe-0.26,xe,zc-0.6,zc+0.6,0.78,0.82,wal); bx(LG[0],xe-0.24,xe-0.02,zc-0.57,zc+0.57,0.774,0.78,glow,oc); addCol(0,xe-0.26,xe,zc-0.6,zc+0.6,0.6,0.82,'f');
-  const vase=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.075,0.3,24),lam(0x2f3a3a,{roughness:0.35})); vase.position.set(xe-0.13,0.97,zc-0.35); LG[0].add(vase);
-  [[-0.02,-0.012,0.55,0.12,-0.1],[0.01,0.015,0.62,-0.06,0.08],[0.0,-0.02,0.5,0.02,-0.16],[0.018,0.008,0.58,-0.13,0.03],[-0.012,0.02,0.46,0.09,0.14]].forEach(function(q){   // dried branches rising from inside the vase mouth, fanning slightly
-    const vx=xe-0.13, vz=zc-0.35, a0=new THREE.Vector3(vx+q[0],0.98,vz+q[1]), a1=new THREE.Vector3(vx+q[3]*0.5,1.12+q[2]*0.5,vz+q[4]*0.5), a2=new THREE.Vector3(vx+q[3],1.12+q[2],vz+q[4]);
-    LG[0].add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(a0,a1,a2),12,0.004,5),lam(0x5a4636,{roughness:0.8})));
-    const tw=a1.clone().lerp(a2,0.4); LG[0].add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(tw,tw.clone().add(new THREE.Vector3(q[3]*0.3,0.06,q[4]*0.3)),tw.clone().add(new THREE.Vector3(q[3]*0.6+0.02,0.1,q[4]*0.6-0.02))),6,0.0025,4),lam(0x5a4636,{roughness:0.8}))); });
-  [[0.035,0xe9e3d6],[0.03,0x8a9a86],[0.025,0xc9a87a]].forEach(function(b,i){ bx(LG[0],xe-0.22,xe-0.05,zc+0.1,zc+0.36,0.82+i*0.035,0.82+i*0.035+b[0],lam(b[1],{roughness:0.7}),oc); });
-  const ob=new THREE.Mesh(new THREE.SphereGeometry(0.06,20,14),lam(0xd8c08a,{metalness:0.8,roughness:0.25})); ob.position.set(xe-0.13,0.975,zc+0.22); LG[0].add(ob);
+(function(){                                   // 1F hall gallery: recessed niche (飾り棚ニッチ) in the garage wall with a hidden LED wash, a runner, cove light along the east wall
+  const xe=WX(0,270)-TI/2, zc=WZ(0,505), glow=new THREE.MeshBasicMaterial({color:0xffdcaa}), oc={cast:false}, wl=WM.hall, y0=1.0, y1=1.3, za=WZ(0,445), zb=WZ(0,565), xb=WX(0,270)+TI/2-0.008, t=0.006;
+  bx(LG[0],xb,xb+0.008,za,zb,y0,y1,[WM.outside,wl,wl,wl,wl,wl],oc);   // back panel: wall finish on the garage side
+  bx(LG[0],xe,xb,za,zb,y0,y0+t,wl,oc); bx(LG[0],xe,xb,za,zb,y1-t,y1,wl,oc); bx(LG[0],xe,xb,za,za+t,y0,y1,wl,oc); bx(LG[0],xe,xb,zb-t,zb,y0,y1,wl,oc);
+  bx(LG[0],xe,xe+0.012,za+t,zb-t,y1-t-0.016,y1-t,wl,oc); bx(LG[0],xe+0.012,xe+0.018,za+0.02,zb-0.02,y1-t-0.006,y1-t,glow,oc);   // lip hiding the LED strip
+  const wc=document.createElement('canvas'); wc.width=4; wc.height=64; const wg=wc.getContext('2d'), gr=wg.createLinearGradient(0,0,0,64); gr.addColorStop(0,'rgba(255,205,150,0.55)'); gr.addColorStop(1,'rgba(255,205,150,0)'); wg.fillStyle=gr; wg.fillRect(0,0,4,64);
+  const wash=new THREE.Mesh(new THREE.PlaneGeometry(zb-za-2*t,y1-y0-2*t),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(wc),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false})); wash.rotation.y=-Math.PI/2; wash.position.set(xb-0.001,(y0+y1)/2,zc); LG[0].add(wash);
+  const yf=y0+t, xm=(xe+xb)/2+0.004, vz=zc-0.4;
+  const vase=new THREE.Mesh(new THREE.CylinderGeometry(0.009,0.019,0.19,20),lam(0x3e4a48,{roughness:0.3})); vase.position.set(xm,yf+0.095,vz); LG[0].add(vase);
+  [[0.006,0.04,0.12],[-0.004,0.07,0.07]].forEach(function(q){ const a0=new THREE.Vector3(xm,yf+0.18,vz), a2=new THREE.Vector3(xm+q[0],y1-t-0.03,vz+q[1]), a1=new THREE.Vector3(xm,yf+0.25,vz+q[1]*0.3);   // one dried branch with a side twig, kept inside the niche
+    LG[0].add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(a0,a1,a2),10,0.0025,5),lam(0x5a4636,{roughness:0.8}))); });
+  const pot=new THREE.Mesh(new THREE.SphereGeometry(0.032,20,14),lam(0x9aa592,{roughness:0.85})); pot.scale.set(0.95,0.8,0.95); pot.position.set(xm,yf+0.026,zc-0.17); LG[0].add(pot);
+  const tall=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.026,0.12,20),lam(0xc7a98d,{roughness:0.85})); tall.position.set(xm,yf+0.06,zc-0.08); LG[0].add(tall);
+  const pc=document.createElement('canvas'); pc.width=96; pc.height=128; const pg=pc.getContext('2d'), sk=pg.createLinearGradient(0,0,0,128); sk.addColorStop(0,'#9fc0d6'); sk.addColorStop(0.55,'#e7d9c2'); sk.addColorStop(0.56,'#6f8f9a'); sk.addColorStop(1,'#4d6a72'); pg.fillStyle=sk; pg.fillRect(0,0,96,128);
+  const ph=new THREE.CanvasTexture(pc); ph.colorSpace=THREE.SRGBColorSpace; const fr=new THREE.Group(), fw=0.13, fh=0.17, ang=0.17; fr.position.set(xb-0.004-fh*Math.sin(ang)-0.012,yf,zc+0.3); fr.rotation.z=-ang; LG[0].add(fr);   // photo frame leaning back against the niche wall
+  const fb=new THREE.Mesh(new THREE.BoxGeometry(0.01,fh,fw),lam(0xe9e3d6,{roughness:0.6})); fb.position.set(0,fh/2,0); fr.add(fb);
+  const pm=new THREE.Mesh(new THREE.PlaneGeometry(fw-0.03,fh-0.03),lam(0xffffff,{map:ph,roughness:0.6})); pm.rotation.y=-Math.PI/2; pm.position.set(-0.0055,fh/2,0); fr.add(pm);
   bx(LG[0],xe-0.02,xe,WZ(0,300)+TI/2,WZ(0,700),CH-0.1,CH-0.02,M.trim,oc); bx(LG[0],xe-0.03,xe-0.02,WZ(0,300)+TI/2+0.02,WZ(0,700)-0.02,CH-0.1,CH-0.095,glow,oc);
   const rx0=WX(0,150), rx1=WX(0,232); bx(LG[0],rx0,rx1,WZ(0,330),WZ(0,620),0.003,0.009,lam(0xcfc3ae,{roughness:0.95}),oc); bx(LG[0],rx0+0.05,rx1-0.05,WZ(0,335),WZ(0,615),0.009,0.0095,lam(0xe8e0d0,{roughness:0.95}),oc);
 })();                             // genkan: fold-down shelf for parcels, key rack above it
