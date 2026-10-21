@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261022y">
+<link rel="stylesheet" href="lib/storeys.css?v=20261022z">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261022y"></script>
-<script src="lib/furniture.js?v=20261022y"></script>
-<script src="lib/catalog.js?v=20261022y"></script>
-<script src="lib/look.js?v=20261022y"></script>
-<script src="lib/houses.js?v=20261022y"></script>
-<script src="lib/perf.js?v=20261022y"></script>
-<script src="lib/finish.js?v=20261022y"></script>
-<script src="lib/storeys.js?v=20261022y"></script>
+<script src="lib/people.js?v=20261022z"></script>
+<script src="lib/furniture.js?v=20261022z"></script>
+<script src="lib/catalog.js?v=20261022z"></script>
+<script src="lib/look.js?v=20261022z"></script>
+<script src="lib/houses.js?v=20261022z"></script>
+<script src="lib/perf.js?v=20261022z"></script>
+<script src="lib/finish.js?v=20261022z"></script>
+<script src="lib/storeys.js?v=20261022z"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -152,7 +152,7 @@ notes:[
   [1,433.5,385,'嵌入式洗碗機','抽屜式深型 45 cm，放得下盤子、碗和杯子'],
   [1,523.5,412.5,'IH 爐＋抽油煙機','三口 IH，與水槽在同一座半島'],
   [1,346,258,'食品收納櫃（系統櫃）','寬 50 cm，白色，和家電櫃、冰箱、半島同一種白；踢腳 10 cm、門片分界 85 cm、吊櫃下緣 189 cm 三條線和家電櫃拉齊。下面一扇門（到 85 cm）是掃地機器人櫃：放 Dreame X40 Ultra 和自動給排水款基地（34 × 45.7 × 59 cm），櫃內一直到離地 1.1 m 的固定層板都是機器人空間，基地上蓋往上掀需要的 30 cm 綽綽有餘；機器人從門下方 12.5 cm 的開口自己進出；上面一扇門從 85 cm 做到 189 cm 的吊櫃線，打開後下段就是機器人櫃的上方，1.1 m 以上是層板可調的食品櫃；再上方是做到天花板的吊櫃'],[1,500,240,'上方吊櫃（家電櫃・冰箱・食品櫃）','做到天花板不積灰，可打開；冰箱上方留散熱空間'],
-  [2,470,40,'浴缸','1.6 m，洗澡時可看牆上電視'],
+  [2,470,40,'浴缸','1.6 m 嵌入式浴缸：外框和牆面切齊、5–8 cm 窄邊、前面一片裙板，只有內側圓角；西端靠背、東端有座階和排水；東牆高處的電視從靠背那側看；橡木浴缸托盤放蠟燭和小盆栽'],[2,560,120,'浴室東牆','暖灰色石紋主牆（微亮），淋浴組（龍頭 60–70 cm 配浴凳）、鏡子、置物檯都在東牆，五金統一霧黑；電視下方有亮燈的壁龕放琥珀色瓶子；間接照明 2700K：天花板凹槽洗亮石牆、檯面下一條燈、浴缸底部浮光、壁龕燈，傍晚自動亮起'],
   [2,500,120,'浴室乾燥機','天花板暖風乾燥，下雨天可在浴室曬衣'],
   [2,490,160,'浴室曬衣桿','搭配乾燥機使用'],
   [2,150,67,'家用三溫暖','1.5 × 1.2 m 杉木房，從洗面室進出，附休息長椅；石頭爐外圍有木頭護欄'],
@@ -670,43 +670,61 @@ fixtures:function(E){
     LG[1].add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),40,0.004,6),lam(0x6b6e72,{roughness:0.6}))); })();
 })();
 (function(){                                   // 3F wet zone (C): bath (tub along the north at the west end, TV on the stone west wall), washroom, sauna room off the washroom
-  (function(){ const b=E.base(2), x0=WX(2,380)+TI/2, x1=WX(2,580)-TE/2, z0=WZ(2,0)+TE/2, z1=z0+0.78;   // 1.6 m tub against the west wall, its moulded ledge running on to the east wall
-    fixture(2,Catalog.bathtub(1.6,x1-x0-1.6,-1,-1),x0+0.8,(z0+z1)/2,3); })();
-  (function(){ const b=E.base(2), xw=WX(2,380)+TI/2;   // waterproof TV on the stone wall at the tub's end
-    bx(LG[2],xw+0.012,xw+0.052,WZ(2,16),WZ(2,74),b+0.8,b+1.16,lam(0xf6f5f2,{roughness:0.3}));   // white waterproof frame, buttons along the bottom
-    const sm=new THREE.MeshStandardMaterial({color:0x06080c,roughness:0.06,metalness:0.3,envMapIntensity:1.5});
-    bx(LG[2],xw+0.052,xw+0.054,WZ(2,18),WZ(2,72),b+0.85,b+1.14,sm,{cast:false});
-    const led=new THREE.MeshBasicMaterial({color:0x3a3a3a});
-    [[WZ(2,58),led],[WZ(2,63),lam(0xc9ccd0)],[WZ(2,67),lam(0xc9ccd0)],[WZ(2,71),lam(0xc9ccd0)]].forEach(function(q){ const m=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.004,16),q[1]); m.rotation.z=Math.PI/2; m.position.set(xw+0.054,b+0.823,q[0]); LG[2].add(m); });
-    let on=false; furnThings.push({pt:[xw+0.7,WZ(2,45)],l:2,label:function(){ return on?'關掉浴室電視':'打開浴室電視'; },act:function(){ on=!on; sm.color.setHex(on?0x2a6f9a:0x06080c); sm.emissive.setHex(on?0x3b8ec4:0x000000); sm.emissiveIntensity=on?0.7:0; led.color.setHex(on?0x5fe08a:0x3a3a3a); }});
-  })();
-  (function(){ const b=E.base(2), x0=WX(2,380)+TI/2, x1=WX(2,580)-TE/2, z0=WZ(2,0)+TE/2, z1=WZ(2,205)-TI/2, oc={cast:false}, e=0.004;   // bath finish, all stone: greige round the tub, travertine-look 60 x 120 tiles elsewhere, charcoal floor, a cove over the tub, shelves on the south wall
+  (function(){ const b=E.base(2), x0=WX(2,380)+TI/2, x1=WX(2,580)-TE/2, z0=WZ(2,0)+TE/2, z1=WZ(2,205)-TI/2, zt=z0+0.78, xt=x0+1.6, H=0.55, RIM=0.065, oc={cast:false}, e=0.004, top=b+CH;   // 3F bath: built-in tub along the north, an accent stone east wall with the shower set, the TV over the tub's foot, warm indirect light
     const tiles=function(base,line,vein,cols,rows,n){ const c=document.createElement('canvas'); c.width=c.height=512; const g=c.getContext('2d'); g.fillStyle=base; g.fillRect(0,0,512,512);
-      for(let i=0;i<n;i++){ g.strokeStyle=vein; g.globalAlpha=0.05+Math.random()*0.08; g.lineWidth=1+Math.random()*2; g.beginPath(); let x=Math.random()*512, y=Math.random()*512; g.moveTo(x,y); for(let k=0;k<6;k++){ x+=(Math.random()-0.3)*90; y+=(Math.random()-0.5)*40; g.lineTo(x,y); } g.stroke(); }
+      for(let i=0;i<n;i++){ g.strokeStyle=vein; g.globalAlpha=0.05+Math.random()*0.08; g.lineWidth=1+Math.random()*2; g.beginPath(); let x=Math.random()*512, y=Math.random()*512; g.moveTo(x,y); for(let k=0;k<6;k++){ x+=(Math.random()-0.3)*90; y+=(Math.random()-0.5)*60; g.lineTo(x,y); } g.stroke(); }
       g.globalAlpha=1; g.fillStyle=line; for(let i=0;i<cols;i++) g.fillRect(i*512/cols,0,2,512); for(let j=0;j<rows;j++) g.fillRect(0,j*512/rows,512,2);
       const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.colorSpace=THREE.SRGBColorSpace; return t; };
-    const wallT=tiles('#d8cbb6','#b5a58c','#8f7d64',2,1,40), accT=tiles('#7d756c','#5f5952','#a59c90',2,1,50), floorT=tiles('#56595c','#3a3c3e','#8c9093',4,2,60);
+    const whiteT=tiles('#efe9df','#dcd4c7','#cfc4b2',2,1,18), stoneT=tiles('#c9bca9','#ad9f8a','#8c7a62',2,1,70), floorT=tiles('#5a5d60','#3c3e40','#8c9093',4,2,60);
     const skin=function(t,w,h,r){ const q=t.clone(); q.needsUpdate=true; q.repeat.set(w/1.2,h/1.2); return lam(0xffffff,{map:q,roughness:r}); };
-    const panel=function(a0,a1,y0,y1,alongX,c0,c1,t){ const w=a1-a0, h=y1-y0, m=skin(t||wallT,w,h,0.35); if(alongX) bx(LG[2],a0,a1,c0,c1,y0,y1,m,oc); else bx(LG[2],c0,c1,a0,a1,y0,y1,m,oc); };
-    const wa=WX(2,430), wb=WX(2,550), ea=WZ(2,80), eb=WZ(2,150), lo=b+1.5, hi=b+2.1, elo=b+1.75, ehi=b+2.3, top=b+CH;
-    [[x0,x1,b,lo],[x0,x1,hi,top],[x0,wa,lo,hi],[wb,x1,lo,hi]].forEach(function(q){ panel(q[0],q[1],q[2],q[3],true,z0,z0+e,accT); });
-    [[z0,z1,b,elo],[z0,z1,ehi,top],[z0,ea,elo,ehi],[eb,z1,elo,ehi]].forEach(function(q){ panel(q[0],q[1],q[2],q[3],false,x1-e,x1); });
-    panel(x0,x1,b,top,true,z1-e,z1);
-    const da=WZ(2,105), db=WZ(2,185);
-    [[z0,da,b,top,accT],[da,db,b+2.05,top,accT],[db,z1,b,top]].forEach(function(q){ panel(q[0],q[1],q[2],q[3],false,x0,x0+e,q[4]); });
-    const ledge=lam(0xd9cdb9,{roughness:0.35}), bottle=function(x,z,y,c,h){ const m=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,h,16),lam(c,{roughness:0.3})); m.position.set(x,y+h/2,z); m.castShadow=true; LG[2].add(m); };
-    [b+1.05,b+1.37].forEach(function(y,k){ const s0=WZ(2,22), s1=WZ(2,72);   // two floating stone shelves on the east wall above the tub's ledge
-      bx(LG[2],x1-0.15,x1,s0,s1,y-0.03,y,ledge); [[0.06,0xf2efe8,0.2],[0.17,0x8fb3c4,0.17],[0.27,0xe9d7b0,0.14]].forEach(function(q){ if(k&&q[0]>0.2) return; bottle(x1-0.075,s0+q[0],y,q[1],q[2]); }); });
-    bx(LG[2],x0,x1,z0,z1,b+0.001,b+0.004,skin(floorT,x1-x0,z1-z0,0.6),oc);
+    const panel=function(a0,a1,y0,y1,alongX,c0,c1,t,r){ const w=a1-a0, h=y1-y0, m=skin(t,w,h,r||0.4); if(alongX) bx(LG[2],a0,a1,c0,c1,y0,y1,m,oc); else bx(LG[2],c0,c1,a0,a1,y0,y1,m,oc); };
+    panel(x0,x1,b,top,true,z0,z0+e,whiteT); panel(x0,x1,b,top,true,z1-e,z1,whiteT);
+    const ea=WZ(2,80), eb=WZ(2,150), elo=b+1.75, ehi=b+2.3; [[z0,z1,b,elo],[z0,z1,ehi,top],[z0,ea,elo,ehi],[eb,z1,elo,ehi]].forEach(function(q){ panel(q[0],q[1],q[2],q[3],false,x1-e,x1,stoneT,0.22); });   // accent stone, a slight sheen
+    const da=WZ(2,105), db=WZ(2,185); [[z0,da,b,top],[da,db,b+2.05,top],[db,z1,b,top]].forEach(function(q){ panel(q[0],q[1],q[2],q[3],false,x0,x0+e,whiteT); });
+    bx(LG[2],x0,x1,z0,z1,b+0.001,b+0.004,skin(floorT,x1-x0,z1-z0,0.75),oc); bx(LG[2],x0,x1,zt,z1,b+0.0042,b+0.0046,new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.12,transparent:true,opacity:0.1,depthWrite:false}),oc);   // matte floor, a thin wet sheen
     bx(LG[2],x0,x1,z0,z1,top-0.012,top-0.004,lam(0xefece6,{roughness:0.8}),oc);
-    const glow=new THREE.MeshBasicMaterial({color:0xffe1b0}); bx(LG[2],x0+0.02,x1-0.02,z0+0.004,z0+0.05,top-0.08,top-0.07,M.trim,oc); bx(LG[2],x0+0.03,x1-0.03,z0+0.006,z0+0.045,top-0.085,top-0.08,glow,oc);
+    /* built-in tub: square to the walls, a narrow flat rim, an apron to the floor, a soft inner basin with a backrest at the west, a bench step and the drain at the east */
+    const shell=lam(0xf3efe7,{roughness:0.22}), inner=lam(0xe9eef0,{roughness:0.18}), wrr=function(xa,xb,za,zb,r){ const s=new THREE.Shape(); s.moveTo(xa+r,za); s.lineTo(xb-r,za); s.quadraticCurveTo(xb,za,xb,za+r); s.lineTo(xb,zb-r); s.quadraticCurveTo(xb,zb,xb-r,zb); s.lineTo(xa+r,zb); s.quadraticCurveTo(xa,zb,xa,zb-r); s.lineTo(xa,za+r); s.quadraticCurveTo(xa,za,xa+r,za); return s; };
+    const ia=x0+RIM, ib=xt-RIM, ja=z0+RIM, jb=zt-RIM-0.015, sh=new THREE.Shape([new THREE.Vector2(x0,-z0),new THREE.Vector2(x1,-z0),new THREE.Vector2(x1,-zt),new THREE.Vector2(x0,-zt)]);
+    sh.holes.push(new THREE.Path(wrr(ia,ib,-jb,-ja,0.1).getPoints(12).map(function(v){ return new THREE.Vector2(v.x,v.y); })));
+    const tg=new THREE.ExtrudeGeometry(sh,{depth:H-0.04,bevelEnabled:false,curveSegments:12}), tm=new THREE.Mesh(tg,shell); tm.rotation.x=-Math.PI/2; tm.position.y=b+0.04; tm.castShadow=tm.receiveShadow=true; LG[2].add(tm);
+    bx(LG[2],x0,x1,z0,zt-0.02,b,b+0.04,lam(0x6b6e72,{roughness:0.8}),oc);   // shadow gap at the apron's foot
+    const edge=new THREE.Mesh(new THREE.CylinderGeometry(0.015,0.015,x1-x0,12),shell); edge.rotation.z=Math.PI/2; edge.position.set((x0+x1)/2,b+H-0.015,zt-0.015); LG[2].add(edge);   // softened front edge
+    bx(LG[2],x0,x1,zt-0.02,zt-0.016,b+0.06,b+0.064,lam(0xd9d3c8),oc);   // kick line
+    bx(LG[2],ia,ib,ja,jb,b+0.1,b+0.12,inner); const bk=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.42,jb-ja-0.04),inner); bk.position.set(ia+0.09,b+0.33,(ja+jb)/2); bk.rotation.z=-0.5; LG[2].add(bk);   // basin floor, sloped backrest
+    bx(LG[2],ib-0.25,ib,ja,jb,b+0.12,b+0.32,inner);   // bench step at the foot
+    const water=new THREE.Mesh(new THREE.ShapeGeometry(wrr(ia,ib,ja,jb,0.1),12),new THREE.MeshStandardMaterial({color:0x7fc6dc,transparent:true,opacity:0.55,roughness:0.02,metalness:0.1,envMapIntensity:1.4,depthWrite:false,side:THREE.DoubleSide})); water.rotation.x=Math.PI/2; water.position.y=b+0.43; LG[2].add(water);
+    [[x0,x1,z0,z0+0.004],[x0,x0+0.004,z0,zt],[x1-0.004,x1,z0,zt]].forEach(function(r){ bx(LG[2],r[0],r[1],r[2],r[3],b+H,b+H+0.004,lam(0xc9c4ba),oc); });   // caulk line at the walls
+    const blk=lam(0x1e1f21,{roughness:0.45,metalness:0.3}), plug=E.cylm(LG[2],ib-0.12,(ja+jb)/2,0.03,0.03,b+0.12,b+0.128,blk), btn=E.cylm(LG[2],ib+0.03,ja+0.03,0.017,0.017,b+H,b+H+0.008,blk);
+    E.cylm(LG[2],ib-0.02,(ja+jb)/2,0.02,0.02,b+0.4,b+0.42,blk).rotation.z=Math.PI/2;   // overflow
+    let pv=0, pt=0, pl=null; furnThings.push({pt:[ib-0.1,zt+0.45],l:2,on:function(){ return true; },label:function(){ return pt?'塞上浴缸塞子':'拔開浴缸塞子（放水）'; },act:function(){ pt=pt?0:1; pl=null; }});
+    furnAnims.push({live:function(){ return pv!==pt; },f:function(t){ if(pl===null) pl=t; const dt=Math.min(0.05,t-pl); pl=t; pv=Math.abs(pt-pv)<dt/3?pt:pv+Math.sign(pt-pv)*dt/3; plug.position.y=b+0.124+0.03*pv; water.position.y=b+0.43-0.29*pv; water.visible=pv<0.98; return true; }});
+    E.cylm(LG[2],x0+0.03,z0+0.03,0.02,0.02,b+H,b+H+0.1,blk); bx(LG[2],x0+0.015,x0+0.045,z0+0.03,z0+0.17,b+H+0.075,b+H+0.1,blk,oc);   // spout at the head corner
+    /* oak bath tray with a candle and a small plant */
+    const oak=lam(0xc9a87e,{roughness:0.45,map:M.oak.map||null}); bx(LG[2],x0+0.95,x0+1.2,z0,zt,b+H+0.004,b+H+0.024,oak); E.cylm(LG[2],x0+1.02,z0+0.4,0.03,0.03,b+H+0.024,b+H+0.08,lam(0xf6f1e6,{roughness:0.6})); E.cylm(LG[2],x0+1.02,z0+0.4,0.002,0.002,b+H+0.08,b+H+0.09,lam(0x2a2a2a));
+    const pot=E.cylm(LG[2],x0+1.12,z0+0.55,0.035,0.028,b+H+0.024,b+H+0.09,lam(0xe9ddd0,{roughness:0.6})); const lf=new THREE.Mesh(new THREE.SphereGeometry(0.05,12,8),lam(0x6f9a5a,{roughness:0.8})); lf.scale.y=1.2; lf.position.set(x0+1.12,b+H+0.14,z0+0.55); LG[2].add(lf);
+    addCol(2,x0,x1,z0,zt,b,b+H,'f');
+    /* TV high on the east wall over the tub's foot, watched from the backrest at the west end; a lit niche for bottles under it */
+    const sm=new THREE.MeshStandardMaterial({color:0x06080c,roughness:0.06,metalness:0.3,envMapIntensity:1.5}), tz0=z0+0.1, tz1=z0+0.68;
+    bx(LG[2],x1-0.04,x1,tz0,tz1,b+1.12,b+1.48,lam(0xf6f5f2,{roughness:0.3})); bx(LG[2],x1-0.042,x1-0.04,tz0+0.02,tz1-0.02,b+1.15,b+1.46,sm,oc);
+    let tvon=false; furnThings.push({pt:[x1-0.7,(tz0+tz1)/2+0.4],l:2,label:function(){ return tvon?'關掉浴室電視':'打開浴室電視'; },act:function(){ tvon=!tvon; sm.color.setHex(tvon?0x2a6f9a:0x06080c); sm.emissive.setHex(tvon?0x3b8ec4:0x000000); sm.emissiveIntensity=tvon?0.7:0; }});
+    const nz0=z0+0.15, nz1=z0+0.63, ny0=b+0.7, ny1=b+0.98, fr=lam(0xb9ad99,{roughness:0.3}); bx(LG[2],x1-0.02,x1,nz0,nz1,ny0,ny1,lam(0x8f8272,{roughness:0.4}),oc);   // niche back
+    [[nz0,nz0+0.02,ny0,ny1],[nz1-0.02,nz1,ny0,ny1],[nz0,nz1,ny0,ny0+0.02],[nz0,nz1,ny1-0.02,ny1]].forEach(function(r){ bx(LG[2],x1-0.1,x1,r[0],r[1],r[2],r[3],fr); });
+    [0.07,0.17,0.27,0.37].forEach(function(dz,k){ E.cylm(LG[2],x1-0.055,nz0+dz+0.02,0.03,0.03,ny0+0.02,ny0+0.02+[0.17,0.17,0.15,0.12][k],lam([0xc58a4a,0xc58a4a,0xc58a4a,0xf2efe8][k],{roughness:0.3,transparent:k<3,opacity:k<3?0.85:1})); });   // amber-labelled bottles
+    const glow=[]; const strip=function(a,c,z0_,z1_,y0,y1){ const m=new THREE.MeshBasicMaterial({color:0xf2e2cc}); glow.push(m); bx(LG[2],a,c,z0_,z1_,y0,y1,m,oc); };
+    strip(x1-0.09,x1-0.08,nz0+0.03,nz1-0.03,ny1-0.035,ny1-0.025);   // niche light
+    bx(LG[2],x1-0.12,x1,z0,z1,top-0.1,top-0.08,M.trim,oc); strip(x1-0.1,x1-0.06,z0+0.02,z1-0.02,top-0.105,top-0.1);   // ceiling cove washing down the stone wall
+    strip(x0,x1,zt-0.012,zt-0.004,b+0.012,b+0.02);   // floating glow at the apron's foot
+    const CL=new THREE.PointLight(0xffc27a,0,3.2,2); CL.position.set(x1-0.35,top-0.25,(z0+z1)/2); LG[2].add(CL); E.pointLights.push(CL);
+    E.bathGlow=glow; let on=null; furnAnims.push({live:function(){ const w=!E.sleepOn&&(E.hour>=16.5||E.hour<6.5); return w!==on; },f:function(){ on=!E.sleepOn&&(E.hour>=16.5||E.hour<6.5); glow.forEach(function(m){ m.color.setHex(on?0xffbe76:0xf2e2cc); }); CL.intensity=(on?0.28:0)*E.PLI; return false; }});   // 2700 K, the mood light at dusk
   })();
   (function(){ const S=Catalog.homeSauna({depth:1.5,flip:true,hingeIn:true,doorW:0.6}), wx=WX(2,162)-0.75, wz=WZ(2,67); fixture(2,S,wx,wz,0);   // 1.5 x 1.2 m cabin facing the washroom: door on the left half, handle on the left, opening to the right
     const r=S.doorRect, b=E.base(2), x0=wx+r[0], x1=wx+r[1], z0=wz+r[2], z1=wz+r[3];
     const col=addCol(2,x0,x1,z0,z1,b,b+1.95,'d'), d={l:2,pv:S.doorPivot,th:S.doorTh*0.94,open:false,t:0,col:col,mid:[(x0+x1)/2,(z0+z1)/2],label:function(o){ return o?'關上三溫暖門':'打開三溫暖門'; }};
     col.door=d; doors.push(d); })();
-  fixture(2,Catalog.bathWallSet({shelfFrom:722,mirror:'tall',mirrorH:1.12,mirrorX:0.435,mirrorY:0.85,barLeft:true,noSoap:true}),WX(2,475),WZ(2,205)-TI/2,2);   // shower on the south wall, clear of the east window: tall mirror over a short counter, slide bar at the east end
-  fixture(2,Catalog.bathStool(),WX(2,455),WZ(2,120),2); fixture(2,Catalog.washBowl(),WX(2,555),WZ(2,108),0);   // stool facing the mirror, bowl by the wall
+  (function(){ const P=Catalog.bathWallSet({shelfFrom:700,mirror:'tall',mirrorH:0.62,mirrorX:0.2,mirrorY:0.95,noSoap:true}), blk=lam(0x1e1f21,{roughness:0.45,metalness:0.3}); P.group.traverse(function(o){ if(o.isMesh&&o.material&&o.material.metalness>=0.8) o.material=blk; }); fixture(2,P,WX(2,580)-TE/2,WZ(2,140),3);   // shower set on the stone east wall in the wash area, matte black
+    const W2=E.bathGlow; if(W2){ const m=W2[0].clone(); W2.push(m); bx(LG[2],WX(2,580)-TE/2-0.12,WX(2,580)-TE/2-0.11,WZ(2,140)-0.25,WZ(2,140)+0.52,E.base(2)+0.758,E.base(2)+0.762,m,{cast:false}); } })();   // a soft LED line under the counter
+  fixture(2,Catalog.bathStool(),WX(2,520),WZ(2,150),3); fixture(2,Catalog.washBowl(),WX(2,560),WZ(2,190),0);   // stool facing the east wall's mirror, bowl by the wall
   fixture(2,Catalog.bathDryer(CH),WX(2,500),WZ(2,120),0); fixture(2,Catalog.laundryPole(CH,1.1),WX(2,490),WZ(2,160),1);   // ceiling dryer over the bath, the drying pole along the south side
   [[0,155,180],[0,192,560],[1,350,600],[1,470,330],[1,57,280],[2,412,590],[2,440,300],[2,180,480],[1,412,110]].forEach(function(q){ fixture(q[0],Catalog.smokeAlarm(CH),WX(q[0],q[1]),WZ(q[0],q[2]),0); });
   fixture(1,Catalog.wallAC(2.4),WX(1,115)+TI/2,WZ(1,600),0); fixture(1,Catalog.acRemote(),WX(1,115)+TI/2,WZ(1,655),0); bx(LG[1],WX(1,115)+TI/2,WX(1,115)+TI/2+0.008,WZ(1,655)-0.035,WZ(1,655)+0.035,E.base(1)+2.0,E.base(1)+2.12,lam(0xf4f3ef,{roughness:0.35})); fixture(2,Catalog.wallAC(2.4),WX(2,300),WZ(2,460)+TI/2,3); fixture(1,Catalog.wallAC(2.3),WX(1,215)+TI/2+0.1,WZ(1,135),0); fixture(0,Catalog.wallAC(2.4),WX(0,310)-TI/2,WZ(0,150),2);   // living, bedroom, study (2F), mirror room
