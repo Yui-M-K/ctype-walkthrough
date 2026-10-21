@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261023a">
+<link rel="stylesheet" href="lib/storeys.css?v=20261023b">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -53,6 +53,12 @@
       <button type="button" class="tog" data-t="sakura" aria-pressed="true">櫻花</button>
       <button type="button" class="tog" data-t="maple" aria-pressed="false">紅葉</button>
     </div>
+    <h3>窗外景色</h3>
+    <div id="sceneryBtns" class="seg" style="grid-template-columns:repeat(3,1fr)">
+      <button type="button" class="tog" data-s="tokyo" aria-pressed="false">東京住宅街</button>
+      <button type="button" class="tog" data-s="green" aria-pressed="false">綠意景觀</button>
+      <button type="button" class="tog" data-s="mix" aria-pressed="true">混合</button>
+    </div>
     <h3 id="houseH" hidden>房子</h3>
     <div id="houseBtns" class="seg" hidden></div>
     <h3>所有門</h3>
@@ -60,7 +66,7 @@
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
     <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿，兩指一起拖曳可轉向與抬頭低頭；電腦：滑鼠拖曳轉向，WASD／方向鍵移動，Shift 加速，Ctrl 蹲下（再按一次站起來）。走近門或家具並面向它，畫面下方會列出操作按鈕；電腦上也可以把滑鼠移到東西上（會亮框並顯示動作）直接點擊，或按 E 互動（沒指著東西時 E 操作列表第一個，1–3 鍵選列表）。方向鍵左右可原地轉向。階梯直接走上去就會換樓層。「俯瞰」可選擇看哪一層（屋頂與上層會被拿掉）。</p>
-    <p class="help"><b>這棟房子：</b>【家事動線版】由二樓浴室版延伸：3F 主臥前有陽台（曬衣，和洗衣更衣間同一層）；2F 客廳南面是可以躺著打滾的ごろ寝區（2F 樓板往外推 95 cm，和 3F 陽台對齊）；1F 門面上方加一道薄型玄關雨遮。浴室（浴缸 1.6 m）、三溫暖、廁所都從 3F 的洗面室進出，洗面室旁是洗衣更衣間（洗脫烘、吊衣桿），和主臥同一層；2F 北側改成淋浴間・廁所・洗面室，以及約 4.4 帖的書房；1F 玄關鞋櫃旁加穿鞋椅，儲藏室改成一般高度的窗，鏡子房和儲藏室的門集中在東南角，日後可改成第二間小孩房。以下為共通說明：依「住宅要望書」設計、東京常見尺寸的三層透天：建物 5.8 × 8.5 m（每層約 49 m²，三層合計約 148 m²・約 45 坪）、土地約 28.6 坪（94.4 m²，北側多買 60 cm）。1F 鏡子房（北牆整面鏡子＋可拉下遮住的捲簾、緣側）、拉門儲藏室（收納櫃・層架・貓砂盆）、鏡子房門旁附小洗手台的廁所、玄關廳前方的土間（附門的鞋櫃、可收起的置物架、鑰匙掛架）與內退 60 cm 的玄關門廊（出門左轉直接進車庫、不淋雨）、3 m 寬車庫（Tesla 充電樁、按鈕開關車門）；2F 約 18 帖的整層 LDK（水槽與 IH 爐在同一座對面式半島、北牆摺疊六人餐桌、85 吋壁掛電視、電動躺椅沙發、胡桃木升降茶几、斜放的高級按摩椅、地暖、間接照明、貓走道）與廁所、南面的ごろ寝出窓；3F 主臥（約 6.5 帖，前方陽台：落地拉門、1.1 m 玻璃欄杆）＋更衣間、書房（約 9 帖、3D 列印機，日後可當小孩房）、洗面脫衣室（洗臉台與洗衣機並排）、從浴室進出的三溫暖室（附休息長椅）、加大的浴室，以及從樓梯平台進出、附洗手台的廁所；二樓往三樓的樓梯往南移 60 cm，上樓後有 1.2 m 的平台。庭院的主樹可在櫻花／紅葉之間切換，擺設可選「木平台＋桌椅」「只有烤肉架」「全部收起來」，有烤肉架時可以開「烤肉模式」。全室無段差、拉門為主、樓梯單側扶手（下樓時的右手邊・西側外牆，選單可切換兩側）與感應腳燈，貓用柵欄裝在 2F 往 1F 的樓梯口（貓咪不下 1F）。鄰地三面 1.8 m 木格柵、臨路矮牆＋門扉＋伸縮門。主臥的窗簾會依「日照時間」自動開關。原本較寬敞的版本在選單「理想之家（寬敞版）」。</p>
+    <p class="help"><b>這棟房子：</b>【家事動線版】由二樓浴室版延伸：3F 主臥前有陽台（曬衣，和洗衣更衣間同一層）；2F 客廳南面是可以躺著打滾的ごろ寝區（2F 樓板往外推 95 cm，和 3F 陽台對齊）；1F 門面上方加一道薄型玄關雨遮。浴室（浴缸 1.6 m）、三溫暖、廁所都從 3F 的洗面室進出，洗面室旁是洗衣更衣間（洗脫烘、吊衣桿），和主臥同一層；2F 北側改成淋浴間・廁所・洗面室，以及約 4.4 帖的書房；1F 玄關鞋櫃旁加穿鞋椅，儲藏室改成一般高度的窗，鏡子房和儲藏室的門集中在東南角，日後可改成第二間小孩房。以下為共通說明：依「住宅要望書」設計、東京常見尺寸的三層透天：建物 5.8 × 8.5 m（每層約 49 m²，三層合計約 148 m²・約 45 坪）、土地約 28.6 坪（94.4 m²，北側多買 60 cm）。窗外景色可在選單切換（東京住宅街／綠意景觀／混合）。1F 鏡子房（北牆整面鏡子＋可拉下遮住的捲簾、緣側）、拉門儲藏室（收納櫃・層架・貓砂盆）、鏡子房門旁附小洗手台的廁所、玄關廳前方的土間（附門的鞋櫃、可收起的置物架、鑰匙掛架）與內退 60 cm 的玄關門廊（出門左轉直接進車庫、不淋雨）、3 m 寬車庫（Tesla 充電樁、按鈕開關車門）；2F 約 18 帖的整層 LDK（水槽與 IH 爐在同一座對面式半島、北牆摺疊六人餐桌、85 吋壁掛電視、電動躺椅沙發、胡桃木升降茶几、斜放的高級按摩椅、地暖、間接照明、貓走道）與廁所、南面的ごろ寝出窓；3F 主臥（約 6.5 帖，前方陽台：落地拉門、1.1 m 玻璃欄杆）＋更衣間、書房（約 9 帖、3D 列印機，日後可當小孩房）、洗面脫衣室（洗臉台與洗衣機並排）、從浴室進出的三溫暖室（附休息長椅）、加大的浴室，以及從樓梯平台進出、附洗手台的廁所；二樓往三樓的樓梯往南移 60 cm，上樓後有 1.2 m 的平台。庭院的主樹可在櫻花／紅葉之間切換，擺設可選「木平台＋桌椅」「只有烤肉架」「全部收起來」，有烤肉架時可以開「烤肉模式」。全室無段差、拉門為主、樓梯單側扶手（下樓時的右手邊・西側外牆，選單可切換兩側）與感應腳燈，貓用柵欄裝在 2F 往 1F 的樓梯口（貓咪不下 1F）。鄰地三面 1.8 m 木格柵、臨路矮牆＋門扉＋伸縮門。主臥的窗簾會依「日照時間」自動開關。原本較寬敞的版本在選單「理想之家（寬敞版）」。</p>
   </div>
 </div>
 <div id="load">載入 3D 場景…<small>首次開啟需要幾秒鐘</small></div>
@@ -69,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261023a"></script>
-<script src="lib/furniture.js?v=20261023a"></script>
-<script src="lib/catalog.js?v=20261023a"></script>
-<script src="lib/look.js?v=20261023a"></script>
-<script src="lib/houses.js?v=20261023a"></script>
-<script src="lib/perf.js?v=20261023a"></script>
-<script src="lib/finish.js?v=20261023a"></script>
-<script src="lib/storeys.js?v=20261023a"></script>
+<script src="lib/people.js?v=20261023b"></script>
+<script src="lib/furniture.js?v=20261023b"></script>
+<script src="lib/catalog.js?v=20261023b"></script>
+<script src="lib/look.js?v=20261023b"></script>
+<script src="lib/houses.js?v=20261023b"></script>
+<script src="lib/perf.js?v=20261023b"></script>
+<script src="lib/finish.js?v=20261023b"></script>
+<script src="lib/storeys.js?v=20261023b"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -95,6 +101,7 @@ Walk.Storeys({THREE:THREE,EffectComposer:EffectComposer,RenderPass:RenderPass,GT
 /* house id (layout memory) and the furniture edit store */
 id:"idealC",
 storageKey:"idealC.v1",
+scenery:{lot:[-2.2,6.37,-1.1,10.0],road:[10,16],y:-0.6},   // what lies beyond the lot: switchable in the menu
 sheer:true,
 grooveHandles:true,   // kitchen fronts open by finger grooves   // white sheer curtains behind every curtain
 /* plan units -> metres, and each storey's plan origin */
@@ -520,7 +527,7 @@ layout:function(E){
 return [
   /* 2F living: corridor along the stair wall from the stair top to flight B; TV and clock on the east wall, cat walkway on the south wall beside the lounging bay */
   ['tv','tv86',1,553,660,'W',function(){ const p=Catalog.tvBoard(85,0,true,{w:1.891,h:1.135,d:0.43,len:2.4,wall:true}), on=function(){ return document.getElementById('tTv').getAttribute('aria-pressed')==='true'; };   // standing back from the TV shows its size and switches it
-    p.actions.push({x:-1.5,z:0,part:p.tvParts,label:function(){ return '85 吋電視・'+(on()?'關掉':'打開'); },act:function(){ E.setTv(!on()); }}); return p; }],['sofa','reclinerSofa',1,280,660,'E'],['lift','liftDining',1,421,660,'E'],['rugL','rugRound',1,421,660,'E'],['purifL','airPurifier',1,138,384,'E'],['purifB','airPurifier',2,545,815,'W'],['dryer','dryerStandPink',1,205,808,'N',function(){ return Catalog.dryerStand({pink:true,plug:[-0.355,0.225,0.15]}); }],['massage','massageChair',1,290,501,'E',function(){ const p=Catalog.massageChair(); p.group.rotation.y=-0.18; return p; }],
+    p.actions.push({x:-1.5,z:0,part:p.tvParts,label:function(){ return '85 吋電視・'+(on()?'關掉':'打開'); },act:function(){ E.setTv(!on()); }}); return p; }],['sofa','reclinerSofa',1,280,660,'E'],['lift','liftDining',1,421,660,'E'],['rugL','rugRound',1,421,660,'E'],['purifL','airPurifier',1,138,384,'E'],['purifB','airPurifier',2,545,815,'W'],['dryer','dryerStandPink',1,205,808,'N',function(){ return Catalog.dryerStand({pink:true,plug:[-0.355,0.225,0.15]}); }],['massage','massageChair',1,298,498,'E',function(){ const p=Catalog.massageChair(); p.group.rotation.y=-0.367; return p; }],
   ['map','worldMap',1,119.5,560,'E'],
   ['clock','wallClock',1,119.5,400,'E',function(){ return Catalog.wallClock('oak'); }],
   ['catA','catStep',1,40,843.5,'N',function(){ return Catalog.catStep(0.85); }],['catBed','catBed',1,100,843.5,'N',function(){ return Catalog.catBed(1.15); }],['catHouse','catHouse',1,160,843.5,'N',function(){ return Catalog.catHouse(1.45); }],
