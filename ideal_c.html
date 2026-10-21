@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261022t">
+<link rel="stylesheet" href="lib/storeys.css?v=20261022u">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261022t"></script>
-<script src="lib/furniture.js?v=20261022t"></script>
-<script src="lib/catalog.js?v=20261022t"></script>
-<script src="lib/look.js?v=20261022t"></script>
-<script src="lib/houses.js?v=20261022t"></script>
-<script src="lib/perf.js?v=20261022t"></script>
-<script src="lib/finish.js?v=20261022t"></script>
-<script src="lib/storeys.js?v=20261022t"></script>
+<script src="lib/people.js?v=20261022u"></script>
+<script src="lib/furniture.js?v=20261022u"></script>
+<script src="lib/catalog.js?v=20261022u"></script>
+<script src="lib/look.js?v=20261022u"></script>
+<script src="lib/houses.js?v=20261022u"></script>
+<script src="lib/perf.js?v=20261022u"></script>
+<script src="lib/finish.js?v=20261022u"></script>
+<script src="lib/storeys.js?v=20261022u"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -190,7 +190,7 @@ notes:[
 noteText:{
   fridge:['日立 冰箱 R-HZC54Y','540 L・真空冰溫・寬 65 × 深 69.9 × 高 184.3 cm・水晶白玻璃門；上面是對開門的冷藏室，下面依序是製冰室／切換室、蔬果室、冷凍室，全部可以打開'],
   washer:['滾筒洗脫烘洗衣機','放在 3F 洗衣更衣間，洗完直接烘乾，掛上旁邊的吊衣桿'],
-  tv:['85 吋電視（壁掛）＋落地電視櫃','電視用薄型壁掛架掛在東牆、離牆約 2.5 cm，下緣比電視櫃高約 12 cm、畫面中心離地約 1.05 m（坐沙發的視線高度），聲霸掛在畫面下方；中間主機層的上板是放在框邊上的橡木板，抬起 3.5 cm 往左滑到旁邊的檯面上就能從上面拿東西，不用往上掀；電視櫃：左右是深抽屜（書・桌遊），中間主機層有下掀門和可拿起的上板，背牆插座排＋散熱孔；電視櫃長 240 cm，主機層背板上有一排插座（含 USB-C）、上下兩排通風孔和對著牆上配線出口的開口，Switch 底座、路由器和電視盒都插在上面'],
+  tv:['85 吋電視（壁掛）＋落地電視櫃','電視用薄型壁掛架掛在東牆、離牆約 2.5 cm，下緣比電視櫃高約 12 cm、畫面中心離地約 1.05 m（坐沙發的視線高度），聲霸掛在畫面下方；主機層上板往西推開（滑進左側檯面下）：下降 2.8 cm 落到隱藏滑軌上再往西滑，東端留一點和手指凹口方便拉回，不用往上掀，碰不到聲霸和電視；電視櫃：左右是深抽屜（書・桌遊），中間主機層有下掀門和可往西推開的上板，背牆插座排＋散熱孔；電視櫃長 240 cm，主機層背板上有一排插座（含 USB-C）、上下兩排通風孔和對著牆上配線出口的開口，Switch 底座、路由器和電視盒都插在上面'],
   sofa:'210 × 97 × 100 cm，中間有杯架小桌、扶手有 USB；電源與吹風機共用插座',
   lift:'茶几／餐桌／書桌三段高度，四張同尺寸凳子收在桌下',
   massage:'HY-5018：直立 146 × 74.5 × 114.5 cm，躺平 169 cm，腳靠會伸縮',
