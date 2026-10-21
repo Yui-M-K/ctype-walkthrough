@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261022w">
+<link rel="stylesheet" href="lib/storeys.css?v=20261022x">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261022w"></script>
-<script src="lib/furniture.js?v=20261022w"></script>
-<script src="lib/catalog.js?v=20261022w"></script>
-<script src="lib/look.js?v=20261022w"></script>
-<script src="lib/houses.js?v=20261022w"></script>
-<script src="lib/perf.js?v=20261022w"></script>
-<script src="lib/finish.js?v=20261022w"></script>
-<script src="lib/storeys.js?v=20261022w"></script>
+<script src="lib/people.js?v=20261022x"></script>
+<script src="lib/furniture.js?v=20261022x"></script>
+<script src="lib/catalog.js?v=20261022x"></script>
+<script src="lib/look.js?v=20261022x"></script>
+<script src="lib/houses.js?v=20261022x"></script>
+<script src="lib/perf.js?v=20261022x"></script>
+<script src="lib/finish.js?v=20261022x"></script>
+<script src="lib/storeys.js?v=20261022x"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -143,7 +143,7 @@ rooms:[
 /* accent walls: TV wall in the living room (sage), head wall of the bedroom (mist), north wall of the study (peach) */
 accents:[{l:1,x0:560,x1:575,y0:250,y1:850,w:'sage'},{l:2,x0:560,x1:575,y0:465,y1:845,w:'mist'}],
 /* curtains: [storey, wall side, a, b, wall line, auto] — the master bedroom's follow the time of day (smart home) */
-curtains:[[0,'W',55,245,0,false,{color:0xf7f3ec,tie:true}],[1,'S',255,560,850,false,{color:0xc9d2c2},{off:0.12,top:2.474,bottom:0.015,noSheer:true}],[2,'S',250,530,850,true],[2,'E',300,440,580]],
+curtains:[[0,'W',55,245,0,false,{color:0xf7f3ec,tie:true}],[1,'S',268,552,850,false,{color:0xc9d2c2},{off:0.1,top:2.474,bottom:0.015,noSheer:true}],[2,'S',250,530,850,true],[2,'E',300,440,580]],
 /* equipment notes in the menu: [storey, plan x, plan y, name, note] for built-ins; placed furniture is listed automatically (noteText[id]: note or [name, note]) */
 notes:[
   [1,300,600,'床暖房（地暖）','LDK 全面鋪設。選單「顯示地暖範圍（客廳）」可看到範圍'],
@@ -764,7 +764,9 @@ fixtures:function(E){
     E.cylm(G,(bx0+bx1)/2,(bz0+bz1)/2,0.018,0.018,top-0.145,top-0.143,M.steel);   // drain
     bx(G,x0,xW,z0,z1,top-0.2,top,ss);   // a 2 cm solid-surface end, the counter is all basin
     addCol(1,2*cx-x1,2*cx-x0,2*cz-z1,2*cz-z0,top-0.2,top,'f');
-    const tap=lam(0xd9dcdf,{metalness:0.9,roughness:0.2}); bx(G,(bx0+bx1)/2-0.015,(bx0+bx1)/2+0.015,z0+0.01,z0+0.04,top,top+0.17,tap,oc); bx(G,(bx0+bx1)/2-0.012,(bx0+bx1)/2+0.012,z0+0.01,z0+0.13,top+0.15,top+0.17,tap,oc);
+    (function(){ const tap=lam(0xc4c8cc,{metalness:0.85,roughness:0.35}), xc=(bx0+bx1)/2, zc=z0+0.035, h=top+0.16, R=0.05, add=function(geo,x,y,z,rx){ const m=new THREE.Mesh(geo,tap); m.position.set(x,y,z); m.rotation.x=rx||0; m.castShadow=true; G.add(m); };   // slim deck faucet, brushed, as in the 1F powder room
+      add(new THREE.CylinderGeometry(0.024,0.026,0.012,24),xc,top+0.006,zc); add(new THREE.CylinderGeometry(0.012,0.012,h-top,16),xc,(top+h)/2,zc); const bend=new THREE.Mesh(new THREE.TorusGeometry(R,0.011,10,20,Math.PI/2),tap); bend.position.set(xc,h,zc+R); bend.rotation.y=Math.PI/2; bend.rotation.z=Math.PI/2; G.add(bend);
+      add(new THREE.CylinderGeometry(0.011,0.011,0.06,16),xc,h+R,zc+R+0.03,Math.PI/2); add(new THREE.CylinderGeometry(0.009,0.009,0.02,12),xc,h+R-0.012,zc+R+0.058); })();
     E.framedMirror(G,(bx0+bx1)/2,top+0.5,z0,0.32,0.5,0,oak); })();
   fixture(1,Catalog.bathWallSet({standing:true,mirror:true}),WX(1,0)+TE/2,WZ(1,60),1);   // 2F shower room, set up for standing
   (function(){ const b=E.base(1), xw=WX(1,215)+TI/2+0.1, xe=WX(1,580)-TE/2, zn=WZ(1,0)+TE/2, zf=zn+0.62, H=0.72, T=0.03, W=M.cabF, oak=M.oak, oc={cast:false}, dk=lam(0x3a3d41,{roughness:0.6}), xc=xe-0.62, zs=WZ(1,200), HC=1.0, xq=xc-0.3, xt=WX(1,300)-0.105, t=0.018;   // study: one seat; west tall cabinet, 72 cm north run rising in a bent-oak curve to the 1.0 m corner and east counter
@@ -1324,7 +1326,7 @@ lighting:function(E){
   light(2,412,650,0xffe2b8,0.5,7); [[330,330],[490,330]].forEach(function(p){ downlight(2,p[0],p[1],0.3); });
   downlight(2,80,177,0.25); [[220,95],[320,95]].forEach(function(p){ downlight(2,p[0],p[1],0.3); }); downlight(2,430,60,0.35,5);
   [[60,320],[180,330],[180,480],[180,620]].forEach(function(p){ downlight(2,p[0],p[1],0.3); }); [[80,770],[170,770]].forEach(function(p){ downlight(2,p[0],p[1],0.3); });
-  cove(1,200,850,580,850,-1); cove(1,580,210,580,850,-1); cove(1,115,345,115,655,1);
+  cove(1,115,850,580,850,-1); cove(1,580,210,580,850,-1); cove(1,115,345,115,655,1);
   cove(2,245,520,580,520,1);
 },
 
