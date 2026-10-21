@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261023f">
+<link rel="stylesheet" href="lib/storeys.css?v=20261023g">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261023f"></script>
-<script src="lib/furniture.js?v=20261023f"></script>
-<script src="lib/catalog.js?v=20261023f"></script>
-<script src="lib/look.js?v=20261023f"></script>
-<script src="lib/houses.js?v=20261023f"></script>
-<script src="lib/perf.js?v=20261023f"></script>
-<script src="lib/finish.js?v=20261023f"></script>
-<script src="lib/storeys.js?v=20261023f"></script>
+<script src="lib/people.js?v=20261023g"></script>
+<script src="lib/furniture.js?v=20261023g"></script>
+<script src="lib/catalog.js?v=20261023g"></script>
+<script src="lib/look.js?v=20261023g"></script>
+<script src="lib/houses.js?v=20261023g"></script>
+<script src="lib/perf.js?v=20261023g"></script>
+<script src="lib/finish.js?v=20261023g"></script>
+<script src="lib/storeys.js?v=20261023g"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -346,7 +346,7 @@ handrail(1,WX(1,115)-TI/2,-1,WZ(1,360)+0.03,WZ(1,670)-0.03);
   panel([V2(za,0),V2(zc,0)].concat(ridge(za,zc)),WM.hall,x+TI/2,TI);          // wall beside the toilet
   addCol(0,x-TI/2,x+TI/2,za,zb,0,CH,'w');
   /* under-stair cupboards: closed off from the toilet, an inner lining and floor, three doors in the cabinet white with the oak edge */
-  const W=M.cabF, inner=lam(0xf3f0ea,{roughness:0.8}), oakE=lam(0xd9bf96,{roughness:0.45,map:M.oak.map||null}), oc={cast:false}, xw=WX(0,0)+TE/2, t=0.018;
+  const W=M.cabF, inner=lam(0xe3d9ca,{roughness:0.8}), oakE=lam(0xd9bf96,{roughness:0.45,map:M.oak.map||null}), oc={cast:false}, xw=WX(0,0)+TE/2, t=0.018;
   bx(LG[0],xw,x-TI/2,zc-TI/2,zc+TI/2,0.82,line(zc)-0.1,WM.wc,{cast:false});
   bx(LG[0],xw,x-TI/2,zc+TI/2,zb,0.0,0.012,inner,oc);
   const S=[zc,WZ(0,540),WZ(0,612)], leaves=[], parts=[];   // two doors under the taller half; the low end stays plain wall
@@ -579,7 +579,7 @@ fixtures:function(E){
     const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=E.ANISO||4; t.repeat.set(2,2);
     [M.cabF,M.cab].forEach(function(m){ m.map=t; m.bumpMap=t; m.bumpScale=0.0015; m.roughness=0.62; m.color.lerp(new THREE.Color(0xf6efe2),0.25); m.needsUpdate=true; }); setTimeout(function(){ const seen=new Set(); E.scene.traverse(function(o){ const m=o.isMesh&&o.material; if(m&&!Array.isArray(m)&&!seen.has(m)&&!m.map&&m.color&&m.color.getHex()===0xf3f1ec){ seen.add(m); m.map=t; m.roughness=0.62; m.needsUpdate=true; } }); },0); })();   // the floor-standing TV board's matte white too   // one white for every cabinet carcass and front, so the kitchen reads as a single built-in
   (function(){                                 // kitchen built-in wall: pantry, appliance cabinet and fridge under one band of cupboards; lines shared with the appliance cabinet (10 cm kick, 85 cm counter, 1.89 m band: 5 cm vent over the 1.843 m fridge)
-    const b=E.base(1), top=b+CH-0.005, W=M.cabF, inner=lam(0xf3f0ea,{roughness:0.8}), seam=lam(0x8f887d), glow=new THREE.MeshBasicMaterial({color:0xffe3b8}), oc={cast:false}, t=0.018;
+    const b=E.base(1), top=b+CH-0.005, W=M.cabF, inner=lam(0xd9bf96,{roughness:0.5,map:M.oak.map||null}), seam=lam(0x8f887d), glow=new THREE.MeshBasicMaterial({color:0xffe3b8}), oc={cast:false}, t=0.018;
     const x0=WX(1,321), x1=WX(1,371), zb=WZ(1,225)+TI/2, zf=WZ(1,279.5), KICK=0.1, BAYH=0.4, CT=0.85,  NI=1.4, BAND=1.89;
     const carcass=function(a,c,z0,y0,y1){ bx(LG[1],a,c,z0,z0+t,y0,y1,inner,oc); bx(LG[1],a,a+t,z0,zf,y0,y1,W); bx(LG[1],c-t,c,z0,zf,y0,y1,W); bx(LG[1],a,c,z0,zf,y0,y0+t,W); bx(LG[1],a,c,z0,zf,y1-t,y1,W); };
     const pins=function(a,c,z0,y0,y1){ [a+t,c-t-0.003].forEach(function(x){ [z0+0.06,zf-0.05].forEach(function(z){ for(let y=y0+0.06;y<y1-0.05;y+=0.032) bx(LG[1],x,x+0.003,z-0.003,z+0.003,y-0.003,y+0.003,seam,oc); }); }); };   // shelf-pin holes every 32 mm
@@ -736,7 +736,7 @@ fixtures:function(E){
   [[0,155,180],[0,192,560],[1,350,600],[1,470,330],[1,57,280],[2,412,590],[2,440,300],[2,180,480],[1,412,110]].forEach(function(q){ fixture(q[0],Catalog.smokeAlarm(CH),WX(q[0],q[1]),WZ(q[0],q[2]),0); });
   fixture(1,Catalog.wallAC(2.34),WX(1,115)+TI/2,WZ(1,600),0); fixture(1,Catalog.acRemote(),WX(1,115)+TI/2,WZ(1,655),0); bx(LG[1],WX(1,115)+TI/2,WX(1,115)+TI/2+0.008,WZ(1,655)-0.035,WZ(1,655)+0.035,E.base(1)+2.0,E.base(1)+2.12,lam(0xf4f3ef,{roughness:0.35})); fixture(2,Catalog.wallAC(2.4),WX(2,300),WZ(2,460)+TI/2,3); fixture(1,Catalog.wallAC(2.3),WX(1,215)+TI/2+0.1,WZ(1,135),0); fixture(0,Catalog.wallAC(2.4),WX(0,310)-TI/2,WZ(0,150),2);   // living, bedroom, study (2F), mirror room
   fixture(2,Catalog.acRemote(),WX(2,365),WZ(2,460)+TI/2,3); fixture(1,Catalog.acRemote(),WX(1,215)+TI/2+0.1,WZ(1,190),0); fixture(0,Catalog.acRemote(),WX(0,310)-TI/2,WZ(0,90),2);   // AC remotes beside each unit's door-side wall
-  (function(){ const b=E.base(2), zs=WZ(2,460)-TI/2, xw=WX(2,245)+TI/2, xe=WX(2,580)-TE/2, D=0.6, zf=zs-D, top=b+CH-0.005, W=M.cabF, oak=M.oak, t=0.018, rv=0.003, oc={cast:false}, inn=lam(0xeae4d8,{roughness:0.6}), kick=lam(0x8f887d,{roughness:0.8});   // laundry & dressing room: family wardrobe on the south wall
+  (function(){ const b=E.base(2), zs=WZ(2,460)-TI/2, xw=WX(2,245)+TI/2, xe=WX(2,580)-TE/2, D=0.6, zf=zs-D, top=b+CH-0.005, W=M.cabF, oak=M.oak, t=0.018, rv=0.003, oc={cast:false}, inn=lam(0xe1d7c7,{roughness:0.6}), kick=lam(0x8f887d,{roughness:0.8});   // laundry & dressing room: family wardrobe on the south wall
     const xs=[xw,xw+0.48,xw+1.28,xw+1.88,WX(2,520)];   // ironing | short-hang | long-hang | regular
     bx(LG[2],xs[0],xs[4],zf+0.04,zs,b,b+0.08,kick,oc); xs.forEach(function(x,i){ bx(LG[2],i===0?x:x-t/2,i===xs.length-1?x:x+t/2,zf,zs,b,top,W); }); bx(LG[2],xs[0],xs[4],zf,zs,b+0.08,b+0.1,W); bx(LG[2],xs[0],xs[4],zf,zs,top-t,top,W); bx(LG[2],xs[0],xs[4],zs-0.01,zs,b,top,inn,oc);
     const acts=function(label,G,parts,set,pt){ let cur=0, tg=0, last=null; furnThings.push({pt:pt,l:2,part:parts,on:function(){ return true; },label:function(){ return (tg?'關上':'打開')+label; },act:function(){ tg=tg?0:1; last=null; }});
@@ -806,6 +806,19 @@ fixtures:function(E){
     (function(){ const x=xw, z0=WZ(2,233), z1=WZ(2,277); E.framedMirror(LG[2],x,b+1.04,(z0+z1)/2,z1-z0,1.64,Math.PI/2,oak); })();
   })();
   fixture(2,Catalog.laundryBasket(1.07),WX(2,540),WZ(2,239),0);
+  setTimeout(function(){   // white-on-white pass once everything is placed: small white objects become a cooler glossy white, white textiles a warmer sheen, against the warm matte cabinets and walls
+    const surf=new Set([M.cabF,M.cab,M.trim,M.door]); Object.keys(E.WM).forEach(function(k){ surf.add(E.WM[k]); });
+    const big=new Set(), uses=new Map(), B=new THREE.Box3(), sz=new THREE.Vector3(); E.scene.updateMatrixWorld(true);
+    E.scene.traverse(function(o){ if(!o.isMesh||!o.material||Array.isArray(o.material)) return; const m=o.material; B.setFromObject(o); B.getSize(sz); if(Math.max(sz.x,sz.y,sz.z)>1.3) big.add(m); uses.set(m,(uses.get(m)||0)+1); });
+    const cool=new THREE.Color(0xf7f9fb), warm=new THREE.Color(0xf1ebe1);
+    uses.forEach(function(n,m){ if(surf.has(m)||big.has(m)||!m.isMeshStandardMaterial||m.transparent||m.map||(m.emissive&&m.emissive.getHex()>0)) return;
+      const c=m.color, lum=c.r*0.3+c.g*0.55+c.b*0.15; if(lum<0.84) return;
+      if(m.isMeshPhysicalMaterial&&m.sheen>0){ c.lerp(warm,0.5); m.sheenRoughness=0.4; if(m.sheenColor) m.sheenColor.copy(c).lerp(new THREE.Color(1,1,1),0.6); }
+      else { c.lerp(cool,0.55); m.roughness=Math.min(m.roughness,0.26); m.envMapIntensity=Math.max(m.envMapIntensity||1,1.15); }
+      m.needsUpdate=true; E.__w59=(E.__w59||0)+1; });
+    E.renderer.shadowMap.needsUpdate=true; },0);
+  (function(){ const b=E.base(1), x0=WX(1,321), x1=WX(1,371), zf=WZ(1,279.5), strip=new THREE.MeshBasicMaterial({color:0xfff0dc}); bx(LG[1],x0+0.03,x1-0.03,zf-0.06,zf-0.045,b+1.1-0.022,b+1.1-0.018,strip,{cast:false}); })();   // a warm strip under the pantry's fixed shelf
+
   (function(){ const oc={cast:false}, strips=[], glows=[];   // warm accent lights that come on at dusk: toe-kick glows, a TV bias light, picture lights, a garden uplight
     const strip=function(l,x0,x1,y0,y1,z0,z1){ const m=new THREE.MeshBasicMaterial({color:0xe9dccb}); strips.push(m); bx(LG[l],x0,x1,z0,z1,y0,y1,m,oc); };
     const glowTex=(function(){ const c=document.createElement('canvas'); c.width=c.height=128; const g=c.getContext('2d'), gr=g.createRadialGradient(64,64,0,64,64,64); gr.addColorStop(0,'rgba(255,190,120,0.9)'); gr.addColorStop(1,'rgba(255,190,120,0)'); g.fillStyle=gr; g.fillRect(0,0,128,128); return new THREE.CanvasTexture(c); })();
@@ -912,7 +925,7 @@ fixtures:function(E){
     E.framedMirror(G,(bx0+bx1)/2,top+0.5,z0,0.32,0.5,0,oak); })();
   fixture(1,Catalog.bathWallSet({standing:true,mirror:true}),WX(1,0)+TE/2,WZ(1,60),1);   // 2F shower room, set up for standing
   (function(){ const b=E.base(1), xw=WX(1,215)+TI/2+0.1, xe=WX(1,580)-TE/2, zn=WZ(1,0)+TE/2, zf=zn+0.62, H=0.72, T=0.03, W=M.cabF, oak=M.oak, oc={cast:false}, dk=lam(0x3a3d41,{roughness:0.6}), xc=xe-0.62, zs=WZ(1,200), HC=1.0, xq=xc-0.3, xt=WX(1,300)-0.105, t=0.018;   // study: one seat; west tall cabinet, 72 cm north run rising in a bent-oak curve to the 1.0 m corner and east counter
-    const xa=xt+0.5, xk=xa+1.18, kick=lam(0x8f887d,{roughness:0.8}), inn=lam(0xeae4d8,{roughness:0.6}), AP=0.07;   // drawer stack | knee | PC cubby | curve cubby
+    const xa=xt+0.5, xk=xa+1.18, kick=lam(0x8f887d,{roughness:0.8}), inn=lam(0xe1d7c7,{roughness:0.6}), AP=0.07;   // drawer stack | knee | PC cubby | curve cubby
     /* west tall cabinet, floor to ceiling, one inset door, adjustable shelves */
     (function(){ const x0=xw, x1=xt, top=b+E.CH-0.005; bx(LG[1],x0,x1,zn,zf,b,b+0.08,kick,oc); [[x0,x0+t],[x1-t,x1]].forEach(function(r){ bx(LG[1],r[0],r[1],zn,zf,b,top,W); }); bx(LG[1],x0,x1,zn,zf,b+0.08,b+0.1,W); bx(LG[1],x0,x1,zn,zf,top-t,top,W); bx(LG[1],x0,x1,zn,zn+0.01,b,top,inn,oc);
       [x0+t,x1-t-0.003].forEach(function(x){ [zn+0.06,zf-0.06].forEach(function(z){ for(let y=0.2;y<E.CH-0.1;y+=0.032) bx(LG[1],x,x+0.003,z-0.003,z+0.003,b+y-0.003,b+y+0.003,lam(0x8f887d),oc); }); });
@@ -1175,7 +1188,7 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,225)-TI/2-WZ(2,17
 })();
 (function(){                                   // genkan built-in: a floating shoe cabinet to the ceiling and a bench joined to it in the same white with the same oak edge; shoes in daily use under the bench, hooks above it
   const x0=WX(0,0)+TE/2, xa=WX(0,65), z1=WZ(0,790)-TE/2, D=0.38, zf=z1-D, top=CH-0.005, oc={cast:false};
-  const W=M.cabF, inner=lam(0xf3f0ea,{roughness:0.8}), glow=new THREE.MeshBasicMaterial({color:0xffe3b8}), seam=lam(0x8f887d), t=0.018;
+  const W=M.cabF, inner=lam(0xe3d9ca,{roughness:0.8}), glow=new THREE.MeshBasicMaterial({color:0xffe3b8}), seam=lam(0x8f887d), t=0.018;
   const LO=0.95, HI=1.42, sx=xa, sx1=xa+0.18, xe=sx1+t;   // sx..xe: the shallow side unit facing the doma, lower part only
   /* floor-standing lower cupboard, an open niche (oak counter, LED), then one full-width upper cupboard; both on adjustable shelves */
   const box=function(a,b,y0,y1){ bx(LG[0],a,b,z1-t,z1,y0,y1,inner,oc); bx(LG[0],a,a+t,zf,z1,y0,y1,W); bx(LG[0],b-t,b,zf,z1,y0,y1,W); bx(LG[0],a,b,zf,z1,y0,y0+t,W); bx(LG[0],a,b,zf,z1,y1-t,y1,W); };
