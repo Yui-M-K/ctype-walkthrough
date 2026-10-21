@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261021p">
+<link rel="stylesheet" href="lib/storeys.css?v=20261021q">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261021p"></script>
-<script src="lib/furniture.js?v=20261021p"></script>
-<script src="lib/catalog.js?v=20261021p"></script>
-<script src="lib/look.js?v=20261021p"></script>
-<script src="lib/houses.js?v=20261021p"></script>
-<script src="lib/perf.js?v=20261021p"></script>
-<script src="lib/finish.js?v=20261021p"></script>
-<script src="lib/storeys.js?v=20261021p"></script>
+<script src="lib/people.js?v=20261021q"></script>
+<script src="lib/furniture.js?v=20261021q"></script>
+<script src="lib/catalog.js?v=20261021q"></script>
+<script src="lib/look.js?v=20261021q"></script>
+<script src="lib/houses.js?v=20261021q"></script>
+<script src="lib/perf.js?v=20261021q"></script>
+<script src="lib/finish.js?v=20261021q"></script>
+<script src="lib/storeys.js?v=20261021q"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -162,7 +162,7 @@ notes:[
   [2,250,780,'冷氣（主臥）','壁掛式，旁邊牆上掛遙控器'],[1,220,110,'冷氣（書房）','壁掛式，旁邊牆上掛遙控器'],[0,305,250,'冷氣（鏡子房）','壁掛式，旁邊牆上掛遙控器'],
   [0,155,180,'火災警報器','天花板'],[0,192,560,'火災警報器','天花板'],[1,350,600,'火災警報器','天花板'],[1,470,330,'火災警報器','天花板'],[1,57,280,'火災警報器','天花板'],[2,412,590,'火災警報器','天花板'],[2,440,300,'火災警報器','天花板'],[2,180,480,'火災警報器','天花板'],[1,412,110,'火災警報器','天花板'],
   [1,50,140,'洗手台（2F 廁所）','廁所裡馬桶旁的懸空橡木檯面，檯面下式小洗手盆'],[1,150,110,'脫衣間（2F）','淋浴間前方，摺疊門'],[0,37,764,'玄關系統櫃','寬 59 cm（加側邊淺櫃共 78 cm，和土間邊切齊），懸空底座（下方 LED）；下櫃和上櫃中間是 47 cm 高的開放置物檯（橡木檯面、LED），放鑰匙和小盆栽；上下櫃都能打開，按壓式門片、細橡木邊，上櫃門片是鏡子；層板孔每 3.2 cm 一格可調高度，下櫃右側留給靴子；靠土間的側面另有一組淺櫃（上下兩門），上下櫃完全分開，放鞋油、拖鞋和備用鞋盒'],[0,242,756,'穿鞋椅','玄關門東側的土間上，深度和土間一樣、前緣對齊台階邊；座面離木地板 45 cm（一般椅子高度）；下方三層開放格放每天穿的鞋，旁邊牆上兩個掛勾'],[0,65,808,'固定式傘架','玄關門外，不鏽鋼，鎖在外牆和地面上不怕風吹；奶油色鐵管架，鎖在外牆上不怕風吹；上方 12 格每把傘一格：左邊 6 格長傘直接立在地磚上，右邊 6 格折疊傘放在腰高的接水盤上，不用彎腰拿'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
-  [2,410,880,'出窗（腰掛け出窓）','主臥南面的方形出窗（三面玻璃、四坡屋頂），牆面寬 2.2 m、往外凸 55 cm；座面 42 cm 坐得下兩個人，附坐墊和抱枕；下方左右抽屜放睡衣和保養品，中間是開放書櫃'],[0,20,365,'擦手巾','每個洗手台旁和廚房水槽下的櫃門都有毛巾桿，掛著擦手巾'],[0,115,560,'樓梯下收納','樓梯下方較高的一段：兩扇和牆面齊平、同色的按壓門（凹槽把手），放直立吸塵器、拖把、防災用品和囤貨；最矮的一段直接是牆'],[0,40,320,'一樓洗手台','沿馬桶旁西牆的懸空長橡木檯面：靠門那端是檯面下式洗手盆，中段開放格放衛生紙，兩端抽屜，檯面放盆栽和小托盤'],[0,98,305,'馬桶刷收納（每間廁所）','每間廁所牆裡嵌入的細長收納（門片和牆面齊平），上下兩扇門、中間封板隔開：下格放馬桶刷，上格放清潔濕紙巾和備用衛生紙'],[1,345,410,'水槽下清潔用品架','打開水槽下櫃後可以把兩層網籃拉出來，放洗碗精補充瓶、酒精噴霧和海綿'],[0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
+  [2,410,880,'出窗（腰掛け出窓）','主臥南面的方形出窗（三面玻璃、四坡屋頂），牆面寬 2.2 m、往外凸 55 cm；座面 42 cm 坐得下兩個人，附坐墊和抱枕；下方左右抽屜放睡衣和保養品，中間是開放書櫃'],[0,20,365,'擦手巾','每個洗手台旁和廚房水槽下的櫃門都有毛巾桿，掛著擦手巾'],[0,115,560,'樓梯下收納','樓梯下方較高的一段：兩扇和牆面齊平、同色的按壓門（凹槽把手），靠廁所那格直立收著折疊好的嬰兒推車，另一格放防災用品和囤貨；最矮的一段直接是牆'],[0,40,320,'一樓洗手台','沿馬桶旁西牆的懸空長橡木檯面：靠門那端是檯面下式洗手盆，中段開放格放衛生紙，兩端抽屜，檯面放盆栽和小托盤'],[0,98,305,'馬桶刷收納（每間廁所）','每間廁所牆裡嵌入的細長收納（門片和牆面齊平），上下兩扇門、中間封板隔開：下格放馬桶刷，上格放清潔濕紙巾和備用衛生紙'],[1,345,410,'水槽下清潔用品架','打開水槽下櫃後可以把兩層網籃拉出來，放洗碗精補充瓶、酒精噴霧和海綿'],[0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
   [0,155,30,'壁掛喇叭','鏡子房兩側'],
   [0,580,345,'Tesla 充電樁','車庫牆上'],
   [0,240,850,'監視攝影機','玄關門廊與車庫外各一台'],
@@ -334,8 +334,14 @@ handrail(1,WX(1,115)-TI/2,-1,WZ(1,360)+0.03,WZ(1,670)-0.03);
     const m=new THREE.Mesh(new THREE.ExtrudeGeometry(new THREE.Shape([V2(-w,0.01),V2(0,0.01),V2(0,hb),V2(-w,ha)]),{depth:t,bevelEnabled:false}),WM.hall); m.rotation.y=-Math.PI/2; m.castShadow=true; pv.add(m); parts.push(m);
     const g=new THREE.Mesh(new THREE.BoxGeometry(0.003,Math.min(0.4,hb-0.2),0.012),groove); g.position.set(0.0015,Math.min(0.95,ha-0.12)-Math.min(0.4,hb-0.2)/2,-w+0.02); pv.add(g); parts.push(g); leaves.push(pv); }   // finger groove at the free edge
   const xi=(xw+x-TI/2)/2, cap=function(z){ return line(z)-0.32; };   // contents stay under the stair's soffit
-  bx(LG[0],xi-0.08,xi+0.08,S[0]+0.05,S[0]+0.15,0.012,0.08,lam(0x2a2d31,{roughness:0.5}),oc); bx(LG[0],xi-0.02,xi+0.02,S[0]+0.08,S[0]+0.12,0.08,Math.min(1.15,cap(S[0]+0.15)),lam(0xb7bcc2,{metalness:0.6,roughness:0.35}),oc);   // stick vacuum on its charger
-  bx(LG[0],xi+0.1,xi+0.14,S[0]+0.25,S[0]+0.29,0.012,Math.min(1.1,cap(S[0]+0.3)),lam(0x8a6a4c,{roughness:0.7}),oc);   // mop
+  (function(){ const zc=S[0]+0.31, H=Math.min(0.95,line(zc+0.24)-0.05), tube=lam(0x4a4d52,{metalness:0.5,roughness:0.4}), tyre=lam(0x1e1f21,{roughness:0.85}), cloth=lam(0xb9ad97,{roughness:0.9}), cloth2=lam(0xa39783,{roughness:0.9});   // folded stroller, 48 wide x 40 deep x 95 cm, handle toward the door
+    const rod=function(a,c,r,mat){ const d=new THREE.Vector3().subVectors(c,a), m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,d.length(),10),mat); m.position.copy(a).addScaledVector(d,0.5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize()); m.castShadow=true; LG[0].add(m); };
+    const P=function(v,y,u){ return new THREE.Vector3(xi+v,y,zc+u); };
+    [-1,1].forEach(function(s){ [-0.14,0.14].forEach(function(v){ [-0.025,0.025].forEach(function(o){ rod(P(v,0.062,s*0.205+o-0.014),P(v,0.062,s*0.205+o+0.014),0.05,tyre); }); });
+      rod(P(0.14,0.07,s*0.2),P(0.11,H-0.03,s*0.2),0.012,tube); rod(P(-0.14,0.07,s*0.2),P(0.06,H-0.2,s*0.2),0.011,tube); rod(P(-0.12,0.3,s*0.2),P(0.13,0.3,s*0.2),0.01,tube); });
+    rod(P(-0.14,0.07,-0.24),P(-0.14,0.07,0.24),0.008,tube); rod(P(0.14,0.07,-0.24),P(0.14,0.07,0.24),0.008,tube);
+    bx(LG[0],xi-0.1,xi+0.05,zc-0.17,zc+0.17,0.2,H-0.22,cloth,oc); bx(LG[0],xi-0.08,xi+0.1,zc-0.18,zc+0.18,H-0.26,H-0.1,cloth2,oc);   // seat and canopy folded flat
+    rod(P(0.11,H-0.03,-0.24),P(0.11,H-0.03,0.24),0.017,tyre); })();
   [[0xd8453c,0.25],[0xe9e4da,0.2]].forEach(function(q,k2){ const y0=0.012+k2*0.27; bx(LG[0],xw+0.08,x-TI/2-0.08,S[1]+0.03,S[2]-0.05,y0,Math.min(y0+q[1],cap(S[2])),lam(q[0],{roughness:0.8}),oc); });   // emergency kit, stock
   E.underStair={pt:[x+0.6,(S[0]+S[2])/2],leaves:leaves,parts:parts};   // its doors are wired up with the fixtures
   /* the balustrade stands on the flight's own stringer */
@@ -999,7 +1005,7 @@ fixture(2,Catalog.toilet(),WX(2,43.5),WZ(2,177.5),0);
 (function(){                                   // pressure-mounted cat gate at the top of the 2F->1F flight: the cats keep to the upper floors
   const b=E.base(1), z=WZ(1,345)+0.02, x0=WX(1,0)+TE/2, x1=WX(1,115)-TI/2-0.08, P=Catalog.petGate(x1-x0,1.0);   // pressed between the west wall and the balustrade's top newel
   P.group.position.set((x0+x1)/2,b,z); P.group.rotation.y=Math.PI/2; LG[1].add(P.group);
-  const col=addCol(1,x0,x1,z-0.04,z+0.04,b,b+1.0,'d'), d={l:1,pv:P.leafPivot,th:-Math.PI/2,open:false,t:0,col:col,mid:[(x0+x1)/2,z],label:function(o){ return o?'關上柵欄':'打開柵欄'; }};
+  const col=addCol(1,x0,x1,z-0.04,z+0.04,b,b+1.0,'d'), d={l:1,pv:P.leafPivot,th:Math.PI/2,open:false,t:0,col:col,mid:[(x0+x1)/2,z],label:function(o){ return o?'關上柵欄':'打開柵欄'; }};   // swings onto the 2F landing, not over the flight and its wall handrail
   col.door=d; doors.push(d);
 })();
 },
