@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261021n">
+<link rel="stylesheet" href="lib/storeys.css?v=20261021o">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261021n"></script>
-<script src="lib/furniture.js?v=20261021n"></script>
-<script src="lib/catalog.js?v=20261021n"></script>
-<script src="lib/look.js?v=20261021n"></script>
-<script src="lib/houses.js?v=20261021n"></script>
-<script src="lib/perf.js?v=20261021n"></script>
-<script src="lib/finish.js?v=20261021n"></script>
-<script src="lib/storeys.js?v=20261021n"></script>
+<script src="lib/people.js?v=20261021o"></script>
+<script src="lib/furniture.js?v=20261021o"></script>
+<script src="lib/catalog.js?v=20261021o"></script>
+<script src="lib/look.js?v=20261021o"></script>
+<script src="lib/houses.js?v=20261021o"></script>
+<script src="lib/perf.js?v=20261021o"></script>
+<script src="lib/finish.js?v=20261021o"></script>
+<script src="lib/storeys.js?v=20261021o"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -777,7 +777,7 @@ fixture(2,Catalog.toilet(),WX(2,43.5),WZ(2,177.5),0);
   towel(0,WX(0,55),WZ(0,300)+TI/2,0,1.05,0xe8dcc6);                          // 1F powder room, north wall beside the basin
   towel(1,WX(1,215)-TI/2,WZ(1,60),-Math.PI/2,1.1,0xe8dcc6);                  // 2F changing room, a bath towel by the shower
   towel(2,WX(2,345),WZ(2,0)+TE/2,0,1.05,0xe8dcc6);                           // 3F washroom, north wall east of the vanity
-  towel(1,WX(1,321),WZ(1,258),-Math.PI/2,1.0,0xe8dcc6);                       // kitchen: on the pantry's west side, a step from the sink
+  towel(1,WX(1,300),WZ(1,382.5)-0.03,Math.PI,0.7,0xe8dcc6);                  // kitchen: on the bin cabinet's kitchen-side end panel, beside the sink
 })();
 (function(){                                   // genkan built-in: a floating shoe cabinet to the ceiling and a bench joined to it in the same white with the same oak edge; shoes in daily use under the bench, hooks above it
   const x0=WX(0,0)+TE/2, xa=WX(0,65), z1=WZ(0,790)-TE/2, D=0.38, zf=z1-D, top=CH-0.005, oc={cast:false};
