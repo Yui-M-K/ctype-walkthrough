@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261022v">
+<link rel="stylesheet" href="lib/storeys.css?v=20261022w">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261022v"></script>
-<script src="lib/furniture.js?v=20261022v"></script>
-<script src="lib/catalog.js?v=20261022v"></script>
-<script src="lib/look.js?v=20261022v"></script>
-<script src="lib/houses.js?v=20261022v"></script>
-<script src="lib/perf.js?v=20261022v"></script>
-<script src="lib/finish.js?v=20261022v"></script>
-<script src="lib/storeys.js?v=20261022v"></script>
+<script src="lib/people.js?v=20261022w"></script>
+<script src="lib/furniture.js?v=20261022w"></script>
+<script src="lib/catalog.js?v=20261022w"></script>
+<script src="lib/look.js?v=20261022w"></script>
+<script src="lib/houses.js?v=20261022w"></script>
+<script src="lib/perf.js?v=20261022w"></script>
+<script src="lib/finish.js?v=20261022w"></script>
+<script src="lib/storeys.js?v=20261022w"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -171,7 +171,7 @@ notes:[
   [2,575,700,'鼠尾草綠主牆','美化佈置：主臥床頭那面牆（東牆，繞開高窗）'],[2,240,420,'照片牆','美化佈置：3F 走廊，咘咘和旅行照片'],[0,-3,1010,'門牌','美化佈置：宅配箱門柱上的咘咘門牌'],
   [0,445,140,'除濕機・加濕機','收在儲藏室，換季時拿出來'],
   [0,265,505,'玄關廳飾り棚ニッチ','牆面嵌入式壁龕 120 × 30 cm（離地 1 m），上緣內藏暖色 LED 燈條往下打亮背板，放細長花瓶插一枝乾燥枝、兩個小陶器和一個相框；上方掛畫。背面是車庫牆，實際施工時壁龕背面需補防火板'],
-  [0,72,425,'免治馬桶','溫水洗淨便座，遙控器裝在側牆上'],[1,43.5,172.5,'免治馬桶','溫水洗淨便座，遙控器裝在側牆上'],[2,43.5,177.5,'免治馬桶','溫水洗淨便座，遙控器裝在側牆上'],
+  [0,72,425,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],[1,43.5,172.5,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],[2,43.5,177.5,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],
   [0,165,805,'玄關電子鎖','密碼＋感應卡開鎖；門外的密碼面板有滑蓋，平常蓋著'],[0,-128,995,'門扉','單扇木門，掛在對講機門柱上，關上時自動扣上門閂（ラッチ）；撥桿鎖（離地約 95 cm）：外側用鑰匙、內側轉旋鈕鎖上'],
   [0,-50,995,'宅配箱・對講機（門柱）','門扉西側的門柱裝對講機；東側門柱內建宅配箱和信箱，從路邊投入、從院子這側取出，附密碼鎖'],[1,332,392,'水槽上瀝水架','水槽旁的檯面保持淨空：白色鋼線瀝水架橫跨在水槽上（靠右・後半），一半是鐵條放倒扣的飯碗・木湯碗・便當盒，一半是有孔的平盤放筷子和便當叉；水直接滴進水槽；避開抽拉龍頭和海綿架；編輯模式可收進家具庫'],[0,450,995,'車庫伸縮門','車道前的鋁製伸縮門，收到東側'],[0,90,950,'腳踏車停放區（2 台）','門廊前緣往內縮 30 cm，門廊和圍籬之間約 80 cm 寬，鋪成和門內踏台同高的平地：兩台 26 吋淑女車（奶油色、鼠尾草綠）平行圍籬、前後錯開停放，車把高過門廊邊緣；從門扉進來不用上下台階。編輯模式可收進家具庫'],
   [0,57,520,'樓梯扶手（單側）＋感應腳燈','扶手只裝西側一邊（選單可切換成兩側）；踏階有腳燈，有人走近自動亮起'],[2,412,830,'窗簾','主臥陽台落地窗的窗簾依時間自動開關（智慧家庭）；每個房間的窗簾後面都有一層白色紗簾；床頭上方的高窗用細的捲簾'],[2,560,670,'床頭系統櫃','床改成東西向、床頭靠東牆：整面白色系統櫃（深 28 cm，橡木檯面 95 cm 高，放書・手機・小盆栽），兩側內建床頭櫃（小抽屜＋開放格、插座＋USB-C），中間是布面床頭板，檯面前緣下藏一條暖光 LED；上方左右各一盞壁掛閱讀燈；床頭上方是寬 180 cm 的高窗（窗台 1.78 m），只採光'],,
@@ -888,7 +888,7 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,225)-TI/2-WZ(2,17
       if(horiz) bx(LG[2],p0,p1,zf-0.02,zf,b+2.03,CH+b-0.01,M.cab); else bx(LG[2],xf,xf+0.02,p0,p1,b+2.03,CH+b-0.01,M.cab); } };
   doorsU(xw,xe,true); doorsU(zn,zf-0.02,false); bx(LG[2],xw,xe,zf,zs,b+2.025,CH+b,W,oc); bx(LG[2],xw,xf,zn,zf,b+2.025,CH+b,W,oc);
   addCol(2,xw,xe,zf,zs,b,b+2.0,'w'); addCol(2,xw,xf,zn,zf,b,b+2.0,'w');
-})(); fixture(1,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(1,225)-TI/2-WZ(1,172.5),x:0.17,y:1.0}}),WX(1,0)+TE/2+0.37,WZ(1,172.5),0);
+})(); fixture(1,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(1,225)-TI/2-WZ(1,172.5),x:-0.04,y:1.0}}),WX(1,0)+TE/2+0.37,WZ(1,172.5),0);
 [[2,WX(2,80),WZ(2,130)+TI/2,3],[1,WX(1,25),WZ(1,225)-TI/2,1]].forEach(function(q){ fixture(q[0],Catalog.paperHolder(),q[1],q[2],q[3]); });   // every toilet: roll holder by the seat and a small sanitary bin
 [[0,0.66,WZ(0,300)+TI/2,1],[1,0.585,WZ(1,225)-TI/2,-1],[2,0.55,WZ(2,225)-TI/2,-1]].forEach(function(q){ const b=E.base(q[0]), l=q[0], zf=q[2], s=q[3], W2=0.13, y0=b+0.16, y1=b+0.48, dd=0.08, oc={cast:false};   // every toilet: a sanitary bin recessed in the wall, tilt-out flap, auto-closes
   const fin=E.WM[E.wallRoleAt(l,q[1],zf+s*0.2)]||M.cabF, inn=lam(0xe9e6df,{roughness:0.8}), liner=lam(0xfbfbf9,{roughness:0.35});
