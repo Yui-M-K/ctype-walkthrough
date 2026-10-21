@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261022b">
+<link rel="stylesheet" href="lib/storeys.css?v=20261022c">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261022b"></script>
-<script src="lib/furniture.js?v=20261022b"></script>
-<script src="lib/catalog.js?v=20261022b"></script>
-<script src="lib/look.js?v=20261022b"></script>
-<script src="lib/houses.js?v=20261022b"></script>
-<script src="lib/perf.js?v=20261022b"></script>
-<script src="lib/finish.js?v=20261022b"></script>
-<script src="lib/storeys.js?v=20261022b"></script>
+<script src="lib/people.js?v=20261022c"></script>
+<script src="lib/furniture.js?v=20261022c"></script>
+<script src="lib/catalog.js?v=20261022c"></script>
+<script src="lib/look.js?v=20261022c"></script>
+<script src="lib/houses.js?v=20261022c"></script>
+<script src="lib/perf.js?v=20261022c"></script>
+<script src="lib/finish.js?v=20261022c"></script>
+<script src="lib/storeys.js?v=20261022c"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -166,7 +166,7 @@ notes:[
   [1,410,860,'ごろ寝出窓','客廳南面可以躺著打滾的出窗：寬 2.4 m、深 90 cm（往外凸 50 cm，不算樓地板面積；往室內延伸 40 cm），檯面離地 40 cm，鋪一整片厚坐墊和幾個抱枕；三面玻璃，橡木框內藏暖色 LED 燈條；室內側下方是三個大抽屜'],[2,410,895,'陽台','主臥前的陽台（3.4 × 0.9 m，1.1 m 玻璃欄杆），從主臥的落地拉門出去；和洗衣更衣間同一層，洗好就近曬'],[0,290,895,'玄關雨遮','整面門面上方離地約 2.4 m 的薄型雨遮（往外 90 cm），深灰鋁框、底面杉木格柵，嵌 4 盞小崁燈；懸臂固定在牆上，下面沒有柱子'],[0,20,365,'擦手巾','每個洗手台旁和廚房水槽下的櫃門都有毛巾桿，掛著擦手巾'],[0,115,560,'樓梯下收納','樓梯下方較高的一段：兩扇和牆面齊平、同色的按壓門（凹槽把手），靠廁所那格直立收著折疊好的嬰兒推車，另一格放防災用品和囤貨；最矮的一段直接是牆'],[0,40,320,'一樓洗手台','沿馬桶旁西牆的懸空長檯面：靠門那端是盆和檯面一體成形的白色人造石，下方淨空不收納；其餘是橡木，中段開放格放衛生紙、靠馬桶那端一個抽屜；鏡子有細橡木框；檯面放盆栽和小托盤'],[0,98,305,'馬桶刷收納（每間廁所）','每間廁所牆裡嵌入的細長收納，門片和腰壁磁磚齊平、從廁所內側開，高度對齊腰壁收邊條；上下兩扇門、中間封板隔開：下格放馬桶刷，上格有一片層板，放清潔濕紙巾和備用衛生紙；牆的另一面維持平整'],[1,345,410,'水槽下清潔用品架','打開水槽下櫃後可以把兩層網籃拉出來，放洗碗精補充瓶、酒精噴霧和海綿'],[0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
   [0,155,30,'壁掛喇叭','鏡子房兩側'],
   [0,580,345,'Tesla 充電樁','車庫牆上'],
-  [0,240,850,'監視攝影機','共 3 台：玄關門廊、大門門扉（西南角）、西側庭院・緣側；車庫交給 Tesla 的哨兵模式'],[0,300,-10,'感應燈','北側後方 2 盞，有人靠近自動亮起'],
+  [0,240,850,'監視攝影機','共 3 台：玄關門廊、大門門扉（西南角）、西側庭院・緣側'],[0,445,620,'Tesla 哨兵模式（車庫監視）','車庫不另裝攝影機，由車上鏡頭錄影：需手動開啟（控制→安全性→哨兵模式），車子插著充電樁不怕耗電，「在家時不啟用」不要勾；錄影存在車上的 USB 隨身碟'],[0,300,-10,'感應燈','北側後方 2 盞，有人靠近自動亮起'],
   [1,555,815,'肯蒂亞椰子','美化佈置：客廳角落的大型植栽，對貓無毒'],[2,275,895,'橄欖樹','美化佈置：3F 陽台的西端，對貓無毒'],[1,436,660,'橡木吊燈','美化佈置：茶几／餐桌上方，Ø40 cm 扁圓燈罩'],[1,255,540,'閱讀立燈','美化佈置：沙發旁'],
   [2,412,465,'鼠尾草綠主牆','美化佈置：主臥床頭那面牆'],[2,240,420,'照片牆','美化佈置：3F 走廊，咘咘和旅行照片'],[0,-3,1010,'門牌','美化佈置：宅配箱門柱上的咘咘門牌'],
   [0,445,140,'除濕機・加濕機','收在儲藏室，換季時拿出來'],
