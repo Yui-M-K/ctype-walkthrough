@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261022d">
+<link rel="stylesheet" href="lib/storeys.css?v=20261022e">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261022d"></script>
-<script src="lib/furniture.js?v=20261022d"></script>
-<script src="lib/catalog.js?v=20261022d"></script>
-<script src="lib/look.js?v=20261022d"></script>
-<script src="lib/houses.js?v=20261022d"></script>
-<script src="lib/perf.js?v=20261022d"></script>
-<script src="lib/finish.js?v=20261022d"></script>
-<script src="lib/storeys.js?v=20261022d"></script>
+<script src="lib/people.js?v=20261022e"></script>
+<script src="lib/furniture.js?v=20261022e"></script>
+<script src="lib/catalog.js?v=20261022e"></script>
+<script src="lib/look.js?v=20261022e"></script>
+<script src="lib/houses.js?v=20261022e"></script>
+<script src="lib/perf.js?v=20261022e"></script>
+<script src="lib/finish.js?v=20261022e"></script>
+<script src="lib/storeys.js?v=20261022e"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -151,7 +151,7 @@ notes:[
   [1,361,417.5,'廚餘處理機','裝在水槽下，排水口是橡膠防濺蓋；台面有氣壓開關，打開水槽下櫃可看到本體'],
   [1,433.5,385,'嵌入式洗碗機','抽屜式深型 45 cm，放得下盤子、碗和杯子'],
   [1,523.5,412.5,'IH 爐＋抽油煙機','三口 IH，與水槽在同一座半島'],
-  [1,346,258,'食品收納櫃（系統櫃）','白色，和家電櫃、冰箱、半島同一種白；踢腳 10 cm、檯面 85 cm、吊櫃下緣 189 cm 三條線拉齊；中段是開放檯面（附 LED），上方櫃的層板可調；下櫃是掃地機器人的家：裡面放自動集塵的大型基地，機器人從門下方 12.5 cm 的開口自己進出'],[1,500,240,'上方吊櫃（家電櫃・冰箱・食品櫃）','做到天花板不積灰，可打開；冰箱上方留散熱空間'],
+  [1,346,258,'食品收納櫃（系統櫃）','寬 50 cm，白色，和家電櫃、冰箱、半島同一種白；踢腳 10 cm、門片分界 85 cm、吊櫃下緣 189 cm 三條線和家電櫃拉齊。下櫃是掃地機器人的家：裡面放自動集塵基地，機器人從門下方 12.5 cm 的開口自己進出；上面一扇門從 85 cm 直接做到 189 cm 的吊櫃線，裡面層板可調高度；再上方是做到天花板的吊櫃'],[1,500,240,'上方吊櫃（家電櫃・冰箱・食品櫃）','做到天花板不積灰，可打開；冰箱上方留散熱空間'],
   [2,470,40,'浴缸','1.6 m，洗澡時可看牆上電視'],
   [2,500,120,'浴室乾燥機','天花板暖風乾燥，下雨天可在浴室曬衣'],
   [2,490,160,'浴室曬衣桿','搭配乾燥機使用'],
@@ -162,8 +162,8 @@ notes:[
   [1,575,440,'冷氣（客廳）','壁掛式'],
   [2,250,780,'冷氣（主臥）','壁掛式，旁邊牆上掛遙控器'],[1,220,110,'冷氣（書房）','壁掛式，旁邊牆上掛遙控器'],[0,305,250,'冷氣（鏡子房）','壁掛式，旁邊牆上掛遙控器'],
   [0,155,180,'火災警報器','天花板'],[0,192,560,'火災警報器','天花板'],[1,350,600,'火災警報器','天花板'],[1,470,330,'火災警報器','天花板'],[1,57,280,'火災警報器','天花板'],[2,412,590,'火災警報器','天花板'],[2,440,300,'火災警報器','天花板'],[2,180,480,'火災警報器','天花板'],[1,412,110,'火災警報器','天花板'],
-  [1,50,140,'洗手台（2F 廁所）','廁所裡馬桶旁的懸空檯面：洗手盆那段是盆和檯面一體成形的白色人造石，下方淨空；其餘是橡木；鏡子有細橡木框'],[1,150,110,'脫衣間（2F）','淋浴間前方，摺疊門'],[0,37,764,'玄關系統櫃','寬 59 cm（加側邊淺櫃共 78 cm，和土間邊切齊）；下櫃直接落地；下櫃和上櫃中間是 47 cm 高的開放置物檯（橡木檯面、LED），放鑰匙和小盆栽；上櫃和下櫃加側邊淺櫃同寬，正面一片白色按壓式門片，和下櫃門片同一平面；層板孔每 3.2 cm 一格可調高度，下櫃右側層板調高可放長靴，上櫃層板放短靴；靠土間的側面只有下方一組淺櫃（側開門），放鞋油和拖鞋'],[0,242,756,'穿鞋椅','玄關門東側的土間上，深度和土間一樣、前緣對齊台階邊；座面離木地板 45 cm（一般椅子高度）；白色櫃體，座板和鞋櫃檯面同款淺橡木，上面一片薄的燕麥色亞麻坐墊；下方三層開放格放每天穿的鞋，旁邊牆上兩個掛勾'],[0,65,808,'固定式傘架','玄關門外，不鏽鋼，鎖在外牆和地面上不怕風吹；奶油色鐵管架，鎖在外牆上不怕風吹；上方 12 格每把傘一格：左邊 6 格長傘直接立在地磚上，右邊 6 格折疊傘放在腰高的接水盤上，不用彎腰拿'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
-  [1,410,860,'ごろ寝出窓','客廳南面可以躺著打滾的出窗：寬 2.4 m、深 90 cm（往外凸 50 cm，不算樓地板面積；往室內延伸 40 cm），檯面離地 40 cm，鋪一整片厚坐墊和幾個抱枕；三面玻璃，橡木框內藏暖色 LED 燈條；室內側下方是三個大抽屜'],[2,410,895,'陽台','主臥前的陽台（3.4 × 0.9 m，1.1 m 玻璃欄杆），從主臥的落地拉門出去；和洗衣更衣間同一層，洗好就近曬'],[0,290,895,'玄關雨遮','整面門面上方離地約 2.4 m 的薄型雨遮（往外 90 cm），深灰鋁框、底面杉木格柵，嵌 4 盞小崁燈；懸臂固定在牆上，下面沒有柱子'],[0,20,365,'擦手巾','每個洗手台旁和廚房水槽下的櫃門都有毛巾桿，掛著擦手巾'],[0,115,560,'樓梯下收納','樓梯下方較高的一段：兩扇和牆面齊平、同色的按壓門（凹槽把手），靠廁所那格直立收著折疊好的嬰兒推車，另一格放防災用品和囤貨；最矮的一段直接是牆'],[0,40,320,'一樓洗手台','沿馬桶旁西牆的懸空長檯面：靠門那端是盆和檯面一體成形的白色人造石，下方淨空不收納；其餘是橡木，中段開放格放衛生紙、靠馬桶那端一個抽屜；鏡子有細橡木框；檯面放盆栽和小托盤'],[0,98,305,'馬桶刷收納（每間廁所）','每間廁所牆裡嵌入的細長收納，門片和腰壁磁磚齊平、從廁所內側開，高度對齊腰壁收邊條；上下兩扇門、中間封板隔開：下格放馬桶刷，上格有一片層板，放清潔濕紙巾和備用衛生紙；牆的另一面維持平整'],[1,345,410,'水槽下清潔用品架','打開水槽下櫃後可以把兩層網籃拉出來，放洗碗精補充瓶、酒精噴霧和海綿'],[0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
+  [1,50,140,'洗手台（2F 廁所）','廁所裡馬桶旁的懸空檯面：洗手盆那段是盆和檯面一體成形的白色人造石，下方淨空；其餘是橡木；鏡子有細橡木框'],[1,150,110,'脫衣間（2F）','淋浴間前方，摺疊門'],[0,37,764,'玄關系統櫃','寬 59 cm（加側邊淺櫃共 78 cm，和土間邊切齊）；下櫃直接落地；下櫃和上櫃中間是 47 cm 高的開放置物檯（橡木檯面、LED），放鑰匙和小盆栽；上櫃和下櫃加側邊淺櫃同寬，正面一片白色按壓式門片，和下櫃門片同一平面；層板孔每 3.2 cm 一格可調高度，下櫃右側層板調高可放長靴，上櫃層板放短靴；靠土間的側面只有下方一組淺櫃（側開門），放鞋油和拖鞋'],[0,242,756,'穿鞋椅','玄關門東側的土間上，深度和土間一樣、前緣對齊台階邊；座面離木地板 45 cm（一般椅子高度）；白色櫃體，座板和鞋櫃檯面同款淺橡木，上面一片薄的燕麥色亞麻坐墊；下方三層開放格放每天穿的鞋，旁邊牆上兩個掛勾'],[0,65,808,'固定式傘架','玄關門外，奶油色鐵管架鎖在外牆上不怕風吹；上方 12 格每把傘一格：左邊 6 格長傘直接立在地磚上，右邊 6 格折疊傘放在腰高的接水盤上，不用彎腰拿'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
+  [1,410,860,'ごろ寝出窓','客廳南面可以躺著打滾的出窗：寬 2.4 m、深 90 cm（往外凸 50 cm，不算樓地板面積；往室內延伸 40 cm），檯面離地 40 cm，鋪一整片厚坐墊和幾個抱枕；三面玻璃，橡木框內藏暖色 LED 燈條；室內側下方是三個大抽屜'],[2,410,895,'陽台','主臥前的陽台（3.4 × 0.9 m，1.1 m 玻璃欄杆），從主臥的落地拉門出去；和洗衣更衣間同一層，洗好就近曬'],[0,290,895,'玄關雨遮','整面門面上方離地約 2.4 m 的薄型雨遮（往外 90 cm），深灰鋁框、底面杉木格柵，嵌 4 盞小崁燈；懸臂固定在牆上，下面沒有柱子'],[0,20,365,'擦手巾','每個洗手台旁都有毛巾桿掛著擦手巾；廚房的掛在垃圾桶櫃靠水槽那側的側板上'],[0,115,560,'樓梯下收納','樓梯下方較高的一段：兩扇和牆面齊平、同色的門，門邊是不凸出的梯形凹口把手，靠廁所那格直立收著折疊好的嬰兒推車，另一格放防災用品和囤貨；最矮的一段直接是牆'],[0,40,320,'一樓洗手台','沿馬桶旁西牆的懸空長檯面：靠門那端是盆和檯面一體成形的白色人造石，下方淨空不收納；其餘是橡木，中段開放格放衛生紙、靠馬桶那端一個抽屜；鏡子有細橡木框；檯面放盆栽和小托盤'],[0,98,305,'馬桶刷收納（每間廁所）','每間廁所牆裡嵌入的細長收納，門片和腰壁磁磚齊平、從廁所內側開，高度對齊腰壁收邊條；上下兩扇門、中間封板隔開：下格放馬桶刷，上格有一片層板，放清潔濕紙巾和備用衛生紙；牆的另一面維持平整'],[1,345,410,'水槽下清潔用品架','打開水槽下櫃後可以把兩層網籃拉出來，放洗碗精補充瓶、酒精噴霧和海綿'],[0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
   [0,155,30,'壁掛喇叭','鏡子房兩側'],
   [0,580,345,'Tesla 充電樁','車庫牆上'],
   [0,240,850,'監視攝影機','共 3 台：玄關門廊、大門門扉（西南角）、西側庭院・緣側'],[0,445,620,'Tesla 哨兵模式（車庫監視）','車庫不另裝攝影機，由車上鏡頭錄影：需手動開啟（控制→安全性→哨兵模式），車子插著充電樁不怕耗電，「在家時不啟用」不要勾；錄影存在車上的 USB 隨身碟'],[0,300,-10,'感應燈','北側後方 2 盞，有人靠近自動亮起'],
@@ -171,6 +171,21 @@ notes:[
   [2,412,465,'鼠尾草綠主牆','美化佈置：主臥床頭那面牆'],[2,240,420,'照片牆','美化佈置：3F 走廊，咘咘和旅行照片'],[0,-3,1010,'門牌','美化佈置：宅配箱門柱上的咘咘門牌'],
   [0,445,140,'除濕機・加濕機','收在儲藏室，換季時拿出來'],
   [0,265,505,'玄關廳飾り棚ニッチ','牆面嵌入式壁龕 120 × 30 cm（離地 1 m），上緣內藏暖色 LED 燈條往下打亮背板，放細長花瓶插一枝乾燥枝、兩個小陶器和一個相框；上方掛畫。背面是車庫牆，實際施工時壁龕背面需補防火板'],
+  [0,72,425,'免治馬桶','溫水洗淨便座，遙控器裝在側牆上'],[1,43.5,172.5,'免治馬桶','溫水洗淨便座，遙控器裝在側牆上'],[2,43.5,177.5,'免治馬桶','溫水洗淨便座，遙控器裝在側牆上'],
+  [0,165,805,'玄關電子鎖','密碼＋感應卡開鎖；門外的密碼面板有滑蓋，平常蓋著'],[0,-128,995,'門扉','單扇木門，掛在對講機門柱上；內側有落とし棒（門栓），放下插進地面的孔就推不開'],
+  [0,-50,995,'宅配箱・對講機（門柱）','門扉西側的門柱裝對講機；東側門柱內建宅配箱和信箱，從路邊投入、從院子這側取出，附密碼鎖'],[0,450,995,'車庫伸縮門','車道前的鋁製伸縮門，收到東側'],
+  [0,57,520,'樓梯扶手（單側）＋感應腳燈','扶手只裝西側一邊（選單可切換成兩側）；踏階有腳燈，有人走近自動亮起'],[2,412,830,'窗簾','主臥的窗簾依時間自動開關（智慧家庭）；每個房間的窗簾後面都有一層白色紗簾'],
+  [1,57,60,'淋浴間（2F）','從脫衣間的拉門進出：牆上淋浴組（蓮蓬頭、鏡子）和淋浴椅'],[2,270,120,'洗面室（3F）','兼脫衣間：浴室、三溫暖、廁所和洗衣更衣間都從這裡進出；1 m 洗臉台旁有高櫃放毛巾'],
+  [2,410,280,'洗衣更衣間','滾筒洗脫烘＋室內曬衣桿＋上下兩層吊衣桿，烘好直接掛；和主臥、陽台同一層'],[2,120,770,'更衣間（3F）','走廊盡頭約 2.4 × 1.6 m 的步入式衣櫃：南面整面上下兩層吊衣桿，西牆放包包、帽子的格櫃，上方吊櫃收換季衣物'],
+  [0,-45,150,'緣側','鏡子房西側 90 cm 深的杉木平台，從落地拉門出去；淺屋簷、兩根柱子，一階踏石下到庭院'],[0,-110,610,'庭院 BBQ 木平台','庭院南側和室內地板同高的杉木平台（約 1.9 × 2.2 m），放戶外桌椅和烤肉架；選單「庭院」可切換'],
+  [0,-180,0,'エコキュート（370 L）','4 人家庭用熱泵熱水器：儲熱水槽 63 × 73 × 182 cm 靠北側圍籬、熱泵室外機 80 × 30 × 67 cm 靠西側圍籬，中間約 1 m 配管；房子北側和東側只剩約 40 cm 寬，前方 60 cm 的維修空間不夠，所以放在庭院西北角，水槽正面和室外機出風口前都留 60 cm'],
+  [0,-30,400,'冷氣室外機（鏡子房・書房）','80 × 29 × 55 cm 兩台疊在二段架台上，靠西牆、出風口朝庭院；配管走牆內和天花板內，從西牆出來沿配管蓋（化粧カバー）下到室外機'],
+  [0,555,790,'冷氣室外機（客廳）','80 × 29 × 55 cm，用壁掛架掛在車庫東牆靠車庫口、離地約 2.3 m（車頂上方）；配管從 2F 牆內下到車庫，沿天花板邊的配管蓋拉過來，車庫口整面開放，熱氣散得出去'],
+  [2,557,898,'冷氣室外機（主臥）','6 帖用小型機 70 × 28 × 55 cm，放在陽台東端、出風口朝西；配管走天花板內到南牆，沿配管蓋下來'],
+  [0,338,280,'分電盤','40 × 50 × 10 cm，儲藏室南牆靠門處，中心離地約 1.6 m；含三溫暖、EV 充電樁的 200V 專用迴路'],[0,378,280,'情報分電盤','30 × 40 × 10 cm，光纖終端和路由器收在裡面，網路線從這裡配到各房間'],
+  [2,80,67,'三溫暖專用 200V 迴路','家用三溫暖的電爐從分電盤拉 200V 專用迴路，配獨立的漏電斷路器'],[0,560,345,'EV 充電樁 200V 迴路','Tesla 充電樁從分電盤拉 200V 專用迴路，配專用斷路器'],
+  [1,560,600,'24 小時換氣','法規要求每 2 小時換掉一次全室空氣（第三種換氣）：客廳、書房、主臥、鏡子房的外牆進氣口進新鮮空氣，浴室、淋浴間的換氣扇一直低速排氣；外牆上 Ø15 cm 的白色圓形罩共 6 個'],
+  [0,15,835,'門廊西側轉角（無柱）','門廊西側轉角不立柱：2F 樓板往外懸挑約 60 cm（跳ね出し）；實際施工需加強樑並做結構計算確認']
 ],
 noteText:{
   fridge:['日立 冰箱 R-HZC54Y','540 L・真空冰溫・寬 65 × 深 69.9 × 高 184.3 cm・水晶白玻璃門；上面是對開門的冷藏室，下面依序是製冰室／切換室、蔬果室、冷凍室，全部可以打開'],
@@ -181,7 +196,8 @@ noteText:{
   massage:'HY-5018：直立 146 × 74.5 × 114.5 cm，躺平 169 cm，腳靠會伸縮',
   dryer:'坐在沙發上就能吹頭髮，插座在旁邊牆上',
   appl:'寬 132.5 cm、深 70 cm 與冰箱齊平；上下兩層層板整層拉出，下層右端放果汁機；電線收在背後',
-  robot:'基地在食品收納櫃下方',
+  robot:'和自動集塵基地一起住在食品收納櫃的下櫃裡，從門下方 12.5 cm 的開口自己開出來打掃',
+  duo:['整面長升降桌（3.54 m）','北牆整面的長桌板，三支同步升降腳，可升到站立高度；兩張椅子'],
   catBowls:'自動飼料機＋罐頭碗＋水碗',
   cat:['咘咘','白底虎斑：額頭白色倒 V、瞇瞇眼、粉紅大鼻子，肩背和屁股各一塊虎斑'],
   purifL:'客廳的 Dyson；插在正後方樓梯側牆的低位插座',
@@ -201,8 +217,7 @@ build:function(E){
   wall(0,0,0,580,0,TE,[{a:425,b:515,sill:1.0,head:2.0}]);   // storage room window at a living-room height, so it can become a child's room
   wall(0,0,0,0,790,TE,[{a:55,b:245,k:'slide2',mat:M.glass,head:2.15,screen:-1},{a:555,b:615,sill:1.5,head:2.3}]);   // stair window above the low end of the rail
   wall(0,0,790,274.5,790,TE,[{a:115,b:215,k:'door',hinge:'b',sw:1,mat:M.entry,head:2.18,handle:'bar',keypad:1,drop:0.15}]);    // front door set back 60 cm under the house: a covered porch that opens into the garage
-  wall(0,0,850,270,850,TE,[{a:7,b:270,k:'open',head:2.25}]);
-  bx(LG[0],WX(0,0)-TE/2,WX(0,11.5),WZ(0,850)-TE/2,WZ(0,850)+TE/2,-0.6,0,M.ext);   // the corner pier carries on down to the ground
+  wall(0,0,850,270,850,TE,[{a:0,b:270,k:'open',head:2.25,jamb:false}]);   // no corner pier: the 2F floor cantilevers 60 cm over the porch
   wall(0,270,850,580,850,TE,[{a:276,b:575,k:'open',head:2.25}]);
   wall(0,580,0,580,850,TE,[{a:300,b:400,sill:1.6,head:2.1}]);
   wall(0,0,300,310,300,TI,[{a:84,b:112,k:'open',sill:0.12,head:1.225,jamb:false},{a:188,b:266,k:'door',hinge:'b',sw:-1}]);   // toilet-brush niche in the powder room's north wall
@@ -489,10 +504,10 @@ site:function(E){
   [[-1.95,4.3,3.0],[-1.95,8.0,2.5]].forEach(function(t){ ['sakura','maple'].forEach(function(k){   // both garden trees switch between cherry and maple; kept clear of the engawa eave
       const P=Catalog.gardenTree(t[2],k); P.group.position.set(t[0],-0.3,t[1]); P.group.userData.keep=true; ground.add(P.group); (E.garden.trees[k]=E.garden.trees[k]||[]).push(P.group); });
     addCol(0,t[0]-0.12,t[0]+0.12,t[1]-0.12,t[1]+0.12,-0.3,2,'w'); });
-  [[-1.85,-0.2],[-1.1,-0.25],[-1.9,2.9],[-1.75,1.0],[-1.85,1.9]].forEach(function(q){ const P=Catalog.shrub(0.3+rnd()*0.1); P.group.position.set(q[0],-0.3,q[1]); ground.add(P.group); });
-  const flowers=[0xe86a8a,0xf4c95d,0xffffff,0xb07ad8];                                      // flower bed along the north fence
-  bx(ground,LX0+0.3,LX0+1.2,LZ0+0.1,LZ0+0.5,-0.3,-0.2,lam(0x6b5444,{roughness:1}),{cast:false});
-  for(let i=0;i<28;i++){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.035,8,6),lam(flowers[i%4],{roughness:0.7})); m.position.set(LX0+0.4+rnd()*0.7,-0.12+rnd()*0.12,LZ0+0.15+rnd()*0.3); ground.add(m);
+  [[-1.9,2.9],[-1.85,2.35]].forEach(function(q){ const P=Catalog.shrub(0.3+rnd()*0.1); P.group.position.set(q[0],-0.3,q[1]); ground.add(P.group); });
+  const flowers=[0xe86a8a,0xf4c95d,0xffffff,0xb07ad8];                                      // flower bed along the north fence, between the エコキュート and the engawa
+  bx(ground,-1.42,-0.98,LZ0+0.08,LZ0+0.38,-0.3,-0.2,lam(0x6b5444,{roughness:1}),{cast:false});
+  for(let i=0;i<16;i++){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.035,8,6),lam(flowers[i%4],{roughness:0.7})); m.position.set(-1.38+rnd()*0.36,-0.12+rnd()*0.12,LZ0+0.12+rnd()*0.22); ground.add(m);
     const st=new THREE.Mesh(new THREE.CylinderGeometry(0.004,0.004,0.18,4),M.leaf); st.position.set(m.position.x,m.position.y-0.09,m.position.z); ground.add(st); }
   const nb=[[LX0-3.2,3,5.6,8,6.8],[LX0-9.5,3,5.5,8,6.2],[LX1+3.2,3,5,8,7],[LX1+9.5,3,5.4,8,6.4],[-0.5,-8.5,6,7,6.6],[6,-8.5,5.5,7,7.2]];   // neighbours left, right and behind
   nb.forEach(function(n){ bx(ground,n[0]-n[2]/2,n[0]+n[2]/2,n[1]-n[3]/2+3,n[1]+n[3]/2+3,-0.3,n[4],M.ext); });
@@ -515,7 +530,7 @@ return [
   /* 2F kitchen: appliance cabinet (dish cupboard in its base) and fridge against the bath wall, bins beside the peninsula */
   ['fridge','fridgeHitachi',1,541,244.5,'S'],['bins','binCabinet',1,300,412.5,'W',function(){ return Catalog.binCabinet(true); }],['appl','applianceCabinet',1,437.25,244.5,'S',function(){ return Catalog.applianceCabinet({dishes:true,full:true,depth:0.7,width:1.325,height:1.89}); }],
   /* 3F balcony */
-  ['plantB1','plant',2,495,895,'E'],['plantB2','plantS',2,553,895,'E'],
+  ['plantB1','plant',2,335,920,'E'],['plantB2','plantS',2,380,925,'E'],
   /* garden BBQ deck */
   ['outdoor','outdoorSet',0,-130,610,'E'],['bbq','bbqGrill',0,-50,690,'E'],
   /* 1F genkan, mirror room, garage */
@@ -529,7 +544,7 @@ return [
   ['mirrorW','fullMirror',2,238.5,740,'W'],
   ['artHall','artSmall',2,240.5,450,'W'],
   /* 2F study */
-  ['duo','duoDesk',1,396.5,41.5,'S',function(){ const P=Catalog.liftDesk(3.54), fr=E.lam(0x2a2d31,{roughness:0.4}), lift=[], legs=[];   // wall-to-wall desk: one 3.24 m top on three synchronised lifting legs
+  ['duo','duoDesk',1,396.5,41.5,'S',function(){ const P=Catalog.liftDesk(3.54), fr=E.lam(0x2a2d31,{roughness:0.4}), lift=[], legs=[];   // wall-to-wall desk: one 3.54 m top on three synchronised lifting legs
     P.box(-0.04,0.04,-0.05,0.05,0.05,0.72,fr); P.box(-0.03,0.03,-0.33,0.33,0,0.04,fr);
     P.group.children.forEach(function(m){ if(!m.isMesh) return; const bb=new THREE.Box3().setFromObject(m); if(bb.min.y>0.6) lift.push([m,m.position.y]); else if(bb.max.y>0.6&&bb.min.y<0.1) legs.push([m,m.position.y,bb.max.y-bb.min.y]); });
     P.attach(Catalog.officeChair(),-0.45,0.55,0); P.attach(Catalog.officeChair(),0.45,0.55,0);
@@ -1053,6 +1068,57 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,225)-TI/2-WZ(2,17
   P.group.position.set((x0+x1)/2,b,z); P.group.rotation.y=Math.PI/2; LG[1].add(P.group);
   const col=addCol(1,x0,x1,z-0.04,z+0.04,b,b+1.0,'d'), d={l:1,pv:P.leafPivot,th:Math.PI/2,open:false,t:0,col:col,mid:[(x0+x1)/2,z],label:function(o){ return o?'關上柵欄':'打開柵欄'; }};   // swings onto the 2F landing, not over the flight and its wall handrail
   col.door=d; doors.push(d);
+})();
+(function(){                                   // services: エコキュート, AC outdoor units with pipe covers, breaker panels, 24 h vent hoods (world coords; the ground is at -0.6)
+  const G0=-0.6, wh=lam(0xeef0f0,{roughness:0.45}), gr=lam(0xc5c9cc,{roughness:0.5}), dk=lam(0x33363a,{roughness:0.6}), pad=lam(0xa9a59d,{roughness:0.95}), cov=lam(0xe9e4d8,{roughness:0.6}), st=lam(0x8a8e92,{metalness:0.5,roughness:0.45}), oc={cast:false};
+  const label=function(txt){ const c=document.createElement('canvas'); c.width=256; c.height=64; const g=c.getContext('2d'); g.fillStyle='#eef0f0'; g.fillRect(0,0,256,64); g.fillStyle='#55606a'; g.font='bold 32px "Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText(txt,128,34);
+    const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return lam(0xffffff,{map:t,roughness:0.5}); };
+  const ring=function(G,x,y,z,r,ry){ const m=new THREE.Mesh(new THREE.TorusGeometry(r,0.004,6,40),gr); m.position.set(x,y,z); m.rotation.y=ry; G.add(m); };
+  const acOut=function(G,xf,zc,y0,W,vs){ vs=vs||1; const h=W/2, zf=zc-vs*h*0.18, D=0.29;   // outdoor unit, front (fan) facing -x: W wide along z, 29 D, 55 H; valves on the vs side
+    bx(G,xf,xf+D,zc-h,zc+h,y0,y0+0.55,wh); bx(G,xf+0.03,xf+D-0.03,zc-h+0.04,zc-h+0.1,y0-0.02,y0,dk,oc); bx(G,xf+0.03,xf+D-0.03,zc+h-0.1,zc+h-0.04,y0-0.02,y0,dk,oc);
+    const disc=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,0.006,36),dk); disc.rotation.z=Math.PI/2; disc.position.set(xf-0.002,y0+0.275,zf); G.add(disc);
+    [0.2,0.14,0.08].forEach(function(r){ ring(G,xf-0.006,y0+0.275,zf,r,Math.PI/2); }); bx(G,xf-0.009,xf-0.003,zf-0.2,zf+0.2,y0+0.272,y0+0.278,gr,oc); bx(G,xf-0.009,xf-0.003,zf-0.003,zf+0.003,y0+0.075,y0+0.475,gr,oc);
+    bx(G,xf+0.06,xf+D-0.04,vs>0?zc+h:zc-h-0.025,vs>0?zc+h+0.025:zc-h,y0+0.08,y0+0.3,gr); };
+  const coverZ=function(G,x0,x1,z0,z1,y0,y1){ bx(G,x0,x1,z0,z1,y0,y1,cov); };
+  /* エコキュート 370 L (4 people): tank against the north screen in the garden's NW corner, heat pump against the west screen 60 cm south of it */
+  (function(){ const tx0=-2.11, tx1=tx0+0.63, tz0=-0.41, tz1=tz0+0.73, hx0=-2.08, hx1=hx0+0.3, hz0=0.95, hz1=1.75;   // screens' inner faces: x -2.13, z -0.43
+    bx(LG[0],tx0-0.04,tx1+0.04,tz0-0.02,tz1+0.04,G0,G0+0.06,pad,oc); bx(LG[0],tx0+0.03,tx1-0.03,tz0+0.03,tz1-0.03,G0+0.06,G0+0.15,gr);
+    bx(LG[0],tx0,tx1,tz0,tz1,G0+0.15,G0+1.8,wh); bx(LG[0],tx0+0.01,tx1-0.01,tz0+0.01,tz1-0.01,G0+1.8,G0+1.82,gr);
+    bx(LG[0],tx0+0.07,tx1-0.07,tz1,tz1+0.004,G0+0.2,G0+0.62,gr,oc); bx(LG[0],tx0+0.1,tx1-0.1,tz1,tz1+0.003,G0+1.42,G0+1.5,label('エコキュート'),oc);   // maintenance cover, label
+    bx(LG[0],hx0-0.02,hx1+0.02,hz0+0.04,hz0+0.14,G0,G0+0.1,pad,oc); bx(LG[0],hx0-0.02,hx1+0.02,hz1-0.14,hz1-0.04,G0,G0+0.1,pad,oc);   // plastic blocks
+    (function(){ const G=new THREE.Group(); LG[0].add(G); const y0=G0+0.12, D=hx1-hx0, zf=hz0+0.33;   // heat pump: fan facing east into the garden
+      bx(G,hx0,hx1,hz0,hz1,y0,y0+0.67,wh); const disc=new THREE.Mesh(new THREE.CylinderGeometry(0.24,0.24,0.006,36),dk); disc.rotation.z=Math.PI/2; disc.position.set(hx1+0.002,y0+0.33,zf); G.add(disc);
+      [0.24,0.17,0.1].forEach(function(r){ ring(G,hx1+0.006,y0+0.33,zf,r,Math.PI/2); }); bx(G,hx1+0.003,hx1+0.009,zf-0.24,zf+0.24,y0+0.327,y0+0.333,gr,oc);
+      bx(G,hx1,hx1+0.003,hz1-0.25,hz1-0.05,y0+0.52,y0+0.58,label('エコキュート'),oc); bx(G,hx0+0.04,hx1-0.04,hz0-0.025,hz0,y0+0.1,y0+0.32,gr); })();
+    bx(LG[0],tx0+0.02,tx0+0.1,tz1,hz0,G0,G0+0.08,cov); addCol(0,tx0-0.04,tx1+0.04,tz0-0.02,tz1+0.04,G0,G0+1.82,'w'); addCol(0,hx0-0.02,hx1+0.02,hz0,hz1,G0,G0+0.8,'w'); })();
+  /* mirror room (1F) and study (2F): two units on a 2-tier stand against the west wall south of the engawa; one pipe cover down the wall */
+  (function(){ const xw=WX(0,0)-TE/2, xf=xw-0.4, z0=3.6, z1=4.4, zc=(z0+z1)/2, cz0=4.48, cz1=4.58, y1=G0+0.12, y2=G0+0.8;
+    [[xf-0.02,xf],[xf+0.29,xf+0.31]].forEach(function(r){ [z0+0.03,z1-0.06].forEach(function(z){ bx(LG[0],r[0],r[1],z,z+0.03,G0,y2,st); }); });   // angle posts
+    [y1-0.03,y2-0.03].forEach(function(y){ [z0+0.03,z1-0.06].forEach(function(z){ bx(LG[0],xf-0.02,xf+0.31,z,z+0.03,y,y+0.03,st); }); }); [z0+0.03,z1-0.06].forEach(function(z){ bx(LG[0],xf+0.31,xw,z,z+0.03,y2-0.04,y2-0.01,st); });   // shelves, wall ties
+    bx(LG[0],xf-0.04,xf+0.33,z0,z1,G0,G0+0.02,pad,oc); acOut(LG[0],xf,zc,y1,0.8); acOut(LG[0],xf,zc,y2,0.8);
+    coverZ(LG[0],xw-0.075,xw,cz0,cz1,y1+0.2,E.base(1)+2.36); bx(LG[0],xw-0.09,xw,cz0-0.01,cz1+0.01,E.base(1)+2.3,E.base(1)+2.42,cov);   // study pipe out of the wall under the 3F floor
+    bx(LG[0],xw-0.06,xw,cz1,cz1+0.1,2.2,2.32,cov); bx(LG[0],xw-0.07,xw,cz1-0.01,cz1+0.1,2.23,2.29,cov);   // mirror room pipe joins at 2.3 m
+    [y1+0.2,y2+0.2].forEach(function(y){ bx(LG[0],xf+0.12,xw-0.075,cz0+0.01,cz1-0.01,y,y+0.06,cov); bx(LG[0],xf+0.12,xf+0.2,z1+0.02,cz0+0.01,y,y+0.06,cov); });
+    addCol(0,xf-0.04,xw,z0,cz1,G0,y2+0.55,'w'); })();
+  /* living room (2F): unit on wall brackets high on the garage's east wall near the open mouth; the pipe drops inside the wall and runs under the garage ceiling */
+  (function(){ const xw=WX(0,580)-TE/2, xf=xw-0.06-0.29, zc=7.9, y0=1.72, top=E.base(0)+CH;
+    [zc-0.28,zc+0.24].forEach(function(z){ bx(LG[0],xf+0.02,xw,z,z+0.04,y0-0.05,y0-0.01,st); bx(LG[0],xw-0.03,xw,z,z+0.04,y0-0.45,y0-0.01,st); });   // brackets
+    acOut(LG[0],xf,zc,y0,0.8); coverZ(LG[0],xw-0.06,xw,WZ(0,440),zc+0.5,top-0.1,top-0.02); coverZ(LG[0],xw-0.06,xw,zc+0.42,zc+0.5,y0+0.2,top-0.02); bx(LG[0],xf+0.15,xw-0.06,zc+0.42,zc+0.48,y0+0.2,y0+0.26,cov); })();
+  /* master bedroom (3F): a 6-mat class unit (70 W) at the balcony's east end; the pipe runs in the ceiling to the south wall, then down a cover */
+  (function(){ const b=E.base(2), zw=WZ(2,850)+TE/2, xf=WX(2,580)-0.08-0.29, z0=zw+0.065, zc=z0+0.35, x=WX(2,566);
+    bx(LG[2],xf+0.02,xf+0.27,z0+0.06,z0+0.12,b,b+0.07,pad,oc); bx(LG[2],xf+0.02,xf+0.27,z0+0.58,z0+0.64,b,b+0.07,pad,oc); acOut(LG[2],xf,zc,b+0.09,0.7,-1);
+    coverZ(LG[2],x-0.04,x+0.04,zw,zw+0.06,b+0.45,b+2.36); bx(LG[2],x-0.05,x+0.05,zw,zw+0.075,b+2.3,b+2.42,cov); bx(LG[2],x-0.04,x+0.04,zw,z0+0.01,b+0.4,b+0.46,cov);
+    addCol(2,xf,xf+0.31,z0,z0+0.7,b,b+0.64,'w'); })();
+  /* breaker panel and network panel on the storage room's south wall beside its door, centred about 1.6 m up (the east wall is the full-height closet) */
+  (function(){ const zw=WZ(0,290)-TI/2, pnl=lam(0xf3f2ee,{roughness:0.35}), sm=lam(0xd9d6cf,{roughness:0.5});
+    [[WX(0,318),0.4,0.5,'分電盤'],[WX(0,363),0.3,0.4,'情報分電盤']].forEach(function(q){ const x0=q[0], x1=x0+q[1], y0=1.6-q[2]/2, y1=y0+q[2];
+      bx(LG[0],x0,x1,zw-0.1,zw,y0,y1,pnl); bx(LG[0],x0+0.02,x1-0.02,zw-0.102,zw-0.1,y0+0.02,y1-0.02,sm,oc); bx(LG[0],(x0+x1)/2-0.04,(x0+x1)/2+0.04,zw-0.108,zw-0.1,y0+0.03,y0+0.05,dk,oc);
+      bx(LG[0],x0+0.05,x1-0.05,zw-0.103,zw-0.101,y1-0.1,y1-0.05,label(q[3]),oc); }); })();
+  /* 24 h ventilation: round hoods (Ø15) on the outer walls: intakes for the living rooms, exhausts for the wet rooms */
+  [[1,WX(1,580)+TE/2,WZ(1,600),1,0,4.9],[2,WX(2,580)+TE/2,WZ(2,520),1,0,7.6],[1,WX(1,550),WZ(1,0)-TE/2,0,-1,4.9],[0,WX(0,250),WZ(0,0)-TE/2,0,-1,2.2],[2,WX(2,400),WZ(2,0)-TE/2,0,-1,7.7],[1,WX(1,60),WZ(1,0)-TE/2,0,-1,4.9]].forEach(function(q){
+    const G=new THREE.Group(); G.position.set(q[1],q[5],q[2]); G.rotation.y=Math.atan2(q[3],q[4]); LG[q[0]].add(G);   // local +z out of the wall
+    const c=function(r,d,z,mt){ const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,d,28),mt); m.rotation.x=Math.PI/2; m.position.z=z; G.add(m); };
+    c(0.075,0.05,0.025,wh); c(0.068,0.004,0.052,dk); c(0.09,0.014,0.06,wh); });
 })();
 },
 lighting:function(E){
