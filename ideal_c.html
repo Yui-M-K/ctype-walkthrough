@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261021u">
+<link rel="stylesheet" href="lib/storeys.css?v=20261021v">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261021u"></script>
-<script src="lib/furniture.js?v=20261021u"></script>
-<script src="lib/catalog.js?v=20261021u"></script>
-<script src="lib/look.js?v=20261021u"></script>
-<script src="lib/houses.js?v=20261021u"></script>
-<script src="lib/perf.js?v=20261021u"></script>
-<script src="lib/finish.js?v=20261021u"></script>
-<script src="lib/storeys.js?v=20261021u"></script>
+<script src="lib/people.js?v=20261021v"></script>
+<script src="lib/furniture.js?v=20261021v"></script>
+<script src="lib/catalog.js?v=20261021v"></script>
+<script src="lib/look.js?v=20261021v"></script>
+<script src="lib/houses.js?v=20261021v"></script>
+<script src="lib/perf.js?v=20261021v"></script>
+<script src="lib/finish.js?v=20261021v"></script>
+<script src="lib/storeys.js?v=20261021v"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -150,7 +150,7 @@ notes:[
   [1,361,417.5,'廚餘處理機','裝在水槽下，排水口是橡膠防濺蓋；台面有氣壓開關，打開水槽下櫃可看到本體'],
   [1,433.5,385,'嵌入式洗碗機','抽屜式深型 45 cm，放得下盤子、碗和杯子'],
   [1,523.5,412.5,'IH 爐＋抽油煙機','三口 IH，與水槽在同一座半島'],
-  [1,346,258,'食品收納櫃（系統櫃）','白色，和家電櫃、冰箱、半島同一種白；踢腳 10 cm、檯面 85 cm、吊櫃下緣 196 cm 三條線拉齊；中段是開放檯面（附 LED），上方櫃的層板可調；下櫃是掃地機器人的家：裡面放自動集塵的大型基地，機器人從門下方 12.5 cm 的開口自己進出'],[1,500,240,'上方吊櫃（家電櫃・冰箱・食品櫃）','做到天花板不積灰，可打開；冰箱上方留散熱空間'],
+  [1,346,258,'食品收納櫃（系統櫃）','白色，和家電櫃、冰箱、半島同一種白；踢腳 10 cm、檯面 85 cm、吊櫃下緣 189 cm 三條線拉齊；中段是開放檯面（附 LED），上方櫃的層板可調；下櫃是掃地機器人的家：裡面放自動集塵的大型基地，機器人從門下方 12.5 cm 的開口自己進出'],[1,500,240,'上方吊櫃（家電櫃・冰箱・食品櫃）','做到天花板不積灰，可打開；冰箱上方留散熱空間'],
   [2,470,40,'浴缸','1.6 m，洗澡時可看牆上電視'],
   [2,500,120,'浴室乾燥機','天花板暖風乾燥，下雨天可在浴室曬衣'],
   [2,490,160,'浴室曬衣桿','搭配乾燥機使用'],
