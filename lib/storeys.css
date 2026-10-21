@@ -58,3 +58,15 @@ button{font:inherit;color:inherit;cursor:pointer}
 .note small{font-size:12px;line-height:1.5;color:var(--ink);opacity:.85}
 #hovTip{position:fixed;padding:4px 10px;border-radius:999px;background:var(--ink);color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;pointer-events:none;box-shadow:0 2px 8px rgba(0,0,0,.25)}
 #hovTip::after{content:'  E';opacity:.6;font-family:var(--font-num)}
+#bPlan{position:absolute;right:16px;top:calc(234px + env(safe-area-inset-top,0px));width:100px;min-width:0;height:38px;padding:0;border-radius:19px;pointer-events:auto;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+#lv{top:calc(284px + env(safe-area-inset-top,0px))}
+#plan{position:fixed;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;padding:max(12px,env(safe-area-inset-top,0px)) 12px max(12px,env(safe-area-inset-bottom,0px));box-sizing:border-box;background:rgba(23,34,45,.32)}
+.planCard{width:min(90vw,760px);max-height:100%;overflow:auto;box-sizing:border-box;padding:12px 14px 10px;border-radius:18px;background:#fdfcf9;border:1px solid var(--line);box-shadow:0 18px 50px rgba(0,0,0,.28);overscroll-behavior:contain}
+.planHead{display:flex;align-items:center;gap:10px}
+.planHead h2{margin:0;font-size:16px;white-space:nowrap}
+.planTabs{display:flex;gap:6px;margin-left:auto}
+.planTabs .tog{min-height:36px;min-width:50px;padding:0 12px;font-weight:700}
+.planTabs .tog[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.planBox{margin-top:8px;overflow:auto;text-align:center}
+.planBox canvas{display:block;margin:0 auto;touch-action:manipulation}
+.planFoot{margin:6px 0 0;font-size:12px;color:var(--muted);text-align:center}
