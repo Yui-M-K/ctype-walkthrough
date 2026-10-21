@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261022s">
+<link rel="stylesheet" href="lib/storeys.css?v=20261022t">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -69,14 +69,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261022s"></script>
-<script src="lib/furniture.js?v=20261022s"></script>
-<script src="lib/catalog.js?v=20261022s"></script>
-<script src="lib/look.js?v=20261022s"></script>
-<script src="lib/houses.js?v=20261022s"></script>
-<script src="lib/perf.js?v=20261022s"></script>
-<script src="lib/finish.js?v=20261022s"></script>
-<script src="lib/storeys.js?v=20261022s"></script>
+<script src="lib/people.js?v=20261022t"></script>
+<script src="lib/furniture.js?v=20261022t"></script>
+<script src="lib/catalog.js?v=20261022t"></script>
+<script src="lib/look.js?v=20261022t"></script>
+<script src="lib/houses.js?v=20261022t"></script>
+<script src="lib/perf.js?v=20261022t"></script>
+<script src="lib/finish.js?v=20261022t"></script>
+<script src="lib/storeys.js?v=20261022t"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -577,7 +577,6 @@ fixtures:function(E){
     const pins=function(a,c,z0,y0,y1){ [a+t,c-t-0.003].forEach(function(x){ [z0+0.06,zf-0.05].forEach(function(z){ for(let y=y0+0.06;y<y1-0.05;y+=0.032) bx(LG[1],x,x+0.003,z-0.003,z+0.003,y-0.003,y+0.003,seam,oc); }); }); };   // shelf-pin holes every 32 mm
     /* pantry: a tall robot bay (Dreame X40 Ultra station + 30 cm lid clearance) up to the fixed shelf at 1.1 m, then the pantry cupboard and the band; doors still split at 85 cm */
     bx(LG[1],x0,x0+t,zb,zf,b,b+CT-0.02,W); bx(LG[1],x1-t,x1,zb,zf,b,b+CT-0.02,W); bx(LG[1],x0+t,x1-t,zb,zb+t,b,b+CT-0.02,inner,oc);   // robot station cupboard: no floor, the robot drives in under the door
-    bx(LG[1],x0+t,x1-t,zf-0.03,zf,b+0.125,b+0.14,W);   // rail over the robot's way in
     (function(){ const xr=x1-t-0.03, zw=zb+t, chrome=lam(0xcfd3d7,{metalness:0.9,roughness:0.25}), pvc=lam(0xd9d9d6,{roughness:0.6}), blue=lam(0x2f6fd1,{roughness:0.4});   // 給排水 kit and outlet on the bay's back wall
       bx(LG[1],xr-0.03,xr+0.01,zw,zw+0.03,b+0.43,b+0.47,chrome); bx(LG[1],xr-0.045,xr-0.03,zw+0.01,zw+0.06,b+0.445,b+0.455,blue);   // stop valve (止水栓) with a blue handle
       const tube=function(pts,r,mt){ const m=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map(function(q){ return new THREE.Vector3(q[0],q[1],q[2]); })),20,r,8,false),mt); m.castShadow=true; LG[1].add(m); };
@@ -591,7 +590,9 @@ fixtures:function(E){
     carcass(x0,x1,zb,b+NI,b+BAND); carcass(x0,x1,zb,b+BAND,top);
     pins(x0,x1,zb,b+NI,b+BAND); pins(x0,x1,zb,b+BAND,top);
     const jar=function(x,z,y,h,c){ const m=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.045,h,16),lam(c,{roughness:0.3})); m.position.set(x,y+h/2,z); LG[1].add(m); };
-    jar(x0+0.15,zb+0.2,b+1.1+t,0.22,0xe6dccb); jar(x0+0.3,zb+0.2,b+1.1+t,0.18,0xd8cfc0);   // canisters inside
+    [[0.06,0.22,0xe6dccb],[0.15,0.18,0xd8cfc0],[0.24,0.2,0xe9e4da],[0.33,0.16,0xc9b79c],[0.42,0.12,0x9fb0bf]].forEach(function(q){ jar(x0+q[0]+0.005,zb+0.2,b+1.1+t,q[1],q[2]); });   // canisters on the shelf over the robot bay
+    [0.08,0.17,0.26,0.35].forEach(function(dx,k){ const c=new THREE.Mesh(new THREE.CylinderGeometry(0.037,0.037,0.1,18),lam([0xc8372f,0xe8b84a,0x3f7d4e,0xd8d2c6][k],{roughness:0.35,metalness:0.4})); c.position.set(x0+dx+0.02,b+NI+t+0.05,zb+0.12); LG[1].add(c); });   // cans on the fixed board
+    bx(LG[1],x0+0.05,x0+0.2,zb+0.25,zb+0.4,b+NI+t,b+NI+t+0.08,lam(0xe8c87a,{roughness:0.7}),{cast:false}); bx(LG[1],x0+0.24,x0+0.44,zb+0.26,zb+0.36,b+NI+t,b+NI+t+0.05,lam(0x8a6a48,{roughness:0.6}),{cast:false});   // pasta, a bag of rice
     const SG=new THREE.Group(); SG.userData.keep=true; LG[1].add(SG);                                               // the adjustable shelf in the cupboard over the counter, with cereal boxes on it
     (function(){ const m=new THREE.Mesh(new THREE.BoxGeometry(x1-x0-2*t,t,zf-zb-t-0.03),inner); m.position.set((x0+x1)/2,0,(zb+t+zf-0.03)/2); SG.add(m);
       [[-0.12,0.24,0xb26b5a],[0.0,0.2,0xe7dcc8],[0.12,0.22,0x5f6f82]].forEach(function(q){ const o=new THREE.Mesh(new THREE.BoxGeometry(0.09,q[1],0.2),lam(q[2],{roughness:0.7})); o.position.set((x0+x1)/2+q[0],t/2+q[1]/2,(zb+zf)/2); SG.add(o); }); })();
@@ -846,7 +847,7 @@ fixtures:function(E){
     const plaster=E.WM[E.wallRoleAt(1,xf-0.3,zm)]||W;
     bx(LG[1],xf,xk,z0,z1,y0,y0+0.012,plaster); bx(LG[1],xk,xk+0.006,z0,z1,y0,y1,plaster,oc); [z0,z1-0.006].forEach(function(z){ bx(LG[1],xf,xk,z,z+0.006,y0,ys,plaster,oc); });   // reveal in the wall colour
     (function(){ const pts=[new THREE.Vector2(z0,ys),new THREE.Vector2(z0,y1+0.002),new THREE.Vector2(z1,y1+0.002),new THREE.Vector2(z1,ys)]; for(let i=1;i<24;i++){ const a=Math.PI*i/24; pts.push(new THREE.Vector2(zm+R*Math.cos(a),ys+R*Math.sin(a))); }
-      const g=new THREE.ExtrudeGeometry(new THREE.Shape(pts),{depth:xk-xf+0.002,bevelEnabled:false,curveSegments:24}); g.computeVertexNormals(); const m=new THREE.Mesh(g,plaster); m.rotation.y=Math.PI/2; m.position.x=xf-0.001; m.scale.z=-1; m.position.x=xk+0.001; LG[1].add(m);   // arched head through the depth
+      const g=new THREE.ExtrudeGeometry(new THREE.Shape(pts),{depth:xk-xf+0.002,bevelEnabled:false,curveSegments:24}); g.computeVertexNormals(); const m=new THREE.Mesh(g,plaster); m.rotation.y=-Math.PI/2; m.position.x=xk+0.001; LG[1].add(m);   // arched head through the depth
       const lp=[]; for(let i=0;i<=24;i++){ const a=Math.PI*i/24; lp.push(new THREE.Vector3(xk-0.03,ys+(R-0.012)*Math.sin(a),zm+(R-0.012)*Math.cos(a))); }
       const led=new THREE.MeshBasicMaterial({color:0xf0e2cc}), strip=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(lp),40,0.004,6,false),led); LG[1].add(strip);   // hidden LED inside the arch, washing the back
       const lip=new THREE.MeshBasicMaterial({color:0xf0e2cc}); bx(LG[1],xf+0.012,xf+0.018,z0+0.02,z1-0.02,b+1.265,b+1.27,lip,oc);
