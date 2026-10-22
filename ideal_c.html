@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261025o">
+<link rel="stylesheet" href="lib/storeys.css?v=20261025p">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261025o"></script>
-<script src="lib/furniture.js?v=20261025o"></script>
-<script src="lib/catalog.js?v=20261025o"></script>
-<script src="lib/look.js?v=20261025o"></script>
-<script src="lib/houses.js?v=20261025o"></script>
-<script src="lib/perf.js?v=20261025o"></script>
-<script src="lib/finish.js?v=20261025o"></script>
-<script src="lib/storeys.js?v=20261025o"></script>
+<script src="lib/people.js?v=20261025p"></script>
+<script src="lib/furniture.js?v=20261025p"></script>
+<script src="lib/catalog.js?v=20261025p"></script>
+<script src="lib/look.js?v=20261025p"></script>
+<script src="lib/houses.js?v=20261025p"></script>
+<script src="lib/perf.js?v=20261025p"></script>
+<script src="lib/finish.js?v=20261025p"></script>
+<script src="lib/storeys.js?v=20261025p"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -159,7 +159,7 @@ notes:[
   [1,577,304,'エコキュート 廚房遙控器','廚房走道東端牆上的リモコンニッチ（淺凹槽，和廚房燈開關收在一起），走道正中、離地約 1.3 m，煮飯時一轉頭就看得到，從客廳看不到：設定給水溫度、按「湯はり」自動放洗澡水'],[2,335,145,'エコキュート 浴室遙控器','浴室門旁的西牆，防水型：放洗澡水、追い焚き、和廚房通話'],
   [0,470,170,'地板點檢口（45 × 45 cm）','儲藏室地板，鋁框蓋和地板齊平，檢查地板下的給排水管'],[2,170,770,'天花板點檢口（45 × 45 cm）','3F 更衣間天花板，白框齊平，進屋頂內部檢查配線・防水'],
   [2,290,-30,'雨水槽・落水管','陸屋根往北排水：北側簷口的方形雨水槽，北面兩個角各一支 60 mm 落水管接到地面的排水井；玄關雨遮和陽台各有小出水口'],
-  [1,300,500,'插座（全屋）','每個用電設備旁都有插座、電線不橫過走道：每台壁掛冷氣旁一個高位專用插座；洗脫烘上方接地插座；三間廁所的免治馬桶旁低位接地插座；貓砂機、自動餵食器＋飲水機；3D 列印機（附 USB-C）；升降餐桌下的地板插座、沙發和按摩椅的地板插座、吹風機的地板插座；客廳出窗兩側附 USB-C；書桌、床頭、淺書架附 USB-C；戶外防水插座四個（庭院、陽台、門廊、車道）；IH 200V、洗碗機、冰箱、エコキュート、三溫暖、EV 充電樁都是專用迴路'],[1,410,5,'紗窗','所有可開的窗和落地窗都有紗窗（裝在外側軌道、鋁框，深灰細網，從屋內看出去稍暗、隱約看得到網格），浴室・廁所的霧面窗也有；樓梯的固定窗不能開，所以沒有'],
+  [1,150,380,'電燈開關（全屋）','每個房間門邊離地 120 cm 一組寬版開關（Panasonic アドバンス系列風），一顆按鈕一個迴路，上方印小字；客廳、餐桌、主臥、床頭燈、書房、鏡子房、浴室用調光開關（按鈕旁一條調光滑桿，長按調亮暗）；樓梯每一層的上下兩端都能開關（三路開關）；玄關一組可同時開門廊和庭院燈；Nest Hub 情境：「晚安」全關、「我回來了」開玄關＋客廳、「電影」客廳調到 20%'],[1,300,500,'插座（全屋）','每個用電設備旁都有插座、電線不橫過走道：每台壁掛冷氣旁一個高位專用插座；洗脫烘上方接地插座；三間廁所的免治馬桶旁低位接地插座；貓砂機、自動餵食器＋飲水機；3D 列印機（附 USB-C）；升降餐桌下的地板插座、沙發和按摩椅的地板插座、吹風機的地板插座；客廳出窗兩側附 USB-C；書桌、床頭、淺書架附 USB-C；戶外防水插座四個（庭院、陽台、門廊、車道）；IH 200V、洗碗機、冰箱、エコキュート、三溫暖、EV 充電樁都是專用迴路'],[1,410,5,'紗窗','所有可開的窗和落地窗都有紗窗（裝在外側軌道、鋁框，深灰細網，從屋內看出去稍暗、隱約看得到網格），浴室・廁所的霧面窗也有；樓梯的固定窗不能開，所以沒有'],
   [1,219,232,'滅火器（Tiger ECO NEUT 1 L）','Tiger ECO NEUT 家用中性強化液滅火器（1 L，各樓層一支）：2F 書房門與走道口之間的牆邊・3F 走廊東牆（洗衣間門與主臥門之間，離樓梯口近）・1F 玄關廳東牆；都貼牆放、不在門的開關範圍與走道上；法規上獨棟住宅不強制，放在逃生方向上、離爐子 2–3 m'],
   [1,300,560,'智慧照明（Google Home）','客廳、主臥、書房、鏡子房、玄關・門廊・庭院的燈接 Google Home：一般燈用支援 Google（Matter）的智慧開關（不用換燈泡），要調顏色的間接燈帶・吊燈・床頭燈用 Philips Hue；可語音「Hey Google，晚安」一次關燈，日落自動亮門廊和庭院燈，早上主臥燈慢慢亮'],
   [1,553,545,'Google Nest Hub（客廳）','電視櫃北端，控制全屋智慧燈・窗簾・看門口監視器'],[2,566,560,'Google Nest Hub（主臥）','床頭北側，鬧鐘・喚醒燈・睡前一次關燈'],
@@ -1743,6 +1743,18 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,245)-TI/2-WZ(2,19
       [1,545,843.5,'N',0.25,'u'],[1,240,843.5,'N',0.25,'u'],                                         // living room, either side of the bay
       [0,-6.5,600,'W',0.4,'o'],[2,545,856.5,'S',0.4,'o'],[0,250,796.5,'S',0.4,'o'],[0,586.5,700,'E',0.4,'o']   // outdoors: garden, balcony, porch, by the car apron (pressure washer)
     ].forEach(function(q){ put(q[0],q[1],q[2],q[3],q[4],q[5]); }); })();
+  /* light switches at each room's door, 1.2 m up: wide rockers, one per circuit, dimmers marked with a slider; 3-way pairs at both ends of each stair flight
+     [storey, plan x, plan y on the wall face, facing, labels] */
+  (function(){ const pm=lam(0xf4f4f2,{roughness:0.3}), rk=lam(0xfafaf8,{roughness:0.25}), ln=lam(0x9aa0a6), led=new THREE.MeshBasicMaterial({color:0x7fd18c});
+    const tx=function(lb){ const c=document.createElement('canvas'); c.width=64*lb.length; c.height=24; const g=c.getContext('2d'); g.fillStyle='#f4f4f2'; g.fillRect(0,0,c.width,24); g.fillStyle='#6b6e72'; g.font='600 13px "Hiragino Sans","Noto Sans JP",sans-serif'; g.textAlign='center'; lb.forEach(function(t,i){ g.fillText(t.replace('*',''),32+i*64,17); }); const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=4; return new THREE.MeshBasicMaterial({map:t}); };
+    const plate=function(l,px,py,face,lb){ const G=new THREE.Group(), n=lb.length, w=0.075*n+0.01; G.position.set(WX(l,px),E.base(l)+1.2,WZ(l,py)); G.rotation.y={S:0,E:Math.PI/2,N:Math.PI,W:-Math.PI/2}[face]; LG[l].add(G);
+      const b=new THREE.Mesh(new THREE.BoxGeometry(w,0.125,0.008),pm); b.position.z=0.004; G.add(b);
+      lb.forEach(function(t,i){ const x=-w/2+0.005+0.075*(i+0.5), r=new THREE.Mesh(new THREE.BoxGeometry(0.066,0.095,0.006),rk); r.position.set(x,-0.006,0.011); G.add(r); const d=new THREE.Mesh(new THREE.BoxGeometry(0.008,0.003,0.002),led); d.position.set(x,0.03,0.015); G.add(d);
+        if(t.indexOf('*')>=0){ const sl=new THREE.Mesh(new THREE.BoxGeometry(0.004,0.05,0.002),ln); sl.position.set(x+0.024,-0.008,0.015); G.add(sl); } });   // * = dimmer
+      const lab=new THREE.Mesh(new THREE.PlaneGeometry(w-0.01,0.0125),tx(lb)); lab.position.set(0,0.052,0.0085); G.add(lab); };
+    [[0,225,785.5,'N',['玄關','門廊','庭院']],[0,119.5,560,'E',['樓梯','走廊']],[0,265.5,330,'W',['鏡子房*']],
+     [1,119.5,380,'E',['樓梯','客廳*','餐桌*','間接燈*']],[1,577,330,'W',['廚房','手元燈']],[1,225,220.5,'N',['書房*','間接燈']],[1,210,130,'W',['走道']],
+     [2,119.5,370,'E',['樓梯','走廊']],[2,249.5,577,'E',['主臥*','床頭燈*','陽台']],[2,250,229.5,'S',['洗面室','浴室*','換氣']],[2,240,240,'W',['洗衣間']]].forEach(function(q){ plate.apply(null,q); }); })();
   /* fire extinguishers (Tiger ECO NEUT 1 L), one a floor, on the escape route */
   [[1,WX(1,219),WZ(1,225)+TI/2+0.07,3],[2,WX(2,245)-TI/2-0.07,WZ(2,385),2],[0,WX(0,270)-TI/2-0.07,WZ(0,600),2]].forEach(function(q){ fixture(q[0],Catalog.fireExtinguisher(),q[1],q[2],q[3]); });
 })();
