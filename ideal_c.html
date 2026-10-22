@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261025a">
+<link rel="stylesheet" href="lib/storeys.css?v=20261025b">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261025a"></script>
-<script src="lib/furniture.js?v=20261025a"></script>
-<script src="lib/catalog.js?v=20261025a"></script>
-<script src="lib/look.js?v=20261025a"></script>
-<script src="lib/houses.js?v=20261025a"></script>
-<script src="lib/perf.js?v=20261025a"></script>
-<script src="lib/finish.js?v=20261025a"></script>
-<script src="lib/storeys.js?v=20261025a"></script>
+<script src="lib/people.js?v=20261025b"></script>
+<script src="lib/furniture.js?v=20261025b"></script>
+<script src="lib/catalog.js?v=20261025b"></script>
+<script src="lib/look.js?v=20261025b"></script>
+<script src="lib/houses.js?v=20261025b"></script>
+<script src="lib/perf.js?v=20261025b"></script>
+<script src="lib/finish.js?v=20261025b"></script>
+<script src="lib/storeys.js?v=20261025b"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -183,7 +183,7 @@ notes:[
   [1,125,600,'冷氣（客廳）','18 畳用（約 5.6 kW・200V），西牆（沙發後方上方），看電視時不在視線內、風從頭上吹過；旁邊有 200V 專用插座和遙控器架；配管走 2F 天花板內往北到北外牆，沿配管蓋下到北側通路的室外機，約 11 m'],
   [2,300,470,'冷氣（主臥）','壁掛式，北牆西段、往南沿著床尾那側吹，不會吹到枕頭；遙控器掛在同一面牆；配管走天花板內往東約 3 m 到東外牆，沿外牆的配管蓋往南接到陽台東端的室外機（約 7 m）'],[1,220,110,'冷氣（書房）','壁掛式，旁邊牆上掛遙控器'],[0,305,150,'冷氣（鏡子房）','壁掛式，旁邊牆上掛遙控器'],
   [0,155,180,'火災警報器','天花板'],[0,192,560,'火災警報器','天花板'],[1,350,600,'火災警報器','天花板'],[1,470,330,'火災警報器','天花板'],[1,57,280,'火災警報器','天花板'],[2,412,590,'火災警報器','天花板'],[2,440,300,'火災警報器','天花板'],[2,180,480,'火災警報器','天花板'],[1,412,110,'火災警報器','天花板'],
-  [1,58,200,'洗手台（2F 廁所）','廁所南牆、馬桶右前方的小型懸空洗手台（旁邊是嵌入牆裡的馬桶刷收納，衛生紙架在北牆、座位前方約 20 cm）：盆和檯面一體成形的白色人造石，下方淨空；鏡子有細橡木框'],[1,190,830,'貓走道＋透明壓克力貓碗','分成兩組 Z 字形：西邊休息區是 45 cm 踏板 → 85 cm 踏板（折返）→ 125 cm 的貓屋（頂上也能趴）；中間留約 45 cm 空白牆，155 cm 的連接踏板從貓屋頂跳到東邊；東邊高處是 100 cm 踏板 → 140 cm 的貓耳吊床（折返）→ 182 cm 的透明壓克力貓碗（Ø42 cm，從下面看得到貓）。每一跳水平 ≤ 45 cm、高低差 ≤ 40 cm；咘咘從西邊爬上去在吊床休息，回程原路下來或從 100 cm 踏板跳下；全部橡木、深度一致、三角托架＋劍麻踏面，避開出窗的窗簾收納位置'],[1,40,780,'貓砂機地墊','約 80 × 103 cm 的雙層蜂巢貓砂墊，貼齊西牆和南牆、出口前方留 45 cm；貓砂機背面離牆 4 cm、側面 2.7 cm'],[0,66,310,'廁所垃圾桶','嵌進牆裡的掀蓋式（3–5 L），和馬桶刷收納同一面牆、在下方，坐著伸手就能打開；裡面是可以拿出來的白色內桶，用完 2 秒自動蓋上；1F・2F・3F 每間廁所都一樣'],[1,165,240,'走道入口','拱門＋白色蕾絲長紗簾（法式刺繡、可打結收起）：拱頂約 2.25 m、起拱 1.86 m、寬 80 cm；左右兩片白色蕾絲簾從 1.82 m 的細桿垂下 165 cm，下襬是波浪邊、離地約 17 cm，不會拖地、不會纏到掃地機器人和貓；中間內側有寬的蕾絲邊；「撥開布簾」兩片各收到門邊、在離地約 38 cm 處打一個鬆鬆的結；拱門內側藏 2400–2700 K 暖光 LED，傍晚透過蕾絲發光'],[1,205,60,'脫衣間拱形壁龕','放脫下的衣服和毛巾，內藏暖色間接燈：寬 58 cm、深 18 cm，離地 85–175 cm（146 cm 起拱）；離地 127 cm 一片層板放摺好的毛巾和換穿的衣服，底部的布托盤放剛脫下的衣服；拱頂內側藏一條暖色 LED，傍晚自動亮起；吹風機放在 2F 洗手台旁（廁所）'],[1,400,40,'書房系統桌（L 型）','書房：一人用工作桌（L 型，北牆 72 cm 座位桌＋東牆 100 cm 站立檯面）、西端落地高櫃。北牆桌面下一排 7 cm 薄抽屜（文具・線材・筆記本・遊戲手把），西側三層抽屜櫃、膝下 118 cm、主機格；桌面最東 30 cm 用彎板升到 100 cm，下面是越往東越高的開放格（耳機架・充電座）；東牆站立檯面下只有一排薄抽屜（3D 列印工具・備用線材），下方淨空；3D 列印機（壓克力罩）放在南端靠窗，旁邊是線材防潮箱；西端高櫃寬 60 cm（離北窗窗框留 5 cm 以上），可調層板放檔案・書・路由器・線材捲'],[1,565,80,'書房桌高低差','北牆座位桌的最東端，用橡木彎板做成 S 形弧面從 72 cm 升到 100 cm（曲げ合板，訂製），轉角和東牆都是 100 cm；弧面不放東西'],[1,275,215,'書房門','一般門（往書房內開）、門寬約 85 cm、門框附隔音條，視訊會議時客廳的聲音比較不會傳進來；地上有門擋'],[1,150,110,'脫衣間（2F）','淋浴間前方；一般開門（往走道開、鉸鏈在東側），撥桿把手＋表示錠（外面可用硬幣緊急開鎖）'],[0,37,764,'玄關系統櫃','寬 59 cm（加側邊淺櫃共 78 cm，和土間邊切齊）；下櫃直接落地；下櫃和上櫃中間是 52 cm 高的開放置物檯（橡木檯面、LED），放小盆栽、擴香和相框；上櫃和下櫃加側邊淺櫃同寬，正面一片白色按壓式門片，和下櫃門片同一平面；層板孔每 3.2 cm 一格可調高度，下櫃每層一片通寬層板，最上層較高放長靴，上櫃是左右對開門、層板放短靴；靠土間的側面只有下方一組淺櫃（側開門），放鞋油和拖鞋'],[0,242,756,'穿鞋椅','玄關門東側的土間上，深度和土間一樣、前緣對齊台階邊；座面離木地板 45 cm（一般椅子高度）；白色櫃體，座板和鞋櫃檯面同款淺橡木，上面一片薄的燕麥色亞麻坐墊；下方三層開放格放每天穿的鞋，旁邊牆上兩個掛勾'],[0,65,808,'固定式傘架','玄關門外，奶油色鐵管架鎖在外牆上不怕風吹；上方 12 格每把傘一格：左邊 6 格長傘直接立在地磚上，右邊 6 格折疊傘放在腰高的接水盤上，不用彎腰拿'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
+  [1,58,200,'洗手台（2F 廁所）','廁所南牆、馬桶右前方的小型懸空洗手台（旁邊是嵌入牆裡的馬桶刷收納，衛生紙架在北牆、座位前方約 20 cm）：盆和檯面一體成形的白色人造石，下方淨空；鏡子有細橡木框'],[1,190,830,'貓走道＋透明壓克力貓碗','分成兩組 Z 字形：西邊休息區是 45 cm 踏板 → 85 cm 踏板（折返）→ 125 cm 的貓屋（頂上也能趴）；中間留約 45 cm 空白牆，155 cm 的連接踏板從貓屋頂跳到東邊；東邊高處是 100 cm 踏板 → 140 cm 的貓耳吊床（折返）→ 182 cm 的透明壓克力貓碗（Ø42 cm，從下面看得到貓）。每一跳水平 ≤ 45 cm、高低差 ≤ 40 cm；咘咘從西邊爬上去在吊床休息，回程原路下來或從 100 cm 踏板跳下；全部橡木、深度一致、三角托架＋劍麻踏面，避開出窗的窗簾收納位置'],[1,40,780,'貓砂機地墊','約 80 × 103 cm 的雙層蜂巢貓砂墊，貼齊西牆和南牆、出口前方留 45 cm；貓砂機背面離牆 4 cm、側面 2.7 cm'],[0,66,310,'廁所垃圾桶','嵌進牆裡的掀蓋式（3–5 L），和馬桶刷收納同一面牆、在下方，坐著伸手就能打開；裡面是可以拿出來的白色內桶，用完 2 秒自動蓋上；1F・2F・3F 每間廁所都一樣'],[1,165,240,'走道入口','拱門＋白色蕾絲長紗簾（法式刺繡、可打結收起）：拱頂約 2.25 m、起拱 1.86 m、寬 80 cm；左右兩片白色蕾絲簾從 1.82 m 的細桿垂下 165 cm，下襬是波浪邊、離地約 17 cm，不會拖地、不會纏到掃地機器人和貓；中間內側有寬的蕾絲邊；「撥開布簾」兩片各收到門邊、在離地約 38 cm 處打一個鬆鬆的結；拱門內側藏 2400–2700 K 暖光 LED，傍晚透過蕾絲發光'],[1,205,60,'脫衣間拱形壁龕','放脫下的衣服和毛巾，內藏暖色間接燈：寬 58 cm、深 18 cm，離地 85–175 cm（146 cm 起拱）；離地 127 cm 一片層板放摺好的毛巾和換穿的衣服，底部的布托盤放剛脫下的衣服；拱頂內側藏一條暖色 LED，傍晚自動亮起；吹風機放在 2F 洗手台旁（廁所）'],[1,400,40,'書房系統桌（L 型）','書房：一人用 L 型工作桌，北牆 72 cm 座位桌從西牆一路做到東邊（約 2.5 m）＋東牆 100 cm 站立檯面。桌下只有最西端一座落地抽屜櫃（文具／線材・充電器・遊戲手把／A4 吊掛檔案），其餘全部淨空；電腦主機放在抽屜櫃旁的附輪底座上，線從桌面走線孔上來。座位桌最東 30 cm 用彎板升到 100 cm，下面是越往東越高的開放格（耳機架・充電座）；東牆站立檯面下淨空。3D 列印機（壓克力罩）放在南端靠窗，旁邊是線材防潮箱。桌上：27 吋螢幕（掛燈＋網路攝影機）、鍵盤滑鼠、毛氈桌墊、喇叭、MacBook Air 13 吋、無線充電盤、馬克杯和筆記本'],[1,346,215,'書房淺書架','書房門右邊、利用牆面轉角做的到頂淺書架（深 20 cm、可用約 18 cm）：漫畫、文庫本、一般書都放得下，A4 放檔案抽屜；中間一層放路由器並有插座＋USB-C 可以充電，上層放小盆栽和收納盒'],[1,565,80,'書房桌高低差','北牆座位桌的最東端，用橡木彎板做成 S 形弧面從 72 cm 升到 100 cm（曲げ合板，訂製），轉角和東牆都是 100 cm；弧面不放東西'],[1,275,215,'書房門','一般門（往書房內開）、門寬約 85 cm、門框附隔音條，視訊會議時客廳的聲音比較不會傳進來；地上有門擋'],[1,150,110,'脫衣間（2F）','淋浴間前方；一般開門（往走道開、鉸鏈在東側），撥桿把手＋表示錠（外面可用硬幣緊急開鎖）'],[0,37,764,'玄關系統櫃','寬 59 cm（加側邊淺櫃共 78 cm，和土間邊切齊）；下櫃直接落地；下櫃和上櫃中間是 52 cm 高的開放置物檯（橡木檯面、LED），放小盆栽、擴香和相框；上櫃和下櫃加側邊淺櫃同寬，正面一片白色按壓式門片，和下櫃門片同一平面；層板孔每 3.2 cm 一格可調高度，下櫃每層一片通寬層板，最上層較高放長靴，上櫃是左右對開門、層板放短靴；靠土間的側面只有下方一組淺櫃（側開門），放鞋油和拖鞋'],[0,242,756,'穿鞋椅','玄關門東側的土間上，深度和土間一樣、前緣對齊台階邊；座面離木地板 45 cm（一般椅子高度）；白色櫃體，座板和鞋櫃檯面同款淺橡木，上面一片薄的燕麥色亞麻坐墊；下方三層開放格放每天穿的鞋，旁邊牆上兩個掛勾'],[0,65,808,'固定式傘架','玄關門外，奶油色鐵管架鎖在外牆上不怕風吹；上方 12 格每把傘一格：左邊 6 格長傘直接立在地磚上，右邊 6 格折疊傘放在腰高的接水盤上，不用彎腰拿'],[0,470,10,'儲藏室窗戶','一般高度的窗，日後改成小孩房可直接使用；冷氣孔與插座預留'],[0,250,290,'鏡子房・儲藏室的門','集中在鏡子房東南角，日後可用輕隔間圍出前室，兩間各自進出'],
   [1,410,880,'ごろ寝區（外推 95 cm）','客廳南面可以躺著打滾的平台：2F 樓板往外懸挑 95 cm（和 3F 陽台對齊），寬 2.4 m，算進樓地板面積（約 2.28 m²），建蔽率・容積率仍在範圍內；室內牆線不內縮，檯面離地 40 cm，鋪一整片厚坐墊和幾個抱枕；三面玻璃，橡木框內藏暖色 LED 燈條；牆線上的平台立面是三個大抽屜，往室內拉出；底下是和外牆同材質的平頂，從門廊看得到'],[2,410,895,'陽台','主臥前的陽台（3.4 × 0.95 m，1.1 m 玻璃欄杆，深度不到 1 m，不算建築面積），從主臥的落地拉門出去；不曬衣服：東側掛一張可折收的吧台，西側是外氣浴躺椅'],[2,505,930,'欄杆掛式折疊吧台','人工木（深咖啡）兩片板中間留 7 mm 排水縫，深 32 cm、寬 110 cm、高 98 cm，靠欄杆那側有 11 cm 的擋邊；鋼製掛勾直接掛在玻璃欄杆的頂桿上，不用鑽孔；「收起吧台」整片翻下貼著欄杆內側，兩張折疊吧台椅也收到牆邊；陽台只有 3.4 m，扣掉躺椅和東端的冷氣室外機，吧台做 110 cm、靠東邊'],[2,330,900,'外氣浴躺椅','零重力椅，三溫暖後在陽台吹風休息，可折收：黑色鋼管、灰米色網布、頭枕和軟扶手；沿著陽台放、頭朝西端；「躺平／坐起」調整角度，「折起來」收到牆邊；旁邊小凳放一杯水，椅上有摺好的毛巾'],[0,290,895,'玄關雨遮','整面門面上方離地約 2.4 m 的薄型雨遮（往外 90 cm），深灰鋁框、底面杉木格柵，嵌 4 盞小崁燈；懸臂固定在牆上，下面沒有柱子'],[0,20,365,'擦手巾','每個洗手台旁都有毛巾桿掛著擦手巾；廚房的掛在垃圾桶櫃靠水槽那側的側板上'],[0,115,560,'樓梯下收納','樓梯下方較高的一段：兩扇和牆面齊平、同色的門，門邊是不凸出的梯形凹口把手，靠廁所那格直立收著折疊好的嬰兒推車，另一格放防災用品和囤貨；最矮的一段直接是牆'],[0,40,320,'一樓洗手台','沿馬桶旁西牆的懸空長檯面（細長檯面龍頭、給皂機放在橡木段上）：靠門那端是盆和檯面一體成形的白色人造石，和橡木段同深度、同高度、前緣一直線，看起來是一整條；其餘是橡木，中段開放格放衛生紙、靠馬桶那端一個抽屜；鏡子有細橡木框；檯面放盆栽和小托盤'],[0,98,305,'馬桶刷收納（每間廁所）','每間廁所牆裡嵌入的細長收納，門片和腰壁磁磚齊平、從廁所內側開，高度對齊腰壁收邊條；上下兩扇門、中間封板隔開：下格放馬桶刷，上格有一片層板，放清潔濕紙巾和備用衛生紙；牆的另一面維持平整'],[1,345,410,'水槽下清潔用品架','打開水槽下櫃後可以把兩層網籃拉出來，放洗碗精補充瓶、酒精噴霧和海綿'],[0,155,10,'整面鏡子＋捲簾','鏡子房北牆，不用時可拉下捲簾遮住'],
   [0,155,30,'壁掛喇叭','鏡子房兩側'],
   [0,580,345,'Tesla 充電樁','車庫牆上'],
@@ -594,7 +594,7 @@ return [
   ['mirrorW','fullMirror',2,238.5,740,'W'],
   ['artHall','artSmall',2,6.5,610,'E'],
   /* 2F study */
-  ['duo','officeChair',1,398.5,110,'N'],['printer','printer3d',1,543,176,'W',function(){ return Catalog.printer3d(1.0); }],['shelf3','bookshelf',1,420,184.75,'N',null,{off:true}],['rugS','rugRoundSun',1,420,135,'E',null,{off:true}],['plant3','plantS',1,560,112,'E'],
+  ['duo','gamingChair',1,391,104,'N'],['printer','printer3d',1,543,176,'W',function(){ return Catalog.printer3d(1.0); }],['shelf3','bookshelf',1,420,184.75,'N',null,{off:true}],['rugS','rugRoundSun',1,420,135,'E',null,{off:true}],['plant3','plantS',1,560,112,'E'],
   ['laundryPole','laundryPole',2,430,320,'E',function(){ return Catalog.laundryPole(E.CH,1.8); },{off:true}],['washer','washer',2,540,246,'S',function(){ return Catalog.washer(); }]
 ];
 },
@@ -1003,27 +1003,12 @@ fixtures:function(E){
     E.framedMirror(G,(bx0+bx1)/2,top+0.5,z0,0.32,0.5,0,oak); })();
   fixture(1,Catalog.bathWallSet({standing:true,mirror:true}),WX(1,0)+TE/2,WZ(1,60),1);   // 2F shower room, set up for standing
   (function(){ const b=E.base(1), x=WX(1,22), z=WZ(1,100), oc={cast:false}; bx(LG[1],x-0.06,x+0.06,z-0.06,z+0.06,b+0.001,b+0.0035,lam(0x9ea3a8,{metalness:0.7,roughness:0.4}),oc); for(let i=0;i<5;i++) bx(LG[1],x-0.045,x+0.045,z-0.042+i*0.02,z-0.034+i*0.02,b+0.0035,b+0.004,lam(0x2b2d31,{roughness:0.6}),oc); })();   // floor drain in the corner under the shower
-  (function(){ const b=E.base(1), xw=WX(1,215)+TI/2+0.1, xe=WX(1,580)-TE/2, zn=WZ(1,0)+TE/2, zf=zn+0.62, H=0.72, T=0.03, W=M.cabF, oak=M.oak, oc={cast:false}, dk=lam(0x3a3d41,{roughness:0.6}), xc=xe-0.62, zs=WZ(1,200), HC=1.0, xq=xc-0.3, xt=WX(1,300)-0.105, t=0.018;   // study: one seat; west tall cabinet, 72 cm north run rising in a bent-oak curve to the 1.0 m corner and east counter
-    const xa=xt+0.5, xk=xa+1.18, kick=lam(0x8f887d,{roughness:0.8}), inn=lam(0xe1d7c7,{roughness:0.6}), AP=0.07;   // drawer stack | knee | PC cubby | curve cubby
-    /* west tall cabinet, floor to ceiling, one inset door, adjustable shelves */
-    (function(){ const x0=xw, x1=xt, top=b+E.CH-0.005; bx(LG[1],x0,x1,zn,zf,b,b+0.08,kick,oc); [[x0,x0+t],[x1-t,x1]].forEach(function(r){ bx(LG[1],r[0],r[1],zn,zf,b,top,W); }); bx(LG[1],x0,x1,zn,zf,b+0.08,b+0.1,W); bx(LG[1],x0,x1,zn,zf,top-t,top,W); bx(LG[1],x0,x1,zn,zn+0.01,b,top,inn,oc);
-      [x0+t,x1-t-0.003].forEach(function(x){ [zn+0.06,zf-0.06].forEach(function(z){ for(let y=0.2;y<E.CH-0.1;y+=0.032) bx(LG[1],x,x+0.003,z-0.003,z+0.003,b+y-0.003,b+y+0.003,lam(0x8f887d),oc); }); });
-      [0.5,0.92,1.34,1.76,2.12].forEach(function(h){ bx(LG[1],x0+t,x1-t,zn+0.01,zf-0.03,b+h,b+h+t,W); });
-      const sb=function(a,c,z0,z1,y0,h,col){ bx(LG[1],a,c,z0,z1,b+y0,b+y0+h,lam(col,{roughness:0.7}),oc); };
-      sb(x0+0.04,x0+0.3,zn+0.06,zn+0.4,0.1,0.32,0xd9cfc0); sb(x0+0.32,x0+0.55,zn+0.06,zn+0.4,0.1,0.28,0xc9b79c);   // storage boxes
-      for(let k=0;k<7;k++) sb(x0+0.04+k*0.05,x0+0.08+k*0.05,zn+0.08,zn+0.38,0.518,0.3,[0x2f4b6e,0xe9e2d0,0x6b4f3a,0x3e4f43,0xf6f3ec,0x8c8a85,0x7a2e2e][k]);   // files
-      for(let k=0;k<9;k++) sb(x0+0.04+k*0.035,x0+0.07+k*0.035,zn+0.1,zn+0.32,0.938,0.22+(k%3)*0.03,[0x2f3b4c,0xe9e2d0,0x6b4f3a,0x3e4f43,0x8c8a85,0xb9a27c][k%6]); sb(x0+0.38,x0+0.56,zn+0.06,zn+0.36,0.938,0.06,0xfbfaf6);   // books, a ream of printer paper
-      sb(x0+0.06,x0+0.26,zn+0.06,zn+0.26,1.358,0.04,0x1d1e21); sb(x0+0.3,x0+0.5,zn+0.06,zn+0.32,1.358,0.12,0x2b2d31); bx(LG[1],x0+0.31,x0+0.32,zn+0.32,zn+0.321,b+1.44,b+1.45,new THREE.MeshBasicMaterial({color:0x5fd08a}),oc);   // router, a small NAS
-      [[0.08,0xe8e4dc],[0.3,0xd8453c],[0.52,0x2f6fb5]].forEach(function(q){ const sp=new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,0.07,24),lam(q[1],{roughness:0.5})); sp.rotation.x=Math.PI/2; sp.position.set(x0+q[0]+0.0,b+1.778+0.1,zn+0.2); LG[1].add(sp); });   // filament spools
-      const G=new THREE.Group(); G.position.set(x0+t+0.002,0,zf); G.userData.keep=true; LG[1].add(G); const w=x1-x0-2*t-0.004;
-      const dm=new THREE.Mesh(new THREE.BoxGeometry(w,top-t-b-0.1-0.006,0.02),W); dm.position.set(w/2,(b+0.1+top-t)/2,-0.01); dm.castShadow=true; G.add(dm); const n=E.notchPull(W.color.getHex(),0.18); n.position.set(w,b+1.05,0); n.rotation.z=-Math.PI/2; G.add(n);
-      let cur=0, tg=0, last=null; furnThings.push({pt:[(x0+x1)/2,zf+0.6],l:1,part:[dm],on:function(){ return true; },label:function(){ return tg?'關上書房高櫃':'打開書房高櫃（檔案・書・路由器）'; },act:function(){ tg=tg?0:1; last=null; }});
-      furnAnims.push({live:function(){ return cur!==tg; },f:function(t2){ if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*2?tg:cur+Math.sign(tg-cur)*dt*2; G.rotation.y=-1.6*cur; E.renderer.shadowMap.needsUpdate=true; return true; }});
-      addCol(1,x0,x1,zn,zf,b,top,'w'); })();
-    /* north run at 72 cm: top, cable tray, a 3-drawer stack, the knee, a PC cubby; a row of 7 cm apron drawers under the top */
+  (function(){ const b=E.base(1), xw=WX(1,215)+TI/2+0.1, xe=WX(1,580)-TE/2, zn=WZ(1,0)+TE/2, zf=zn+0.62, H=0.72, T=0.03, W=M.cabF, oak=M.oak, oc={cast:false}, dk=lam(0x3a3d41,{roughness:0.6}), xc=xe-0.62, zs=WZ(1,200), HC=1.0, xq=xc-0.3, xt=xw, t=0.018;   // study: one seat; west tall cabinet, 72 cm north run rising in a bent-oak curve to the 1.0 m corner and east counter
+    const xa=xt+0.45, xk=xa+0.26, kick=lam(0x8f887d,{roughness:0.8}), inn=lam(0xe1d7c7,{roughness:0.6}), AP=0.07;   // drawer stack | knee | PC cubby | curve cubby
+    /* north run at 72 cm, wall to wall: top, cable tray, one floor-standing drawer pedestal at the west end, open below elsewhere */
     bx(LG[1],xt,xq,zn,zf,b+H-T,b+H,oak); bx(LG[1],xt,xq,zn+0.02,zn+0.1,b+H-T-0.05,b+H-T-0.04,dk,oc); bx(LG[1],xt,xq,zn+0.09,zn+0.1,b+H-T-0.05,b+H-T,dk,oc);
-    const ya=H-T-AP; bx(LG[1],xt,xq,zn+0.1,zf,b+ya-t,b+ya,W);   // the apron row's bottom
-    [[xt,xa],[xk,xq]].forEach(function(r){ bx(LG[1],r[0],r[1],zn,zf-0.02,b,b+0.08,kick,oc); bx(LG[1],r[0],r[0]+t,zn,zf,b,b+ya,W); bx(LG[1],r[1]-t,r[1],zn,zf,b,b+ya,W); bx(LG[1],r[0],r[1],zn,zf,b+0.08,b+0.1,W); bx(LG[1],r[0],r[1],zn,zn+0.01,b,b+ya,inn,oc); });
+    const ya=H-T;
+    [[xt,xa]].forEach(function(r){ bx(LG[1],r[0],r[1],zn,zf-0.02,b,b+0.08,kick,oc); bx(LG[1],r[0],r[0]+t,zn,zf,b,b+ya,W); bx(LG[1],r[1]-t,r[1],zn,zf,b,b+ya,W); bx(LG[1],r[0],r[1],zn,zf,b+0.08,b+0.1,W); bx(LG[1],r[0],r[1],zn,zn+0.01,b,b+ya,inn,oc); });
     const slides=[], drawer=function(x0,x1,y0,y1,dir,fill,lab){ const G=new THREE.Group(); G.userData.keep=true; LG[1].add(G); let fr;
       if(dir==='z'){ fr=bx(G,x0+0.002,x1-0.002,zf-0.02,zf,b+y0,b+y1,W); bx(G,x0+0.02,x1-0.02,zn+0.12,zf-0.02,b+y0+0.008,b+y0+0.018,inn,oc); const n=E.notchPull(W.color.getHex(),0.16); n.position.set((x0+x1)/2,b+y1-0.003,zf); G.add(n); }
       else { fr=bx(G,xc-0.02,xc,x0+0.002,x1-0.002,b+y0,b+y1,W); bx(G,xc,xe-0.04,x0+0.02,x1-0.02,b+y0+0.008,b+y0+0.018,inn,oc); const n=E.notchPull(W.color.getHex(),0.16); n.position.set(xc-0.02,b+y1-0.003,(x0+x1)/2); n.rotation.y=-Math.PI/2; G.add(n); }
@@ -1031,26 +1016,49 @@ fixtures:function(E){
       furnThings.push({pt:dir==='z'?[(x0+x1)/2,zf+0.55]:[xc-0.55,(x0+x1)/2],l:1,part:[fr],on:function(){ return true; },label:function(){ return (st.tg?'關上':'拉開')+lab; },act:function(){ st.tg=st.tg?0:1; st.last=null; }}); return G; };
     const box=function(G,x0,x1,z0,z1,y0,y1,c){ bx(G,x0,x1,z0,z1,b+y0,b+y1,lam(c,{roughness:0.6}),oc); };
     const yA=ya+0.004, yB=H-T-0.004, fy=ya+0.022;
-    drawer(xt+t,xa-t/2,yA,yB,'z',function(G){ [0.05,0.08,0.11,0.14].forEach(function(dx,k){ box(G,xt+dx,xt+dx+0.012,zn+0.2,zn+0.36,fy-b+b-b+0,fy+0.01-b+b-b,[0xd8453c,0x2f6fb5,0x1d1e21,0xf2c94c][k]); }); box(G,xt+0.22,xt+0.36,zn+0.18,zn+0.32,fy,fy+0.02,0xe9e2d0); },'文具抽屜');
-    drawer(xa,(xa+xk)/2,yA,yB,'z',function(G){ box(G,xa+0.05,xa+0.25,zn+0.2,zn+0.45,fy,fy+0.025,0x1d1e21); box(G,xa+0.3,xa+0.5,zn+0.22,zn+0.4,fy,fy+0.03,0x3a3d41); },'線材・充電器抽屜');
-    drawer((xa+xk)/2,xk,yA,yB,'z',function(G){ box(G,(xa+xk)/2+0.05,(xa+xk)/2+0.27,zn+0.2,zn+0.5,fy,fy+0.015,0x6b4f3a); box(G,(xa+xk)/2+0.06,(xa+xk)/2+0.26,zn+0.21,zn+0.49,fy+0.015,fy+0.03,0x2f4b6e); },'筆記本抽屜');
-    drawer(xk,xq-t/2,yA,yB,'z',function(G){ box(G,xk+0.03,xk+0.2,zn+0.25,zn+0.36,fy,fy+0.04,0x1d1e21); },'遊戲手把抽屜');
-    [[0.1,0.26],[0.27,0.42],[0.43,ya-0.004]].forEach(function(r,k){ drawer(xt+t,xa-t,r[0],r[1],'z',function(G){ [[0x2f4b6e,0xe9e2d0,0x6b4f3a],[0x1d1e21,0x3a3d41,0x8c8a85],[0xf6f3ec,0xe9e2d0,0xd9cfc0]][k].forEach(function(c,i){ box(G,xt+0.04+i*0.12,xt+0.14+i*0.12,zn+0.15,zn+0.45,r[0]+0.02,r[1]-0.03,c); }); },['檔案抽屜','收納盒抽屜','紙品抽屜'][k]); });
-    /* PC: mid tower in the cubby, cables up the grommet */
-    const tx0=xk+0.02, tx1=xq-0.03; bx(LG[1],tx0,tx1,zn+0.06,zn+0.5,b+0.1,b+0.56,lam(0x1b1d20,{roughness:0.35})); bx(LG[1],tx0+0.01,tx1-0.01,zn+0.5,zn+0.502,b+0.13,b+0.53,lam(0x2a2c30,{roughness:0.9}),oc); bx(LG[1],tx1-0.03,tx1-0.02,zn+0.502,zn+0.503,b+0.5,b+0.51,new THREE.MeshBasicMaterial({color:0x8fd6ff}),oc);   // mesh front, power LED
+    const fy2=function(y){ return y+0.02; };
+    drawer(xt+t,xa-t,0.1,0.25,'z',function(G){ [0.05,0.08,0.11,0.14].forEach(function(dx,k){ box(G,xt+dx,xt+dx+0.012,zn+0.2,zn+0.36,fy2(0.1),fy2(0.1)+0.012,[0xd8453c,0x2f6fb5,0x1d1e21,0xf2c94c][k]); }); box(G,xt+0.22,xt+0.38,zn+0.18,zn+0.3,fy2(0.1),fy2(0.1)+0.02,0xe9e2d0); box(G,xt+0.2,xt+0.4,zn+0.34,zn+0.5,fy2(0.1),fy2(0.1)+0.03,0x6b4f3a); },'文具抽屜');
+    drawer(xt+t,xa-t,0.25,0.4,'z',function(G){ box(G,xt+0.04,xt+0.2,zn+0.18,zn+0.4,fy2(0.25),fy2(0.25)+0.03,0x1d1e21); box(G,xt+0.23,xt+0.4,zn+0.2,zn+0.36,fy2(0.25),fy2(0.25)+0.05,0x3a3d41); box(G,xt+0.05,xt+0.18,zn+0.43,zn+0.52,fy2(0.25),fy2(0.25)+0.04,0x2b2d31); },'線材・充電器・遊戲手把抽屜');
+    drawer(xt+t,xa-t,0.4,ya-0.004,'z',function(G){ for(let k=0;k<8;k++) box(G,xt+0.05,xt+0.4,zn+0.16+k*0.045,zn+0.16+k*0.045+0.006,fy2(0.4),fy2(0.4)+0.23,[0x2f4b6e,0xe9e2d0,0x6b4f3a,0x3e4f43,0xf6f3ec,0x8c8a85,0x7a2e2e,0xc9a46a][k]); },'檔案抽屜（A4 吊掛檔案）');
+    /* PC: mid tower on the floor beside the pedestal, cables up the grommet */
+    const tx0=xa+0.03, tx1=xa+0.24; bx(LG[1],tx0-0.01,tx1+0.01,zn+0.05,zn+0.51,b+0.012,b+0.04,lam(0x2a2c30,{roughness:0.5})); [[tx0,zn+0.07],[tx1,zn+0.07],[tx0,zn+0.49],[tx1,zn+0.49]].forEach(function(q){ E.cylm(LG[1],q[0],q[1],0.012,0.012,b,b+0.012,lam(0x1d1e21),oc); }); bx(LG[1],tx0,tx1,zn+0.06,zn+0.5,b+0.04,b+0.5,lam(0x1b1d20,{roughness:0.35})); bx(LG[1],tx0+0.01,tx1-0.01,zn+0.5,zn+0.502,b+0.07,b+0.47,lam(0x2a2c30,{roughness:0.9}),oc); bx(LG[1],tx1-0.03,tx1-0.02,zn+0.502,zn+0.503,b+0.44,b+0.45,new THREE.MeshBasicMaterial({color:0x8fd6ff}),oc);   // mesh front, power LED
     const cab=lam(0x1d1e21,{roughness:0.6}), cable=function(pts){ LG[1].add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map(function(q){ return new THREE.Vector3(q[0],q[1],q[2]); })),20,0.004,6,false),cab)); };
-    const cx=(xa+xk)/2, gz=zn+0.08; E.cylm(LG[1],cx+0.42,gz,0.03,0.03,b+H,b+H+0.002,lam(0x1d1e21),oc);
-    cable([[ (tx0+tx1)/2,b+0.56,zn+0.1],[(tx0+tx1)/2,b+0.62,zn+0.06],[cx+0.42,b+0.64,gz],[cx+0.42,b+H,gz]]); cable([[cx+0.42,b+H+0.002,gz],[cx+0.25,b+H+0.01,zn+0.1],[cx+0.05,b+H+0.06,zn+0.09]]);
-    /* the workstation */
-    bx(LG[1],cx-0.45,cx+0.45,zn+0.25,zn+0.6,b+H,b+H+0.003,lam(0x2b2d31,{roughness:0.9}),oc);   // desk mat
-    bx(LG[1],cx-0.2,cx+0.17,zn+0.36,zn+0.49,b+H+0.003,b+H+0.025,M.black); bx(LG[1],cx+0.25,cx+0.31,zn+0.4,zn+0.5,b+H+0.003,b+H+0.03,M.black);   // keyboard, mouse
-    bx(LG[1],cx-0.05,cx+0.05,zn+0.02,zn+0.06,b+H,b+H+0.06,M.black); bx(LG[1],cx-0.015,cx+0.015,zn+0.03,zn+0.05,b+H+0.06,b+H+0.4,M.black); bx(LG[1],cx-0.015,cx+0.015,zn+0.04,zn+0.15,b+H+0.38,b+H+0.4,M.black);   // monitor arm
-    bx(LG[1],cx-0.31,cx+0.31,zn+0.14,zn+0.17,b+H+0.2,b+H+0.56,M.black); bx(LG[1],cx-0.3,cx+0.3,zn+0.17,zn+0.172,b+H+0.21,b+H+0.55,lam(0x0c1118,{roughness:0.12,metalness:0.3}),oc);   // 27-inch monitor
-    bx(LG[1],cx-0.2,cx+0.2,zn+0.13,zn+0.16,b+H+0.56,b+H+0.58,lam(0x2a2c30,{metalness:0.5,roughness:0.4})); bx(LG[1],cx-0.18,cx+0.18,zn+0.155,zn+0.16,b+H+0.556,b+H+0.56,new THREE.MeshBasicMaterial({color:0xfff2dc}),oc);   // monitor light bar
-    bx(LG[1],cx-0.025,cx+0.025,zn+0.15,zn+0.18,b+H+0.58,b+H+0.61,M.black); E.cylm(LG[1],cx,zn+0.181,0.008,0.008,b+H+0.59,b+H+0.6,lam(0x2b4a7a,{roughness:0.1}),oc);   // webcam
-    [-1,1].forEach(function(sd){ bx(LG[1],cx+sd*0.4-0.045,cx+sd*0.4+0.045,zn+0.1,zn+0.2,b+H,b+H+0.16,lam(0xeceae4,{roughness:0.5})); E.cylm(LG[1],cx+sd*0.4,zn+0.201,0.03,0.03,b+H+0.09,b+H+0.091,lam(0x8c8a85),oc); });   // desktop speakers
-    bx(LG[1],cx-0.47,cx-0.39,zn+0.3,zn+0.36,b+H,b+H+0.012,lam(0xc4c8cc,{metalness:0.7,roughness:0.3})); bx(LG[1],cx+0.36,cx+0.44,zn+0.26,zn+0.3,b+H,b+H+0.11,lam(0xd9dcdf,{metalness:0.6,roughness:0.3}));   // USB hub, phone stand
-    E.cylm(LG[1],cx+0.48,zn+0.45,0.04,0.035,b+H,b+H+0.09,lam(0xf6f3ec,{roughness:0.3})); bx(LG[1],cx-0.5,cx-0.32,zn+0.42,zn+0.56,b+H,b+H+0.012,lam(0x6b4f3a,{roughness:0.7})); bx(LG[1],cx-0.36,cx-0.35,zn+0.44,zn+0.55,b+H+0.012,b+H+0.02,lam(0x2b2d31),oc);   // mug, notebook, pen
+    const cx=(xk+xq)/2, gz=zn+0.08; E.cylm(LG[1],cx-0.48,gz,0.03,0.03,b+H,b+H+0.002,lam(0x1d1e21),oc);
+    cable([[ (tx0+tx1)/2,b+0.5,zn+0.1],[(tx0+tx1)/2,b+0.6,zn+0.06],[cx-0.48,b+0.64,gz],[cx-0.48,b+H,gz]]); cable([[cx-0.48,b+H+0.002,gz],[cx+0.25,b+H+0.01,zn+0.1],[cx+0.05,b+H+0.06,zn+0.09]]);
+    /* the workstation: 27-inch monitor on its stand, keyboard and mouse on a felt mat, a MacBook Air beside the monitor, speakers, a wireless charger, mug and notebook */
+    const D=b+H, put=function(geo,mt,x,y,z,cast){ const m=new THREE.Mesh(geo,mt); m.position.set(x,y,z); m.castShadow=cast!==false; m.receiveShadow=true; LG[1].add(m); return m; };
+    const rrS=function(w,d,r){ const s2=new THREE.Shape(), a=w/2, c=d/2; s2.moveTo(-a+r,-c); s2.lineTo(a-r,-c); s2.quadraticCurveTo(a,-c,a,-c+r); s2.lineTo(a,c-r); s2.quadraticCurveTo(a,c,a-r,c); s2.lineTo(-a+r,c); s2.quadraticCurveTo(-a,c,-a,c-r); s2.lineTo(-a,-c+r); s2.quadraticCurveTo(-a,-c,-a+r,-c); return s2; };
+    const slab=function(w,d,h,r,mt,x,y,z){ const g=new THREE.ExtrudeGeometry(rrS(w,d,r),{depth:h,bevelEnabled:false,curveSegments:6}); g.rotateX(-Math.PI/2); return put(g,mt,x,y,z); };
+    slab(0.9,0.38,0.003,0.02,lam(0x3a3d42,{roughness:0.95}),cx,D,zn+0.43,false);   // felt desk mat with rounded corners
+    (function(){ const sv=lam(0x2a2c30,{metalness:0.5,roughness:0.35}); const ft=put(new THREE.CylinderGeometry(0.11,0.11,0.012,32),sv,cx,D+0.006,zn+0.12); ft.scale.set(1.3,1,0.75); put(new THREE.BoxGeometry(0.05,0.3,0.025),sv,cx,D+0.16,zn+0.08);   // monitor stand: oval foot, flat neck
+      put(new THREE.BoxGeometry(0.615,0.365,0.03),lam(0x1d1e21,{roughness:0.4}),cx,D+0.4,zn+0.11); const sc=put(new THREE.PlaneGeometry(0.6,0.338),lam(0x0c1118,{roughness:0.12,metalness:0.3}),cx,D+0.405,zn+0.1255,false);   // 27-inch, thin bezel
+      put(new THREE.BoxGeometry(0.4,0.02,0.03),lam(0x2a2c30,{metalness:0.5,roughness:0.4}),cx,D+0.593,zn+0.115); put(new THREE.BoxGeometry(0.36,0.004,0.004),new THREE.MeshBasicMaterial({color:0xfff2dc}),cx,D+0.582,zn+0.13,false);   // light bar
+      put(new THREE.BoxGeometry(0.05,0.025,0.025),M.black,cx,D+0.62,zn+0.11); E.cylm(LG[1],cx,zn+0.123,0.007,0.007,D+0.615,D+0.625,lam(0x2b4a7a,{roughness:0.1}),oc); })();   // webcam
+    (function(){ const kb=lam(0x2a2c30,{roughness:0.5}), kc=lam(0x3b3e43,{roughness:0.6}), kx=cx-0.06, kz=zn+0.42; const base=slab(0.36,0.125,0.015,0.008,kb,kx,D+0.003,kz); base.rotation.x=0.04;   // low-profile keyboard
+      const key=new THREE.BoxGeometry(0.015,0.006,0.015), im=new THREE.InstancedMesh(key,kc,15*5+6), mm=new THREE.Matrix4(); let n=0;
+      for(let r=0;r<5;r++) for(let c=0;c<15;c++){ mm.makeTranslation(kx-0.165+c*0.0235+(r%2)*0.006,D+0.022+r*0.0005,kz-0.045+r*0.021); im.setMatrixAt(n++,mm); }
+      for(let i=0;i<6;i++){ mm.makeScale(i===2?6:1,1,1); mm.setPosition(kx-0.12+i*0.045,D+0.022,kz+0.058); im.setMatrixAt(n++,mm); }   // bottom row with a long space bar
+      im.castShadow=true; LG[1].add(im);
+      const ms=put(new THREE.SphereGeometry(0.03,20,12,0,Math.PI*2,0,Math.PI/2),lam(0x1d1e21,{roughness:0.35}),cx+0.22,D+0.003,zn+0.44); ms.scale.set(1.05,0.65,1.7); put(new THREE.CylinderGeometry(0.004,0.004,0.006,10),lam(0x6b6e72),cx+0.22,D+0.021,zn+0.405).rotation.z=Math.PI/2; })();   // mouse with a wheel
+    (function(){ const sp=lam(0xeceae4,{roughness:0.5}), gr=lam(0x6f6d68,{roughness:0.9}); [-1,1].forEach(function(sd){ const x=cx+sd*0.43; slab(0.09,0.12,0.17,0.02,sp,x,D,zn+0.13); put(new THREE.PlaneGeometry(0.075,0.15),gr,x,D+0.09,zn+0.191,false);
+      [[0.13,0.022],[0.055,0.032]].forEach(function(q){ const r=put(new THREE.RingGeometry(q[1]*0.55,q[1],24),lam(0x4a4844,{roughness:0.6}),x,D+q[0],zn+0.192,false); }); }); })();   // desktop speakers with grilles and drivers
+    (function(){ const mac=lam(0x2e3440,{metalness:0.7,roughness:0.35}), x=cx+0.62, z=zn+0.36, G=new THREE.Group(); G.position.set(x,D,z); G.rotation.y=-0.35; LG[1].add(G);   // MacBook Air 13" (30.4 x 21.5 x 1.13 cm), midnight
+      const b0=new THREE.Mesh(new THREE.ExtrudeGeometry(rrS(0.304,0.215,0.012),{depth:0.006,bevelEnabled:true,bevelThickness:0.0015,bevelSize:0.0015,bevelSegments:2,curveSegments:6}).rotateX(-Math.PI/2),mac); b0.position.y=0.0015; b0.castShadow=true; G.add(b0);
+      const deck=new THREE.Mesh(new THREE.PlaneGeometry(0.27,0.1),lam(0x1d2128,{roughness:0.6})); deck.rotation.x=-Math.PI/2; deck.position.set(0,0.0091,-0.04); G.add(deck);
+      const kk=new THREE.InstancedMesh(new THREE.BoxGeometry(0.014,0.001,0.013),lam(0x0f1114,{roughness:0.7}),14*5), m4=new THREE.Matrix4(); let n=0; for(let r=0;r<5;r++) for(let c=0;c<14;c++){ m4.makeTranslation(-0.124+c*0.019,0.0098,-0.082+r*0.0175); kk.setMatrixAt(n++,m4); } G.add(kk);
+      const tp=new THREE.Mesh(new THREE.PlaneGeometry(0.12,0.075),lam(0x3a4150,{metalness:0.4,roughness:0.25})); tp.rotation.x=-Math.PI/2; tp.position.set(0,0.0092,0.05); G.add(tp);
+      const L=new THREE.Group(); L.position.set(0,0.009,-0.1075); G.add(L);
+      const lid=new THREE.Mesh(new THREE.BoxGeometry(0.304,0.215,0.004),mac); lid.position.set(0,0.1075,0.002); lid.castShadow=true; L.add(lid);
+      const c=document.createElement('canvas'); c.width=304; c.height=200; const g=c.getContext('2d'), gd=g.createLinearGradient(0,0,304,200); gd.addColorStop(0,'#2a3c5e'); gd.addColorStop(0.55,'#6a5c8e'); gd.addColorStop(1,'#d89a7a'); g.fillStyle=gd; g.fillRect(0,0,304,200); g.fillStyle='#000'; g.fillRect(140,0,24,7); g.fillStyle='rgba(255,255,255,0.18)'; g.fillRect(0,0,304,8);
+      const tx=new THREE.CanvasTexture(c); tx.colorSpace=THREE.SRGBColorSpace; const scr=new THREE.Mesh(new THREE.PlaneGeometry(0.29,0.19),new THREE.MeshBasicMaterial({map:tx})); scr.position.set(0,0.11,0.0045); L.add(scr);
+      let cur=1, tg=1, last=null; const setL=function(){ L.rotation.x=(1-cur)*(Math.PI/2-0.03)-cur*0.35; scr.visible=cur>0.05; }; setL();
+      furnThings.push({pt:[x-0.3,z+0.55],l:1,part:[lid],on:function(){ return true; },label:function(){ return tg?'闔上 MacBook':'打開 MacBook'; },act:function(){ tg=tg?0:1; last=null; }});
+      furnAnims.push({live:function(){ return cur!==tg; },f:function(t2){ if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*2?tg:cur+Math.sign(tg-cur)*dt*2; setL(); E.renderer.shadowMap.needsUpdate=true; return true; }}); })();
+    (function(){ const x=cx-0.6, z=zn+0.3; put(new THREE.CylinderGeometry(0.05,0.05,0.008,32),lam(0xeceae4,{roughness:0.4}),x,D+0.004,z); put(new THREE.BoxGeometry(0.072,0.008,0.15),lam(0x1b1d20,{roughness:0.25}),x,D+0.012,z); put(new THREE.PlaneGeometry(0.066,0.142),lam(0x0c1118,{roughness:0.1}),x,D+0.0165,z).rotation.x=-Math.PI/2; })();   // wireless charging pad with a phone
+    (function(){ const x=cx+0.38, z=zn+0.52; put(new THREE.CylinderGeometry(0.04,0.036,0.09,24,1,true),lam(0xf3efe6,{roughness:0.3,side:THREE.DoubleSide}),x,D+0.045,z); put(new THREE.CylinderGeometry(0.036,0.036,0.004,24),lam(0xf3efe6,{roughness:0.3}),x,D+0.002,z); put(new THREE.CircleGeometry(0.037,24),lam(0x3a2414,{roughness:0.15}),x,D+0.075,z,false).rotation.x=-Math.PI/2;
+      const h=put(new THREE.TorusGeometry(0.024,0.006,8,16,Math.PI),lam(0xf3efe6,{roughness:0.3}),x+0.04,D+0.045,z); h.rotation.z=-Math.PI/2; })();   // mug of coffee
+    (function(){ const x=cx-0.38, z=zn+0.5, G=new THREE.Group(); G.position.set(x,D,z); G.rotation.y=0.15; LG[1].add(G); const cov=new THREE.Mesh(new THREE.BoxGeometry(0.15,0.014,0.21),lam(0x6b4f3a,{roughness:0.7})); cov.position.y=0.007; G.add(cov); const pg=new THREE.Mesh(new THREE.BoxGeometry(0.145,0.012,0.205),lam(0xf4efe4,{roughness:0.9})); pg.position.set(0.004,0.007,0); G.add(pg);
+      const band=new THREE.Mesh(new THREE.BoxGeometry(0.006,0.0155,0.212),lam(0x1d1e21,{roughness:0.6})); band.position.set(0.05,0.007,0); G.add(band); const pen=new THREE.Mesh(new THREE.CylinderGeometry(0.004,0.004,0.14,10),lam(0x2b2d31,{metalness:0.5,roughness:0.3})); pen.rotation.x=Math.PI/2; pen.position.set(-0.03,0.019,0); G.add(pen); })();   // notebook, elastic band and a pen
     /* the curve: the top rises over its last 30 cm; an open cubby under it grows taller toward the corner */
     const prof=function(x){ const tt=Math.min(1,Math.max(0,(x-xq)/(xc-xq))); return H+(HC-H)*tt*tt*(3-2*tt); }, N=24, top=[], bot=[];
     for(let i=0;i<=N;i++){ const x=xq+(xc-xq)*i/N; top.push(new THREE.Vector2(x,b+prof(x))); bot.push(new THREE.Vector2(x,b+prof(x)-T)); }
@@ -1062,18 +1070,26 @@ fixtures:function(E){
       [-1,1].forEach(function(sd){ const cu=new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.04,0.035,18),lam(0x1d1e21,{roughness:0.6})); cu.rotation.x=Math.PI/2; cu.position.set(hx,b+0.36-0.0,hz+sd*0.08); LG[1].add(cu); });
       bx(LG[1],xq+0.2,xq+0.28,zn+0.08,zn+0.2,b+0.1,b+0.16,lam(0xeceae4,{roughness:0.4})); bx(LG[1],xq+0.21,xq+0.27,zn+0.12,zn+0.2,b+0.16,b+0.25,lam(0x1b1d20,{roughness:0.3}),oc);   // charging dock with a phone
       bx(LG[1],xq+0.05,xq+0.25,zn+0.4,zn+0.55,b+0.1,b+0.115,lam(0x6b5444,{roughness:0.6})); })();   // a small tray
-    /* east counter at 1.0 m: one row of apron drawers under the top, open below, white side panels at the corner and the south end */
-    const yc=HC-T-AP; bx(LG[1],xc,xe,zf,zs,b+yc-t,b+yc,W); bx(LG[1],xc,xe,zs-t,zs,b,b+HC-T,W); bx(LG[1],xe-0.012,xe,zf,zs,b+yc,b+HC-T,inn,oc);
-    const zz=[zf+t,zf+0.45,zf+0.88,zs-t];
-    drawer(zz[0],zz[1],yc+0.004,HC-T-0.004,'x',function(G){ box(G,xc+0.05,xc+0.2,zz[0]+0.05,zz[0]+0.15,yc+0.022,yc+0.04,0xc9a074); [0,1,2,3].forEach(function(k){ E.cylm(G,xc+0.28+k*0.03,zz[0]+0.1,0.006,0.006,b+yc+0.022,b+yc+0.04,lam(0xc9a96a,{metalness:0.7})); }); box(G,xc+0.05,xc+0.25,zz[0]+0.2,zz[0]+0.24,yc+0.022,yc+0.03,0xb9bec4); },'3D 列印工具抽屜（噴嘴・刮刀）');
-    drawer(zz[1],zz[2],yc+0.004,HC-T-0.004,'x',function(G){ [0,1].forEach(function(k){ box(G,xc+0.05,xc+0.4,zz[1]+0.04+k*0.19,zz[1]+0.2+k*0.19,yc+0.022,yc+0.06,[0xd9d6cf,0xc9ced2][k]); }); },'備用線材袋抽屜');
-    drawer(zz[2],zz[3],yc+0.004,HC-T-0.004,'x',function(G){ box(G,xc+0.05,xc+0.3,zz[2]+0.05,zz[2]+0.3,yc+0.022,yc+0.04,0x3a3d41); },'雜物抽屜');
+    /* east counter at 1.0 m: open below for standing, white side panels at the corner and the south end */
+    const yc=HC-T; bx(LG[1],xc,xe,zs-t,zs,b,b+HC-T,W);
     (function(){ const dz=WZ(1,148), bxm=lam(0xeef4f6,{transparent:true,opacity:0.35,roughness:0.05}); bx(LG[1],xc+0.12,xc+0.5,dz-0.12,dz+0.12,b+HC,b+HC+0.25,bxm); [-0.06,0.06].forEach(function(o){ const sp=new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,0.07,24),lam(o<0?0xd8453c:0x2f6fb5,{roughness:0.5})); sp.rotation.z=Math.PI/2; sp.position.set(xc+0.31+o*0.9,b+HC+0.11,dz); LG[1].add(sp); }); })();   // filament dry box beside the printer
     furnAnims.push({live:function(){ return slides.some(function(q){ return q.cur!==q.tg; }); },f:function(t2){ slides.forEach(function(q){ if(q.cur===q.tg){ q.last=null; return; } if(q.last===null) q.last=t2; const dt=Math.min(0.05,t2-q.last); q.last=t2; q.cur=Math.abs(q.tg-q.cur)<dt*2.5?q.tg:q.cur+Math.sign(q.tg-q.cur)*dt*2.5; if(q.dir==='z') q.g.position.z=0.38*q.cur; else q.g.position.x=-0.38*q.cur; }); E.renderer.shadowMap.needsUpdate=true; return true; }});
-    addCol(1,xt,xq,zn,zf,b,b+H,'f'); addCol(1,xq,xe,zn,zf,b,b+HC,'f'); addCol(1,xc,xe,zf,zs,b+yc-t,b+HC,'f'); addCol(1,xc,xe,zs-t,zs,b,b+HC,'f');
+    addCol(1,xt,xq,zn,zf,b,b+H,'f'); addCol(1,xq,xe,zn,zf,b,b+HC,'f'); addCol(1,xc,xe,zf,zs,b+yc,b+HC,'f'); addCol(1,xc,xe,zs-t,zs,b,b+HC,'f');
     [3.45,4.65].forEach(function(x){ bx(LG[1],x-0.06,x+0.06,zn,zn+0.008,b+0.82,b+0.9,lam(0xf4f3ef,{roughness:0.35})); bx(LG[1],x+0.02,x+0.04,zn+0.008,zn+0.009,b+0.85,b+0.855,lam(0x2b2c2e),oc); });   // outlets with USB-C over the desk, under the window
     [[WX(1,520)+0.05,xe]].forEach(function(r){ if(r[1]-r[0]>0.25) bx(LG[1],r[0],r[1],zn,zn+0.2,b+1.55,b+1.575,oak); });   // floating oak shelf east of the window
     E.cylm(LG[1],WX(1,233)+0.06,WZ(1,225)-TI/2-0.86,0.015,0.015,b,b+0.03,lam(0x55595c,{roughness:0.8}),oc);   // floor door stop for the study door
+    (function(){ const x0=WX(1,322), x1=WX(1,371)-TI/2, zf2=WZ(1,205)-TI/2, zb2=WZ(1,225)-TI/2, top=b+CH-0.003, rnd=E.rnd||Math.random, oak2=M.oak;   // shallow floor-to-ceiling bookshelf in the 20 cm jog beside the study door
+      bx(LG[1],x0,x0+t,zf2,zb2,b,top,W); bx(LG[1],x1-t,x1,zf2,zb2,b,top,W); bx(LG[1],x0,x1,zf2,zb2,b,b+0.08,kick,oc); bx(LG[1],x0,x1,zf2,zb2,top-t,top,W); bx(LG[1],x0+t,x1-t,zb2-0.008,zb2,b+0.08,top-t,inn,oc);
+      const ys=[0.08,0.34,0.58,0.8,1.02,1.26,1.52,1.8,2.1]; ys.forEach(function(y){ bx(LG[1],x0+t,x1-t,zf2+0.005,zb2-0.008,b+y,b+y+t,W); });
+      const pal=[0x2f3b4c,0xe9e2d0,0x6b4f3a,0x3e4f43,0xb9a27c,0x8c8a85,0x7a2e2e,0xd9cfc0,0x4a5f7a,0xc9b27f];
+      const row=function(y,hMin,hMax,dep,gap){ let x=x0+t+0.008; while(x<x1-t-0.03){ const w=0.012+rnd()*0.018, h=hMin+rnd()*(hMax-hMin); if(rnd()<gap){ x+=0.03; continue; } bx(LG[1],x,x+w,zb2-0.008-dep,zb2-0.01,b+y+t,b+y+t+h,lam(pal[Math.floor(rnd()*pal.length)],{roughness:0.8}),oc); x+=w+0.002; } };
+      row(ys[1],0.17,0.18,0.12,0.04); row(ys[2],0.17,0.18,0.12,0.04); row(ys[3],0.145,0.15,0.106,0.03); row(ys[5],0.18,0.2,0.135,0.08);   // manga, manga, bunko, hardbacks
+      bx(LG[1],x0+t+0.02,x0+t+0.2,zb2-0.17,zb2-0.02,b+ys[4]+t,b+ys[4]+t+0.035,lam(0x1d1e21,{roughness:0.4})); bx(LG[1],x0+t+0.18,x0+t+0.181,zb2-0.17,zb2-0.16,b+ys[4]+t+0.02,b+ys[4]+t+0.026,new THREE.MeshBasicMaterial({color:0x5fd08a}),oc);   // the router
+      bx(LG[1],x1-t-0.05,x1-t-0.01,zb2-0.01,zb2-0.008,b+ys[4]+0.06,b+ys[4]+0.12,lam(0xf4f3ef,{roughness:0.35}),oc);   // outlet with USB-C at the charging shelf
+      bx(LG[1],x0+t+0.24,x0+t+0.31,zb2-0.12,zb2-0.05,b+ys[4]+t,b+ys[4]+t+0.01,lam(0x1b1d20,{roughness:0.3}));   // a phone charging
+      (function(){ const pot=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.035,0.08,16),lam(0xe9ddd0,{roughness:0.6})); pot.position.set((x0+x1)/2,b+ys[6]+t+0.04,zb2-0.09); LG[1].add(pot); for(let i=0;i<7;i++){ const lf=new THREE.Mesh(new THREE.SphereGeometry(0.03,8,6),lam(0x5f8f4a,{roughness:0.8})); lf.scale.set(1,0.5,0.6); lf.position.set((x0+x1)/2+Math.cos(i*0.9)*0.04,b+ys[6]+t+0.1+(i%3)*0.02,zb2-0.09+Math.sin(i*0.9)*0.035); lf.rotation.y=i; LG[1].add(lf); } })();   // a small pothos
+      [[0.0,0x8a6f5a],[0.12,0xd9d2c6]].forEach(function(q){ bx(LG[1],x0+t+0.02+q[0],x0+t+0.12+q[0],zb2-0.17,zb2-0.02,b+ys[7]+t,b+ys[7]+t+0.15,lam(q[1],{roughness:0.9}),oc); });   // storage boxes up top
+      addCol(1,x0,x1,zf2,zb2,b,top,'w'); })();
   })();
   (function(){ const b=E.base(1), x=WX(1,205), z=WZ(1,462), st=lam(0xb9bec4,{metalness:0.8,roughness:0.35}); bx(LG[1],x-0.06,x+0.06,z-0.06,z+0.06,b,b+0.004,st,{cast:false}); bx(LG[1],x-0.04,x+0.04,z-0.03,z+0.03,b+0.004,b+0.006,lam(0x2b2c2e),{cast:false});   // flush floor outlet (フロアコンセント) for the massage chair
     LG[1].add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(x,b+0.01,z),new THREE.Vector3(x+0.08,b+0.006,z+0.08),new THREE.Vector3(x+0.12,b+0.03,z+0.2)]),20,0.004,6,false),lam(0x2b2c2e,{roughness:0.6}))); })();
