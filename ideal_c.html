@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261024i">
+<link rel="stylesheet" href="lib/storeys.css?v=20261024j">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261024i"></script>
-<script src="lib/furniture.js?v=20261024i"></script>
-<script src="lib/catalog.js?v=20261024i"></script>
-<script src="lib/look.js?v=20261024i"></script>
-<script src="lib/houses.js?v=20261024i"></script>
-<script src="lib/perf.js?v=20261024i"></script>
-<script src="lib/finish.js?v=20261024i"></script>
-<script src="lib/storeys.js?v=20261024i"></script>
+<script src="lib/people.js?v=20261024j"></script>
+<script src="lib/furniture.js?v=20261024j"></script>
+<script src="lib/catalog.js?v=20261024j"></script>
+<script src="lib/look.js?v=20261024j"></script>
+<script src="lib/houses.js?v=20261024j"></script>
+<script src="lib/perf.js?v=20261024j"></script>
+<script src="lib/finish.js?v=20261024j"></script>
+<script src="lib/storeys.js?v=20261024j"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -215,7 +215,7 @@ noteText:{
   lift:'茶几／餐桌／書桌三段高度，四張同尺寸凳子收在桌下',
   massage:'HY-5018：直立 146 × 74.5 × 114.5 cm，躺平 169 cm，腳靠會伸縮；放在沙發北端和半島之間、斜向電視，插在旁邊地板的地板插座',
   dryer:'坐在沙發上就能吹頭髮，插座在旁邊牆上',
-  appl:'寬 132.5 cm、深 70 cm 與冰箱齊平；上下兩層層板整層拉出，下層右端放果汁機（半島檯面兩端都太窄或靠近 IH，所以留在櫃裡）；裡面的背板和側板是淺橡木，每層層板下藏一條 3000K 暖光 LED；電線收在背後；踢腳改成淺灰米色',
+  appl:'上層：Panasonic Bistro NE-BS9E 過熱水蒸氣微波烤箱（49.4 × 43.5 × 37 cm，上方留 8 cm）、小烤箱、Philips 7000 XXL Combi 氣炸鍋（HD9880，炸籃往前拉）；下層：煮水壺、象印 炎舞炊き NW-FC10 電子鍋（開蓋高 47.5 cm，層高足夠）、咖啡機、果汁機；大同電鍋收進下櫃。寬 132.5 cm、深 70 cm 與冰箱齊平；上下兩層層板整層拉出，下層右端放果汁機（半島檯面兩端都太窄或靠近 IH，所以留在櫃裡）；裡面的背板和側板是淺橡木，每層層板下藏一條 3000K 暖光 LED；電線收在背後；踢腳改成淺灰米色',
   robot:['Dreame X40 Ultra','Ø35 × 10.4 cm，香檳金雷射頭；基地 34 × 45.7 × 59 cm（自動給排水款：止水栓接給水、排水接到地板下的廚房排水），住在食品收納櫃的下櫃裡，從門下方 12.5 cm 的開口自己開出來打掃；打開下櫃門可掀開基地上蓋'],
   catBowls:'自動飼料機＋罐頭碗＋水碗',
   cat:['咘咘','白底虎斑：額頭白色倒 V、瞇瞇眼、粉紅大鼻子，肩背和屁股各一塊虎斑'],
@@ -554,7 +554,7 @@ return [
   /* 2F dining (folding six-seat table on the north wall); the litter box sits in the 1F hall */
   ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,150,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,37.4,808,'E',function(){ return Catalog.litterRobot({mat:[-0.355,0.44,-0.309,0.72]}); }],['robot','dreameX40',1,346,257.2,'S'],
   /* 2F kitchen: appliance cabinet (dish cupboard in its base) and fridge against the bath wall, bins beside the peninsula */
-  ['fridge','fridgeHitachi',1,541,244.5,'S',function(){ const p=Catalog.make('fridgeHitachi'); p.doorMaxR=p.doorMaxL=1.5; return p; }],['sinkRack','overSinkRack',1,332.5,410,'E'],['bins','binCabinet',1,300,412.5,'W',function(){ return Catalog.binCabinet(true); }],['appl','applianceCabinet',1,437.25,244.5,'S',function(){ return Catalog.applianceCabinet({dishes:true,full:true,depth:0.7,width:1.325,height:1.89,oak:true,kick:0xd9d3c8}); }],
+  ['fridge','fridgeHitachi',1,541,244.5,'S',function(){ const p=Catalog.make('fridgeHitachi'); p.doorMaxR=p.doorMaxL=1.5; return p; }],['sinkRack','overSinkRack',1,332.5,410,'E'],['bins','binCabinet',1,300,412.5,'W',function(){ return Catalog.binCabinet(true); }],['appl','applianceCabinet',1,437.25,244.5,'S',function(){ return Catalog.applianceCabinet({dishes:true,full:true,depth:0.7,width:1.325,height:1.89,oak:true,kick:0xd9d3c8,k2:true}); }],
   /* 3F balcony */
   ['plantB1','plant',2,335,920,'E',null,{off:true}],['plantB2','plantS',2,380,925,'E',null,{off:true}],
   /* garden BBQ deck */
