@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261025c">
+<link rel="stylesheet" href="lib/storeys.css?v=20261025d">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261025c"></script>
-<script src="lib/furniture.js?v=20261025c"></script>
-<script src="lib/catalog.js?v=20261025c"></script>
-<script src="lib/look.js?v=20261025c"></script>
-<script src="lib/houses.js?v=20261025c"></script>
-<script src="lib/perf.js?v=20261025c"></script>
-<script src="lib/finish.js?v=20261025c"></script>
-<script src="lib/storeys.js?v=20261025c"></script>
+<script src="lib/people.js?v=20261025d"></script>
+<script src="lib/furniture.js?v=20261025d"></script>
+<script src="lib/catalog.js?v=20261025d"></script>
+<script src="lib/look.js?v=20261025d"></script>
+<script src="lib/houses.js?v=20261025d"></script>
+<script src="lib/perf.js?v=20261025d"></script>
+<script src="lib/finish.js?v=20261025d"></script>
+<script src="lib/storeys.js?v=20261025d"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -1138,7 +1138,7 @@ fixtures:function(E){
     const za=WZ(1,0)+TE/2, zz=WZ(1,225)-TI/2; [[za,zz,b,y0],[za,zz,y1,b+CH],[za,z0,y0,y1],[z1,zz,y0,y1]].forEach(function(r){ bx(LG[1],xs,xo,r[0],r[1],r[2],r[3],WM.mist); }); bx(LG[1],xk+0.006,xo,z0,z1,y0,y1,WM.mist);   // build-out round the niche
     const plaster=E.WM[E.wallRoleAt(1,xf-0.3,zm)]||W;
     bx(LG[1],xf,xk,z0,z1,y0,y0+0.012,plaster); bx(LG[1],xk,xk+0.006,z0,z1,y0,y1,plaster,oc); [z0,z1-0.006].forEach(function(z){ bx(LG[1],xf,xk,z,z+0.006,y0,ys,plaster,oc); });   // reveal in the wall colour
-    (function(){ const pts=[new THREE.Vector2(z0,ys),new THREE.Vector2(z0,y1+0.002),new THREE.Vector2(z1,y1+0.002),new THREE.Vector2(z1,ys)]; for(let i=1;i<24;i++){ const a=Math.PI*i/24; pts.push(new THREE.Vector2(zm+R*Math.cos(a),ys+R*Math.sin(a))); }
+    (function(){ const Ri=R-0.006, pts=[new THREE.Vector2(z0,ys),new THREE.Vector2(z0,y1+0.002),new THREE.Vector2(z1,y1+0.002),new THREE.Vector2(z1,ys),new THREE.Vector2(z1-0.006,ys)]; for(let i=1;i<24;i++){ const a=Math.PI*i/24; pts.push(new THREE.Vector2(zm+Ri*Math.cos(a),ys+Ri*Math.sin(a))); } pts.push(new THREE.Vector2(z0+0.006,ys));   // the arch springs exactly from the jamb faces
       const g=new THREE.ExtrudeGeometry(new THREE.Shape(pts),{depth:xk-xf+0.002,bevelEnabled:false,curveSegments:24}); g.computeVertexNormals(); const m=new THREE.Mesh(g,plaster); m.rotation.y=-Math.PI/2; m.position.x=xk+0.001; LG[1].add(m);   // arched head through the depth
       const lp=[]; for(let i=0;i<=24;i++){ const a=Math.PI*i/24; lp.push(new THREE.Vector3(xk-0.03,ys+(R-0.012)*Math.sin(a),zm+(R-0.012)*Math.cos(a))); }
       const led=new THREE.MeshBasicMaterial({color:0xf0e2cc}), strip=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(lp),40,0.004,6,false),led); LG[1].add(strip);   // hidden LED inside the arch, washing the back
@@ -1146,8 +1146,15 @@ fixtures:function(E){
       let on=null; furnAnims.push({live:function(){ const w=!E.sleepOn&&(E.hour>=16.5||E.hour<6.5); return w!==on; },f:function(){ on=!E.sleepOn&&(E.hour>=16.5||E.hour<6.5); led.color.setHex(on?0xffc27a:0xf0e2cc); lip.color.setHex(on?0xffc27a:0xf0e2cc); return false; }}); })();
     bx(LG[1],xf+0.005,xk,z0+0.006,z1-0.006,b+1.27,b+1.285,W);   // one shelf for the towel and a change of clothes
     const add=function(geo,mt,x,y,z){ const m=new THREE.Mesh(geo,mt); m.position.set(x,y,z); m.castShadow=true; LG[1].add(m); return m; }, cx=(xf+xk)/2;
-    add(new THREE.BoxGeometry(0.15,0.06,0.34),fab(0xe8dcc6),cx,b+1.285+0.03,zm); add(new THREE.BoxGeometry(0.14,0.04,0.3),fab(0x9fb0bf),cx,b+1.285+0.08,zm);   // folded towel, a change of clothes
-    add(new THREE.BoxGeometry(0.15,0.02,0.4),fab(0xd9cfc0),cx,y0+0.022,zm); add(new THREE.BoxGeometry(0.13,0.05,0.3),fab(0x5b6f86),cx,y0+0.055,zm);   // a fabric tray with clothes just taken off
+    const soft=function(w,h,d,r){ const sh=new THREE.Shape(), a2=w/2, c2=h/2; r=Math.min(r,c2-0.001); sh.moveTo(-a2+r,-c2); sh.lineTo(a2-r,-c2); sh.quadraticCurveTo(a2,-c2,a2,-c2+r); sh.lineTo(a2,c2-r); sh.quadraticCurveTo(a2,c2,a2-r,c2); sh.lineTo(-a2+r,c2); sh.quadraticCurveTo(-a2,c2,-a2,c2-r); sh.lineTo(-a2,-c2+r); sh.quadraticCurveTo(-a2,-c2,-a2+r,-c2);
+      const g=new THREE.ExtrudeGeometry(sh,{depth:d,bevelEnabled:true,bevelThickness:0.004,bevelSize:0.004,bevelSegments:2,curveSegments:5}); g.translate(0,0,-d/2); return g; };
+    const tw=fab(0xf7f5f0), tw2=fab(0xeeeae2);
+    [0,1,2,3].forEach(function(k){ const m=add(soft(0.15,0.034,0.3,0.016),k%2?tw2:tw,cx-0.004+(k%2)*0.006,b+1.285+0.021+k*0.036,zm-0.04+(k%2)*0.008); });   // four folded bath towels, folds to the front
+    add(soft(0.13,0.022,0.2,0.01),fab(0xd9dde0),cx,b+1.285+0.168,zm-0.04);   // a hand towel on top
+    add(new THREE.BoxGeometry(0.15,0.035,0.42),fab(0xd9cfc0),cx,y0+0.03,zm);   // the linen tray
+    (function(){ const g=new THREE.SphereGeometry(0.1,14,10), p2=g.attributes.position; for(let i=0;i<p2.count;i++){ const x=p2.getX(i), y=p2.getY(i), z=p2.getZ(i), n=1+0.18*Math.sin(x*41+z*23)+0.12*Math.cos(y*37+x*13); p2.setXYZ(i,x*n*0.75,y*n*0.32,z*n*1.2); } g.computeVertexNormals(); add(g,fab(0x8a9099),cx,y0+0.075,zm-0.07); })();   // a crumpled grey T-shirt
+    add(soft(0.14,0.045,0.24,0.02),fab(0x4a6386),cx+0.004,y0+0.07,zm+0.1).rotation.x=0.05;   // jeans folded once
+    [[0.03,0x2b2d31],[-0.02,0xe9e4da]].forEach(function(q,k){ const m=add(new THREE.CapsuleGeometry(0.018,0.07,4,8),fab(q[1]),cx+q[0],y0+0.118+k*0.02,zm+0.05); m.rotation.set(Math.PI/2,0,0.6*(k?-1:1)); });   // socks
   })();
   (function(){ const zc=WZ(1,225), xa=WX(1,125), xb=WX(1,205), xm=(xa+xb)/2, R=(xb-xa)/2, ys=E.base(1)+1.86, yt=E.base(1)+2.27, d=TI, oc={cast:false};   // passage entrance: round-top arch infill (垂れ壁) and a split linen noren
     const pts=[new THREE.Vector2(xa,ys),new THREE.Vector2(xa,yt),new THREE.Vector2(xb,yt),new THREE.Vector2(xb,ys)]; for(let i=1;i<24;i++){ const a=Math.PI*i/24; pts.push(new THREE.Vector2(xm+R*Math.cos(a),ys+Math.min(R,yt-ys-0.02)*Math.sin(a))); }
@@ -1176,7 +1183,7 @@ fixtures:function(E){
     let cur=0, tg=0, last=null; const set=function(k){ const ys0=ys-0.04-E.base(1); panels.forEach(function(P){ const u=P.userData, pa=u.geo.attributes.position, bs=u.base;   // gather toward the jamb, pinched at the knot 38 cm off the floor
         for(let i=0;i<pa.count;i++){ const x=bs[i*3], y=bs[i*3+1], z=bs[i*3+2], h=ys0+y, pinch=Math.exp(-Math.pow((h-0.38)/0.45,2)), sq=1-k*(0.62+0.3*pinch); pa.setXYZ(i,x*sq,y,z*(1+k*1.6)+k*0.02*Math.sin(y*9)); }
         pa.needsUpdate=true; u.geo.computeVertexNormals(); u.knot.visible=k>0.85; }); };
-    furnThings.push({get pt(){ const s=E.player.z<zc?-0.5:0.5; return [xm,zc+s]; },l:1,on:function(){ return true; },label:function(){ return tg?'放下布簾':'撥開布簾'; },act:function(){ tg=tg?0:1; last=null; }});
+    furnThings.push({get pt(){ const s=E.player.z<zc?-0.06:0.06; return [xm,zc+s]; },l:1,on:function(){ return true; },label:function(){ return tg?'放下布簾':'撥開布簾'; },act:function(){ tg=tg?0:1; last=null; }});
     furnAnims.push({live:function(){ return cur!==tg; },f:function(t){ if(last===null) last=t; const dt=Math.min(0.05,t-last); last=t; cur=Math.abs(tg-cur)<dt*2.5?tg:cur+Math.sign(tg-cur)*dt*2.5; set(cur); E.renderer.shadowMap.needsUpdate=true; return true; }}); })();
 })();
 fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,225)-TI/2-WZ(2,177.5),x:0.28}}),WX(2,43.5),WZ(2,177.5),0);
@@ -1324,14 +1331,14 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,225)-TI/2-WZ(2,17
 })();
 (function(){                                   // hand towels on a short bar beside every basin and by the kitchen sink: [storey, x, z, wall normal angle, bar height, colour]
   const bar=lam(0xc3c6c9,{metalness:0.85,roughness:0.3}), oc={cast:false};
-  const towel=function(l,x,z,ang,y,c,par){ const G=new THREE.Group(); G.position.set(x,par?y:E.base(l)+y,z); G.rotation.y=ang; (par||LG[l]).add(G);   // local +z points out of the wall; par: hang it on a door leaf
-    [-0.16,0.16].forEach(function(u){ const m=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.05,10),bar); m.rotation.x=Math.PI/2; m.position.set(u,0,0.025); G.add(m); });
-    const r=new THREE.Mesh(new THREE.CylinderGeometry(0.009,0.009,0.36,12),bar); r.rotation.z=Math.PI/2; r.position.set(0,0,0.05); G.add(r);
-    const cl=fab(c), tw=0.26;
-    [[0.038,0.34],[0.062,0.28]].forEach(function(q){ const m=new THREE.Mesh(new THREE.BoxGeometry(tw,q[1],0.006),cl); m.position.set(0,-q[1]/2+0.008,q[0]); m.castShadow=true; G.add(m); });   // folded over the bar: back layer longer than the front
+  const towel=function(l,x,z,ang,y,c,par,big){ const G=new THREE.Group(); G.position.set(x,par?y:E.base(l)+y,z); G.rotation.y=ang; (par||LG[l]).add(G);   // local +z points out of the wall; par: hang it on a door leaf
+    const BW=big?0.66:0.36; [-BW/2+0.02,BW/2-0.02].forEach(function(u){ const m=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.05,10),bar); m.rotation.x=Math.PI/2; m.position.set(u,0,0.025); G.add(m); });
+    const r=new THREE.Mesh(new THREE.CylinderGeometry(0.009,0.009,BW,12),bar); r.rotation.z=Math.PI/2; r.position.set(0,0,0.05); G.add(r);
+    const cl=fab(c), tw=big?0.6:0.26;
+    (big?[[0.036,0.6],[0.05,0.56],[0.064,0.5]]:[[0.038,0.34],[0.062,0.28]]).forEach(function(q){ const m=new THREE.Mesh(new THREE.BoxGeometry(tw,q[1],0.006),cl); m.position.set(0,-q[1]/2+0.008,q[0]); m.castShadow=true; G.add(m); });   // folded over the bar: back layer longer than the front
     const top=new THREE.Mesh(new THREE.CylinderGeometry(0.013,0.013,tw,12,1,false,0,Math.PI),cl); top.rotation.z=Math.PI/2; top.rotation.x=Math.PI/2; top.position.set(0,0.004,0.05); G.add(top); };
   towel(0,WX(0,55),WZ(0,300)+TI/2,0,1.05,0xe8dcc6);                          // 1F powder room, north wall beside the basin
-  towel(1,WX(1,150),WZ(1,0)+TE/2,0,1.1,0xe8dcc6);                           // 2F changing room, a bath towel under the window
+  towel(1,WX(1,165),WZ(1,0)+TE/2,0,1.25,0xf4f2ed,null,true);                  // 2F changing room: a 60 x 120 cm bath towel folded in thirds on a 66 cm bar, centred on the north wall
   towel(2,WX(2,345),WZ(2,0)+TE/2,0,1.05,0xe8dcc6);                           // 3F washroom, north wall east of the vanity
   (function(){ const S=E.sinkPiece&&E.sinkPiece.sinkLeaves; if(S) towel(1,S.hw/2,-S.ft,Math.PI,0.5,0xe8dcc6,S.left); })();   // kitchen: on the sink cupboard's west leaf (the right one standing at the sink), below its notch; swings with the door
 })();
