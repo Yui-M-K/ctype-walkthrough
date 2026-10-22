@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261023w">
+<link rel="stylesheet" href="lib/storeys.css?v=20261023x">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261023w"></script>
-<script src="lib/furniture.js?v=20261023w"></script>
-<script src="lib/catalog.js?v=20261023w"></script>
-<script src="lib/look.js?v=20261023w"></script>
-<script src="lib/houses.js?v=20261023w"></script>
-<script src="lib/perf.js?v=20261023w"></script>
-<script src="lib/finish.js?v=20261023w"></script>
-<script src="lib/storeys.js?v=20261023w"></script>
+<script src="lib/people.js?v=20261023x"></script>
+<script src="lib/furniture.js?v=20261023x"></script>
+<script src="lib/catalog.js?v=20261023x"></script>
+<script src="lib/look.js?v=20261023x"></script>
+<script src="lib/houses.js?v=20261023x"></script>
+<script src="lib/perf.js?v=20261023x"></script>
+<script src="lib/finish.js?v=20261023x"></script>
+<script src="lib/storeys.js?v=20261023x"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -189,7 +189,7 @@ notes:[
   [0,60,-40,'冷氣室外機（鏡子房・書房）','80 × 29 × 55 cm 兩台疊在二段架台上，放在北側通路靠西北角、出風口朝北，前方留約 53 cm；配管走牆內和天花板內，從北牆出來沿配管蓋（化粧カバー）下到室外機'],
   [0,190,-40,'冷氣室外機（客廳）','5.6 kW 用 80 × 30 × 63 cm，放在北側通路（鏡子房・書房那組架台和エコキュート之間）、出風口朝北，前方留約 60 cm；配管從 2F 天花板內出北外牆，沿配管蓋下來'],
   [2,557,898,'冷氣室外機（主臥）','6 帖用小型機 70 × 28 × 55 cm，放在陽台東端、出風口朝西；配管走天花板內到南牆，沿配管蓋下來'],
-  [1,575,640,'電視牆補強・隱藏配管','東牆裡放合板補強，撐得住約 40–55 kg 的 85 吋電視；電視後方有埋入式插座和配線出口，和電視櫃背後的配線出口之間埋一條 ≥28 mm 的 CD/PF 管，HDMI 之後可以重拉或更換'],[1,346,250,'掃地機器人給排水（Dreame X40 Ultra 用）','給水從廚房水槽的給水管分岐到櫃內止水栓（藍色把手）接軟管；排水接存水彎，往地板下的廚房排水管有坡度地接過去；上方一個專用的接地插座（アース付き）'],[0,35,485,'分電盤','40 × 50 × 10 cm，樓梯下收納裡（嬰兒車那格）的北牆、嬰兒車上方，中心離地約 1.6 m；含三溫暖、EV 充電樁的 200V 專用迴路'],[0,77,485,'情報分電盤','30 × 40 × 10 cm，和分電盤並排在樓梯下收納裡，中心離地約 1.6 m；光纖終端和路由器收在裡面，網路線從這裡配到各房間'],
+  [1,575,640,'電視牆補強・隱藏配管','東牆裡放合板補強，撐得住約 40–55 kg 的 85 吋電視；電視後方有埋入式插座和配線出口，和電視櫃背後的配線出口之間埋一條 ≥28 mm 的 CD/PF 管，HDMI 之後可以重拉或更換'],[1,346,250,'掃地機器人給排水（Dreame X40 Ultra 用）','給水從廚房水槽的給水管分岐到櫃內止水栓（藍色把手）接軟管；排水接存水彎，往地板下的廚房排水管有坡度地接過去；上方一個專用的接地插座（アース付き）'],[0,280,342,'分電盤','40 × 50 × 10 cm，車庫內側（玄關廳那面牆的車庫側、靠北），中心離地約 1.75 m；屋簷下不淋雨，從玄關門廊走進車庫就到；含三溫暖、EV 充電樁的 200V 專用迴路'],[0,280,393,'情報分電盤','30 × 40 × 10 cm，和分電盤並排在車庫內側，中心離地約 1.7 m；光纖終端和路由器收在裡面，網路線從這裡配到各房間'],
   [2,80,67,'三溫暖專用 200V 迴路','家用三溫暖的電爐從分電盤拉 200V 專用迴路，配獨立的漏電斷路器'],[0,560,345,'EV 充電樁 200V 迴路','Tesla 充電樁從分電盤拉 200V 專用迴路，配專用斷路器'],
   [1,560,600,'24 小時換氣','法規要求每 2 小時換掉一次全室空氣（第三種換氣）：客廳、書房、主臥、鏡子房的外牆進氣口進新鮮空氣，浴室、淋浴間的換氣扇一直低速排氣；外牆上 Ø15 cm 的白色圓形罩共 6 個'],
   [0,15,835,'門廊西側轉角（無柱）','門廊西側轉角不立柱：2F 樓板往外懸挑約 60 cm（跳ね出し）；實際施工需加強樑並做結構計算確認']
@@ -1482,11 +1482,11 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,225)-TI/2-WZ(2,17
     bx(LG[2],xf+0.02,xf+0.27,z0+0.06,z0+0.12,b,b+0.07,pad,oc); bx(LG[2],xf+0.02,xf+0.27,z0+0.58,z0+0.64,b,b+0.07,pad,oc); acOut(LG[2],xf,zc,b+0.09,0.7,-1);
     coverZ(LG[2],x-0.04,x+0.04,zw,zw+0.06,b+0.45,b+2.36); bx(LG[2],x-0.05,x+0.05,zw,zw+0.075,b+2.3,b+2.42,cov); bx(LG[2],x-0.04,x+0.04,zw,z0+0.01,b+0.4,b+0.46,cov);
     addCol(2,xf,xf+0.31,z0,z0+0.7,b,b+0.64,'w'); })();
-  /* breaker panel and network panel inside the under-stair cupboard, on the stroller bay's north wall above the stroller, centred about 1.6 m up */
-  (function(){ const zw=WZ(0,470)+TI/2, pnl=lam(0xf3f2ee,{roughness:0.35}), sm=lam(0xd9d6cf,{roughness:0.5});
-    [[WX(0,15),0.4,0.5,'分電盤'],[WX(0,62),0.3,0.4,'情報分電盤']].forEach(function(q){ const x0=q[0], x1=x0+q[1], y0=1.6-q[2]/2, y1=y0+q[2];
-      bx(LG[0],x0,x1,zw,zw+0.1,y0,y1,pnl); bx(LG[0],x0+0.02,x1-0.02,zw+0.1,zw+0.102,y0+0.02,y1-0.02,sm,oc); bx(LG[0],(x0+x1)/2-0.04,(x0+x1)/2+0.04,zw+0.1,zw+0.108,y0+0.03,y0+0.05,dk,oc);
-      bx(LG[0],x0+0.05,x1-0.05,zw+0.101,zw+0.103,y1-0.1,y1-0.05,label(q[3]),oc); }); })();
+  /* breaker panel and network panel on the garage side of the hall wall, north of the pass-through; the under-stair cupboard is too low for them (the flight runs right above it) */
+  (function(){ const xw=WX(0,270)+TI/2, g=-0.57, pnl=lam(0xf3f2ee,{roughness:0.35}), sm=lam(0xd9d6cf,{roughness:0.5});
+    [[WZ(0,322),0.4,0.5,'分電盤',1.75],[WZ(0,378),0.3,0.4,'情報分電盤',1.7]].forEach(function(q){ const z0=q[0], z1=z0+q[1], y0=g+q[4]-q[2]/2, y1=y0+q[2];
+      bx(LG[0],xw,xw+0.1,z0,z1,y0,y1,pnl); bx(LG[0],xw+0.1,xw+0.102,z0+0.02,z1-0.02,y0+0.02,y1-0.02,sm,oc); bx(LG[0],xw+0.1,xw+0.108,(z0+z1)/2-0.04,(z0+z1)/2+0.04,y0+0.03,y0+0.05,dk,oc);
+      const lb=new THREE.Mesh(new THREE.PlaneGeometry(q[1]-0.1,0.05),label(q[3])); lb.position.set(xw+0.104,y1-0.075,(z0+z1)/2); lb.rotation.y=Math.PI/2; LG[0].add(lb); }); })();
   /* 24 h ventilation: round hoods (Ø15) on the outer walls: intakes for the living rooms, exhausts for the wet rooms */
   [[1,WX(1,580)+TE/2,WZ(1,600),1,0,4.9],[2,WX(2,580)+TE/2,WZ(2,520),1,0,7.6],[1,WX(1,550),WZ(1,0)-TE/2,0,-1,4.9],[0,WX(0,250),WZ(0,0)-TE/2,0,-1,2.2],[2,WX(2,400),WZ(2,0)-TE/2,0,-1,7.7],[1,WX(1,60),WZ(1,0)-TE/2,0,-1,4.9]].forEach(function(q){
     const G=new THREE.Group(); G.position.set(q[1],q[5],q[2]); G.rotation.y=Math.atan2(q[3],q[4]); LG[q[0]].add(G);   // local +z out of the wall
@@ -1499,7 +1499,7 @@ lighting:function(E){
   /* 1F: battens in the garage and storage room, downlights along the hall and in the small rooms, a round light in the mirror room */
   light(0,155,180,0xffe2b8,0.5,7);
   batten(0,445,145,1.2,true,0.45); batten(0,350,570,1.2,false,0.5); batten(0,500,570,1.2,false,0.5);
-  [[192,400],[192,560],[192,720]].forEach(function(p){ downlight(0,p[0],p[1],0.35); }); downlight(0,57,385,0.25); downlight(0,57,700,0.3);
+  [[192,400],[192,560],[192,720]].forEach(function(p){ downlight(0,p[0],p[1],0.35); }); downlight(0,57,322,0.25);   // toilet: under the landing, where the ceiling is full height (the flight runs over the rest) downlight(0,57,700,0.3);
   /* 2F: round smart lights over the living, dining and study, downlights along the kitchen counter and in the shower room, toilet and washroom, pendants over the island */
   light(1,350,660,0xffe2b8,0.5,7); light(1,207,330,0xffe2b8,0.5,7);
   [[400,310],[470,310],[540,310]].forEach(function(p){ downlight(1,p[0],p[1],0.3); });
