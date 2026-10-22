@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261024w">
+<link rel="stylesheet" href="lib/storeys.css?v=20261024x">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261024w"></script>
-<script src="lib/furniture.js?v=20261024w"></script>
-<script src="lib/catalog.js?v=20261024w"></script>
-<script src="lib/look.js?v=20261024w"></script>
-<script src="lib/houses.js?v=20261024w"></script>
-<script src="lib/perf.js?v=20261024w"></script>
-<script src="lib/finish.js?v=20261024w"></script>
-<script src="lib/storeys.js?v=20261024w"></script>
+<script src="lib/people.js?v=20261024x"></script>
+<script src="lib/furniture.js?v=20261024x"></script>
+<script src="lib/catalog.js?v=20261024x"></script>
+<script src="lib/look.js?v=20261024x"></script>
+<script src="lib/houses.js?v=20261024x"></script>
+<script src="lib/perf.js?v=20261024x"></script>
+<script src="lib/finish.js?v=20261024x"></script>
+<script src="lib/storeys.js?v=20261024x"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -203,7 +203,7 @@ notes:[
   [0,60,-40,'冷氣室外機（鏡子房・書房）','80 × 29 × 55 cm 兩台疊在二段架台上，放在北側通路靠西北角、出風口朝北，前方留約 53 cm；配管走牆內和天花板內，從北牆出來沿配管蓋（化粧カバー）下到室外機'],
   [0,190,-40,'冷氣室外機（客廳）','5.6 kW 用 80 × 30 × 63 cm，放在北側通路（鏡子房・書房那組架台和エコキュート之間）、出風口朝北，前方留約 60 cm；配管從 2F 天花板內出北外牆，沿配管蓋下來'],
   [2,557,898,'冷氣室外機（主臥）','6 帖用小型機 70 × 28 × 55 cm，放在陽台東端、出風口朝西；配管走天花板內到南牆，沿配管蓋下來'],
-  [1,575,640,'電視牆補強・隱藏配管','東牆裡放合板補強，撐得住約 40–55 kg 的 85 吋電視；電視後方有埋入式插座和配線出口，和電視櫃背後的配線出口之間埋一條 ≥28 mm 的 CD/PF 管，HDMI 之後可以重拉或更換'],[1,346,250,'掃地機器人給排水（Dreame X40 Ultra 用）','給水從廚房水槽的給水管分岐到櫃內止水栓（藍色把手）接軟管；排水接存水彎，往地板下的廚房排水管有坡度地接過去；上方一個專用的接地插座（アース付き）'],[0,338,280,'分電盤','40 × 50 × 10 cm，儲藏室南牆靠門處，中心離地約 1.6 m；含三溫暖、EV 充電樁的 200V 專用迴路'],[0,378,280,'情報分電盤','30 × 40 × 10 cm，和分電盤並排在儲藏室南牆，中心離地約 1.6 m；光纖終端和路由器收在裡面，網路線從這裡配到各房間'],
+  [1,560,506,'外套・包包收納','貓咪餵食區正上方：牆面往室內加厚 30 cm 做成嵌入式小櫃（寬 60 cm、離地 100 cm 到天花板），門片和牆同色、按壓開關，關上後灰塵不會掉進貓碗；裡面一根吊衣桿掛 2–3 件外套、側邊掛勾放包包，上層放帽子和圍巾；離地 100 cm 以下淨空給貓咪吃飯'],[1,575,640,'電視牆補強・隱藏配管','東牆裡放合板補強，撐得住約 40–55 kg 的 85 吋電視；電視後方有埋入式插座和配線出口，和電視櫃背後的配線出口之間埋一條 ≥28 mm 的 CD/PF 管，HDMI 之後可以重拉或更換'],[1,346,250,'掃地機器人給排水（Dreame X40 Ultra 用）','給水從廚房水槽的給水管分岐到櫃內止水栓（藍色把手）接軟管；排水接存水彎，往地板下的廚房排水管有坡度地接過去；上方一個專用的接地插座（アース付き）'],[0,338,280,'分電盤','40 × 50 × 10 cm，儲藏室南牆靠門處，中心離地約 1.6 m；含三溫暖、EV 充電樁的 200V 專用迴路'],[0,378,280,'情報分電盤','30 × 40 × 10 cm，和分電盤並排在儲藏室南牆，中心離地約 1.6 m；光纖終端和路由器收在裡面，網路線從這裡配到各房間'],
   [2,80,67,'三溫暖專用 200V 迴路','家用三溫暖的電爐從分電盤拉 200V 專用迴路，配獨立的漏電斷路器'],[0,560,345,'EV 充電樁 200V 迴路','Tesla 充電樁從分電盤拉 200V 專用迴路，配專用斷路器'],
   [1,560,600,'24 小時換氣','法規要求每 2 小時換掉一次全室空氣（第三種換氣）：客廳、書房、主臥、鏡子房的外牆進氣口進新鮮空氣，浴室、淋浴間的換氣扇一直低速排氣；外牆上 Ø15 cm 的白色圓形罩共 6 個'],
   [0,15,835,'門廊西側轉角（無柱）','門廊西側轉角不立柱：2F 樓板往外懸挑約 60 cm（跳ね出し）；實際施工需加強樑並做結構計算確認']
@@ -572,7 +572,7 @@ return [
       const st=function(id){ const B=bb[id]; return [cx(B),B.max.y,(B.min.z+B.max.z)/2-0.02]; }, H=bb.catHouse, ledge=[cx(H),H.min.y+0.02,H.min.z+0.08], roof=[cx(H),H.max.y,H.max.z-0.2], bed=[cx(bb.catBed),bb.catBed.min.y+0.06,bb.catBed.max.z-0.2];
       const up=[st('catA'),st('catB'),ledge,roof,st('catBridge'),bed], from=[E.WX(1,120),E.WZ(1,790)];
       return {spots:spots,perch:{routes:[{from:from,seq:up.concat(up.slice(0,-1).reverse()),rest:5,to:from,face:0},{from:from,seq:up.concat([st('catC')]),rest:5,to:[E.WX(1,228),E.WZ(1,790)],face:0}]}}; }}), names={stretch:'咘咘伸了個懶腰',belly:'咘咘翻肚給你看',love:'咘咘在撒嬌',scratch:'咘咘坐起來抓頭',groom:'咘咘在理毛'}; let last=null;   // pet her: one of five actions, never the same twice in a row
-    p.actions=(p.actions||[]).concat([{x:0.45,z:0,part:p.group.children.slice(0,1),label:function(){ return '摸摸咘咘'; },act:function(){ if(p.airborne()) return; const ks=Object.keys(names).filter(function(k){ return k!==last; }), k=ks[Math.floor(Math.random()*ks.length)]; last=k; const v=p.group.worldToLocal(new THREE.Vector3(E.player.x,p.group.getWorldPosition(new THREE.Vector3()).y,E.player.z)); p.play(k,{yaw:Math.max(-1.2,Math.min(1.2,Math.atan2(-v.z,v.x)))}); E.toast(names[k]); }}]); const eye=new THREE.Vector3(); p.rig.lookAt(function(){ return eye.set(E.player.x,p.group.getWorldPosition(eye).y+1.3,E.player.z); }); if(location.hash==='#debug'){ window.__catPlay=function(k){ p.play(k,{yaw:0.6}); }; window.__catNudge=p.nudge; } return p; }],['catBowls','catFeedStation',1,555.5,468,'W'],
+    p.actions=(p.actions||[]).concat([{x:0.45,z:0,part:p.group.children.slice(0,1),label:function(){ return '摸摸咘咘'; },act:function(){ if(p.airborne()) return; const ks=Object.keys(names).filter(function(k){ return k!==last; }), k=ks[Math.floor(Math.random()*ks.length)]; last=k; const v=p.group.worldToLocal(new THREE.Vector3(E.player.x,p.group.getWorldPosition(new THREE.Vector3()).y,E.player.z)); p.play(k,{yaw:Math.max(-1.2,Math.min(1.2,Math.atan2(-v.z,v.x)))}); E.toast(names[k]); }}]); const eye=new THREE.Vector3(); p.rig.lookAt(function(){ return eye.set(E.player.x,p.group.getWorldPosition(eye).y+1.3,E.player.z); }); if(location.hash==='#debug'){ window.__catPlay=function(k){ p.play(k,{yaw:0.6}); }; window.__catNudge=p.nudge; } return p; }],['catBowls','catFeedStation',1,555.5,504,'W'],
   /* 2F dining (folding six-seat table on the north wall); the litter box sits in the 1F hall */
   ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,150,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,37.4,808,'E',function(){ return Catalog.litterRobot({mat:[-0.355,0.44,-0.309,0.72]}); }],['robot','dreameX40',1,346,257.2,'S'],
   /* 2F kitchen: appliance cabinet (dish cupboard in its base) and fridge against the bath wall, bins beside the peninsula */
@@ -711,6 +711,28 @@ fixtures:function(E){
     bx(LG[1],x-0.04,x+0.04,z1-0.008,z1,b+0.19,b+0.31,pm,oc);
     [0.275,0.225].forEach(function(y){ [-1,1].forEach(function(sd){ bx(LG[1],x+sd*0.009-0.0015,x+sd*0.009+0.0015,z1-0.0095,z1-0.008,b+y-0.008,b+y+0.008,sm,oc); }); bx(LG[1],x-0.003,x+0.003,z1-0.0095,z1-0.008,b+y-0.02,b+y-0.014,sm,oc); }); })();
   (function(){ const b=E.base(1), x=WX(1,284), z=WZ(1,700), st=lam(0xb9bec4,{metalness:0.8,roughness:0.35}); bx(LG[1],x-0.06,x+0.06,z-0.06,z+0.06,b,b+0.004,st,{cast:false}); bx(LG[1],x-0.04,x+0.04,z-0.03,z+0.03,b+0.004,b+0.006,lam(0x2b2c2e),{cast:false}); })();   // the recliner sofa's own floor outlet, under it by the motor
+  (function(){ const b=E.base(1), xw=WX(1,580)-TE/2, D=0.3, xf=xw-D, z0=WZ(1,476), z1=WZ(1,536), y0=b+1.0, y1=b+CH, ys=b+2.06, t=0.018, oc={cast:false};   // coat & bag cupboard over the cat feeding station: a 30 cm build-out, flush wall-coloured doors, open below for the cat
+    const W=E.WM[E.wallRoleAt(1,xw-0.05,(z0+z1)/2)]||lam(0xf2efe9,{roughness:0.85}), inner=lam(0xeeebe5,{roughness:0.7}), steel=lam(0xb9bec4,{metalness:0.8,roughness:0.35});
+    bx(LG[1],xf,xw,z0,z1,y0,y0+t,W); bx(LG[1],xf,xw,z0,z0+t,y0,y1,W); bx(LG[1],xf,xw,z1-t,z1,y0,y1,W); bx(LG[1],xw-0.006,xw,z0+t,z1-t,y0+t,y1-0.002,inner,oc); bx(LG[1],xf+t,xw,z0+t,z1-t,y1-0.012,y1-0.002,inner,oc); bx(LG[1],xf+0.01,xw,z0+t,z1-t,ys,ys+t,inner);
+    const rod=new THREE.Mesh(new THREE.CylinderGeometry(0.009,0.009,z1-z0-2*t,12),steel); rod.rotation.x=Math.PI/2; rod.position.set(xw-0.17,ys-0.06,(z0+z1)/2); LG[1].add(rod);
+    const coat=function(z,col,len){ const m=lam(col,{roughness:0.9}), G=new THREE.Group(); G.position.set(xw-0.17,ys-0.06,z); LG[1].add(G);
+      const hk=new THREE.Mesh(new THREE.TorusGeometry(0.02,0.003,6,12,Math.PI*1.4),steel); hk.rotation.y=Math.PI/2; hk.position.y=0.005; G.add(hk);
+      const hb=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.4,8),lam(0xc9a77a,{roughness:0.6})); hb.rotation.x=Math.PI/2; hb.position.y=-0.05; G.add(hb);
+      const sh=new THREE.Shape(); sh.moveTo(-0.2,0); sh.quadraticCurveTo(-0.23,-0.25,-0.25,-len); sh.lineTo(0.25,-len); sh.quadraticCurveTo(0.23,-0.25,0.2,0); sh.quadraticCurveTo(0,0.04,-0.2,0);
+      const body=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:0.07,bevelEnabled:true,bevelSize:0.015,bevelThickness:0.015,bevelSegments:2}),m); body.rotation.y=Math.PI/2; body.position.set(-0.035,-0.05,0); body.castShadow=true; G.add(body);
+      [-1,1].forEach(function(sd){ bx(G,-0.075,-0.068,sd*0.02-0.006,sd*0.02+0.006,-0.3,-0.29,lam(0x2a2622),oc); }); return G; };
+    coat(z0+0.17,0x3c4250,0.86); coat(z0+0.29,0xb9a58a,0.8);
+    (function(){ const G=new THREE.Group(); G.position.set(xw-0.15,ys-0.3,z1-0.018-0.06); LG[1].add(G); const hk=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.06,8),steel); hk.rotation.x=Math.PI/2; hk.position.z=0.04; G.add(hk);
+      const tb=lam(0xd8c9ae,{roughness:0.95}); const bag=new THREE.Mesh(new THREE.BoxGeometry(0.24,0.3,0.08),tb); bag.position.set(0.0,-0.24,0); bag.castShadow=true; G.add(bag);
+      [-1,1].forEach(function(sd){ const h=new THREE.Mesh(new THREE.TorusGeometry(0.05,0.007,6,16,Math.PI),lam(0x6b4a33,{roughness:0.6})); h.position.set(sd*0.06,-0.09,0); G.add(h); }); })();
+    [[0x8a6f5a,0.07],[0xd9d2c6,0.05]].forEach(function(q,i){ bx(LG[1],xf+0.05,xw-0.04,z0+0.05+i*0.24,z0+0.25+i*0.24,ys+t,ys+t+q[1],lam(q[0],{roughness:0.95}),oc); });   // a folded scarf and a hat box on the shelf
+    const leaves=[]; [[y0+t,ys+t/2],[ys+t/2,y1-0.004]].forEach(function(r){ const pv=new THREE.Group(); pv.userData.keep=true; pv.position.set(xf,0,z0+t); LG[1].add(pv); const w=z1-z0-2*t-0.004;
+      const lf=new THREE.Mesh(new THREE.BoxGeometry(t,r[1]-r[0]-0.004,w),W); lf.position.set(-t/2,(r[0]+r[1])/2,w/2); lf.castShadow=true; pv.add(lf); leaves.push(pv); });
+    bx(LG[1],xf-0.002,xf,z1-t-0.03,z1-t-0.006,ys-0.03,ys+0.04,lam(0xd9d6cf,{roughness:0.5}),oc);   // push-latch seam mark
+    addCol(1,xf,xw,z0,z1,y0,y1,'w');
+    let cur=0, tg=0, last=null; furnThings.push({pt:[xf-0.6,(z0+z1)/2],l:1,part:leaves,on:function(){ return true; },label:function(){ return tg?'關上外套收納':'打開外套收納'; },act:function(){ tg=tg?0:1; last=null; }});
+    furnAnims.push({live:function(){ return cur!==tg; },f:function(t2){ if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*2?tg:cur+Math.sign(tg-cur)*dt*2; leaves.forEach(function(pv){ pv.rotation.y=-cur*1.7; }); E.renderer.shadowMap.needsUpdate=true; return true; }});
+  })();
 })();
 (function(){                                   // 3F wet zone (C): bath (tub along the north at the west end, TV on the stone west wall), washroom, sauna room off the washroom
   (function(){ const b=E.base(2), x0=WX(2,380)+TI/2, x1=WX(2,580)-TE/2, z0=WZ(2,0)+TE/2, z1=WZ(2,205)-TI/2, zt=z0+0.78, xt=x0+1.6, H=0.55, RIM=0.065, oc={cast:false}, e=0.004, top=b+CH;   // 3F bath: built-in tub along the north, an accent stone east wall with the shower set, the TV over the tub's foot, warm indirect light
