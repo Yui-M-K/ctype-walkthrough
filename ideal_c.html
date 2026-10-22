@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261024h">
+<link rel="stylesheet" href="lib/storeys.css?v=20261024i">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261024h"></script>
-<script src="lib/furniture.js?v=20261024h"></script>
-<script src="lib/catalog.js?v=20261024h"></script>
-<script src="lib/look.js?v=20261024h"></script>
-<script src="lib/houses.js?v=20261024h"></script>
-<script src="lib/perf.js?v=20261024h"></script>
-<script src="lib/finish.js?v=20261024h"></script>
-<script src="lib/storeys.js?v=20261024h"></script>
+<script src="lib/people.js?v=20261024i"></script>
+<script src="lib/furniture.js?v=20261024i"></script>
+<script src="lib/catalog.js?v=20261024i"></script>
+<script src="lib/look.js?v=20261024i"></script>
+<script src="lib/houses.js?v=20261024i"></script>
+<script src="lib/perf.js?v=20261024i"></script>
+<script src="lib/finish.js?v=20261024i"></script>
+<script src="lib/storeys.js?v=20261024i"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -154,6 +154,12 @@ curtains:[[0,'W',55,245,0,false,{color:0xf7f3ec,tie:true}],[1,'S',268,552,850,fa
 /* equipment notes in the menu: [storey, plan x, plan y, name, note] for built-ins; placed furniture is listed automatically (noteText[id]: note or [name, note]) */
 notes:[
   [1,420,330,'廚房走道與半島檯面','廚房走道約 99 cm、半島檯面高約 88 cm'],
+  [1,118,445,'對講機室內主機（7 吋彩色）','客廳樓梯側牆面，離地約 1.45 m；和門柱的對講機連動，按「應答」可看門口畫面通話'],[0,268,640,'對講機子機','1F 玄關廳靠車庫那面牆，離地約 1.45 m，在 1F 也能應答'],
+  [1,577,318,'エコキュート 廚房遙控器','廚房走道東端的牆上，離地約 1.3 m：設定給水溫度、按「湯はり」自動放洗澡水'],[2,577,186,'エコキュート 浴室遙控器','浴室東牆淋浴組旁，防水型：放洗澡水、追い焚き、和廚房通話'],
+  [0,470,170,'地板點檢口（45 × 45 cm）','儲藏室地板，鋁框蓋和地板齊平，檢查地板下的給排水管'],[2,170,770,'天花板點檢口（45 × 45 cm）','3F 更衣間天花板，白框齊平，進屋頂內部檢查配線・防水'],
+  [2,290,-30,'雨水槽・落水管','陸屋根往北排水：北側簷口的方形雨水槽，北面兩個角各一支 60 mm 落水管接到地面的排水井；玄關雨遮和陽台各有小出水口'],
+  [1,410,5,'紗窗','所有可開的窗和落地窗都有紗窗（外側軌道，灰色細網）；霧面的浴室・廁所窗和固定窗沒有'],
+  [1,316,272,'滅火器（Tiger ECO NEUT 1 L）','Tiger ECO NEUT 家用中性強化液滅火器（1 L，各樓層一支）：2F 廚房走道口・3F 洗面室門外・1F 玄關廳；法規上獨棟住宅不強制，放在逃生方向上、離爐子 2–3 m'],
   [1,300,560,'智慧照明（Google Home）','客廳、主臥、書房、鏡子房、玄關・門廊・庭院的燈接 Google Home：一般燈用支援 Google（Matter）的智慧開關（不用換燈泡），要調顏色的間接燈帶・吊燈・床頭燈用 Philips Hue；可語音「Hey Google，晚安」一次關燈，日落自動亮門廊和庭院燈，早上主臥燈慢慢亮'],
   [1,553,545,'Google Nest Hub（客廳）','電視櫃北端，控制全屋智慧燈・窗簾・看門口監視器'],[2,566,560,'Google Nest Hub（主臥）','床頭北側，鬧鐘・喚醒燈・睡前一次關燈'],
   [1,350,660,'客廳照明','LED 吸頂燈（調光調色）＋茶几上方橡木吊燈＋天花板間接燈帶 2700 K；智慧控制'],[1,165,430,'餐桌吊燈','摺疊餐桌正上方，展開成六人桌時照到桌面；智慧控制'],
@@ -1506,6 +1512,40 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,225)-TI/2-WZ(2,17
     const G=new THREE.Group(); G.position.set(q[1],q[5],q[2]); G.rotation.y=Math.atan2(q[3],q[4]); LG[q[0]].add(G);   // local +z out of the wall
     const c=function(r,d,z,mt){ const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,d,28),mt); m.rotation.x=Math.PI/2; m.position.z=z; G.add(m); };
     c(0.075,0.05,0.025,wh); c(0.068,0.004,0.052,dk); c(0.09,0.014,0.06,wh); });
+})();
+(function(){                                   // things every house needs: intercom monitors, エコキュート remotes, inspection hatches, gutters and downpipes, insect screens, extinguishers
+  const oc={cast:false}, b1=E.base(1), b2=E.base(2);
+  const wallFix=function(l,P,x,z,rq,y){ P.group.position.y=y; fixture(l,P,x,z,rq); return P; };
+  /* intercom: the main monitor on the LDK's stair-side wall, a sub unit in the 1F hall */
+  const IM=wallFix(1,Catalog.intercomMonitor(false),WX(1,115)+TI/2,WZ(1,445),0,1.45), IS=wallFix(0,Catalog.intercomMonitor(true),WX(0,270)-TI/2,WZ(0,640),2,1.45);
+  [[IM,1,[WX(1,115)+TI/2+0.6,WZ(1,445)]],[IS,0,[WX(0,270)-TI/2-0.6,WZ(0,640)]]].forEach(function(q){ let on=0; furnThings.push({pt:q[2],l:q[1],part:[],label:function(){ return '應答（對講機）'; },act:function(){ on++; q[0].screen.color.setHex(0x6f8fa8); q[0].screen.emissive.setHex(0x3a5a78); toast('門口：宅配到了（門柱對講機）'); const k=on; setTimeout(function(){ if(k===on){ q[0].screen.color.setHex(0x0c0f12); q[0].screen.emissive.setHex(0x000000); } },6000); }}); });
+  /* エコキュート remotes: kitchen (aisle end, east wall) and bath (beside the shower set) */
+  const RK=wallFix(1,Catalog.ecoRemote(false),WX(1,580)-TE/2,WZ(1,318),2,1.3), RB=wallFix(2,Catalog.ecoRemote(true),WX(2,580)-TE/2,WZ(2,186),2,1.15);
+  [[1,[WX(1,580)-TE/2-0.6,WZ(1,318)]],[2,[WX(2,580)-TE/2-0.6,WZ(2,186)]]].forEach(function(q){ furnThings.push({pt:q[1],l:q[0],part:[],label:function(){ return '湯はり（エコキュート）'; },act:function(){ toast('開始放洗澡水（約 15 分）'); }}); });
+  /* inspection hatches: floor in the storage room, ceiling in the 3F walk-in closet */
+  const hatch=function(l,x,z,y,ceil){ const fr=lam(ceil?0xf2f2f0:0xb9bec4,{metalness:ceil?0:0.6,roughness:0.4}), s=0.45, d=ceil?-1:1;
+    [[x-s/2,x+s/2,z-s/2,z-s/2+0.012],[x-s/2,x+s/2,z+s/2-0.012,z+s/2],[x-s/2,x-s/2+0.012,z-s/2,z+s/2],[x+s/2-0.012,x+s/2,z-s/2,z+s/2]].forEach(function(r){ bx(LG[l],r[0],r[1],r[2],r[3],y+d*(ceil?0.012:0.0035),y+d*(ceil?0.016:0.0045),fr,oc); });
+    bx(LG[l],x-0.04,x+0.04,z+s/2-0.05,z+s/2-0.035,y+d*(ceil?0.016:0.0045),y+d*(ceil?0.019:0.0055),fr,oc); };   // a recessed lift handle
+  hatch(0,WX(0,470),WZ(0,170),0,false); hatch(2,WX(2,170),WZ(2,770),b2+CH,true);
+  /* gutters: the flat roof drains north into a box gutter under the parapet edge, two downpipes down the north corners into drain basins */
+  (function(){ const ry=b2+CH, gm=lam(0x3a3c40,{roughness:0.55}), z=WZ(2,0)-0.3, x0=WX(2,0)-0.3, x1=WX(2,580)+0.3, G=E.LG[2];
+    bx(G,x0,x1,z-0.11,z,ry-0.08,ry-0.065,gm,oc); bx(G,x0,x1,z-0.11,z-0.1,ry-0.08,ry+0.005,gm,oc); [x0,x1-0.01].forEach(function(x){ bx(G,x,x+0.01,z-0.11,z,ry-0.08,ry,gm,oc); });   // gutter: bottom, front lip, end caps
+    [WX(0,0)-TE/2+0.05,WX(0,580)+TE/2-0.05].forEach(function(x){ const zp=WZ(0,0)-TE/2-0.05;
+      E.cylm(E.LG[0],x,zp,0.03,0.03,0.12,ry-0.08,gm); bx(G,x-0.03,x+0.03,z-0.07,zp+0.03,ry-0.1,ry-0.07,gm,oc);   // 60 mm downpipe and the swan neck to the gutter
+      [1.0,3.6,6.3].forEach(function(y){ bx(E.LG[0],x-0.035,x+0.035,zp+0.025,zp+0.06,y,y+0.025,gm,oc); });   // wall clips
+      bx(E.LG[0],x-0.09,x+0.09,zp-0.09,zp+0.09,0,0.06,lam(0x8a8d90,{roughness:0.9}),oc); bx(E.LG[0],x-0.07,x+0.07,zp-0.07,zp+0.07,0.06,0.065,lam(0x2b2d31,{roughness:0.6}),oc); });   // concrete drain basin with a grate
+    const sp=function(l,x,y,z,dz){ const m=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.025,0.12),gm); m.position.set(x,y,z+dz*0.06); E.LG[l].add(m); };   // little spouts for the canopy and the balcony
+    sp(0,WX(0,20),2.62,WZ(0,850)+0.88,1); sp(2,WX(2,575),b2+0.03,WZ(2,945),1); })();
+  /* insect screens on every window that opens (frosted and fixed ones skipped): mesh in the outer track over one sash */
+  (function(){ const fr=lam(0x9a9ea3,{metalness:0.5,roughness:0.4}), net=new THREE.MeshStandardMaterial({color:0x5f6366,transparent:true,opacity:0.16,roughness:1,depthWrite:false,side:THREE.DoubleSide});
+    const scr=function(l,side,a,c,sill,head){ const b=E.base(l), y0=b+sill+0.02, y1=b+head-0.02, horiz=side==='N'||side==='S', o=side==='N'||side==='W'?-1:1, line=side==='N'?WZ(l,0):side==='S'?WZ(l,850):side==='W'?WX(l,0):WX(l,580), f=line+o*(TE/2-0.025);
+      const A=(horiz?WX(l,a):WZ(l,a)), C=(horiz?WX(l,c):WZ(l,c)), m=(A+C)/2, s0=m, s1=C-0.02, w=s1-s0;
+      const put=function(u0,u1,v0,v1,mt){ if(horiz) bx(E.LG[l],u0,u1,f-0.006,f+0.006,v0,v1,mt,oc); else bx(E.LG[l],f-0.006,f+0.006,u0,u1,v0,v1,mt,oc); };
+      put(s0,s1,y0,y0+0.018,fr); put(s0,s1,y1-0.018,y1,fr); put(s0,s0+0.018,y0,y1,fr); put(s1-0.018,s1,y0,y1,fr);
+      const pl=new THREE.Mesh(new THREE.PlaneGeometry(w-0.03,y1-y0-0.03),net); pl.position.set(horiz?(s0+s1)/2:f,(y0+y1)/2,horiz?f:(s0+s1)/2); if(!horiz) pl.rotation.y=Math.PI/2; pl.renderOrder=2; E.LG[l].add(pl); };
+    [[0,'N',425,515,1.0,2.0],[0,'W',555,615,1.5,2.3],[1,'N',300,520,1.4,2.0],[1,'W',555,615,1.5,2.3],[1,'E',60,170,1.15,2.0],[2,'W',420,540,1.5,2.1],[2,'E',300,440,1.0,2.1]].forEach(function(q){ scr.apply(null,q); }); })();
+  /* fire extinguishers (Tiger ECO NEUT 1 L), one a floor, on the escape route */
+  [[1,WX(1,321)-0.07,WZ(1,272),0],[2,WX(2,232),WZ(2,225)+TI/2+0.07,3],[0,WX(0,270)-TI/2-0.07,WZ(0,600),2]].forEach(function(q){ fixture(q[0],Catalog.fireExtinguisher(),q[1],q[2],q[3]); });
 })();
 },
 lighting:function(E){
