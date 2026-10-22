@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261023g">
+<link rel="stylesheet" href="lib/storeys.css?v=20261023h">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261023g"></script>
-<script src="lib/furniture.js?v=20261023g"></script>
-<script src="lib/catalog.js?v=20261023g"></script>
-<script src="lib/look.js?v=20261023g"></script>
-<script src="lib/houses.js?v=20261023g"></script>
-<script src="lib/perf.js?v=20261023g"></script>
-<script src="lib/finish.js?v=20261023g"></script>
-<script src="lib/storeys.js?v=20261023g"></script>
+<script src="lib/people.js?v=20261023h"></script>
+<script src="lib/furniture.js?v=20261023h"></script>
+<script src="lib/catalog.js?v=20261023h"></script>
+<script src="lib/look.js?v=20261023h"></script>
+<script src="lib/houses.js?v=20261023h"></script>
+<script src="lib/perf.js?v=20261023h"></script>
+<script src="lib/finish.js?v=20261023h"></script>
+<script src="lib/storeys.js?v=20261023h"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -531,9 +531,9 @@ return [
   ['map','worldMap',1,119.5,560,'E'],
   ['clock','wallClock',1,119.5,400,'E',function(){ return Catalog.wallClock('oak'); }],
   ['catA','catStep',1,40,843.5,'N',function(){ return Catalog.catStep(0.85); }],['catBed','catBed',1,100,843.5,'N',function(){ return Catalog.catBed(1.15); }],['catHouse','catHouse',1,160,843.5,'N',function(){ return Catalog.catHouse(1.45); }],
-  ['catBubble','catBubble',1,222,843.5,'N',function(){ return Catalog.catBubble(1.82,'tabby'); }],   // one column at x 2.0-2.45, the other at 1.35-1.81: a zigzag a cat can climb, clear of the curtain stack west of the bay
+  ['catBubble','catBubble',1,222,843.5,'N',function(){ const p=Catalog.catBubble(1.82,'bubu'); let k=0; p.actions=(p.actions||[]).concat([{x:0.6,z:0,label:function(){ return '摸摸碗裡的咘咘'; },act:function(){ if(!p.rig) return; k=1-k; p.rig.play(k?'blink':'perch'); E.toast(k?'咘咘對你慢慢眨眼':'咘咘在碗裡伸了個懶腰'); }}]); return p; }],   // one column at x 2.0-2.45, the other at 1.35-1.81: a zigzag a cat can climb, clear of the curtain stack west of the bay
   ['cat','catBubu',1,160,740,'E',function(){ const p=Catalog.bubu(), names={stretch:'咘咘伸了個懶腰',belly:'咘咘翻肚給你看',love:'咘咘在撒嬌',scratch:'咘咘坐起來抓頭',groom:'咘咘在理毛'}; let last=null;   // pet her: one of five actions, never the same twice in a row
-    p.actions=(p.actions||[]).concat([{x:0.45,z:0,part:p.group.children.slice(0,1),label:function(){ return '摸摸咘咘'; },act:function(){ const ks=Object.keys(names).filter(function(k){ return k!==last; }), k=ks[Math.floor(Math.random()*ks.length)]; last=k; p.play(k); E.toast(names[k]); }}]); return p; }],['catBowls','catFeedStation',1,555.5,468,'W'],
+    p.actions=(p.actions||[]).concat([{x:0.45,z:0,part:p.group.children.slice(0,1),label:function(){ return '摸摸咘咘'; },act:function(){ const ks=Object.keys(names).filter(function(k){ return k!==last; }), k=ks[Math.floor(Math.random()*ks.length)]; last=k; const v=p.group.worldToLocal(new THREE.Vector3(E.player.x,p.group.getWorldPosition(new THREE.Vector3()).y,E.player.z)); p.play(k,{yaw:Math.max(-1.2,Math.min(1.2,Math.atan2(-v.z,v.x)))}); E.toast(names[k]); }}]); if(location.hash==='#debug') window.__catPlay=function(k){ p.play(k,{yaw:0.6}); }; return p; }],['catBowls','catFeedStation',1,555.5,468,'W'],
   /* 2F dining (folding six-seat table on the north wall); the litter box sits in the 1F hall */
   ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,150,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,37.4,808,'E',function(){ return Catalog.litterRobot({mat:[-0.355,0.44,-0.309,0.72]}); }],['robot','dreameX40',1,346,257.2,'S'],
   /* 2F kitchen: appliance cabinet (dish cupboard in its base) and fridge against the bath wall, bins beside the peninsula */
