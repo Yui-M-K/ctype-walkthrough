@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261023y">
+<link rel="stylesheet" href="lib/storeys.css?v=20261023z">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261023y"></script>
-<script src="lib/furniture.js?v=20261023y"></script>
-<script src="lib/catalog.js?v=20261023y"></script>
-<script src="lib/look.js?v=20261023y"></script>
-<script src="lib/houses.js?v=20261023y"></script>
-<script src="lib/perf.js?v=20261023y"></script>
-<script src="lib/finish.js?v=20261023y"></script>
-<script src="lib/storeys.js?v=20261023y"></script>
+<script src="lib/people.js?v=20261023z"></script>
+<script src="lib/furniture.js?v=20261023z"></script>
+<script src="lib/catalog.js?v=20261023z"></script>
+<script src="lib/look.js?v=20261023z"></script>
+<script src="lib/houses.js?v=20261023z"></script>
+<script src="lib/perf.js?v=20261023z"></script>
+<script src="lib/finish.js?v=20261023z"></script>
+<script src="lib/storeys.js?v=20261023z"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -153,6 +153,12 @@ accents:[{l:1,x0:560,x1:575,y0:250,y1:850,w:'sage'},{l:2,x0:560,x1:575,y0:465,y1
 curtains:[[0,'W',55,245,0,false,{color:0xf7f3ec,tie:true}],[1,'S',268,552,850,false,{color:0xc9d2c2},{off:0.1,top:2.474,bottom:0.43,noSheer:true}],[2,'S',250,530,850,true]],
 /* equipment notes in the menu: [storey, plan x, plan y, name, note] for built-ins; placed furniture is listed automatically (noteText[id]: note or [name, note]) */
 notes:[
+  [1,300,560,'智慧照明（Google Home）','客廳、主臥、書房、鏡子房、玄關・門廊・庭院的燈接 Google Home：一般燈用支援 Google（Matter）的智慧開關（不用換燈泡），要調顏色的間接燈帶・吊燈・床頭燈用 Philips Hue；可語音「Hey Google，晚安」一次關燈，日落自動亮門廊和庭院燈，早上主臥燈慢慢亮'],
+  [1,553,545,'Google Nest Hub（客廳）','電視櫃北端，控制全屋智慧燈・窗簾・看門口監視器'],[2,566,560,'Google Nest Hub（主臥）','床頭北側，鬧鐘・喚醒燈・睡前一次關燈'],
+  [1,350,660,'客廳照明','LED 吸頂燈（調光調色）＋茶几上方橡木吊燈＋天花板間接燈帶 2700 K；智慧控制'],[1,165,430,'餐桌吊燈','摺疊餐桌正上方，展開成六人桌時照到桌面；智慧控制'],
+  [1,470,310,'廚房照明','流理台上方嵌燈 3000 K＋半島吊燈 2 盞；智慧控制'],[1,412,110,'書房照明','LED 吸頂燈（工作時白光、晚上暖光）＋螢幕掛燈；智慧控制'],[2,412,650,'主臥照明','LED 吸頂燈＋床頭燈帶＋兩側閱讀燈；智慧控制（喚醒燈）'],[0,155,180,'鏡子房照明','LED 吸頂燈，可切換練舞用的亮白光；智慧控制'],
+  [1,165,172,'走道感應燈','拱門後面的走道：人體感應嵌燈，晚上去廁所自動亮'],[2,40,40,'三溫暖燈','耐熱型，裝在室內角落的杉木格柵後面'],[2,545,850,'陽台壁燈','防雨型，暖光，傍晚自動亮'],
+  [1,57,60,'淋浴間・浴室燈','防濕型嵌燈（密封霧面燈罩）'],[0,57,322,'廁所・樓梯・收納的燈','人體感應或開門就亮，不接智慧控制'],
   [1,300,600,'床暖房（地暖）','LDK 全面鋪設。選單「顯示地暖範圍（客廳）」可看到範圍'],
   [1,361,434.5,'抽拉式水龍頭','蓮蓬頭可拉出：拉出斜沖 → 換角度沖 → 收回，附金屬軟管'],
   [1,361,417.5,'廚餘處理機','裝在水槽下，排水口是橡膠防濺蓋；台面有氣壓開關，打開水槽下櫃可看到本體'],
@@ -533,6 +539,7 @@ return [
   ['map','worldMap',1,119.5,560,'E'],
   ['clock','wallClock',1,119.5,400,'E',function(){ return Catalog.wallClock('oak'); }],
   ['catA','catStep',1,40,843.5,'N',function(){ return Catalog.catStep(0.85); }],['catBed','catBed',1,100,843.5,'N',function(){ return Catalog.catBed(1.15); }],['catHouse','catHouse',1,160,843.5,'N',function(){ return Catalog.catHouse(1.45); }],
+  ['hubL','nestHub',1,553,545,'W',function(){ return Catalog.nestHub(0.4); }],['hubB','nestHub',2,566,560,'W',function(){ return Catalog.nestHub(0.95); }],   // Google Nest Hub on the TV board's north end and on the bed's north side unit
   ['catBubble','catBubble',1,222,843.5,'N',function(){ const p=Catalog.catBubble(1.82,'bubu'); let k=0; p.actions=(p.actions||[]).concat([{x:0.6,z:0,label:function(){ return '摸摸碗裡的咘咘'; },act:function(){ if(!p.rig) return; k=1-k; p.rig.play(k?'blink':'perch'); E.toast(k?'咘咘對你慢慢眨眼':'咘咘在碗裡伸了個懶腰'); }}]); return p; }],   // one column at x 2.0-2.45, the other at 1.35-1.81: a zigzag a cat can climb, clear of the curtain stack west of the bay
   ['cat','catBubu',1,160,740,'E',function(){ const p=Catalog.bubu({route:function(){ const st=E.FS.movers.find(function(m){ return m.id==='catA'; }), b=E.base(1); if(!st||E.FS.isStored('catA')) return {spots:[[E.WX(1,160),E.WZ(1,665)],[E.WX(1,175),E.WZ(1,815)]]}; const B=new THREE.Box3().setFromObject(st.W);   // along the stair wall, under the cat walkway; the lowest step is her perch
       return {spots:[[E.WX(1,160),E.WZ(1,665)],[E.WX(1,175),E.WZ(1,815)]],perch:{from:[E.WX(1,140),E.WZ(1,790)],top:[(B.min.x+B.max.x)/2,B.max.y,(B.min.z+B.max.z)/2-0.02],face:0}}; }}), names={stretch:'咘咘伸了個懶腰',belly:'咘咘翻肚給你看',love:'咘咘在撒嬌',scratch:'咘咘坐起來抓頭',groom:'咘咘在理毛'}; let last=null;   // pet her: one of five actions, never the same twice in a row
@@ -729,7 +736,16 @@ fixtures:function(E){
     const CL=new THREE.PointLight(0xffc27a,0,3.2,2); CL.position.set(x1-0.35,top-0.25,(z0+z1)/2); LG[2].add(CL); E.pointLights.push(CL);
     E.bathGlow=glow; let on=null; furnAnims.push({live:function(){ const w=!E.sleepOn&&(E.hour>=16.5||E.hour<6.5); return w!==on; },f:function(){ on=!E.sleepOn&&(E.hour>=16.5||E.hour<6.5); glow.forEach(function(m){ m.color.setHex(on?0xffbe76:0xf2e2cc); }); CL.intensity=(on?0.28:0)*E.PLI; return false; }});   // 2700 K, the mood light at dusk
   })();
-  (function(){ const S=Catalog.homeSauna({depth:1.5,flip:true,hingeIn:true,doorW:0.6}), wx=WX(2,162)-0.75, wz=WZ(2,66); fixture(2,S,wx,wz,0);   // 1.5 x 1.2 m cabin facing the washroom: door on the left half, handle on the left, opening to the right
+  (function(){ const S=Catalog.homeSauna({depth:1.5,flip:true,hingeIn:true,doorW:0.6}), wx=WX(2,162)-0.75, wz=WZ(2,66); fixture(2,S,wx,wz,0);
+    (function(){ const b=E.base(2), x=wx-0.75+0.05, z=wz+0.6-0.05, y=b+1.95-0.05, ced=lam(0xc79b62,{roughness:0.8}), G=new THREE.Group(); G.position.set(x,y,z); LG[2].add(G);   // heat-proof sauna lamp in the back corner under a cedar louvre
+      const gl=new THREE.Mesh(new THREE.BoxGeometry(0.08,0.1,0.08),E.dusk(new THREE.MeshBasicMaterial({color:0xffd59a}))); gl.position.set(0.045,-0.08,-0.045); G.add(gl);
+      for(let k=0;k<5;k++){ const s=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.012,0.012),ced); s.position.set(0.09,-0.03-k*0.025,-0.09); s.rotation.y=Math.PI/4; G.add(s); }   // slats across the corner
+      const sp=new THREE.PointLight(0xffc27a,0.25*E.PLI,2.2,2); sp.position.set(0.15,-0.2,-0.15); G.add(sp); })();
+    (function(){ const b=E.base(2), z=WZ(2,850)+TE/2, x=WX(2,545), G=new THREE.Group(); G.position.set(x,b+2.0,z); LG[2].add(G);   // balcony: weatherproof wall lantern, warm, on from dusk
+      const bk=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.16,0.02),lam(0x2b2c2e,{roughness:0.5,metalness:0.4})); bk.position.z=0.01; G.add(bk);
+      const sh=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.055,0.14,20),lam(0x2b2c2e,{roughness:0.5,metalness:0.4})); sh.position.set(0,0,0.075); G.add(sh);
+      const gl=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.045,0.006,20),E.dusk(new THREE.MeshBasicMaterial({color:0xffd59a}))); gl.position.set(0,-0.071,0.075); G.add(gl);
+      const lp=new THREE.PointLight(0xffc27a,0,3.5,2); lp.position.set(0,-0.25,0.3); G.add(lp); E.furnAnims.push({live:function(){ return true; },f:function(){ lp.intensity=(E.hour>=16.5||E.hour<6.5?0.35:0)*E.PLI; return false; }}); })();   // 1.5 x 1.2 m cabin facing the washroom: door on the left half, handle on the left, opening to the right
     const r=S.doorRect, b=E.base(2), x0=wx+r[0], x1=wx+r[1], z0=wz+r[2], z1=wz+r[3];
     const col=addCol(2,x0,x1,z0,z1,b,b+1.95,'d'), d={l:2,pv:S.doorPivot,th:S.doorTh*0.94,open:false,t:0,col:col,mid:[(x0+x1)/2,(z0+z1)/2],label:function(o){ return o?'關上三溫暖門':'打開三溫暖門'; }};
     col.door=d; doors.push(d); })();
@@ -1501,13 +1517,13 @@ lighting:function(E){
   batten(0,445,145,1.2,true,0.45); batten(0,350,570,1.2,false,0.5); batten(0,500,570,1.2,false,0.5);
   [[192,400],[192,560],[192,720]].forEach(function(p){ downlight(0,p[0],p[1],0.35); }); downlight(0,57,322,0.25);   // toilet: under the landing, where the ceiling is full height (the flight runs over the rest) downlight(0,57,700,0.3);
   /* 2F: round smart lights over the living, dining and study, downlights along the kitchen counter and in the shower room, toilet and washroom, pendants over the island */
-  light(1,350,660,0xffe2b8,0.5,7); light(1,207,330,0xffe2b8,0.5,7);
+  light(1,350,660,0xffe2b8,0.5,7); pendant(1,165,430); downlight(1,240,285,0.3);   // dining pendant over the fold-out table; a downlight for the landing / arch side
   [[400,310],[470,310],[540,310]].forEach(function(p){ downlight(1,p[0],p[1],0.3); });
-  downlight(1,57,172,0.25); downlight(1,57,280,0.3); downlight(1,57,60,0.3); downlight(1,180,110,0.3); downlight(1,57,750,0.3); light(1,412,110,0xffe2b8,0.5,7);
+  downlight(1,57,172,0.25); downlight(1,57,280,0.3); downlight(1,57,60,0.3,4.5,true); downlight(1,180,110,0.3); downlight(1,165,172,0.22);   // shower: damp-proof; passage: sensor downlight downlight(1,57,750,0.3); light(1,412,110,0xffe2b8,0.5,7);
   pendant(1,420,412.5); pendant(1,485,412.5);
   /* 3F: round light in the bedroom, downlights in the hall, closets and wet rooms */
   light(2,412,650,0xffe2b8,0.5,7); [[330,330],[490,330]].forEach(function(p){ downlight(2,p[0],p[1],0.3); });
-  downlight(2,80,177,0.25); [[220,95],[320,95]].forEach(function(p){ downlight(2,p[0],p[1],0.3); }); downlight(2,430,60,0.35,5);
+  downlight(2,80,177,0.25); [[220,95],[320,95]].forEach(function(p){ downlight(2,p[0],p[1],0.3); }); downlight(2,430,60,0.35,5,true);
   [[60,320],[180,330],[180,480],[180,620]].forEach(function(p){ downlight(2,p[0],p[1],0.3); }); [[80,770],[170,770]].forEach(function(p){ downlight(2,p[0],p[1],0.3); });
   cove(1,18,850,562,850,-1); cove(1,580,280,580,832,-1); cove(1,0,690,0,832,1); cove(1,115,345,115,655,1);   // LDK: south, east (from the kitchen band's face), the stair foot's west wall; corners meet on the inset lines
   cove(2,580,478,580,832,-1);   // bedroom: over the bed's head wall
