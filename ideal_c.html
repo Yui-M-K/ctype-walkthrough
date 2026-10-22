@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261024g">
+<link rel="stylesheet" href="lib/storeys.css?v=20261024h">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261024g"></script>
-<script src="lib/furniture.js?v=20261024g"></script>
-<script src="lib/catalog.js?v=20261024g"></script>
-<script src="lib/look.js?v=20261024g"></script>
-<script src="lib/houses.js?v=20261024g"></script>
-<script src="lib/perf.js?v=20261024g"></script>
-<script src="lib/finish.js?v=20261024g"></script>
-<script src="lib/storeys.js?v=20261024g"></script>
+<script src="lib/people.js?v=20261024h"></script>
+<script src="lib/furniture.js?v=20261024h"></script>
+<script src="lib/catalog.js?v=20261024h"></script>
+<script src="lib/look.js?v=20261024h"></script>
+<script src="lib/houses.js?v=20261024h"></script>
+<script src="lib/perf.js?v=20261024h"></script>
+<script src="lib/finish.js?v=20261024h"></script>
+<script src="lib/storeys.js?v=20261024h"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -1233,7 +1233,7 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,225)-TI/2-WZ(2,17
   bx(LG[0],xm-0.009,xm+0.009,zf,z1-t,t,LO-t,W);                                             // centre divider in the lower cupboard
   const shelf=function(a,b,y){ bx(LG[0],a,b,zf+0.02,z1-t,y,y+t,W,oc); };
   [0.2,0.4,0.58,0.76].forEach(function(y){ shelf(x0+t,xm-0.009,y); }); [1.68,1.94,2.2].forEach(function(y){ shelf(x0+t,xe-t,y); });
-  const pair=function(grp,cx,y,zc,s){ const sc=s[3]||1; [-1,1].forEach(function(sd){ const g=Catalog.shoe(s[0],s[1],s[2]); g.scale.setScalar(sc); g.rotation.y=Math.PI/2; g.position.set(cx+sd*0.05*sc,y+0.001,zc+(sd>0?0.012:0)); g.traverse(function(o){ if(o.isMesh) o.castShadow=true; }); grp.add(g); }); };   // a pair, toes to the door, the right one a little back
+  const pair=function(grp,cx,y,zc,s){ const sc=s[3]||1; [-1,1].forEach(function(sd){ const g=Catalog.shoe(s[0],s[1],s[2]); g.scale.setScalar(sc); g.rotation.y=Math.PI/2-sd*0.05; g.position.set(cx+sd*0.052*sc,y+0.001,zc+(sd>0?0.012:0)); g.traverse(function(o){ if(o.isMesh) o.castShadow=true; }); grp.add(g); }); };   // a pair, toes to the door, the right one a little back
   const SHOES=[['sneaker',0xf2efe8,0xf7f5f0,0.88],['loafer',0x3a2a20,0x6b4a33,1],['sneaker',0x2f3a4a,0xf1efe9,1],['pump',0xd9c3a5,0xb9a184,0.88],['loafer',0x1d1e21,0x1d1e21,1],['sneaker',0x9fb0bf,0xf1efe9,0.88],['sandal',0x8c5a3c,0xcdb89a,0.88],['pump',0x1d1e21,0x1d1e21,0.88],['sneaker',0x5a6b58,0xf1efe9,1],['loafer',0x8c5a3c,0x5c3a24,0.88],['sandal',0x1d1e21,0xb9a184,1]];   // hers 23.8 cm, his 27 cm
   let si=0; [t,0.2+t,0.4+t,0.58+t,0.76+t,HI+t,1.68+t].forEach(function(y,r){ (y>1?[x0+t,x0+t+0.249,x0+t+0.498]:[x0+t]).forEach(function(xb,c){ if(y<1.5&&c===2) return; pair(LG[0],xb+0.125,y,zf+0.2,SHOES[si++%SHOES.length]); }); });
   [1.94,2.2].forEach(function(y,k){ bx(LG[0],x0+0.05,xe-0.05,zf+0.04,z1-0.04,y+t,y+t+0.15,lam([0xd9cfc0,0xc9b79c][k],{roughness:0.8}),oc); });   // shoe boxes up top
