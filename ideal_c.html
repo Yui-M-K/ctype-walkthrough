@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261024x">
+<link rel="stylesheet" href="lib/storeys.css?v=20261024y">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261024x"></script>
-<script src="lib/furniture.js?v=20261024x"></script>
-<script src="lib/catalog.js?v=20261024x"></script>
-<script src="lib/look.js?v=20261024x"></script>
-<script src="lib/houses.js?v=20261024x"></script>
-<script src="lib/perf.js?v=20261024x"></script>
-<script src="lib/finish.js?v=20261024x"></script>
-<script src="lib/storeys.js?v=20261024x"></script>
+<script src="lib/people.js?v=20261024y"></script>
+<script src="lib/furniture.js?v=20261024y"></script>
+<script src="lib/catalog.js?v=20261024y"></script>
+<script src="lib/look.js?v=20261024y"></script>
+<script src="lib/houses.js?v=20261024y"></script>
+<script src="lib/perf.js?v=20261024y"></script>
+<script src="lib/finish.js?v=20261024y"></script>
+<script src="lib/storeys.js?v=20261024y"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -612,9 +612,8 @@ fixtures:function(E){
   fixture(1,Catalog.pullDownTap(),X0+0.425,Z0+0.52,0); fixture(1,Catalog.dishSoap(true),X0+0.1,Z0+0.52,0); fixture(1,Catalog.sinkSponge(),X0+0.75,Z0+0.445,0);
   fixture(1,Catalog.ihHob2(),WX(1,523.5),WZ(1,412.5),0); fixture(1,Catalog.rangeHood(CH),WX(1,523.5),WZ(1,412.5),0);
   M.cab.color.copy(M.cabF.color); M.cab.roughness=M.cabF.roughness;
-  (function(){ const c=document.createElement('canvas'); c.width=c.height=256; const g=c.getContext('2d'); let r=7; const rnd=function(){ r=(r*16807)%2147483647; return r/2147483647; };   // matte melamine: fine low-contrast grain and speckle, kept near white so the colour stays
-    g.fillStyle='#ffffff'; g.fillRect(0,0,256,256); for(let i=0;i<90;i++){ const x=rnd()*256; g.fillStyle='rgba(150,135,115,'+(0.02+rnd()*0.035)+')'; g.fillRect(x,0,0.6+rnd()*1.4,256); }
-    for(let i=0;i<5000;i++){ g.fillStyle='rgba(120,110,95,'+(rnd()*0.05)+')'; g.fillRect(rnd()*256,rnd()*256,1,1); }
+  (function(){ const c=document.createElement('canvas'); c.width=c.height=256; const g=c.getContext('2d'); let r=7; const rnd=function(){ r=(r*16807)%2147483647; return r/2147483647; };   // matte white melamine: a faint speckle only (system-kitchen board, no grain)
+    g.fillStyle='#ffffff'; g.fillRect(0,0,256,256);     for(let i=0;i<4000;i++){ g.fillStyle='rgba(120,115,105,'+(rnd()*0.035)+')'; g.fillRect(rnd()*256,rnd()*256,1,1); }
     const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=E.ANISO||4; t.repeat.set(2,2);
     [M.cabF,M.cab].forEach(function(m){ m.map=t; m.bumpMap=t; m.bumpScale=0.0015; m.roughness=0.62; m.color.lerp(new THREE.Color(0xf6efe2),0.25); m.needsUpdate=true; }); setTimeout(function(){ const seen=new Set(); E.scene.traverse(function(o){ const m=o.isMesh&&o.material; if(m&&!Array.isArray(m)&&!seen.has(m)&&!m.map&&m.color&&m.color.getHex()===0xf3f1ec){ seen.add(m); m.map=t; m.roughness=0.62; m.needsUpdate=true; } }); },0); })();   // the floor-standing TV board's matte white too   // one white for every cabinet carcass and front, so the kitchen reads as a single built-in
   (function(){                                 // kitchen built-in wall: pantry, appliance cabinet and fridge under one band of cupboards; lines shared with the appliance cabinet (10 cm kick, 85 cm counter, 1.89 m band: 5 cm vent over the 1.843 m fridge)
@@ -1240,10 +1239,24 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,225)-TI/2-WZ(2,17
   [0.13,0.38].forEach(function(y){ rod(xa,xb,b+y,b+y+0.006,za,zb); [xa,xb-0.006].forEach(function(x){ rod(x,x+0.006,b+y,b+y+0.08,za,zb); }); rod(xa,xb,b+y,b+y+0.08,za,za+0.006); rod(xa,xb,b+y+0.074,b+y+0.08,zb-0.006,zb); });
   [xa,xb-0.006].forEach(function(x){ rod(x,x+0.006,b+0.13,b+0.46,za,za+0.006); });
   bx(LG[1],xa-0.01,xb+0.01,za,zb,b+0.1,b+0.11,lam(0x2a2d31,{roughness:0.5}),oc);   // runner
-  const bottle=function(x,z,y,r,h,c,cap){ const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,16),lam(c,{roughness:0.35})); m.position.set(x,b+y+h/2,z); R.add(m); if(cap){ const k=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.05,0.06),lam(cap)); k.position.set(x,b+y+h+0.02,z-0.015); R.add(k); } };
-  bottle(xa+0.07,za+0.12,0.136,0.045,0.2,0xf4f2ec,0xf4f2ec); bottle(xb-0.07,za+0.3,0.136,0.035,0.16,0x55595c,0x2a2a2a);   // dish detergent refill, a grey spray
-  bottle(xa+0.07,za+0.1,0.386,0.03,0.14,0xe8f2f4,0xffffff); bottle(xb-0.07,za+0.12,0.386,0.03,0.15,0xf6f6f2,0xffffff);   // alcohol spray, kitchen cleaner
-  bx(R,xa+0.04,xb-0.04,za+0.25,za+0.4,b+0.386,b+0.43,lam(0xf2d36b,{roughness:0.8}),oc);   // sponges
+  const lbl=function(lines,bg,fg,acc){ const c=document.createElement('canvas'); c.width=128; c.height=192; const g=c.getContext('2d'); g.fillStyle=bg; g.fillRect(0,0,128,192); if(acc){ g.fillStyle=acc; g.fillRect(0,118,128,30); }
+    g.fillStyle=fg; g.textAlign='center'; lines.forEach(function(q,i){ g.font='700 '+q[1]+'px "Hiragino Sans","Noto Sans JP",sans-serif'; g.fillText(q[0],64,q[2]); }); const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=4; return lam(0xffffff,{map:t,roughness:0.4}); };
+  const put=function(geo,mt,x,y,z,ry){ const m=new THREE.Mesh(geo,mt); m.position.set(x,b+y,z); if(ry) m.rotation.y=ry; m.castShadow=true; R.add(m); return m; };
+  const labelled=function(w,h,d,x,y,z,body,face){ return put(new THREE.BoxGeometry(w,h,d),[body,body,body,body,body,face],x,y+h/2,z); };   // label on the -z face, toward the cook
+  const spray=function(x,z,y,r,h,c,lab,head){ const bm=lam(c,{roughness:0.3}); put(new THREE.CylinderGeometry(r,r*1.05,h,18),bm,x,y+h/2,z); const L=put(new THREE.CylinderGeometry(r+0.0015,r+0.0015,h*0.5,18,1,true,Math.PI*0.6,Math.PI*0.8),lab,x,y+h*0.45,z);
+    const hm=lam(head,{roughness:0.45}); put(new THREE.CylinderGeometry(r*0.45,r*0.6,0.03,12),hm,x,y+h+0.015,z); put(new THREE.BoxGeometry(0.03,0.045,0.07),hm,x,y+h+0.05,z-0.01); put(new THREE.BoxGeometry(0.018,0.018,0.02),hm,x,y+h+0.06,z-0.055);
+    const tr=put(new THREE.BoxGeometry(0.014,0.05,0.012),hm,x,y+h+0.02,z-0.04); tr.rotation.x=0.35; };
+  /* lower tier: the tall ones */
+  labelled(0.12,0.2,0.045,xa+0.07,0.136,za+0.07,lam(0x9fd3e6,{roughness:0.5}),lbl([['キュキュット',18,60],['つめかえ用',14,90],['770mL',16,170]],'#e8f6fb','#0e5f8a','#2f9fd4'));   // dish-soap refill pouch
+  (function(){ const bm=lam(0xf4f4ef,{roughness:0.35}); put(new THREE.BoxGeometry(0.075,0.2,0.105),bm,xa+0.06,0.136+0.1,za+0.2); labelled(0.072,0.11,0.002,xa+0.06,0.17,za+0.2-0.054,bm,lbl([['キッチン',16,50],['ハイター',20,80],['塩素系',13,110]],'#ffffff','#1d4f9e','#e23c3c'));
+    put(new THREE.CylinderGeometry(0.02,0.02,0.03,14),lam(0x1d4f9e,{roughness:0.4}),xa+0.06,0.351,za+0.18); put(new THREE.TorusGeometry(0.022,0.006,6,12,Math.PI),bm,xa+0.06,0.31,za+0.23).rotation.y=Math.PI/2; })();   // kitchen bleach with a handle
+  spray(xb-0.06,za+0.31,0.136,0.032,0.17,0xeef4f6,lbl([['アルコール',15,60],['除菌',22,95],['キッチン',13,130]],'#f4fbfd','#0a6a8a','#7fc6dd'),0x2a7fb0);   // alcohol spray
+  labelled(0.1,0.13,0.07,xb-0.065,0.136,za+0.13,lam(0xf6f6f2,{roughness:0.5}),lbl([['食洗機用',16,55],['洗剤',22,90],['ジェル',14,130]],'#ffffff','#2a7a3e','#8bc34a'));   // dishwasher detergent
+  /* upper tier: sponges, gloves, a brush, a small soap bottle */
+  [[0.0,0xf2d36b],[0.035,0xf6c94e],[0.07,0x7fb8e0]].forEach(function(q,i){ const x=xa+0.06, z=za+0.07+q[0]*0.4, y=0.386; put(new THREE.BoxGeometry(0.07,0.025,0.11),lam(q[1],{roughness:0.9}),x,y+0.0125+i*0.033,z); put(new THREE.BoxGeometry(0.07,0.008,0.11),lam(0x2f7d4a,{roughness:0.95}),x,y+0.029+i*0.033,z); });   // spare sponges, scrub side up
+  labelled(0.11,0.15,0.02,xb-0.07,0.386,za+0.12,lam(0xf8d7df,{roughness:0.6}),lbl([['ゴム手袋',18,40],['Mサイズ',14,170]],'#fde8ee','#a3324f',null));   // rubber gloves pack
+  (function(){ const hm=lam(0xe9e3d6,{roughness:0.5}), h=put(new THREE.CylinderGeometry(0.009,0.011,0.16,10),hm,xa+0.12,0.4,za+0.3); h.rotation.x=Math.PI/2; const br=put(new THREE.CylinderGeometry(0.025,0.022,0.035,14),lam(0xd8c39a,{roughness:0.95}),xa+0.12,0.4,za+0.4); br.rotation.x=Math.PI/2; })();   // dish brush
+  (function(){ const bm=lam(0xf3f7ea,{roughness:0.25,transparent:true,opacity:0.92}); put(new THREE.CylinderGeometry(0.03,0.03,0.13,16),bm,xb-0.06,0.386+0.065,za+0.33); put(new THREE.CylinderGeometry(0.012,0.016,0.025,12),lam(0x3a8f5a,{roughness:0.4}),xb-0.06,0.386+0.142,za+0.33); })();   // a spare dish-soap bottle
   const sinkT=function(){ return furnThings.find(function(t){ try{ return /水槽下櫃/.test(t.label()); }catch(e){ return false; } }); }, isOpen=function(){ const t=sinkT(); return !!t&&/關上/.test(t.label()); };
   let cur=0, want=0, last=null;
   furnThings.push({pt:[(xa+xb)/2,Z0-0.35],l:1,on:function(){ return isOpen(); },label:function(){ return want?'推回清潔用品架':'拉出清潔用品架'; },act:function(){ want=want?0:1; last=null; }});
