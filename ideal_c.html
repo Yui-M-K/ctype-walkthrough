@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261025e">
+<link rel="stylesheet" href="lib/storeys.css?v=20261025f">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261025e"></script>
-<script src="lib/furniture.js?v=20261025e"></script>
-<script src="lib/catalog.js?v=20261025e"></script>
-<script src="lib/look.js?v=20261025e"></script>
-<script src="lib/houses.js?v=20261025e"></script>
-<script src="lib/perf.js?v=20261025e"></script>
-<script src="lib/finish.js?v=20261025e"></script>
-<script src="lib/storeys.js?v=20261025e"></script>
+<script src="lib/people.js?v=20261025f"></script>
+<script src="lib/furniture.js?v=20261025f"></script>
+<script src="lib/catalog.js?v=20261025f"></script>
+<script src="lib/look.js?v=20261025f"></script>
+<script src="lib/houses.js?v=20261025f"></script>
+<script src="lib/perf.js?v=20261025f"></script>
+<script src="lib/finish.js?v=20261025f"></script>
+<script src="lib/storeys.js?v=20261025f"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -195,7 +195,7 @@ notes:[
   [0,72,425,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],[1,43.5,172.5,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],[2,43.5,197.5,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],
   [0,165,805,'玄關電子鎖','密碼＋感應卡開鎖；門外的密碼面板有滑蓋，平常蓋著'],[0,-128,995,'門扉','單扇木門，掛在對講機門柱上，關上時自動扣上門閂（ラッチ）；撥桿鎖（離地約 95 cm）：外側用鑰匙、內側轉旋鈕鎖上'],
   [0,-50,995,'宅配箱・對講機（門柱）','門扉西側的門柱裝對講機；東側門柱內建宅配箱和信箱，從路邊投入、從院子這側取出，附密碼鎖'],[1,332,392,'水槽上瀝水架','水槽旁的檯面保持淨空：白色鋼線瀝水架橫跨在水槽上（靠右・後半），一半是鐵條放倒扣的飯碗・木湯碗・便當盒，一半是有孔的平盤放筷子和便當叉；水直接滴進水槽；避開抽拉龍頭和海綿架；編輯模式可收進家具庫'],[0,450,995,'車庫伸縮門','車道前的鋁製伸縮門，收到東側'],[0,90,950,'腳踏車停放區（2 台）','門廊前緣往內縮 30 cm，門廊和圍籬之間約 80 cm 寬，鋪成和門內踏台同高的平地：兩台 26 吋淑女車（奶油色、鼠尾草綠）平行圍籬、前後錯開停放，車把高過門廊邊緣；從門扉進來不用上下台階。編輯模式可收進家具庫'],
-  [0,57,520,'樓梯扶手（單側）＋感應腳燈','扶手只裝西側一邊（選單可切換成兩側）；踏階有腳燈，有人走近自動亮起'],[2,412,830,'窗簾','主臥陽台落地窗的窗簾依時間自動開關（智慧家庭）；每個房間的窗簾後面都有一層白色紗簾；床頭上方的高窗用細的捲簾'],[2,560,670,'床頭系統櫃','床改成東西向、床頭靠東牆：整面白色系統櫃（深 28 cm，橡木檯面 95 cm 高，放書・手機・小盆栽），兩側內建床頭櫃（小抽屜＋開放格、插座＋USB-C），中間是布面床頭板，檯面前緣下藏一條暖光 LED；上方左右各一盞壁掛閱讀燈；床頭上方是寬 180 cm 的高窗（窗台 1.78 m），只採光'],,
+  [0,57,520,'樓梯扶手（單側）＋感應腳燈','扶手只裝西側一邊（選單可切換成兩側）；踏階有腳燈，有人走近自動亮起'],[2,412,830,'窗簾','主臥陽台落地窗的窗簾依時間自動開關（智慧家庭）；每個房間的窗簾後面都有一層白色紗簾；床頭上方的高窗用細的捲簾'],[2,560,670,'床頭系統櫃','床改成東西向、床頭靠東牆：整面白色系統櫃（深 28 cm，橡木檯面 95 cm 高，放書・手機・小盆栽），兩側內建床頭櫃（小抽屜＋開放格、插座＋USB-C），中間是布面床頭板，高到 118 cm（坐起來靠著看書時頭和肩膀有地方靠），頂部橡木壓條後方藏一條往牆上打的暖光；兩側床頭櫃檯面 95 cm，前緣下各藏一條暖光 LED；床兩側各一張旋臂小桌（橡木 50 × 36 cm，平常在床邊當小邊桌，轉半圈到床上方、離地 73 cm，放筆電或早餐）；上方左右各一盞壁掛閱讀燈；床頭上方是寬 180 cm 的高窗（窗台 1.78 m），只採光'],,
   [1,57,60,'淋浴間（2F）','從脫衣間的折れ戸（往淋浴間內折）進出；站著用的淋浴組都在西牆：龍頭約 103 cm、滑桿 110–190 cm、置物架 115 cm 上放洗髮精・潤髮乳・沐浴乳，鏡子在視線高度；不放淋浴椅，不用蹲'],[2,270,120,'洗面室（3F）','兼脫衣間：浴室、三溫暖、廁所和洗衣更衣間都從這裡進出；1 m 洗臉台和右側高櫃做成一整組系統家具'],
   [2,410,260,'洗衣更衣間','從洗面室或走廊（拉門）進出：北側一排是洗脫烘（門往左開、前方留 90 cm 以上）＋摺衣檯（下方每人一個抽拉洗衣籃，貼名牌），上方洗劑吊櫃做到天花板；南牆整面有門的家庭衣櫃；西牆有全身鏡；化妝桌移到主臥東北角，不在洗→摺→收的動線上'],[2,300,440,'家庭衣櫃（南牆）','整面到天花板、門片嵌在白框裡：最西是隱藏燙衣板櫃（放下時前方淨空約 1 m），中間是短衣區（上下兩根吊衣桿）、長衣區（洋裝到離地 15 cm）、一般區（吊衣桿＋上方層板＋下方三個抽屜，最上層抽屜是絨布首飾盤、側板有拉出式項鍊架）；吊衣桿上方都加層板做到頂：短衣區上方是包包直立隔間（托特・肩背・後背・手拿包），最上層放貼標籤的收納盒；吊衣桿掛在側板的 32 mm 孔上，可調高度'],[2,270,430,'隱藏燙衣板','打開最西邊的門：一側是放床單枕頭的層板，另一側直立收著燙衣板，「放下燙衣板」會翻下來到離地 88 cm、伸出約 1.1 m，有金屬支撐腳；櫃內有隔熱熨斗架、熨斗、噴水瓶和插座'],[2,555,370,'化妝桌','東窗下正中央，檯面 72 cm 橡木、深 48 cm，日光從正面照到臉；一個放化妝品的淺抽屜、可站可折的圓形 LED 化妝鏡、可推進桌下的布面凳；窗戶兩側有插座給吹風機和熨斗'],[2,250,255,'全身鏡','西牆走廊門北側，40 × 165 cm 細橡木框'],[2,120,770,'更衣間（3F）','走廊盡頭約 2.4 × 1.6 m 的步入式衣櫃：南面整面上下兩層吊衣桿，西牆放包包、帽子的格櫃，上方吊櫃收換季衣物'],
   [0,-45,150,'緣側','鏡子房西側 90 cm 深的杉木平台，從落地拉門出去；淺屋簷、兩根柱子，一階踏石下到庭院'],[0,-110,610,'庭院 BBQ 木平台','庭院南側和室內地板同高的杉木平台（約 1.9 × 2.2 m），放戶外桌椅和烤肉架；選單「庭院」可切換'],
@@ -696,9 +696,10 @@ fixtures:function(E){
     [0.275,0.225].forEach(function(y){ [-1,1].forEach(function(sd){ bx(LG[2],xf+0.008,xf+0.0095,z+sd*0.009-0.0015,z+sd*0.009+0.0015,b+y-0.008,b+y+0.008,sm,oc); }); bx(LG[2],xf+0.008,xf+0.0095,z-0.003,z+0.003,b+y-0.02,b+y-0.014,sm,oc); }); })();
   (function(){ const b=E.base(2), xw=WX(2,580)-TE/2, D=0.28, xf=xw-D, z0=WZ(2,543), z1=WZ(2,797), za=WZ(2,588), zb=WZ(2,752), T0=0.92, W=M.cabF, oak=M.oak, oc={cast:false}, t=0.018;   // bedroom: headboard system cabinet with built-in bedside units
     bx(LG[2],xf+0.02,xw,z0,z1,b,b+0.08,lam(0x8f887d,{roughness:0.8}),oc); bx(LG[2],xf,xw,z0,z1,b+0.08,b+0.1,W); [z0,za-t/2,zb-t/2,z1-t].forEach(function(z){ bx(LG[2],xf,xw,z,z+t,b+0.08,b+T0,W); });
-    bx(LG[2],xf,xw,za,zb,b+0.1,b+T0,W,oc); bx(LG[2],xf-0.04,xf,za+0.02,zb-0.02,b+0.4,b+T0-0.04,fab(0xcfc5b4));   // upholstered panel in the centre
-    for(let k=0;k<6;k++){ const z=za+0.02+(zb-za-0.04)*(k+0.5)/6; bx(LG[2],xf-0.041,xf-0.039,z-0.002,z+0.002,b+0.42,b+T0-0.06,fab(0xb9ad97),oc); }   // channel tufting lines
-    bx(LG[2],xf-0.03,xw,z0,z1,b+T0,b+T0+0.03,oak); bx(LG[2],xf-0.03,xf-0.012,za,zb,b+T0-0.02,b+T0,oak,oc); bx(LG[2],xf-0.012,xf-0.004,za+0.03,zb-0.03,b+T0-0.016,b+T0-0.01,E.dusk(new THREE.MeshBasicMaterial({color:0xffcf96})),oc);   // oak top, a lip with a warm LED under it
+    const HB=1.18; bx(LG[2],xf,xw,za,zb,b+0.1,b+HB-0.03,W,oc); bx(LG[2],xf-0.04,xf,za+0.01,zb-0.01,b+0.4,b+HB-0.02,fab(0xcfc5b4));   // upholstered headboard rising to 1.18 m in the centre, so you can sit up against it
+    for(let k=0;k<6;k++){ const z=za+0.01+(zb-za-0.02)*(k+0.5)/6; bx(LG[2],xf-0.041,xf-0.039,z-0.002,z+0.002,b+0.42,b+HB-0.05,fab(0xb9ad97),oc); }   // channel tufting lines
+    bx(LG[2],xf-0.045,xw,za,zb,b+HB-0.02,b+HB,oak); bx(LG[2],xf+0.01,xw-0.02,za+0.04,zb-0.04,b+HB,b+HB+0.004,E.dusk(new THREE.MeshBasicMaterial({color:0xffcf96})),oc);   // thin oak cap, a warm uplight washing the wall behind it
+    [[z0,za],[zb,z1]].forEach(function(r){ bx(LG[2],xf-0.03,xw,r[0],r[1],b+T0,b+T0+0.03,oak); bx(LG[2],xf-0.03,xf-0.012,r[0],r[1],b+T0-0.02,b+T0,oak,oc); bx(LG[2],xf-0.012,xf-0.004,r[0]+0.02,r[1]-0.02,b+T0-0.016,b+T0-0.01,E.dusk(new THREE.MeshBasicMaterial({color:0xffcf96})),oc); });   // oak tops on the bedside units, a lip with a warm LED under each
     const acts=[]; [[z0+t,za-t/2],[zb+t/2,z1-t]].forEach(function(r,k){ bx(LG[2],xf+0.01,xw,r[0],r[1],b+0.4,b+0.4+t,W); bx(LG[2],xw-0.01,xw,r[0],r[1],b+0.1,b+0.4,lam(0xeae4d8,{roughness:0.6}),oc);   // open shelf below, a drawer above
       [[0.11,0xe9e2d0],[0.15,0x2f3b4c],[0.19,0x6b4f3a]].forEach(function(q){ bx(LG[2],xf+0.04,xf+0.22,r[0]+q[0]-0.07,r[0]+q[0]-0.04,b+0.1+t/2,b+0.32,lam(q[1],{roughness:0.7}),oc); });
       const G=new THREE.Group(); G.userData.keep=true; LG[2].add(G); const fr=bx(G,xf,xf+t,r[0]+0.003,r[1]-0.003,b+0.4+t+0.004,b+T0-0.004,W); const n=E.notchPull(W.color.getHex(),0.16); n.position.set(xf,b+T0-0.007,(r[0]+r[1])/2); n.rotation.y=-Math.PI/2; G.add(n);
@@ -708,9 +709,18 @@ fixtures:function(E){
       const oz=(r[0]+r[1])/2; bx(LG[2],xf-0.001,xf,oz-0.05,oz+0.05,b+T0-0.07,b+T0-0.03,lam(0xf4f3ef,{roughness:0.35}),oc); [-0.025,0.02].forEach(function(dz){ bx(LG[2],xf-0.002,xf-0.001,oz+dz-0.006,oz+dz+0.006,b+T0-0.06,b+T0-0.045,lam(0x2b2c2e),oc); });   // outlet + USB-C on the unit's face
       const ly=b+1.3, lz=oz, arm=lam(0x2a2c30,{metalness:0.5,roughness:0.4}); bx(LG[2],xw-0.012,xw,lz-0.03,lz+0.03,ly-0.04,ly+0.04,arm); bx(LG[2],xw-0.2,xw-0.012,lz-0.006,lz+0.006,ly-0.006,ly+0.006,arm);   // wall reading light on a short arm
       const sh=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.04,0.07,20,1,true),arm); sh.position.set(xw-0.21,ly-0.03,lz); LG[2].add(sh); const bl=new THREE.Mesh(new THREE.CircleGeometry(0.03,16),new THREE.MeshBasicMaterial({color:0xffe2b8})); bl.rotation.x=Math.PI/2; bl.position.set(xw-0.21,ly-0.064,lz); LG[2].add(bl); });
-    [[za+0.05,0x2f3b4c,0.03],[za+0.09,0xe9e2d0,0.025]].forEach(function(q){ bx(LG[2],xf+0.02,xf+0.2,q[0],q[0]+q[2],b+T0+0.03,b+T0+0.25,lam(q[1],{roughness:0.7})); });   // a few books on the top
-    bx(LG[2],xf+0.05,xf+0.12,zb-0.18,zb-0.1,b+T0+0.03,b+T0+0.038,lam(0x1b1d20,{roughness:0.3}),oc);   // a phone
-    const pot=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.035,0.09,18),lam(0xe9ddd0,{roughness:0.6})); pot.position.set(xf+0.12,b+T0+0.075,(za+zb)/2+0.2); LG[2].add(pot); const lf=new THREE.Mesh(new THREE.SphereGeometry(0.06,12,8),lam(0x6f9a5a,{roughness:0.8})); lf.scale.y=1.3; lf.position.set(xf+0.12,b+T0+0.17,(za+zb)/2+0.2); LG[2].add(lf);
+    [[z0+0.05,0x2f3b4c,0.03],[z0+0.09,0xe9e2d0,0.025]].forEach(function(q){ bx(LG[2],xf+0.02,xf+0.2,q[0],q[0]+q[2],b+T0+0.03,b+T0+0.25,lam(q[1],{roughness:0.7})); });   // a few books on the top
+    bx(LG[2],xf+0.05,xf+0.12,zb+0.06,zb+0.14,b+T0+0.03,b+T0+0.038,lam(0x1b1d20,{roughness:0.3}),oc);   // a phone
+    const pot=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.035,0.09,18),lam(0xe9ddd0,{roughness:0.6})); pot.position.set(xf+0.12,b+T0+0.075,zb+0.3); LG[2].add(pot); const lf=new THREE.Mesh(new THREE.SphereGeometry(0.06,12,8),lam(0x6f9a5a,{roughness:0.8})); lf.scale.y=1.3; lf.position.set(xf+0.12,b+T0+0.17,zb+0.3); LG[2].add(lf);
+    /* swing-arm bed tables: a slim post beside each bedside unit; stowed the oak top sits beside the bed like a small side shelf, swung round it reaches over the mattress at 73 cm for someone sitting up */
+    [[za,-1,'北側'],[zb,1,'南側']].forEach(function(q){ const steel=lam(0x2a2c30,{metalness:0.6,roughness:0.35}), px=xf-0.5, pz=q[0]+q[1]*-0.0+(-q[1])*0.03, P=new THREE.Group(); P.position.set(px,b,pz); LG[2].add(P);
+      const base=new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.12,0.015,28),steel); base.position.y=0.008; P.add(base); const post=new THREE.Mesh(new THREE.CylinderGeometry(0.014,0.014,0.7,12),steel); post.position.y=0.36; P.add(post);
+      const A=new THREE.Group(); A.position.y=0.71; P.add(A); const arm=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.015,0.03),steel); A.add(arm);
+      const top=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.02,0.36),oak); top.position.set(0.0,0.015,q[1]*0.2); top.castShadow=true; A.add(top); const lip=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.015,0.012),oak); lip.position.set(0,0.03,q[1]*0.375); A.add(lip);
+      const mug=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.03,0.08,18),lam(0xf3efe6,{roughness:0.3})); mug.position.set(0.12,0.065,q[1]*0.25); A.add(mug); const bk=new THREE.Mesh(new THREE.BoxGeometry(0.15,0.025,0.21),lam(q[1]>0?0x6b4f3a:0x2f4b6e,{roughness:0.7})); bk.position.set(-0.1,0.038,q[1]*0.2); A.add(bk);
+      let cur=0, tg=0, last=null; const apply=function(){ A.rotation.y=cur*Math.PI*q[1]; }; apply();   // swings half a turn from beside the bed to over it
+      furnThings.push({pt:[px-0.4,pz-q[1]*0.4],l:2,part:[top],on:function(){ return true; },label:function(){ return tg?'收回床邊小桌（'+q[2]+'）':'轉出床邊小桌（'+q[2]+'）'; },act:function(){ tg=tg?0:1; last=null; }});
+      furnAnims.push({live:function(){ return cur!==tg; },f:function(t2){ if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*1.5?tg:cur+Math.sign(tg-cur)*dt*1.5; apply(); E.renderer.shadowMap.needsUpdate=true; return true; }}); });
     addCol(2,xf-0.04,xw,z0,z1,b,b+T0+0.03,'w');
   })();
   (function(){ const b=E.base(1), z1=WZ(1,850)-TE/2, x=WX(1,220), pm=lam(0xf4f4f2,{roughness:0.35}), sm=lam(0x1a1a1a), oc={cast:false};   // double socket low on the solid south wall, for the hair-dryer stand
