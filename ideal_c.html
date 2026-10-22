@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261024d">
+<link rel="stylesheet" href="lib/storeys.css?v=20261024e">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261024d"></script>
-<script src="lib/furniture.js?v=20261024d"></script>
-<script src="lib/catalog.js?v=20261024d"></script>
-<script src="lib/look.js?v=20261024d"></script>
-<script src="lib/houses.js?v=20261024d"></script>
-<script src="lib/perf.js?v=20261024d"></script>
-<script src="lib/finish.js?v=20261024d"></script>
-<script src="lib/storeys.js?v=20261024d"></script>
+<script src="lib/people.js?v=20261024e"></script>
+<script src="lib/furniture.js?v=20261024e"></script>
+<script src="lib/catalog.js?v=20261024e"></script>
+<script src="lib/look.js?v=20261024e"></script>
+<script src="lib/houses.js?v=20261024e"></script>
+<script src="lib/perf.js?v=20261024e"></script>
+<script src="lib/finish.js?v=20261024e"></script>
+<script src="lib/storeys.js?v=20261024e"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -153,6 +153,7 @@ accents:[{l:1,x0:560,x1:575,y0:250,y1:850,w:'sage'},{l:2,x0:560,x1:575,y0:465,y1
 curtains:[[0,'W',55,245,0,false,{color:0xf7f3ec,tie:true}],[1,'S',268,552,850,false,{color:0xc9d2c2},{off:0.1,top:2.474,bottom:0.43,noSheer:true}],[2,'S',250,530,850,true]],
 /* equipment notes in the menu: [storey, plan x, plan y, name, note] for built-ins; placed furniture is listed automatically (noteText[id]: note or [name, note]) */
 notes:[
+  [1,420,330,'廚房走道與半島檯面','廚房走道約 99 cm、半島檯面高約 88 cm'],
   [1,300,560,'智慧照明（Google Home）','客廳、主臥、書房、鏡子房、玄關・門廊・庭院的燈接 Google Home：一般燈用支援 Google（Matter）的智慧開關（不用換燈泡），要調顏色的間接燈帶・吊燈・床頭燈用 Philips Hue；可語音「Hey Google，晚安」一次關燈，日落自動亮門廊和庭院燈，早上主臥燈慢慢亮'],
   [1,553,545,'Google Nest Hub（客廳）','電視櫃北端，控制全屋智慧燈・窗簾・看門口監視器'],[2,566,560,'Google Nest Hub（主臥）','床頭北側，鬧鐘・喚醒燈・睡前一次關燈'],
   [1,350,660,'客廳照明','LED 吸頂燈（調光調色）＋茶几上方橡木吊燈＋天花板間接燈帶 2700 K；智慧控制'],[1,165,430,'餐桌吊燈','摺疊餐桌正上方，展開成六人桌時照到桌面；智慧控制'],
@@ -1232,19 +1233,16 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,225)-TI/2-WZ(2,17
   bx(LG[0],xm-0.009,xm+0.009,zf,z1-t,t,LO-t,W);                                             // centre divider in the lower cupboard
   const shelf=function(a,b,y){ bx(LG[0],a,b,zf+0.02,z1-t,y,y+t,W,oc); };
   [0.2,0.4,0.58,0.76].forEach(function(y){ shelf(x0+t,xm-0.009,y); }); [1.68,1.94,2.2].forEach(function(y){ shelf(x0+t,xe-t,y); });
-  const shoeC=[0x2f3a4a,0xd8d2c6,0x8c5a3c,0x1d1e21,0xb9a184,0x5a6b58];
-  [t,0.2+t,0.4+t,0.58+t,0.76+t,HI+t,1.68+t].forEach(function(y,r){ (y>1?[x0+t,xm,sx-0.02]:[x0+t]).forEach(function(xb,c){ if(y<1.5&&c===2) return; [0.06,0.15].forEach(function(dx,k){ bx(LG[0],xb+dx-0.04,xb+dx+0.04,zf+0.05,zf+0.31,y,y+0.08,lam(shoeC[(r+k+2*c)%6],{roughness:0.7}),oc); }); }); });
+  const pair=function(grp,cx,y,zc,s){ const sc=s[3]||1; [-1,1].forEach(function(sd){ const g=Catalog.shoe(s[0],s[1],s[2]); g.scale.setScalar(sc); g.rotation.y=Math.PI/2; g.position.set(cx+sd*0.05*sc,y+0.001,zc+(sd>0?0.012:0)); g.traverse(function(o){ if(o.isMesh) o.castShadow=true; }); grp.add(g); }); };   // a pair, toes to the door, the right one a little back
+  const SHOES=[['sneaker',0xf2efe8,0xf7f5f0,0.88],['loafer',0x3a2a20,0x6b4a33,1],['sneaker',0x2f3a4a,0xf1efe9,1],['pump',0xd9c3a5,0xb9a184,0.88],['loafer',0x1d1e21,0x1d1e21,1],['sneaker',0x9fb0bf,0xf1efe9,0.88],['sandal',0x8c5a3c,0xcdb89a,0.88],['pump',0x1d1e21,0x1d1e21,0.88],['sneaker',0x5a6b58,0xf1efe9,1],['loafer',0x8c5a3c,0x5c3a24,0.88],['sandal',0x1d1e21,0xb9a184,1]];   // hers 23.8 cm, his 27 cm
+  let si=0; [t,0.2+t,0.4+t,0.58+t,0.76+t,HI+t,1.68+t].forEach(function(y,r){ (y>1?[x0+t,x0+t+0.249,x0+t+0.498]:[x0+t]).forEach(function(xb,c){ if(y<1.5&&c===2) return; pair(LG[0],xb+0.125,y,zf+0.2,SHOES[si++%SHOES.length]); }); });
   [1.94,2.2].forEach(function(y,k){ bx(LG[0],x0+0.05,xe-0.05,zf+0.04,z1-0.04,y+t,y+t+0.15,lam([0xd9cfc0,0xc9b79c][k],{roughness:0.8}),oc); });   // shoe boxes up top
-  const boot=function(grp,x,y,z,h,col){ const m=lam(col,{roughness:0.55}), sole=lam(0x1a1a1a,{roughness:0.8}), add=function(g,px,py,pz,mt){ const o=new THREE.Mesh(g,mt||m); o.position.set(px,py,pz); o.castShadow=true; grp.add(o); return o; };   // toe toward the doors (-z)
-    add(new THREE.BoxGeometry(0.085,0.015,0.26),x,y+0.0075,z,sole); add(new THREE.BoxGeometry(0.075,0.025,0.03),x,y+0.0125,z+0.105,sole);
-    add(new THREE.BoxGeometry(0.078,0.05,0.15),x,y+0.04,z-0.04); const toe=add(new THREE.SphereGeometry(0.04,14,8),x,y+0.032,z-0.11); toe.scale.set(0.98,0.6,1.1);
-    add(new THREE.CylinderGeometry(0.043,0.047,h,16),x,y+0.015+h/2,z+0.07); };
   const SG=new THREE.Group(), BG=new THREE.Group(), LGs=new THREE.Group(); SG.userData.keep=BG.userData.keep=LGs.userData.keep=true; LG[0].add(SG,BG,LGs);   // right bay: one shelf on pins, high for boots or low for one more pair
   (function(){ const m=new THREE.Mesh(new THREE.BoxGeometry(xa-t-xm-0.009,t,z1-t-zf-0.02),W); m.position.set((xm+0.009+xa-t)/2,0,(zf+0.02+z1-t)/2); m.castShadow=true; SG.add(m);
-    [0.065,0.155].forEach(function(dx,k){ const o=new THREE.Mesh(new THREE.BoxGeometry(0.08,0.08,0.26),lam(shoeC[(1+k)%6],{roughness:0.7})); o.position.set(xm+0.009+dx,t/2+0.04,zf+0.18); SG.add(o); });
-    [xm+0.075,xm+0.165].forEach(function(x){ boot(BG,x,t,zf+0.19,0.43,0x4a3326); });   // knee-high boots, dark brown
-    [0.07,0.16].forEach(function(dx,k){ const o=new THREE.Mesh(new THREE.BoxGeometry(0.08,0.08,0.26),lam(shoeC[(4+k)%6],{roughness:0.7})); o.position.set(xm+0.009+dx,t+0.04,zf+0.18); LGs.add(o); }); })();
-  [sx+0.04,sx+0.128].forEach(function(x){ boot(LG[0],x,HI+t,zf+0.19,0.12,0x9a6f45); });   // ankle boots, camel
+    pair(SG,xm+0.15,t/2,zf+0.2,['sneaker',0xd8d2c6,0xf1efe9,0.88]);
+    pair(BG,xm+0.15,t,zf+0.2,['tallboot',0x4a3326,0,0.88]);   // knee-high boots, dark brown
+    pair(LGs,xm+0.15,t,zf+0.2,['loafer',0x5a3d2b,0x3a2a20,1]); })();
+  pair(LG[0],sx+0.06,HI+t,zf+0.2,['boot',0x9a6f45,0,0.84]);   // ankle boots, camel
   const SH_HI=0.52, SH_LO=0.28; let shU=1, shT=1, shP=1, shLast=null;
   const shSet=function(){ const k=Math.sin(Math.PI*Math.min(1,Math.max(0,shP))); SG.position.set(0,SH_LO+(SH_HI-SH_LO)*shU,-0.06*k); BG.visible=shU>0.99; LGs.visible=shU<0.01; }; shSet();
   addCol(0,x0,xa,zf,z1,0,top,'w'); addCol(0,sx,xe,zf,z1,HI,top,'w');
@@ -1271,7 +1269,7 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,225)-TI/2-WZ(2,17
     addCol(0,sx,xe,zf,z1,0,LO,'w');
     const AG=new THREE.Group(); AG.userData.keep=true; LG[0].add(AG);   // the lower cupboard's middle shelf sits on pins: up for tall boots-care sprays, down for more slippers
     (function(){ const m=new THREE.Mesh(new THREE.BoxGeometry(sx1-sx-0.02,t,z1-zf-2*t),W); m.position.set((sx+sx1-0.02)/2,0,(zf+z1)/2); AG.add(m);
-      [[-0.08,0xd8d2c6],[0.08,0x9fb0bf]].forEach(function(q){ const o=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.07,0.14),lam(q[1],{roughness:0.7})); o.position.set((sx+sx1-0.02)/2,t/2+0.035,(zf+z1)/2+q[0]); AG.add(o); }); })();
+      [0,0.024].forEach(function(dy){ const g=Catalog.shoe('slipper',0xb7c4cf,0xe8e2d6); g.scale.setScalar(0.92); g.rotation.y=Math.PI/2; g.position.set((sx+sx1-0.02)/2,t/2+0.001+dy,(zf+z1)/2+0.01); AG.add(g); }); })();   // guest slippers, a stacked pair
     const A_HI=LO*0.68, A_LO=LO*0.4; let aU=1, aT=1, aP=1, aL=null; const aSet=function(){ AG.position.set(0.06*Math.sin(Math.PI*aP),A_LO+(A_HI-A_LO)*aU,0); }; aSet();
     let cur=0, tg=0, last=null;
     furnThings.push({pt:[sx1+0.3,(zf+z1)/2],l:0,part:S.parts,on:function(){ return true; },label:function(){ return tg?'關上側邊收納':'打開側邊收納（層板可調）'; },act:function(){ tg=tg?0:1; last=null; }});
