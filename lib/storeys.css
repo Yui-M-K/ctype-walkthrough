@@ -50,7 +50,14 @@ button{font:inherit;color:inherit;cursor:pointer}
 #bMore .fab{height:40px;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,.18)}
 #bAct,#bMore .fab{white-space:pre}
 .noteQ{width:100%;box-sizing:border-box;min-height:40px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink);font:inherit;-webkit-user-select:text;user-select:text}
-.notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-top:8px;max-height:46vh;overflow-y:auto;font-size:13px;color:var(--muted)}
+.notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-top:8px;font-size:13px;color:var(--muted)}
+.noteAll{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+.noteAll .tog{min-height:36px}
+.noteRoom{grid-column:1/-1;display:flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--paper);font-weight:600;text-align:left}
+.noteRoom::before{content:'▸';color:var(--muted);transition:transform .15s}
+.noteRoom[aria-expanded="true"]::before{transform:rotate(90deg)}
+.noteRoom span{flex:1}
+.noteRoom em{font-style:normal;font-family:var(--font-num);font-size:12px;color:var(--muted);background:var(--chip);border-radius:999px;padding:1px 8px}
 .noteFloor{grid-column:1/-1;margin-top:6px;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--accent)}
 .note{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--chip)}
 .note b{font-size:13.5px;font-weight:700}
