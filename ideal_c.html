@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261023u">
+<link rel="stylesheet" href="lib/storeys.css?v=20261023v">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -18,7 +18,7 @@
     <div class="sheet-head"><h2>設定</h2><button id="bClose" class="x" type="button" aria-label="關閉">×</button></div>
     <div class="row"><label for="rHeight">身高</label><input id="rHeight" type="range" min="145" max="195" step="1" value="165"><output id="oHeight">165 cm</output></div>
     <div class="row"><label for="rFov">視野</label><input id="rFov" type="range" min="70" max="120" step="1" value="100"><output id="oFov">100°</output></div>
-    <div class="row"><label for="rHour">日照時間</label><input id="rHour" type="range" min="7" max="17" step="0.25" value="14"><output id="oHour">14:00</output></div>
+    <div class="row"><label for="rHour">日照時間</label><input id="rHour" type="range" min="7" max="21" step="0.25" value="14"><output id="oHour">14:00</output></div>
     <div class="seg" style="margin-top:12px">
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
       <button id="tAO" class="tog" style="grid-column:1/-1" type="button" aria-pressed="false">環境光遮蔽（角落與接縫的陰影，較耗效能）</button>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261023u"></script>
-<script src="lib/furniture.js?v=20261023u"></script>
-<script src="lib/catalog.js?v=20261023u"></script>
-<script src="lib/look.js?v=20261023u"></script>
-<script src="lib/houses.js?v=20261023u"></script>
-<script src="lib/perf.js?v=20261023u"></script>
-<script src="lib/finish.js?v=20261023u"></script>
-<script src="lib/storeys.js?v=20261023u"></script>
+<script src="lib/people.js?v=20261023v"></script>
+<script src="lib/furniture.js?v=20261023v"></script>
+<script src="lib/catalog.js?v=20261023v"></script>
+<script src="lib/look.js?v=20261023v"></script>
+<script src="lib/houses.js?v=20261023v"></script>
+<script src="lib/perf.js?v=20261023v"></script>
+<script src="lib/finish.js?v=20261023v"></script>
+<script src="lib/storeys.js?v=20261023v"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -1123,7 +1123,7 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,225)-TI/2-WZ(2,17
   bx(LG[1],x0,x1,zi,zo,b+HEAD-JT,b+HEAD,oakE);
   bx(LG[1],x0+0.03,x1-0.03,zo-0.03,zo-0.01,b+HEAD-JT-0.008,b+HEAD-JT,new THREE.MeshBasicMaterial({color:0xffd9a0}),oc);   // LED strip in the head's reveal
   const glow=new THREE.PointLight(0xffc98a,0.35,2.4,2); glow.position.set((x0+x1)/2,b+HEAD-0.15,(zi+zg)/2); LG[1].add(glow);
-  (function(){ const sm=new THREE.MeshStandardMaterial({color:0xfbfaf6,roughness:0.9,transparent:true,opacity:0.45,side:THREE.DoubleSide,depthWrite:false}), sets=[];   // sheers along each glazed face, down to the cushion
+  (function(){ const sm=new THREE.MeshStandardMaterial({color:0xf7f4ee,roughness:0.9,transparent:true,opacity:0.68,emissive:0x2a2824,side:THREE.DoubleSide,depthWrite:false}), sets=[];   // sheers along each glazed face, down to the cushion
     [[x0,zo,x0,zg,0,0.07],[x0,zg,x1,zg,0.07,0.07],[x1,zg,x1,zo,0.07,0]].forEach(function(q){ const L0=Math.hypot(q[2]-q[0],q[3]-q[1]), L=L0-q[4]-q[5], ang=Math.atan2(-(q[3]-q[1]),q[2]-q[0]), G=new THREE.Group(), nx=-Math.sin(ang), nz=-Math.cos(ang), k=(q[4]-q[5])/2/L0;   // q[4], q[5]: inset at the glazed corners so the three runs meet without crossing
       G.position.set((q[0]+q[2])/2+(q[2]-q[0])*k+nx*0.07,b,(q[1]+q[3])/2+(q[3]-q[1])*k+nz*0.07); G.rotation.y=ang; G.userData.keep=true; LG[1].add(G);
       const rod=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,L,8),lam(0xd8d2c6,{roughness:0.4})); rod.rotation.z=Math.PI/2; rod.position.y=HEAD-0.06; G.add(rod);
@@ -1729,6 +1729,7 @@ function applySleep(){
   E.renderer.toneMappingExposure=on?1.7:1.0;
   const sd=at('side',2,522,485); nightG.position.set(sd[0]-0.1,base(2)+0.463,sd[1]-0.08); nightMat.color.setHex(on?0xffd9a8:0x6a4a30); nightPt.intensity=on?2.1:0;
   sleepG.visible=on&&usable('bed');
+  if(!on) setSun(E.hour);   // back to the light of the hour on the slider
   E.renderer.shadowMap.needsUpdate=true; scene.traverse(function(o){ if(o.material&&!Array.isArray(o.material)) o.material.needsUpdate=true; });
 }
 $('tSleep').addEventListener('click',function(){ E.sleepOn=!E.sleepOn; btn('tSleep',E.sleepOn); applySleep(); });
