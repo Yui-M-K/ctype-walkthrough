@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261024n">
+<link rel="stylesheet" href="lib/storeys.css?v=20261024p">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -26,8 +26,8 @@
       <button id="tStyle" class="tog" style="grid-column:1/-1" type="button" aria-pressed="false" hidden>畫面風格：新海誠風（測試）</button><button id="tInk" class="tog" style="grid-column:1/-1" type="button" aria-pressed="true" hidden>新海誠風：描邊線</button><button id="tTime" class="tog" style="grid-column:1/-1" type="button" aria-pressed="false" hidden>新海誠風：時段 白天</button>
       <button id="tFurn" class="tog" type="button" aria-pressed="true">參考家具</button>
       <button id="tEdit" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">擺放家具（拖曳移動、旋轉、從型錄拿新的）</button>
-      <button id="tTv" class="tog" type="button" aria-pressed="false">電視開機</button>
-      <button id="tCurt" class="tog" type="button" aria-pressed="false">窗簾全部拉上</button>
+      <button id="tTv" class="tog" type="button" aria-pressed="false" hidden>電視開機</button>
+      <button id="tCurt" class="tog" type="button" aria-pressed="false" hidden>窗簾全部拉上</button>
       <button id="tHeat" class="tog" type="button" aria-pressed="false">顯示地暖範圍（客廳）</button>
       <button id="tRail" class="tog" type="button" aria-pressed="true">樓梯扶手：單側（西側）</button>
       <button id="tDecor" class="tog" type="button" aria-pressed="true">美化佈置</button>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261024n"></script>
-<script src="lib/furniture.js?v=20261024n"></script>
-<script src="lib/catalog.js?v=20261024n"></script>
-<script src="lib/look.js?v=20261024n"></script>
-<script src="lib/houses.js?v=20261024n"></script>
-<script src="lib/perf.js?v=20261024n"></script>
-<script src="lib/finish.js?v=20261024n"></script>
-<script src="lib/storeys.js?v=20261024n"></script>
+<script src="lib/people.js?v=20261024p"></script>
+<script src="lib/furniture.js?v=20261024p"></script>
+<script src="lib/catalog.js?v=20261024p"></script>
+<script src="lib/look.js?v=20261024p"></script>
+<script src="lib/houses.js?v=20261024p"></script>
+<script src="lib/perf.js?v=20261024p"></script>
+<script src="lib/finish.js?v=20261024p"></script>
+<script src="lib/storeys.js?v=20261024p"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -170,7 +170,7 @@ notes:[
   [1,361,434.5,'抽拉式水龍頭','蓮蓬頭可拉出：拉出斜沖 → 換角度沖 → 收回，附金屬軟管'],
   [1,361,417.5,'廚餘處理機','裝在水槽下，排水口是橡膠防濺蓋；台面有氣壓開關，打開水槽下櫃可看到本體'],
   [1,433.5,385,'嵌入式洗碗機','抽屜式深型 45 cm，放得下盤子、碗和杯子'],
-  [1,523.5,412.5,'IH 爐＋抽油煙機','三口 IH，與水槽在同一座半島'],
+  [1,523.5,412.5,'IH 爐＋抽油煙機','嵌入式三口 IH（60 cm 型，60 × 50 cm 黑玻璃面板、細框）：前方兩口 Ø22 cm、後方一口小的，前緣觸控條（主電源・各口火力・計時）；下方是魚烤爐（玻璃門、可拉出烤盤）；與水槽在同一座半島'],
   [1,346,258,'食品收納櫃（系統櫃）','寬 50 cm，白色，和家電櫃、冰箱、半島同一種白；踢腳 10 cm、門片分界 85 cm、吊櫃下緣 189 cm 三條線和家電櫃拉齊。下面一扇門（到 85 cm）是掃地機器人櫃：放 Dreame X40 Ultra 和自動給排水款基地（34 × 45.7 × 59 cm），櫃內一直到離地 1.1 m 的固定層板都是機器人空間，基地上蓋往上掀需要的 30 cm 綽綽有餘；機器人從門下方 12.5 cm 的開口自己進出；上面一扇門從 85 cm 做到 189 cm 的吊櫃線，打開後下段就是機器人櫃的上方，1.1 m 以上是層板可調的食品櫃；再上方是做到天花板的吊櫃'],[1,500,240,'上方吊櫃（家電櫃・冰箱・食品櫃）','做到天花板不積灰，可打開；冰箱上方留散熱空間'],
   [2,470,40,'浴缸','1.6 m 嵌入式浴缸：外框和牆面切齊、5–8 cm 窄邊、前面一片裙板，只有內側圓角；西端靠背、東端有座階和排水；東牆高處的電視從靠背那側看；橡木浴缸托盤放蠟燭和小盆栽'],[2,560,120,'浴室東牆','暖灰色石紋主牆（微亮），淋浴組（龍頭 60–70 cm 配浴凳）、鏡子、置物檯都在東牆，五金統一霧黑；電視下方有亮燈的壁龕放琥珀色瓶子；間接照明 2700K：天花板凹槽洗亮石牆、檯面下一條燈、浴缸底部浮光、壁龕燈，傍晚自動亮起'],
   [2,500,120,'浴室乾燥機','天花板暖風乾燥，下雨天可在浴室曬衣'],
@@ -546,7 +546,8 @@ return [
   ['map','worldMap',1,119.5,560,'E'],
   ['clock','wallClock',1,119.5,400,'E',function(){ return Catalog.wallClock('oak'); }],
   ['catA','catStep',1,40,843.5,'N',function(){ return Catalog.catStep(0.85); }],['catBed','catBed',1,100,843.5,'N',function(){ return Catalog.catBed(1.15); }],['catHouse','catHouse',1,160,843.5,'N',function(){ return Catalog.catHouse(1.45); }],
-  ['hubL','nestHub',1,553,545,'W',function(){ return Catalog.nestHub(0.4); }],['hubB','nestHub',2,566,560,'W',function(){ return Catalog.nestHub(0.95); }],   // Google Nest Hub on the TV board's north end and on the bed's north side unit
+  ['hubL','nestHub',1,553,545,'W',function(){ const p=Catalog.nestHub(0.4), pr=function(id){ return document.getElementById(id).getAttribute('aria-pressed')==='true'; };   // the living-room hub: the TV and every curtain, as the menu used to
+    p.actions=(p.actions||[]).concat([{x:0.45,z:0,label:function(){ return 'Nest Hub：電視'+(pr('tTv')?'關掉':'打開'); },act:function(){ E.setTv(!pr('tTv')); }},{x:0.45,z:0.1,label:function(){ return 'Nest Hub：全部窗簾'+(pr('tCurt')?'拉開':'拉上'); },act:function(){ document.getElementById('tCurt').click(); E.toast(pr('tCurt')?'全部窗簾拉上':'全部窗簾拉開'); }}]); return p; }],['hubB','nestHub',2,566,560,'W',function(){ return Catalog.nestHub(0.95); }],   // Google Nest Hub on the TV board's north end and on the bed's north side unit
   ['catBubble','catBubble',1,222,843.5,'N',function(){ const p=Catalog.catBubble(1.82,'bubu'); let k=0; p.actions=(p.actions||[]).concat([{x:0.6,z:0,label:function(){ return '摸摸碗裡的咘咘'; },act:function(){ if(!p.rig) return; k=1-k; p.rig.play(k?'blink':'perch'); E.toast(k?'咘咘對你慢慢眨眼':'咘咘在碗裡伸了個懶腰'); }}]); return p; }],   // one column at x 2.0-2.45, the other at 1.35-1.81: a zigzag a cat can climb, clear of the curtain stack west of the bay
   ['cat','catBubu',1,160,740,'E',function(){ const p=Catalog.bubu({route:function(){ const st=E.FS.movers.find(function(m){ return m.id==='catA'; }), b=E.base(1); if(!st||E.FS.isStored('catA')) return {spots:[[E.WX(1,160),E.WZ(1,665)],[E.WX(1,175),E.WZ(1,815)]]}; const B=new THREE.Box3().setFromObject(st.W);   // along the stair wall, under the cat walkway; the lowest step is her perch
       return {spots:[[E.WX(1,160),E.WZ(1,665)],[E.WX(1,175),E.WZ(1,815)]],perch:{from:[E.WX(1,140),E.WZ(1,790)],top:[(B.min.x+B.max.x)/2,B.max.y,(B.min.z+B.max.z)/2-0.02],face:0}}; }}), names={stretch:'咘咘伸了個懶腰',belly:'咘咘翻肚給你看',love:'咘咘在撒嬌',scratch:'咘咘坐起來抓頭',groom:'咘咘在理毛'}; let last=null;   // pet her: one of five actions, never the same twice in a row
@@ -586,9 +587,9 @@ fixtures:function(E){
 /* built-in fixtures (part of the building): kitchen, bath, toilets, charger, cameras, mirror room */
 (function(){                                   // kitchen: one peninsula with the sink, dishwasher and IH hob, facing the living room
   const X0=WX(1,318.5), Z0=WZ(1,382.5);
-  E.sinkPiece=Catalog.sinkCounter(2.55,0.6,[0.05,0.8,0.1,0.45],[{k:'sink',w:0.85},{k:'dw',w:0.6},{k:'slim',w:0.3},{k:'drawers',w:0.6},{k:'spice',w:0.2}],{disposer:true}); fixture(1,E.sinkPiece,X0,Z0,0);   // 2.55 m with a 75 cm sink; the massage chair sits just west of it
+  E.sinkPiece=Catalog.sinkCounter(2.55,0.6,[0.05,0.8,0.1,0.45],[{k:'sink',w:0.85},{k:'dw',w:0.6},{k:'slim',w:0.3},{k:'drawers',w:0.6,grill:true},{k:'spice',w:0.2}],{disposer:true}); fixture(1,E.sinkPiece,X0,Z0,0);   // 2.55 m with a 75 cm sink; the massage chair sits just west of it
   fixture(1,Catalog.pullDownTap(),X0+0.425,Z0+0.52,0); fixture(1,Catalog.dishSoap(true),X0+0.1,Z0+0.52,0); fixture(1,Catalog.sinkSponge(),X0+0.75,Z0+0.445,0);
-  fixture(1,Catalog.ihHob(),WX(1,523.5),WZ(1,412.5),0); fixture(1,Catalog.rangeHood(CH),WX(1,523.5),WZ(1,412.5),0);
+  fixture(1,Catalog.ihHob2(),WX(1,523.5),WZ(1,412.5),0); fixture(1,Catalog.rangeHood(CH),WX(1,523.5),WZ(1,412.5),0);
   M.cab.color.copy(M.cabF.color); M.cab.roughness=M.cabF.roughness;
   (function(){ const c=document.createElement('canvas'); c.width=c.height=256; const g=c.getContext('2d'); let r=7; const rnd=function(){ r=(r*16807)%2147483647; return r/2147483647; };   // matte melamine: fine low-contrast grain and speckle, kept near white so the colour stays
     g.fillStyle='#ffffff'; g.fillRect(0,0,256,256); for(let i=0;i<90;i++){ const x=rnd()*256; g.fillStyle='rgba(150,135,115,'+(0.02+rnd()*0.035)+')'; g.fillRect(x,0,0.6+rnd()*1.4,256); }
