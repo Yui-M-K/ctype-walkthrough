@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261025m">
+<link rel="stylesheet" href="lib/storeys.css?v=20261025n">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261025m"></script>
-<script src="lib/furniture.js?v=20261025m"></script>
-<script src="lib/catalog.js?v=20261025m"></script>
-<script src="lib/look.js?v=20261025m"></script>
-<script src="lib/houses.js?v=20261025m"></script>
-<script src="lib/perf.js?v=20261025m"></script>
-<script src="lib/finish.js?v=20261025m"></script>
-<script src="lib/storeys.js?v=20261025m"></script>
+<script src="lib/people.js?v=20261025n"></script>
+<script src="lib/furniture.js?v=20261025n"></script>
+<script src="lib/catalog.js?v=20261025n"></script>
+<script src="lib/look.js?v=20261025n"></script>
+<script src="lib/houses.js?v=20261025n"></script>
+<script src="lib/perf.js?v=20261025n"></script>
+<script src="lib/finish.js?v=20261025n"></script>
+<script src="lib/storeys.js?v=20261025n"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -192,7 +192,7 @@ notes:[
   [2,575,700,'鼠尾草綠主牆','美化佈置：主臥床頭那面牆（東牆，繞開高窗）'],[2,240,420,'照片牆','美化佈置：3F 走廊，咘咘和旅行照片'],[0,-3,1010,'門牌','美化佈置：宅配箱門柱上的咘咘門牌'],
   [0,445,140,'除濕機・加濕機','收在儲藏室，換季時拿出來'],
   [0,265,505,'玄關廳飾り棚ニッチ','牆面嵌入式壁龕 120 × 30 cm（離地 1 m），上緣內藏暖色 LED 燈條往下打亮背板，放細長花瓶插一枝乾燥枝、兩個小陶器和一個相框；上方掛畫。背面是車庫牆，實際施工時壁龕背面需補防火板'],
-  [0,72,425,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],[1,43.5,172.5,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],[2,20,215,'3F 廁所（美化）','馬桶後面是主題牆：暖灰米色塗料＋到腰高的直條橡木格柵和一條窄平台，天花板燈槽往下打暖光（2700K）；南牆一個懸空小吊櫃（兩扇平門，放備用衛生紙），下緣藏一條暖光 LED，上面放垂下來的黃金葛和擴香；北牆一幅小畫，窗台放一小盆虎尾蘭；其他牆面是霧面磁磚腰牆'],[2,43.5,197.5,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],
+  [0,72,425,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],[1,43.5,172.5,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],[2,20,215,'3F 廁所（美化）','馬桶後面是主題牆：暖灰米色塗料＋到腰高的直條橡木格柵和一條窄平台，天花板燈槽往下打暖光（2700K）；南牆一個做到天花板的吊櫃：下段開放格放垂下來的黃金葛和擴香，上面兩扇平門放備用衛生紙，下緣藏一條暖光 LED；北牆一幅小畫，窗台放一小盆虎尾蘭；其他牆面是霧面磁磚腰牆'],[2,43.5,197.5,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],
   [0,165,805,'玄關電子鎖','密碼＋感應卡開鎖；門外的密碼面板有滑蓋，平常蓋著'],[0,-128,995,'門扉','單扇木門，掛在對講機門柱上，關上時自動扣上門閂（ラッチ）；撥桿鎖（離地約 95 cm）：外側用鑰匙、內側轉旋鈕鎖上'],
   [0,-50,995,'宅配箱・對講機（門柱）','門扉西側的門柱裝對講機；東側門柱內建宅配箱和信箱，從路邊投入、從院子這側取出，附密碼鎖'],[1,332,392,'水槽上瀝水架','水槽旁的檯面保持淨空：白色鋼線瀝水架橫跨在水槽上（靠右・後半），一半是鐵條放倒扣的飯碗・木湯碗・便當盒，一半是有孔的平盤放筷子和便當叉；水直接滴進水槽；避開抽拉龍頭和海綿架；編輯模式可收進家具庫'],[0,450,995,'車庫伸縮門','車道前的鋁製伸縮門，收到東側'],[0,90,950,'腳踏車停放區（2 台）','門廊前緣往內縮 30 cm，門廊和圍籬之間約 80 cm 寬，鋪成和門內踏台同高的平地：兩台 26 吋淑女車（奶油色、鼠尾草綠）平行圍籬、前後錯開停放，車把高過門廊邊緣；從門扉進來不用上下台階。編輯模式可收進家具庫'],
   [0,57,520,'樓梯扶手（單側）＋感應腳燈','扶手只裝西側一邊（選單可切換成兩側）；踏階有腳燈，有人走近自動亮起'],[2,412,830,'窗簾','主臥陽台落地窗的窗簾依時間自動開關（智慧家庭）；每個房間的窗簾後面都有一層白色紗簾；床頭上方的高窗用細的捲簾'],[2,560,670,'床頭系統櫃','床改成東西向、床頭靠東牆：整面白色系統櫃（深 28 cm，橡木檯面 95 cm 高，放書・手機・小盆栽），兩側內建床頭櫃（小抽屜＋開放格、插座＋USB-C），中間是布面床頭板，高到 118 cm（坐起來靠著看書時頭和肩膀有地方靠），頂部橡木壓條後方藏一條往牆上打的暖光；兩側床頭櫃檯面 95 cm，前緣下各藏一條暖光 LED；床兩側各一張旋臂小桌（橡木 50 × 36 cm，平常在床邊當小邊桌，轉半圈到床上方、離地 73 cm，放筆電或早餐）；上方左右各一盞壁掛閱讀燈；床頭上方是寬 180 cm 的高窗（窗台 1.78 m），只採光'],,
@@ -1259,21 +1259,22 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,245)-TI/2-WZ(2,19
   bx(LG[2],xw+0.006,xw+0.04,zn,zs,b+1.12,b+1.14,oakS);   // a slim ledge on the slats
   bx(LG[2],xw,xw+0.18,zn,zs,top-0.12,top-0.1,M.trim,oc); const cove=E.dusk(new THREE.MeshBasicMaterial({color:0xffd9a8})); bx(LG[2],xw+0.02,xw+0.06,zn+0.02,zs-0.02,top-0.125,top-0.12,cove,oc);   // ceiling cove washing down the accent wall
   const CL=new THREE.PointLight(0xffc27a,0.22*E.PLI,2.4,2); CL.position.set(xw+0.25,top-0.3,(zn+zs)/2); LG[2].add(CL); E.pointLights.push(CL);
-  /* floating cabinet on the south wall: two flush doors, spare rolls inside, a warm LED underneath, a trailing pothos on top */
-  const c0=WX(2,14), c1=WX(2,74), cy0=b+1.3, cy1=b+1.62, cz=zs-0.15, W=M.cabF;
-  bx(LG[2],c0,c1,cz,zs,cy0,cy1,W); bx(LG[2],c0+0.003,(c0+c1)/2-0.002,cz-0.002,cz,cy0+0.003,cy1-0.003,W); bx(LG[2],(c0+c1)/2+0.002,c1-0.003,cz-0.002,cz,cy0+0.003,cy1-0.003,W);
-  bx(LG[2],(c0+c1)/2-0.0015,(c0+c1)/2+0.0015,cz-0.0025,cz-0.002,cy0+0.02,cy1-0.02,lam(0x9a948a),oc); bx(LG[2],c0+0.02,c1-0.02,cz+0.01,cz+0.02,cy0-0.006,cy0-0.002,E.dusk(new THREE.MeshBasicMaterial({color:0xffd9a8})),oc);
+  /* wall cabinet on the south wall up to the ceiling: an open shelf at the bottom (pothos, diffuser), two flush doors above (spare rolls), a warm LED underneath */
+  const c0=WX(2,14), c1=WX(2,74), cy0=b+1.3, cy1=b+1.55, cyT=top-0.003, cz=zs-0.15, W=M.cabF;
+  bx(LG[2],c0,c1,cz,zs,cy0,cy0+0.018,W); bx(LG[2],c0,c0+0.018,cz,zs,cy0,cyT,W); bx(LG[2],c1-0.018,c1,cz,zs,cy0,cyT,W); bx(LG[2],c0,c1,cz,zs,cy1,cy1+0.018,W); bx(LG[2],c0,c1,zs-0.006,zs,cy0,cy1,lam(0xd8cdbd,{roughness:0.9}),oc);
+  bx(LG[2],c0+0.003,(c0+c1)/2-0.002,cz-0.002,cz+0.02,cy1+0.021,cyT,W); bx(LG[2],(c0+c1)/2+0.002,c1-0.003,cz-0.002,cz+0.02,cy1+0.021,cyT,W);
+  bx(LG[2],(c0+c1)/2-0.0015,(c0+c1)/2+0.0015,cz-0.0025,cz-0.002,cy1+0.04,cyT-0.02,lam(0x9a948a),oc); bx(LG[2],c0+0.02,c1-0.02,cz+0.01,cz+0.02,cy0-0.006,cy0-0.002,E.dusk(new THREE.MeshBasicMaterial({color:0xffd9a8})),oc);
   for(let i=0;i<4;i++){ const r=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.055,0.11,18),lam(0xfbfaf6,{roughness:0.95})); r.position.set(c0+0.09+i*0.14,b+1.0,zs-0.07); }   // (spares are inside)
-  (function(){ const x=(c0+c1)/2+0.12, pot=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.038,0.08,18),lam(0xe9ddd0,{roughness:0.6})); pot.position.set(x,cy1+0.04,zs-0.08); LG[2].add(pot);
-    const lf=lam(0x4f8a3e,{roughness:0.7}); for(let k=0;k<3;k++){ const pts=[]; for(let i=0;i<8;i++) pts.push(new THREE.Vector3(x+0.02*Math.sin(i+k)+(k-1)*0.03,cy1+0.06-i*0.05,zs-0.08-0.03*k-0.01*i)); const vine=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),20,0.002,4,false),lf); LG[2].add(vine);
+  (function(){ const x=(c0+c1)/2+0.12, pot=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.038,0.08,18),lam(0xe9ddd0,{roughness:0.6})); pot.position.set(x,cy0+0.058,zs-0.08); LG[2].add(pot);
+    const lf=lam(0x4f8a3e,{roughness:0.7}); for(let k=0;k<3;k++){ const pts=[]; for(let i=0;i<8;i++) pts.push(new THREE.Vector3(x+0.02*Math.sin(i+k)+(k-1)*0.03,cy0+0.08-i*0.05,zs-0.1-0.03*k-0.012*i)); const vine=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),20,0.002,4,false),lf); LG[2].add(vine);
       pts.forEach(function(p2,i){ if(i%2) return; const leaf=new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6),lf); leaf.scale.set(1,0.3,0.7); leaf.position.copy(p2); leaf.rotation.set(i,k,0); LG[2].add(leaf); }); } })();   // pothos trailing down
-  bx(LG[2],c0+0.04,c0+0.14,zs-0.12,zs-0.04,cy1,cy1+0.11,lam(0xf3efe6,{roughness:0.3}));   // reed diffuser bottle
-  for(let i=0;i<6;i++){ const rd=new THREE.Mesh(new THREE.CylinderGeometry(0.0015,0.0015,0.25,4),lam(0x7a5a3a)); rd.position.set(c0+0.09+(i-2.5)*0.006,cy1+0.22,zs-0.08); rd.rotation.z=(i-2.5)*0.08; LG[2].add(rd); }
+  bx(LG[2],c0+0.04,c0+0.12,zs-0.12,zs-0.04,cy0+0.018,cy0+0.12,lam(0xf3efe6,{roughness:0.3}));   // reed diffuser bottle
+  for(let i=0;i<6;i++){ const rd=new THREE.Mesh(new THREE.CylinderGeometry(0.0015,0.0015,0.25,4),lam(0x7a5a3a)); rd.scale.y=0.5; rd.position.set(c0+0.08+(i-2.5)*0.006,cy0+0.18,zs-0.08); rd.rotation.z=(i-2.5)*0.08; LG[2].add(rd); }
   /* a small framed print on the north wall, a small plant on the window sill */
   bx(LG[2],WX(2,75),WX(2,125),zn,zn+0.02,b+1.35,b+1.65,oakS); (function(){ const c=document.createElement('canvas'); c.width=200; c.height=240; const g=c.getContext('2d'); g.fillStyle='#f4efe6'; g.fillRect(0,0,200,240); g.fillStyle='#c9a27a'; g.beginPath(); g.arc(100,110,52,0,Math.PI*2); g.fill(); g.fillStyle='#8a9a86'; g.fillRect(30,160,140,6); g.fillStyle='#4a5560'; g.font='14px serif'; g.textAlign='center'; g.fillText('morning',100,200);
     const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; const m=new THREE.Mesh(new THREE.PlaneGeometry(0.42,0.26),new THREE.MeshBasicMaterial({map:t})); m.position.set(WX(2,100),b+1.5,zn+0.0205); LG[2].add(m); })();
   (function(){ const pot=new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.032,0.07,16),lam(0xd8cbb8,{roughness:0.7})); pot.position.set(xw+0.07,b+1.435,(wa+wb)/2); LG[2].add(pot); for(let i=0;i<6;i++){ const l=new THREE.Mesh(new THREE.ConeGeometry(0.012,0.12,5),lam(0x6f9a5a,{roughness:0.7})); l.position.set(xw+0.07+Math.cos(i)*0.01,b+1.52,(wa+wb)/2+Math.sin(i)*0.01); l.rotation.z=Math.cos(i*2)*0.35; l.rotation.x=Math.sin(i*2)*0.35; LG[2].add(l); } })();   // a small snake plant on the sill
-  addCol(2,c0,c1,cz,zs,cy0,cy1,'w');
+  addCol(2,c0,c1,cz,zs,cy0,cyT,'w');
 })();
 [[0,57,325],[1,85,140],[1,90,28],[2,130,170],[2,270,175]].forEach(function(q){ const y=E.base(q[0])+E.CH, x=WX(q[0],q[1]), z=WZ(q[0],q[2]), oc={cast:false}, wh=lam(0xf4f4f1,{roughness:0.35}), sl=lam(0x9a9c98,{roughness:0.6});   // ceiling exhaust grille in every toilet, the shower and the washroom (the bath has its dryer)
   bx(LG[q[0]],x-0.11,x+0.11,z-0.11,z+0.11,y-0.012,y-0.002,wh,oc); for(let i=0;i<7;i++) bx(LG[q[0]],x-0.085,x+0.085,z-0.075+i*0.025,z-0.065+i*0.025,y-0.0125,y-0.012,sl,oc); });   // every toilet: roll holder by the seat and a small sanitary bin
