@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261025y">
+<link rel="stylesheet" href="lib/storeys.css?v=20261025z">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261025y"></script>
-<script src="lib/furniture.js?v=20261025y"></script>
-<script src="lib/catalog.js?v=20261025y"></script>
-<script src="lib/look.js?v=20261025y"></script>
-<script src="lib/houses.js?v=20261025y"></script>
-<script src="lib/perf.js?v=20261025y"></script>
-<script src="lib/finish.js?v=20261025y"></script>
-<script src="lib/storeys.js?v=20261025y"></script>
+<script src="lib/people.js?v=20261025z"></script>
+<script src="lib/furniture.js?v=20261025z"></script>
+<script src="lib/catalog.js?v=20261025z"></script>
+<script src="lib/look.js?v=20261025z"></script>
+<script src="lib/houses.js?v=20261025z"></script>
+<script src="lib/perf.js?v=20261025z"></script>
+<script src="lib/finish.js?v=20261025z"></script>
+<script src="lib/storeys.js?v=20261025z"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -210,7 +210,7 @@ notes:[
   [0,60,-40,'冷氣室外機（鏡子房・書房）','80 × 29 × 55 cm 兩台疊在二段架台上，放在北側通路靠西北角、出風口朝北，前方留約 53 cm；配管走牆內和天花板內，從北牆出來沿配管蓋（化粧カバー）下到室外機'],
   [0,190,-40,'冷氣室外機（客廳）','5.6 kW 用 80 × 30 × 63 cm，放在北側通路（鏡子房・書房那組架台和エコキュート之間）、出風口朝北，前方留約 60 cm；配管從 2F 天花板內出北外牆，沿配管蓋下來'],
   [2,545,870,'冷氣室外機（主臥）','6 帖用小型機 70 × 28 × 55 cm，貼著陽台東端的外牆、下面墊防震腳，出風口朝南對著玻璃欄杆（前方留約 60 cm），不會吹到吧台；配管走天花板內到南牆，沿配管蓋下來；陽台地板鋪 30 cm 人工木地板'],
-  [1,560,506,'外套・包包收納','貓咪餵食區正上方：牆面往室內加厚 30 cm 做成嵌入式小櫃（寬 60 cm、離地 100 cm 到天花板），門片和牆同色、按壓開關，關上後灰塵不會掉進貓碗；裡面一根吊衣桿掛 2–3 件外套、側邊掛勾放包包，上層放帽子和圍巾；離地 100 cm 以下淨空給貓咪吃飯'],[1,575,640,'電視牆補強・隱藏配管','東牆裡放合板補強，撐得住約 40–55 kg 的 85 吋電視；電視後方有埋入式插座和配線出口，和電視櫃背後的配線出口之間埋一條 ≥28 mm 的 CD/PF 管，HDMI 之後可以重拉或更換'],[1,346,250,'掃地機器人給排水（Dreame X40 Ultra 用）','給水從廚房水槽的給水管分岐到櫃內止水栓（藍色把手）接軟管；排水接存水彎，往地板下的廚房排水管有坡度地接過去；上方一個專用的接地插座（アース付き）'],[0,338,280,'分電盤','40 × 50 × 10 cm，儲藏室南牆靠門處，中心離地約 1.6 m；含三溫暖、EV 充電樁的 200V 專用迴路'],[0,378,280,'情報分電盤','30 × 40 × 10 cm，和分電盤並排在儲藏室南牆，中心離地約 1.6 m；光纖終端和路由器收在裡面，網路線從這裡配到各房間'],
+  [1,560,506,'外套・包包收納','貓咪餵食區正上方：牆面往室內加厚 30 cm 做成嵌入式小櫃（寬 60 cm、離地 55 cm 到天花板，長大衣也整件收在裡面），門片和牆同色、按壓開關，關上後灰塵不會掉進貓碗；裡面前後兩根吊衣桿、外套正面朝外前後錯開掛（後面掛長大衣），側邊掛勾放包包，上層放帽子和圍巾；離地 55 cm 以下淨空，下面是 33 cm 高的自動餵食器和水碗，貓咪吃飯時頭上還有空間'],[1,575,640,'電視牆補強・隱藏配管','東牆裡放合板補強，撐得住約 40–55 kg 的 85 吋電視；電視後方有埋入式插座和配線出口，和電視櫃背後的配線出口之間埋一條 ≥28 mm 的 CD/PF 管，HDMI 之後可以重拉或更換'],[1,346,250,'掃地機器人給排水（Dreame X40 Ultra 用）','給水從廚房水槽的給水管分岐到櫃內止水栓（藍色把手）接軟管；排水接存水彎，往地板下的廚房排水管有坡度地接過去；上方一個專用的接地插座（アース付き）'],[0,338,280,'分電盤','40 × 50 × 10 cm，儲藏室南牆靠門處，中心離地約 1.6 m；含三溫暖、EV 充電樁的 200V 專用迴路'],[0,378,280,'情報分電盤','30 × 40 × 10 cm，和分電盤並排在儲藏室南牆，中心離地約 1.6 m；光纖終端和路由器收在裡面，網路線從這裡配到各房間'],
   [2,80,67,'三溫暖專用 200V 迴路','家用三溫暖的電爐從分電盤拉 200V 專用迴路，配獨立的漏電斷路器'],[0,560,345,'EV 充電樁 200V 迴路','Tesla 充電樁從分電盤拉 200V 專用迴路，配專用斷路器'],
   [1,560,600,'24 小時換氣','法規要求每 2 小時換掉一次全室空氣（第三種換氣）：客廳、書房、主臥、鏡子房的外牆進氣口進新鮮空氣，浴室（浴室暖房乾燥機）、淋浴間、三間廁所、3F 洗面室和 2F 脫衣間（換氣暖房機）的換氣扇一直低速排氣；外牆上 Ø15 cm 的白色圓形罩共 11 個（進氣 4、排氣 7：廁所從西牆、其他濕區從北牆排出）'],
   [0,15,835,'門廊西側轉角（無柱）','門廊西側轉角不立柱：2F 樓板往外懸挑約 60 cm（跳ね出し）；實際施工需加強樑並做結構計算確認']
@@ -747,17 +747,17 @@ fixtures:function(E){
     bx(LG[1],x-0.04,x+0.04,z1-0.008,z1,b+0.19,b+0.31,pm,oc);
     [0.275,0.225].forEach(function(y){ [-1,1].forEach(function(sd){ bx(LG[1],x+sd*0.009-0.0015,x+sd*0.009+0.0015,z1-0.0095,z1-0.008,b+y-0.008,b+y+0.008,sm,oc); }); bx(LG[1],x-0.003,x+0.003,z1-0.0095,z1-0.008,b+y-0.02,b+y-0.014,sm,oc); }); })();
   (function(){ const b=E.base(1), x=WX(1,306), z=WZ(1,700), st=lam(0xb9bec4,{metalness:0.8,roughness:0.35}); bx(LG[1],x-0.06,x+0.06,z-0.06,z+0.06,b,b+0.004,st,{cast:false}); bx(LG[1],x-0.04,x+0.04,z-0.03,z+0.03,b+0.004,b+0.006,lam(0x2b2c2e),{cast:false}); })();   // the recliner sofa's own floor outlet, under it by the motor
-  (function(){ const b=E.base(1), xw=WX(1,580)-TE/2, D=0.3, xf=xw-D, z0=WZ(1,476), z1=WZ(1,536), y0=b+1.0, y1=b+CH, ys=b+2.06, t=0.018, oc={cast:false};   // coat & bag cupboard over the cat feeding station: a 30 cm build-out, flush wall-coloured doors, open below for the cat
+  (function(){ const b=E.base(1), xw=WX(1,580)-TE/2, D=0.3, xf=xw-D, z0=WZ(1,476), z1=WZ(1,536), y0=b+0.55, y1=b+CH, ys=b+2.06, t=0.018, oc={cast:false};   // coat & bag cupboard over the cat feeding station: a 30 cm build-out, flush wall-coloured doors, open below 55 cm for the cat's 33 cm feeder
     const W=E.WM[E.wallRoleAt(1,xw-0.05,(z0+z1)/2)]||lam(0xf2efe9,{roughness:0.85}), inner=lam(0xeeebe5,{roughness:0.7}), steel=lam(0xb9bec4,{metalness:0.8,roughness:0.35});
     bx(LG[1],xf,xw,z0,z1,y0,y0+t,W); bx(LG[1],xf,xw,z0,z0+t,y0,y1,W); bx(LG[1],xf,xw,z1-t,z1,y0,y1,W); bx(LG[1],xw-0.006,xw,z0+t,z1-t,y0+t,y1-0.002,inner,oc); bx(LG[1],xf+t,xw,z0+t,z1-t,y1-0.012,y1-0.002,inner,oc); bx(LG[1],xf+0.01,xw,z0+t,z1-t,ys,ys+t,inner);
-    const rod=new THREE.Mesh(new THREE.CylinderGeometry(0.009,0.009,z1-z0-2*t,12),steel); rod.rotation.x=Math.PI/2; rod.position.set(xw-0.17,ys-0.06,(z0+z1)/2); LG[1].add(rod);
-    const coat=function(z,col,len){ const m=lam(col,{roughness:0.9}), G=new THREE.Group(); G.position.set(xw-0.17,ys-0.06,z); LG[1].add(G);
+    [0.07,0.19].forEach(function(dx){ const rod=new THREE.Mesh(new THREE.CylinderGeometry(0.009,0.009,z1-z0-2*t,12),steel); rod.rotation.x=Math.PI/2; rod.position.set(xw-dx,ys-0.06-(dx>0.1?0.06:0),(z0+z1)/2); LG[1].add(rod); });   // two rails one behind the other, coats hung face-on (正面掛け)
+    const coat=function(z,col,len,dx,dy){ const m=lam(col,{roughness:0.9}), G=new THREE.Group(); G.position.set(xw-dx,ys-0.06-dy,z); LG[1].add(G);
       const hk=new THREE.Mesh(new THREE.TorusGeometry(0.02,0.003,6,12,Math.PI*1.4),steel); hk.rotation.y=Math.PI/2; hk.position.y=0.005; G.add(hk);
-      const hb=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.4,8),lam(0xc9a77a,{roughness:0.6})); hb.rotation.x=Math.PI/2; hb.position.y=-0.05; G.add(hb);
-      const sh=new THREE.Shape(); sh.moveTo(-0.2,0); sh.quadraticCurveTo(-0.23,-0.25,-0.25,-len); sh.lineTo(0.25,-len); sh.quadraticCurveTo(0.23,-0.25,0.2,0); sh.quadraticCurveTo(0,0.04,-0.2,0);
-      const body=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:0.07,bevelEnabled:true,bevelSize:0.015,bevelThickness:0.015,bevelSegments:2}),m); body.rotation.y=Math.PI/2; body.position.set(-0.035,-0.05,0); body.castShadow=true; G.add(body);
-      [-1,1].forEach(function(sd){ bx(G,-0.075,-0.068,sd*0.02-0.006,sd*0.02+0.006,-0.3,-0.29,lam(0x2a2622),oc); }); return G; };
-    coat(z0+0.17,0x3c4250,0.86); coat(z0+0.29,0xb9a58a,0.8);
+      const hb=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.36,8),lam(0xc9a77a,{roughness:0.6})); hb.rotation.x=Math.PI/2; hb.position.y=-0.05; G.add(hb);
+      const sh=new THREE.Shape(); sh.moveTo(-0.17,0); sh.quadraticCurveTo(-0.195,-0.25,-0.21,-len); sh.lineTo(0.21,-len); sh.quadraticCurveTo(0.195,-0.25,0.17,0); sh.quadraticCurveTo(0,0.035,-0.17,0);
+      const body=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:0.07,bevelEnabled:true,bevelSize:0.015,bevelThickness:0.015,bevelSegments:2}),m); body.rotation.y=Math.PI/2; body.position.set(-0.035,-0.05,0); body.scale.z=0.6; body.castShadow=true; G.add(body);
+      [-1,1].forEach(function(sd){ bx(G,-0.05,-0.043,sd*0.02-0.006,sd*0.02+0.006,-0.3,-0.29,lam(0x2a2622),oc); }); return G; };
+    coat((z0+z1)/2-0.05,0x3c4250,1.05,0.07,0); coat((z0+z1)/2-0.05,0xb9a58a,0.76,0.19,0.06);   // a long navy coat on the back rail, a beige jacket on the front one
     (function(){ const G=new THREE.Group(); G.position.set(xw-0.15,ys-0.3,z1-0.018-0.06); LG[1].add(G); const hk=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.06,8),steel); hk.rotation.x=Math.PI/2; hk.position.z=0.04; G.add(hk);
       const tb=lam(0xd8c9ae,{roughness:0.95}); const bag=new THREE.Mesh(new THREE.BoxGeometry(0.24,0.3,0.08),tb); bag.position.set(0.0,-0.24,0); bag.castShadow=true; G.add(bag);
       [-1,1].forEach(function(sd){ const h=new THREE.Mesh(new THREE.TorusGeometry(0.05,0.007,6,16,Math.PI),lam(0x6b4a33,{roughness:0.6})); h.position.set(sd*0.06,-0.09,0); G.add(h); }); })();
