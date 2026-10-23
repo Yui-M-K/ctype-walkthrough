@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261026k">
+<link rel="stylesheet" href="lib/storeys.css?v=20261026l">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261026k"></script>
-<script src="lib/furniture.js?v=20261026k"></script>
-<script src="lib/catalog.js?v=20261026k"></script>
-<script src="lib/look.js?v=20261026k"></script>
-<script src="lib/houses.js?v=20261026k"></script>
-<script src="lib/perf.js?v=20261026k"></script>
-<script src="lib/finish.js?v=20261026k"></script>
-<script src="lib/storeys.js?v=20261026k"></script>
+<script src="lib/people.js?v=20261026l"></script>
+<script src="lib/furniture.js?v=20261026l"></script>
+<script src="lib/catalog.js?v=20261026l"></script>
+<script src="lib/look.js?v=20261026l"></script>
+<script src="lib/houses.js?v=20261026l"></script>
+<script src="lib/perf.js?v=20261026l"></script>
+<script src="lib/finish.js?v=20261026l"></script>
+<script src="lib/storeys.js?v=20261026l"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -165,6 +165,7 @@ notes:[
   [1,553,545,'Google Nest Hub（客廳）','電視櫃北端，控制全屋智慧燈・窗簾・看門口監視器'],[2,566,560,'Google Nest Hub（主臥）','床頭北側，鬧鐘・喚醒燈・睡前一次關燈'],
   [1,350,660,'客廳照明','LED 吸頂燈（調光調色）＋茶几上方橡木吊燈＋天花板間接燈帶 2700 K；智慧控制'],[1,165,430,'餐桌吊燈','摺疊餐桌正上方，展開成六人桌時照到桌面；智慧控制'],
   [1,470,310,'廚房照明','流理台上方嵌燈 3000 K＋半島吊燈 2 盞；智慧控制'],[1,412,110,'書房照明','LED 吸頂燈（工作時白光、晚上暖光）＋螢幕掛燈；智慧控制'],[2,412,650,'主臥照明','LED 吸頂燈＋床頭燈帶＋兩側閱讀燈；智慧控制（喚醒燈）'],[0,155,180,'鏡子房照明','LED 吸頂燈，可切換練舞用的亮白光；智慧控制'],
+  [2,200,252,'洗面室拉門（外掛式）','掛在洗面室入口前那 20 cm 凹口的外面：門片寬 86 cm、掛在天花板下的軌道上，往西（樓梯平台方向）滑到廁所南牆前面停放，開口淨寬約 76 cm；停放時只突出牆面約 5 cm，走廊和平台的通行寬度不受影響。開關在入口東側牆上、門片關起來的位置旁邊，不會被停放的門片擋住；廁所門恢復成 70 cm'],
   [0,165,820,'玄關門廊燈','門廊天花板（2F 懸挑下方）的防雨型吸頂燈，暖光 2700 K，附人體感應＋亮度感應：傍晚自動以微光亮著，有人走近時全亮，晚上回家時門口、電子鎖和雨傘架都照得到'],
   [0,218,966,'水錶（量水器）','自來水從前面道路接進來：腳踏車停放區東南角（腳踏車和車庫門柱之間）、靠道路邊界的地面量水器箱，藍色樹脂蓋約 30 × 20 cm、和地面齊平，掀開小窗就能讀表；不在大門的開關範圍和走往門廊的動線上'],
   [1,165,172,'走道感應燈','拱門後面的走道：人體感應嵌燈，晚上去廁所自動亮'],[2,40,40,'三溫暖燈','耐熱型，裝在室內角落的杉木格柵後面'],[2,545,850,'陽台壁燈','防雨型，暖光，傍晚自動亮'],
@@ -320,9 +321,9 @@ build:function(E){
   wall(2,245,850,580,850,TE,[{a:250,b:530,k:'slide2',mat:M.glass,head:2.15,screen:1}]);
   /* 3F north (C): sauna and toilet on the stair side, washroom in the middle, bath to the east; the laundry closet (washer-dryer, rails) behind the washroom */
   wall(2,160,0,160,150,TI,[{a:5,b:145,k:'open',head:1.95}]);   // the sauna cabin's glass front fills this opening
-  wall(2,160,150,160,245-TI*50,TI,[{a:155,b:220,k:'door',hinge:'a',sw:1}]);   // toilet door opens out into the washroom, its swing stops short of the washroom's own door
+  wall(2,160,150,160,245-TI*50,TI,[{a:152,b:222,k:'door',hinge:'a',sw:1}]);   // toilet door opens out into the washroom, its swing stops short of the washroom's own door
   wall(2,0,150,160,150,TI);
-  wall(2,0,245,160+TI*50,245,TI,[{a:81,b:109,k:'open',sill:0.12,head:1.225,jamb:false}]); wall(2,160,225,330+TI*50,225,TI,[{a:165,b:240,k:'door',hinge:'b',sw:-1.11},{a:250,b:325,k:'door',hinge:'b',sw:1}]);   // washroom doors: from the hall (opens in, hinged on the east, clear of the toilet door), and through to the laundry closet
+  wall(2,0,245,160+TI*50,245,TI,[{a:81,b:109,k:'open',sill:0.12,head:1.225,jamb:false}]); wall(2,160,225,330+TI*50,225,TI,[{a:165,b:240,k:'open',head:2.05},{a:250,b:325,k:'door',hinge:'b',sw:1}]);   // washroom: an open doorway (the out-set sliding door hangs at the mouth of the 20 cm alcove, see fixtures), and the door through to the laundry closet
   wall(2,330-TI*50,175,580,175,TI); wall(2,330,175,330,225-TI*50,TI);
   wall(2,330,0,330,175,TI,[{a:45,b:125,k:'door',fold:1,hinge:'b',sw:1,mat:lam(0xf2f1ee,{roughness:0.35})}]);   // bi-fold bath door, folding into the bath
   wall(2,245,225,245,460,TI,[{a:285,b:365,k:'slide',hinge:'b',pocket:1}]);   // a pocket sliding door from the hall: the leaf runs into the wall, clear of the photo wall and the extinguisher on the hall side
@@ -1328,6 +1329,14 @@ setTimeout(function(){ const V=new THREE.Vector3(), W2=new THREE.Vector3(), find
   const blocked=function(){ const a=find('lift'), b=find('tv'); if(!a||!b||E.FS.isStored('lift')||E.FS.isStored('tv')) return false; a.W.getWorldPosition(V); b.W.getWorldPosition(W2); return Math.abs(V.x-W2.x)<0.8&&Math.abs(V.z-W2.z)<1.0; };
   furnThings.forEach(function(t){ let l=''; try{ l=String(t.label()); }catch(e){ return; } if(!/^(拉出書抽屜|拉出桌遊抽屜|打開遙控器抽屜|打開電視櫃下掀門|拉出側抽屜|打開餐凳收納門)$/.test(l)) return; const a0=t.act; t.act=function(){ let cur=''; try{ cur=String(t.label()); }catch(e){} if(/^(拉出|打開)/.test(cur)&&blocked()){ toast('茶几貼著電視櫃，要先在編輯模式把茶几往沙發那邊移開'); return; } a0.apply(this,arguments); }; }); },0);
 fixture(1,Catalog.heaterPanel('床暖房',['客廳開關','客廳強弱','餐廚開關','餐廚強弱'],['起床前','回家前','定時'],1.2,'客廳 3 ・ 餐廚 2'),WX(1,115)+TI/2,WZ(1,410),0);   // floor-heating panel at the stair-side entrance to the living room, beside the switch plate
+(function(){ const b=E.base(2), x1=WX(2,238), W=0.86, y=WZ(2,252), h=2.04, g=new THREE.Group(), rg=new THREE.Group(), oc={cast:false}, steel=lam(0xb9bec4,{metalness:0.8,roughness:0.35});   // washroom entrance: an out-set sliding leaf at the mouth of the 20 cm alcove, hung on a rail and parking to the west in front of the toilet's south wall
+  g.position.set(0,b,y); LG[2].add(g); rg.userData.keep=true; g.userData.keep=true; LG[2].add(rg);
+  const xc=x1-W/2, leaf=new THREE.Mesh(new THREE.BoxGeometry(W,h,0.034),M.door); leaf.position.set(xc,h/2+0.012,0); leaf.castShadow=leaf.receiveShadow=true; g.add(leaf);
+  [-1,1].forEach(function(k){ const f=new THREE.Mesh(new THREE.BoxGeometry(0.008,0.9,0.012),M.dark); f.position.set(xc+W/2-0.07,1.0,k*0.021); g.add(f); bx(g,xc+W/2-0.09,xc+W/2-0.05,k*0.0185-0.002,k*0.0185+0.002,0.82,1.22,M.steel,oc); });   // recessed pulls on both faces, near the leading edge
+  bx(rg,WX(2,60),x1+0.02,y-0.022,y+0.03,b+h+0.02,b+h+0.075,M.frame); [WX(2,70),WX(2,150),x1-0.05].forEach(function(x){ bx(rg,x-0.01,x+0.01,y+0.03,WZ(2,245)+TI/2+0.001,b+h+0.04,b+h+0.065,steel,oc); });   // top rail on its cover and wall brackets
+  bx(rg,x1-0.03,x1+0.003,y-0.02,y+0.02,b,b+0.03,steel,oc);   // floor guide at the closed end
+  const col=addCol(2,WX(2,163),x1+0.02,y-0.03,y+0.03,b,b+h,'d'), d={l:2,slide:true,leaf:g,axis:'x',base0:0,shift:-W-0.02,th:0,pv:g,open:false,t:0,col:col,mid:[(WX(2,163)+x1)/2,y],label:function(o){ return o?'關上洗面室拉門':'打開洗面室拉門'; }};
+  col.door=d; doors.push(d); })();
 fixture(1,Catalog.ventHeater(E.CH),WX(1,165),WZ(1,40),3);   // 2F changing room: ventilation heater over where you undress, blowing south, clear of the doorway
 fixture(1,Catalog.heaterPanel('換氣暖房機',['換氣','暖房','涼風','停止'],['15分','30分','60分'],1.2),WX(1,215)-TI/2,WZ(1,104),2);   // its panel inside the changing room, beside the door
 fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥','涼風','停止'],['1h','3h','6h'],1.2),WX(2,330)-TI/2,WZ(2,152),2);   // bath heater-dryer panel in the washroom, beside the bath door, outside the wet zone
