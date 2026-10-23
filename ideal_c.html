@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261026e">
+<link rel="stylesheet" href="lib/storeys.css?v=20261026f">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261026e"></script>
-<script src="lib/furniture.js?v=20261026e"></script>
-<script src="lib/catalog.js?v=20261026e"></script>
-<script src="lib/look.js?v=20261026e"></script>
-<script src="lib/houses.js?v=20261026e"></script>
-<script src="lib/perf.js?v=20261026e"></script>
-<script src="lib/finish.js?v=20261026e"></script>
-<script src="lib/storeys.js?v=20261026e"></script>
+<script src="lib/people.js?v=20261026f"></script>
+<script src="lib/furniture.js?v=20261026f"></script>
+<script src="lib/catalog.js?v=20261026f"></script>
+<script src="lib/look.js?v=20261026f"></script>
+<script src="lib/houses.js?v=20261026f"></script>
+<script src="lib/perf.js?v=20261026f"></script>
+<script src="lib/finish.js?v=20261026f"></script>
+<script src="lib/storeys.js?v=20261026f"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -263,7 +263,7 @@ build:function(E){
   wall(0,0,850,270,850,TE,[{a:0,b:270,k:'open',head:2.25,jamb:false}]);   // no corner pier: the 2F floor cantilevers 60 cm over the porch
   wall(0,270,850,580,850,TE,[{a:276,b:575,k:'open',head:2.25}]);
   wall(0,580,0,580,850,TE,[{a:300,b:400,sill:1.6,head:2.1}]);
-  wall(0,0,300,310,300,TI,[{a:84,b:112,k:'open',sill:0.12,head:1.225,jamb:false},{a:188,b:266,k:'door',hinge:'b',sw:-1}]);   // toilet-brush niche in the powder room's north wall
+  wall(0,0,300,310,300,TI,[{a:84,b:112,k:'open',sill:0.12,head:1.225,jamb:false},{a:188,b:266,k:'door',hinge:'a',sw:-1}]);   // toilet-brush niche in the powder room's north wall; mirror-room door hinged on the west, the open leaf against the mirror room's side, the switch on the latch side
   wall(0,115,300,115,392,TI,[{a:318,b:388,k:'door',hinge:'a',sw:1}]);   // powder room under the stair, entered from the hall; beside the lower flight the wall gives way to a guard
   wall(0,270,300,270,790,TI,[{a:445,b:565,k:'open',sill:1.0,head:1.35,jamb:false}]);   // hall niche (飾り棚ニッチ), closed by a back panel on the garage side
   wall(0,310,0,310,300,TI,[{a:195,b:280,k:'slide',hinge:'a',face:-1}]);   // storage room door; with the mirror room door it falls inside a future lobby (see notes)
