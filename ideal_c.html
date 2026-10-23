@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261026c">
+<link rel="stylesheet" href="lib/storeys.css?v=20261026d">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261026c"></script>
-<script src="lib/furniture.js?v=20261026c"></script>
-<script src="lib/catalog.js?v=20261026c"></script>
-<script src="lib/look.js?v=20261026c"></script>
-<script src="lib/houses.js?v=20261026c"></script>
-<script src="lib/perf.js?v=20261026c"></script>
-<script src="lib/finish.js?v=20261026c"></script>
-<script src="lib/storeys.js?v=20261026c"></script>
+<script src="lib/people.js?v=20261026d"></script>
+<script src="lib/furniture.js?v=20261026d"></script>
+<script src="lib/catalog.js?v=20261026d"></script>
+<script src="lib/look.js?v=20261026d"></script>
+<script src="lib/houses.js?v=20261026d"></script>
+<script src="lib/perf.js?v=20261026d"></script>
+<script src="lib/finish.js?v=20261026d"></script>
+<script src="lib/storeys.js?v=20261026d"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -202,7 +202,7 @@ notes:[
   [0,72,425,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],[1,43.5,172.5,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],[2,20,215,'3F 廁所（美化）','馬桶後面是主題牆：暖灰米色塗料＋到腰高的直條橡木格柵和一條窄平台，天花板燈槽往下打暖光（2700K）；南牆一個做到天花板的吊櫃：下段開放格放垂下來的黃金葛和擴香，上面兩扇平門放備用衛生紙，下緣藏一條暖光 LED；北牆一幅小畫，窗台放一小盆虎尾蘭；其他牆面是霧面磁磚腰牆'],[2,43.5,197.5,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],
   [0,165,805,'玄關電子鎖','密碼＋感應卡開鎖；門外的密碼面板有滑蓋，平常蓋著'],[0,-128,995,'門扉','單扇木門，掛在對講機門柱上，關上時自動扣上門閂（ラッチ）；撥桿鎖（離地約 95 cm）：外側用鑰匙、內側轉旋鈕鎖上'],
   [0,-50,995,'宅配箱・對講機（門柱）','門扉西側的門柱裝對講機；東側門柱內建宅配箱和信箱，從路邊投入、從院子這側取出，附密碼鎖'],[1,332,392,'水槽上瀝水架','水槽旁的檯面保持淨空：白色鋼線瀝水架橫跨在水槽上（靠右・後半），一半是鐵條放倒扣的飯碗・木湯碗・便當盒，一半是有孔的平盤放筷子和便當叉；水直接滴進水槽；避開抽拉龍頭和海綿架；編輯模式可收進家具庫'],[0,450,995,'車庫伸縮門','車道前的鋁製伸縮門，收到東側'],[0,90,950,'腳踏車停放區（2 台）','門廊前緣往內縮 30 cm，門廊和圍籬之間約 80 cm 寬，鋪成和門內踏台同高的平地：兩台 26 吋淑女車（奶油色、鼠尾草綠）平行圍籬、前後錯開停放，車把高過門廊邊緣；從門扉進來不用上下台階。編輯模式可收進家具庫'],
-  [0,57,520,'樓梯扶手（單側）＋感應腳燈','扶手只裝西側一邊（選單可切換成兩側）；踏階有腳燈，有人走近自動亮起'],[2,412,830,'窗簾','主臥陽台落地窗的窗簾依時間自動開關（智慧家庭）；每個房間的窗簾後面都有一層白色紗簾；床頭上方的高窗用細的捲簾'],[2,560,670,'床頭系統櫃','床改成東西向、床頭靠東牆：整面白色系統櫃（深 28 cm，橡木檯面 95 cm 高，放書・手機・小盆栽），兩側內建床頭櫃（小抽屜＋開放格、插座＋USB-C），中間是布面床頭板，高到 118 cm（坐起來靠著看書時頭和肩膀有地方靠），頂部橡木壓條後方藏一條往牆上打的暖光；兩側床頭櫃檯面 95 cm，前緣下各藏一條暖光 LED；床兩側的床頭系統櫃各內藏一張床邊小桌（橡木 40 × 24 cm，平常收在檯面下的細縫裡、外面看就是普通床頭櫃；拉出約 55 cm 後在滑軌末端轉半圈（從床外側轉過去，碰不到枕頭），停在床上方 40 cm、離地 73 cm，放筆電或早餐）；上方左右各一盞壁掛閱讀燈；床頭上方是寬 180 cm 的高窗（窗台 1.78 m），只採光'],,
+  [0,57,520,'樓梯扶手（單側）＋感應腳燈','扶手只裝西側一邊（選單可切換成兩側）；踏階有腳燈，有人走近自動亮起'],[2,412,830,'窗簾','主臥陽台落地窗的窗簾依時間自動開關（智慧家庭）；每個房間的窗簾後面都有一層白色紗簾；床頭上方的高窗用細的捲簾'],[2,560,670,'床頭系統櫃','床改成東西向、床頭靠東牆：整面白色系統櫃（深 28 cm，橡木檯面 95 cm 高，放書・手機・小盆栽），兩側內建床頭櫃（小抽屜＋開放格、插座＋USB-C），中間是布面床頭板，高到 118 cm（坐起來靠著看書時頭和肩膀有地方靠），頂部橡木壓條後方藏一條往牆上打的暖光；兩側床頭櫃檯面 95 cm，前緣下各藏一條暖光 LED；床兩側的床頭系統櫃各內藏一張床邊小桌（橡木 40 × 24 cm，平常收在檯面下的細縫裡、外面看就是普通床頭櫃；拉出約 55 cm 後在滑軌末端轉半圈（從床外側轉過去，碰不到枕頭），再推回到轉軸靠在細縫口，滑軌收進櫃子裡看不到，停在床上方 40 cm、離地 73 cm，放筆電或早餐）；上方左右各一盞壁掛閱讀燈；床頭上方是寬 180 cm 的高窗（窗台 1.78 m），只採光'],,
   [1,57,60,'淋浴間（2F）','從脫衣間的折れ戸（往淋浴間內折）進出；站著用的淋浴組都在西牆：龍頭約 103 cm、滑桿 110–190 cm、置物架 115 cm 上放洗髮精・潤髮乳・沐浴乳，鏡子在視線高度；不放淋浴椅，不用蹲'],[2,270,120,'洗面室（3F）','兼脫衣間：浴室、三溫暖、廁所和洗衣更衣間都從這裡進出；1 m 洗臉台和右側高櫃做成一整組系統家具'],
   [2,410,260,'洗衣更衣間','從洗面室或走廊（拉門）進出：北側一排是洗脫烘（右側靠牆，門鉸鏈在右邊、往右開到貼牆約 90°，從左邊拿衣服到摺衣檯；前方留 90 cm 以上）＋摺衣檯（下方每人一個抽拉洗衣籃，貼名牌），上方洗劑吊櫃做到天花板；南牆整面有門的家庭衣櫃；西牆有全身鏡；東南角（家庭衣櫃旁）是精簡的壁掛化妝檯：寬 51 cm、深 40 cm 的橡木檯面，一個淺抽屜，桌上圓形 LED 化妝鏡，旁邊有吹風機・電捲棒用插座，凳子可以整張收進檯面下；不擋洗脫烘開門（前方仍有 90 cm 以上）、衣櫃門和燙衣板'],[2,300,440,'家庭衣櫃（南牆）','整面到天花板、門片嵌在白框裡：最西是隱藏燙衣板櫃（放下時前方淨空約 1 m），中間是短衣區（上下兩根吊衣桿）、長衣區（洋裝到離地 15 cm）、一般區（吊衣桿＋上方層板＋下方三個抽屜，最上層抽屜是絨布首飾盤、側板有拉出式項鍊架）；吊衣桿上方都加層板做到頂：短衣區上方是包包直立隔間（托特・肩背・後背・手拿包），最上層放貼標籤的收納盒；吊衣桿掛在側板的 32 mm 孔上，可調高度'],[2,270,430,'隱藏燙衣板','打開最西邊的門：一側是放床單枕頭的層板，另一側直立收著燙衣板，「放下燙衣板」會翻下來到離地 88 cm、伸出約 1.1 m，有金屬支撐腳；櫃內有隔熱熨斗架、熨斗、噴水瓶和插座'],[2,555,370,'化妝桌','東窗下正中央，檯面 72 cm 橡木、深 48 cm，日光從正面照到臉；一個放化妝品的淺抽屜、可站可折的圓形 LED 化妝鏡、可推進桌下的布面凳；窗戶兩側有插座給吹風機和熨斗'],[2,250,255,'全身鏡','西牆走廊門北側，40 × 165 cm 細橡木框'],[2,120,770,'更衣間（3F）','走廊盡頭約 2.4 × 1.6 m 的步入式衣櫃：南面整面上下兩層吊衣桿，西牆放包包、帽子的格櫃，上方吊櫃收換季衣物'],
   [0,-45,150,'緣側','鏡子房西側 90 cm 深的杉木平台，從落地拉門出去；淺屋簷、兩根柱子，一階踏石下到庭院'],[0,-110,610,'庭院 BBQ 木平台','庭院南側和室內地板同高的杉木平台（約 1.9 × 2.2 m），放戶外桌椅和烤肉架；選單「庭院」可切換'],
@@ -733,14 +733,14 @@ fixtures:function(E){
     [[z0+0.05,0x2f3b4c,0.03],[z0+0.09,0xe9e2d0,0.025]].forEach(function(q){ bx(LG[2],xf+0.02,xf+0.2,q[0],q[0]+q[2],b+T0+0.03,b+T0+0.25,lam(q[1],{roughness:0.7})); });   // a few books on the top
     bx(LG[2],xf+0.05,xf+0.12,zb+0.06,zb+0.14,b+T0+0.03,b+T0+0.038,lam(0x1b1d20,{roughness:0.3}),oc);   // a phone
     const pot=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.035,0.09,18),lam(0xe9ddd0,{roughness:0.6})); pot.position.set(xf+0.12,b+T0+0.075,zb+0.3); LG[2].add(pot); const lf=new THREE.Mesh(new THREE.SphereGeometry(0.06,12,8),lam(0x6f9a5a,{roughness:0.8})); lf.scale.y=1.3; lf.position.set(xf+0.12,b+T0+0.17,zb+0.3); LG[2].add(lf);
-    /* bed tables built into the bedside units: an oak board hidden in the slot under each top slides out 55 cm toward the foot, then swivels a half turn on the end of its runner (out over the floor, not the pillows) to sit across the bed at 73 cm */
+    /* bed tables built into the bedside units: an oak board hidden in the slot under each top slides out 55 cm toward the foot, swivels a half turn on the end of its runner (out over the floor, not the pillows), then runs back in until its pivot sits at the slot, so no rail shows, across the bed at 73 cm */
     [[z0+t,za-t/2,1,'北側'],[zb+t/2,z1-t,-1,'南側']].forEach(function(q){ const s2=q[2], steel=lam(0x2a2c30,{metalness:0.6,roughness:0.35}), px0=xf+0.02, pz=s2>0?q[1]-0.005:q[0]+0.005, y=b+0.735, L=0.4, Dp=0.24;
       const B=new THREE.Group(); B.position.set(px0,y,pz); B.userData.keep=true; LG[2].add(B);
       const top=new THREE.Mesh(new THREE.BoxGeometry(Dp,0.02,L),oak); top.position.set(Dp/2,0,-s2*L/2); top.castShadow=true; B.add(top); const lip=new THREE.Mesh(new THREE.BoxGeometry(Dp,0.012,0.012),oak); lip.position.set(Dp/2,0.016,-s2*(L-0.006)); B.add(lip);
       const props=new THREE.Group(); B.add(props); const mug=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.03,0.08,18),lam(0xf3efe6,{roughness:0.3})); mug.position.set(0.07,0.05,-s2*0.31); props.add(mug); const bk=new THREE.Mesh(new THREE.BoxGeometry(0.15,0.025,0.21),lam(s2<0?0x6b4f3a:0x2f4b6e,{roughness:0.7})); bk.position.set(0.12,0.0225,-s2*0.13); props.add(bk);
-      const rn=new THREE.Mesh(new THREE.BoxGeometry(1,0.012,0.03),steel); rn.position.y=y-0.016; LG[2].add(rn);   // the runner, stretched as the board comes out
-      let cur=0, tg=0, last=null; const apply=function(){ const e1=Math.min(1,cur*2), e2=Math.max(0,cur*2-1), sm=function(v){ return v*v*(3-2*v); }, x=px0-0.55*sm(e1);
-        B.position.x=x; B.rotation.y=s2*Math.PI*sm(e2); props.visible=e1>0.98; const ln=Math.max(0.01,px0+0.2-x); rn.scale.x=ln; rn.position.set(x+ln/2,y-0.016,pz-s2*0.015); rn.visible=e1>0.02; }; apply();
+      const rn=new THREE.Group(); LG[2].add(rn); [0,1].forEach(function(k){ const m=new THREE.Mesh(new THREE.BoxGeometry(1,0.008,0.022),lam(0xd6d8d6,{metalness:0.5,roughness:0.4})); m.position.set(0.5,-k*0.004,0); rn.add(m); });   // telescopic runner running out of the slot straight under the board's edge, level with the slot
+      let cur=0, tg=0, last=null; const apply=function(){ const e1=Math.min(1,cur*3), e2=Math.min(1,Math.max(0,cur*3-1)), e3=Math.max(0,cur*3-2), sm=function(v){ return v*v*(3-2*v); }, x=px0-0.55*sm(e1)+(px0-0.55-(xf-0.05)<0?0:0)+(xf-0.05-(px0-0.55))*sm(e3);   // slide out, swivel, then slide back toward the headboard so the runner ends up hidden in the slot
+        B.position.x=x; B.rotation.y=s2*Math.PI*sm(e2); props.visible=e1>0.98; const ln=Math.max(0.01,xf+0.05-x); rn.scale.x=ln; rn.position.set(x,y-0.014,pz-s2*0.012); rn.visible=e1>0.02&&e3<0.98; }; apply();
       furnThings.push({pt:[xf-0.55,(q[0]+q[1])/2],l:2,part:[top],on:function(){ return true; },label:function(){ return tg?'收起床邊小桌（'+q[3]+'）':'拉出床邊小桌（'+q[3]+'）'; },act:function(){ tg=tg?0:1; last=null; }});
       furnAnims.push({live:function(){ return cur!==tg; },f:function(t2){ if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*0.9?tg:cur+Math.sign(tg-cur)*dt*0.9; apply(); E.renderer.shadowMap.needsUpdate=true; return true; }}); });
     addCol(2,xf-0.04,xw,z0,z1,b,b+T0+0.03,'w');
