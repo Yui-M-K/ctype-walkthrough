@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261026n">
+<link rel="stylesheet" href="lib/storeys.css?v=20261026o">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261026n"></script>
-<script src="lib/furniture.js?v=20261026n"></script>
-<script src="lib/catalog.js?v=20261026n"></script>
-<script src="lib/look.js?v=20261026n"></script>
-<script src="lib/houses.js?v=20261026n"></script>
-<script src="lib/perf.js?v=20261026n"></script>
-<script src="lib/finish.js?v=20261026n"></script>
-<script src="lib/storeys.js?v=20261026n"></script>
+<script src="lib/people.js?v=20261026o"></script>
+<script src="lib/furniture.js?v=20261026o"></script>
+<script src="lib/catalog.js?v=20261026o"></script>
+<script src="lib/look.js?v=20261026o"></script>
+<script src="lib/houses.js?v=20261026o"></script>
+<script src="lib/perf.js?v=20261026o"></script>
+<script src="lib/finish.js?v=20261026o"></script>
+<script src="lib/storeys.js?v=20261026o"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -1871,13 +1871,14 @@ modes:function(E){
   (function(){ const xf=WX(2,580)-TE/2, sg=M2(0x9aa894,{roughness:0.9}), za=WZ(2,580), zb=WZ(2,760); [[WZ(2,460)+TI/2,za,0,CH],[zb,WZ(2,850)-TE/2,0,CH],[za,zb,0,1.78],[za,zb,2.18,CH]].forEach(function(r){ B(DG[2],xf-0.003,xf,b[2]+r[2],b[2]+r[3],r[0],r[1],sg); }); })();   // on the bed's head wall (east), round the strip window
   /* B. cat-safe plants: kentia palm in the living corner, olive tree on the 3F balcony and one at the porch */
   const pot=function(g,x,z,y,r,h,col){ const pm=new T.Mesh(new T.CylinderGeometry(r,r*0.82,h,28),M2(col,{roughness:0.6})); pm.position.set(x,y+h/2,z); pm.castShadow=true; g.add(pm); const so=new T.Mesh(new T.CylinderGeometry(r*0.92,r*0.92,0.01,24),M2(0x3b2e24)); so.position.set(x,y+h-0.03,z); g.add(so); return y+h-0.03; };
-  const palm=function(g,x,z,y,wx,wz){ const top=pot(g,x,z,y,0.17,0.36,0xe9e4da), fm=lam(0x5f8f45,{roughness:0.6}), sm=M2(0x6b6a3e), inR=function(v){ return !(v.x>wx-0.01||v.z>wz-0.01); };   // wx, wz: wall faces the fronds must stay inside
+  const LEAF=(function(){ const sh=new T.Shape(); sh.moveTo(0,0); sh.quadraticCurveTo(0.35,0.017,1,0); sh.quadraticCurveTo(0.35,-0.017,0,0); const g=new T.ShapeGeometry(sh,3); g.rotateX(-Math.PI/2); return g; })();   // a tapered, pointed leaflet shared by every frond
+  const palm=function(g,x,z,y,wx,wz){ const top=pot(g,x,z,y,0.17,0.36,0xe9e4da), fm=lam(0x5f8f45,{roughness:0.6,side:T.DoubleSide}), sm=M2(0x6b6a3e), inR=function(v){ return !(v.x>wx-0.01||v.z>wz-0.01); };   // wx, wz: wall faces the fronds must stay inside
     for(let f=0;f<11;f++){ const a=f/11*Math.PI*2+rnd()*0.4, rise=0.8+rnd()*0.7, ca=Math.cos(a), sa=Math.sin(a), room=Math.min(ca>0.01?(wx-x)/ca:9,sa>0.01?(wz-z)/sa:9)-0.15, reach=Math.max(0.12,Math.min(0.5+rnd()*0.3,room));
       const cv=new T.QuadraticBezierCurve3(new T.Vector3(x,top,z),new T.Vector3(x+ca*reach*0.3,top+rise*1.1,z+sa*reach*0.3),new T.Vector3(x+ca*reach,top+rise*0.7,z+sa*reach));
       g.add(new T.Mesh(new T.TubeGeometry(cv,12,0.006,5),sm));
       for(let k=3;k<=17;k++){ const u=k/18, p=cv.getPoint(u), tg=cv.getTangent(u), len=0.26*Math.sin(Math.PI*u)+0.05;
         [-1,1].forEach(function(s2){ const side=new T.Vector3().crossVectors(tg,new T.Vector3(0,1,0)).normalize().multiplyScalar(s2), dir=side.clone().multiplyScalar(0.8).add(new T.Vector3(0,-0.55,0)).add(tg.clone().multiplyScalar(0.35)).normalize();
-          if(!inR(p.clone().addScaledVector(dir,len))) return; const lf=new T.Mesh(new T.BoxGeometry(len,0.002,0.028),fm); lf.quaternion.setFromUnitVectors(new T.Vector3(1,0,0),dir); lf.position.copy(p).addScaledVector(dir,len/2); g.add(lf); }); } }
+          if(!inR(p.clone().addScaledVector(dir,len))) return; const lf=new T.Mesh(LEAF,fm); lf.scale.x=len; lf.quaternion.setFromUnitVectors(new T.Vector3(1,0,0),dir); lf.position.copy(p).addScaledVector(dir,len/2); g.add(lf); }); } }
     return top; };
   const olive=function(g,x,z,y,sc){ const top=pot(g,x,z,y,0.16*sc,0.34*sc,0xc9a98a), tr=M2(0x7a6a55), lv=lam(0x8c9a6c,{roughness:0.75}), lv2=lam(0x6f7d55,{roughness:0.75});
     const t1=new T.Mesh(new T.CylinderGeometry(0.018*sc,0.03*sc,1.0*sc,7),tr); t1.position.set(x+0.02,top+0.5*sc,z); t1.rotation.z=-0.08; t1.castShadow=true; g.add(t1);
