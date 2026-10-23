@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261025t">
+<link rel="stylesheet" href="lib/storeys.css?v=20261025u">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -28,7 +28,7 @@
       <button id="tEdit" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">擺放家具（拖曳移動、旋轉、從型錄拿新的）</button>
       <button id="tTv" class="tog" type="button" aria-pressed="false" hidden>電視開機</button>
       <button id="tCurt" class="tog" type="button" aria-pressed="false" hidden>窗簾全部拉上</button>
-      <button id="tHeat" class="tog" type="button" aria-pressed="false">顯示地暖範圍（客廳）</button>
+      <button id="tHeat" class="tog" type="button" aria-pressed="false">顯示地暖範圍（兩區）</button>
       <button id="tRail" class="tog" type="button" aria-pressed="true">樓梯扶手：單側（西側）</button>
       <button id="tDecor" class="tog" type="button" aria-pressed="true">美化佈置</button>
       <button id="tDaily" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">日常模式（他在 3F 工作、她在 2F 看電視）</button>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261025t"></script>
-<script src="lib/furniture.js?v=20261025t"></script>
-<script src="lib/catalog.js?v=20261025t"></script>
-<script src="lib/look.js?v=20261025t"></script>
-<script src="lib/houses.js?v=20261025t"></script>
-<script src="lib/perf.js?v=20261025t"></script>
-<script src="lib/finish.js?v=20261025t"></script>
-<script src="lib/storeys.js?v=20261025t"></script>
+<script src="lib/people.js?v=20261025u"></script>
+<script src="lib/furniture.js?v=20261025u"></script>
+<script src="lib/catalog.js?v=20261025u"></script>
+<script src="lib/look.js?v=20261025u"></script>
+<script src="lib/houses.js?v=20261025u"></script>
+<script src="lib/perf.js?v=20261025u"></script>
+<script src="lib/finish.js?v=20261025u"></script>
+<script src="lib/storeys.js?v=20261025u"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -159,7 +159,7 @@ notes:[
   [1,577,304,'エコキュート 廚房遙控器','廚房走道東端牆上的リモコンニッチ（淺凹槽，和廚房燈開關收在一起），走道正中、離地約 1.3 m，煮飯時一轉頭就看得到，從客廳看不到：設定給水溫度、按「湯はり」自動放洗澡水'],[2,335,145,'エコキュート 浴室遙控器','浴室門旁的西牆，防水型：放洗澡水、追い焚き、和廚房通話'],
   [0,470,170,'地板點檢口（45 × 45 cm）','儲藏室地板，鋁框蓋和地板齊平，檢查地板下的給排水管'],[2,170,770,'天花板點檢口（45 × 45 cm）','3F 更衣間天花板，白框齊平，進屋頂內部檢查配線・防水'],
   [2,290,-30,'雨水槽・落水管','陸屋根往北排水：北側簷口的方形雨水槽，北面兩個角各一支 60 mm 落水管接到地面的排水井；玄關雨遮和陽台各有小出水口'],
-  [1,150,380,'電燈開關（全屋）','每個房間門邊離地 120 cm 一組寬版開關（Panasonic アドバンス系列風），一顆按鈕一個迴路，上方印小字；客廳、餐桌、主臥、床頭燈、書房、鏡子房、浴室用調光開關（按鈕旁一條調光滑桿，長按調亮暗）；樓梯每一層的上下兩端都能開關（三路開關）；玄關一組可同時開門廊和庭院燈；Nest Hub 情境：「晚安」全關、「我回來了」開玄關＋客廳、「電影」客廳調到 20%'],[1,300,500,'插座（全屋）','每個用電設備旁都有插座、電線不橫過走道：每台壁掛冷氣旁一個高位專用插座；洗脫烘上方接地插座；三間廁所的免治馬桶旁低位接地插座；貓砂機、自動餵食器＋飲水機；3D 列印機（附 USB-C）；升降餐桌下的地板插座、沙發和按摩椅的地板插座、吹風機的地板插座；客廳出窗兩側附 USB-C；書桌、床頭、淺書架附 USB-C；戶外防水插座四個（庭院、陽台、門廊、車道）；IH 200V、洗碗機、冰箱、エコキュート、三溫暖、浴室暖房乾燥機、脫衣間換氣暖房機、EV 充電樁都是專用迴路'],[1,410,5,'紗窗','所有可開的窗和落地窗都有紗窗（裝在外側軌道、鋁框，深灰細網，從屋內看出去稍暗、隱約看得到網格），浴室・廁所的霧面窗也有；樓梯的固定窗不能開，所以沒有'],
+  [1,150,380,'電燈開關（全屋）','每個房間門邊離地 120 cm 一組寬版開關（Panasonic アドバンス系列風），一顆按鈕一個迴路，上方印小字；客廳、餐桌、主臥、床頭燈、書房、鏡子房、浴室用調光開關（按鈕旁一條調光滑桿，長按調亮暗）；樓梯每一層的上下兩端都能開關（三路開關）；玄關一組可同時開門廊和庭院燈；Nest Hub 情境：「晚安」全關、「我回來了」開玄關＋客廳、「電影」客廳調到 20%'],[1,300,500,'插座（全屋）','每個用電設備旁都有插座、電線不橫過走道：每台壁掛冷氣旁一個高位專用插座；洗脫烘上方接地插座；三間廁所的免治馬桶旁低位接地插座；貓砂機、自動餵食器＋飲水機；3D 列印機（附 USB-C）；升降餐桌下的地板插座、沙發和按摩椅的地板插座、吹風機的地板插座；客廳出窗兩側附 USB-C；書桌、床頭、淺書架附 USB-C；戶外防水插座四個（庭院、陽台、門廊、車道）；IH 200V、洗碗機、冰箱、エコキュート、床暖房熱源機 200V、三溫暖、浴室暖房乾燥機、脫衣間換氣暖房機、EV 充電樁都是專用迴路'],[1,410,5,'紗窗','所有可開的窗和落地窗都有紗窗（裝在外側軌道、鋁框，深灰細網，從屋內看出去稍暗、隱約看得到網格），浴室・廁所的霧面窗也有；樓梯的固定窗不能開，所以沒有'],
   [1,219,232,'滅火器（Tiger ECO NEUT 1 L）','Tiger ECO NEUT 家用中性強化液滅火器（1 L，各樓層一支）：2F 書房門與走道口之間的牆邊・3F 走廊東牆（洗衣間門與主臥門之間，離樓梯口近）・1F 玄關廳東牆；都貼牆放、不在門的開關範圍與走道上；法規上獨棟住宅不強制，放在逃生方向上、離爐子 2–3 m'],
   [1,300,560,'智慧照明（Google Home）','客廳、主臥、書房、鏡子房、玄關・門廊・庭院的燈接 Google Home：一般燈用支援 Google（Matter）的智慧開關（不用換燈泡），要調顏色的間接燈帶・吊燈・床頭燈用 Philips Hue；可語音「Hey Google，晚安」一次關燈，日落自動亮門廊和庭院燈，早上主臥燈慢慢亮'],
   [1,553,545,'Google Nest Hub（客廳）','電視櫃北端，控制全屋智慧燈・窗簾・看門口監視器'],[2,566,560,'Google Nest Hub（主臥）','床頭北側，鬧鐘・喚醒燈・睡前一次關燈'],
@@ -169,7 +169,9 @@ notes:[
   [0,218,966,'水錶（量水器）','自來水從前面道路接進來：腳踏車停放區東南角（腳踏車和車庫門柱之間）、靠道路邊界的地面量水器箱，藍色樹脂蓋約 30 × 20 cm、和地面齊平，掀開小窗就能讀表；不在大門的開關範圍和走往門廊的動線上'],
   [1,165,172,'走道感應燈','拱門後面的走道：人體感應嵌燈，晚上去廁所自動亮'],[2,40,40,'三溫暖燈','耐熱型，裝在室內角落的杉木格柵後面'],[2,545,850,'陽台壁燈','防雨型，暖光，傍晚自動亮'],
   [1,57,60,'淋浴間・浴室燈','防濕型嵌燈（密封霧面燈罩）'],[0,57,322,'廁所・樓梯・收納的燈','人體感應或開門就亮，不接智慧控制'],
-  [1,300,600,'床暖房（地暖）','LDK 全面鋪設。選單「顯示地暖範圍（客廳）」可看到範圍'],
+  [1,300,600,'床暖房（地暖）','溫水式：地板下的細管裡流溫水，熱源是北側通路的床暖房專用熱泵（和エコキュート分開）；LDK 全面鋪設，分客廳、餐廳・廚房兩區，各自開關和強弱，用樓梯口的地暖控制面板操作。選單「顯示地暖範圍（兩區）」可看到兩區的範圍'],
+  [1,119.5,410,'地暖控制面板','有線面板，在樓梯上來進客廳的牆上、開關旁邊同高：分客廳、餐廳廚房兩區，各自開關和強弱，小螢幕顯示目前強度，可設定時（起床前、回家前自動開）；不接 Google Home，地暖要 30–60 分才會熱，用定時就好'],
+  [0,440,-30,'床暖房熱源機（熱泵）','溫水式地暖專用的室外熱泵（約 80 × 30 × 65 cm），放在北側通路エコキュート儲熱水槽和熱泵之間，墊塑膠腳、避開エコキュート的配管蓋；出風口朝北側圍籬，前方約 63 cm，通路仍可通行和維修。往返兩條保溫管從機器西側沿外牆的配管蓋（在儲藏室窗戶西邊）往上，進 2F 樓板，接到廚房下方的分歧集管，再分成客廳和餐廳廚房兩區；200V 專用迴路'],
   [1,361,434.5,'抽拉式水龍頭','蓮蓬頭可拉出：拉出斜沖 → 換角度沖 → 收回，附金屬軟管'],
   [1,361,417.5,'廚餘處理機','裝在水槽下，排水口是橡膠防濺蓋；台面有氣壓開關，打開水槽下櫃可看到本體'],
   [1,433.5,385,'嵌入式洗碗機','Panasonic NP-60MS8W（寬 60 cm、抽屜式、門片和廚房同款白色）：本體 59.8 × 62.7 × 45 cm，約 7 人份；下面是放洗碗機洗劑的收納抽屜。官方要求檯面深 65 cm 以上，半島目前約 64 cm，實際施工要跟廚具廠確認'],
@@ -1289,6 +1291,7 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,245)-TI/2-WZ(2,19
 })();
 [[0,57,325],[1,85,140],[1,90,28],[2,130,170],[2,270,175]].forEach(function(q){ const y=E.base(q[0])+E.CH, x=WX(q[0],q[1]), z=WZ(q[0],q[2]), oc={cast:false}, wh=lam(0xf4f4f1,{roughness:0.35}), sl=lam(0x9a9c98,{roughness:0.6});   // ceiling exhaust grille in every toilet, the shower and the washroom (the bath has its dryer)
   bx(LG[q[0]],x-0.11,x+0.11,z-0.11,z+0.11,y-0.012,y-0.002,wh,oc); for(let i=0;i<7;i++) bx(LG[q[0]],x-0.085,x+0.085,z-0.075+i*0.025,z-0.065+i*0.025,y-0.0125,y-0.012,sl,oc); });   // every toilet: roll holder by the seat and a small sanitary bin
+fixture(1,Catalog.heaterPanel('床暖房',['客廳開關','客廳強弱','餐廚開關','餐廚強弱'],['起床前','回家前','定時'],1.2,'客廳 3 ・ 餐廚 2'),WX(1,115)+TI/2,WZ(1,410),0);   // floor-heating panel at the stair-side entrance to the living room, beside the switch plate
 fixture(1,Catalog.ventHeater(E.CH),WX(1,165),WZ(1,40),3);   // 2F changing room: ventilation heater over where you undress, blowing south, clear of the doorway
 fixture(1,Catalog.heaterPanel('換氣暖房機',['換氣','暖房','涼風','停止'],['15分','30分','60分'],1.2),WX(1,215)-TI/2,WZ(1,104),2);   // its panel inside the changing room, beside the door
 fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥','涼風','停止'],['1h','3h','6h'],1.2),WX(2,330)-TI/2,WZ(2,152),2);   // bath heater-dryer panel in the washroom, beside the bath door, outside the wet zone
@@ -1676,6 +1679,15 @@ fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥
       [0.24,0.17,0.1].forEach(function(r){ ring(G,fx,y0+0.33,hz0-0.006,r,0); }); bx(G,fx-0.24,fx+0.24,hz0-0.009,hz0-0.003,y0+0.327,y0+0.333,gr,oc);
       bx(G,hx1-0.25,hx1-0.05,hz0-0.003,hz0,y0+0.52,y0+0.58,label('エコキュート'),oc); bx(G,hx0-0.025,hx0,hz0+0.04,hz1-0.04,y0+0.1,y0+0.32,gr); })();
     bx(LG[0],tx1,hx0-0.025,zw-0.1,zw-0.02,G0,G0+0.08,cov); addCol(0,tx0-0.04,tx1+0.04,tz0-0.04,tz1,G0,G0+1.92,'w'); addCol(0,hx0-0.03,hx1,hz0-0.02,hz1,G0,G0+0.8,'w'); })();
+  /* floor-heating heat pump (温水式床暖房の熱源機, 80 W x 30 D x 65 H): between the EcoCute tank and its heat pump, on blocks clear of their pipe cover, fan facing the north screen (about 63 cm in front);
+     the supply and return pipes rise in a cover west of the storage-room window into the 2F floor, to the header under the kitchen */
+  (function(){ const zw=WZ(0,0)-TE/2, x0=4.0, x1=4.8, zb=zw-0.03, zf=zb-0.3, y0=G0+0.12, fx=x0+0.42, G=new THREE.Group(); LG[0].add(G);
+    [x0+0.06,x1-0.16].forEach(function(x){ bx(G,x,x+0.1,zf-0.02,zw-0.11,G0,y0,pad,oc); });   // plastic blocks, in front of the EcoCute pipe cover
+    bx(G,x0,x1,zf,zb,y0,y0+0.65,wh); const disc=new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.22,0.006,36),dk); disc.rotation.x=Math.PI/2; disc.position.set(fx,y0+0.33,zf-0.002); G.add(disc);
+    [0.22,0.155,0.09].forEach(function(r){ ring(G,fx,y0+0.33,zf-0.006,r,0); }); bx(G,fx-0.22,fx+0.22,zf-0.009,zf-0.003,y0+0.327,y0+0.333,gr,oc); bx(G,fx-0.003,fx+0.003,zf-0.009,zf-0.003,y0+0.11,y0+0.55,gr,oc);
+    bx(G,x1-0.3,x1-0.06,zf-0.003,zf,y0+0.5,y0+0.56,label('床暖房'),oc); bx(G,x0-0.025,x0,zf+0.04,zb-0.04,y0+0.1,y0+0.32,gr);   // label, valve cover on the west end
+    bx(G,x0-0.09,x0-0.01,zw-0.075,zw,y0+0.12,E.base(1)-0.05,cov); bx(G,x0-0.09,x0,zw-0.085,zw-0.02,y0+0.1,y0+0.2,cov);   // pipe cover up the wall into the 2F floor
+    addCol(0,x0-0.09,x1,zf-0.02,zw,G0,y0+0.65,'w'); })();
   /* mirror room (1F) and study (2F): two units on a 2-tier stand against the north wall near the NW corner, fans facing north; built in a frame turned so local -x is north */
   (function(){ const G=new THREE.Group(); G.rotation.y=-Math.PI/2; LG[0].add(G);   // local (x,z) = world (z,-x)
     const xw=WZ(0,0)-TE/2, xf=xw-0.4, z0=-1.1, z1=-0.3, zc=(z0+z1)/2, cz0=z1+0.08, cz1=z1+0.18, y1=G0+0.12, y2=G0+0.8;
@@ -1875,7 +1887,9 @@ modes:function(E){
 })();
 (function(){                                   // floor heating: show the heated zone as a warm glow on the living room floor
   const warm=FL.wood.clone(); warm.emissive.setHex(0x5a2e10); warm.emissiveIntensity=0.35;
-  $('tHeat').addEventListener('click',function(){ const v=this.getAttribute('aria-pressed')!=='true'; btn('tHeat',v); ldkFloors.forEach(function(m){ m.material=v?warm:FL.wood; }); });
+  const heatZ=new THREE.Group(); heatZ.visible=false; LG[1].add(heatZ);   // the two heating zones tinted over the warm floor: living (orange) and dining-kitchen (amber)
+  [[0xff7a3a,[[115,520,580,850]]],[0xffc23a,[[115,225,380,520],[380,205,580,520]]]].forEach(function(z){ const mt=new THREE.MeshBasicMaterial({color:z[0],transparent:true,opacity:0.22,depthWrite:false}); z[1].forEach(function(r){ const m=new THREE.Mesh(new THREE.PlaneGeometry(WX(1,r[2])-WX(1,r[0])-0.04,WZ(1,r[3])-WZ(1,r[1])-0.04),mt); m.rotation.x=-Math.PI/2; m.position.set((WX(1,r[0])+WX(1,r[2]))/2,base(1)+0.006,(WZ(1,r[1])+WZ(1,r[3]))/2); m.renderOrder=2; heatZ.add(m); }); });
+  $('tHeat').addEventListener('click',function(){ const v=this.getAttribute('aria-pressed')!=='true'; btn('tHeat',v); ldkFloors.forEach(function(m){ m.material=v?warm:FL.wood; }); heatZ.visible=v; });
 })();
 /* sport: coffee table away, two players 1 m in front of the TV */
 const sportG=modeGroup(1);
