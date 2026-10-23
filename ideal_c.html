@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261028a">
+<link rel="stylesheet" href="lib/storeys.css?v=20261028b">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261028a"></script>
-<script src="lib/furniture.js?v=20261028a"></script>
-<script src="lib/catalog.js?v=20261028a"></script>
-<script src="lib/look.js?v=20261028a"></script>
-<script src="lib/houses.js?v=20261028a"></script>
-<script src="lib/perf.js?v=20261028a"></script>
-<script src="lib/finish.js?v=20261028a"></script>
-<script src="lib/storeys.js?v=20261028a"></script>
+<script src="lib/people.js?v=20261028b"></script>
+<script src="lib/furniture.js?v=20261028b"></script>
+<script src="lib/catalog.js?v=20261028b"></script>
+<script src="lib/look.js?v=20261028b"></script>
+<script src="lib/houses.js?v=20261028b"></script>
+<script src="lib/perf.js?v=20261028b"></script>
+<script src="lib/finish.js?v=20261028b"></script>
+<script src="lib/storeys.js?v=20261028b"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -656,20 +656,16 @@ fixtures:function(E){
     bx(LG[1],x0,x0+t,zb,zf,b+CT,b+NI,W); bx(LG[1],x1-t,x1,zb,zf,b+CT,b+NI,W); bx(LG[1],x0+t,x1-t,zb,zb+t,b+CT,b+NI,inner,oc); bx(LG[1],x0+t,x1-t,zb+t,zf-0.03,b+1.1-t,b+1.1+t,W);   // fixed shelf: the robot bay's ceiling; the old counter is now the cupboard's lower half
     carcass(x0,x1,zb,b+NI,b+BAND); carcass(x0,x1,zb,b+BAND,top);
     pins(x0,x1,zb,b+NI,b+BAND); pins(x0,x1,zb,b+BAND,top);
-    const lblM=function(txt,bg,fg,px,sub){ const c=document.createElement('canvas'); c.width=192; c.height=256; const g=c.getContext('2d'); g.fillStyle=bg; g.fillRect(0,0,192,256); g.fillStyle=fg; g.textAlign='center'; g.textBaseline='middle';
-      g.font='800 '+(px||40)+'px "Hiragino Sans","Noto Sans JP",sans-serif'; g.fillText(txt,96,sub?110:128); if(sub){ g.font='600 24px "Hiragino Sans","Noto Sans JP",sans-serif'; g.fillText(sub,96,170); } const tx=new THREE.CanvasTexture(c); tx.colorSpace=THREE.SRGBColorSpace; tx.anisotropy=4; return lam(0xffffff,{map:tx,roughness:0.55}); };
-    const pk=function(x,z,y,w,h,d,col,face){ const sm=lam(col,{roughness:0.6}); const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),[sm,sm,sm,sm,face,sm]); m.position.set(x,y+h/2,z); m.castShadow=true; LG[1].add(m); return m; };   // label on the front (+z)
-    const jar=function(x,z,y,h,fill,name){ const gl=lam(0xeef3f4,{roughness:0.06,transparent:true,opacity:0.35,depthWrite:false}); const c=new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.04,h*0.72,16),lam(fill,{roughness:0.95})); c.position.set(x,y+0.005+h*0.36,z); LG[1].add(c);
-      const g2=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.045,h,18),gl); g2.position.set(x,y+h/2,z); g2.renderOrder=2; LG[1].add(g2); const lid=new THREE.Mesh(new THREE.CylinderGeometry(0.047,0.047,0.025,18),lam(0xc9a77a,{roughness:0.6,map:M.oak.map||null})); lid.position.set(x,y+h+0.012,z); LG[1].add(lid);
-      const tg=new THREE.Mesh(new THREE.PlaneGeometry(0.045,0.022),lblM(name,'#f7f3ea','#3a3028',46)); tg.position.set(x,y+h*0.55,z+0.0455); LG[1].add(tg); };
-    [[0.055,0.2,0xf4f1ea,'米'],[0.145,0.2,0xe9c76a,'パスタ'],[0.235,0.18,0x8a5a3a,'大豆'],[0.325,0.18,0xd9c7a2,'オーツ'],[0.415,0.16,0xfbfaf5,'砂糖']].forEach(function(q){ jar(x0+q[0]+0.005,zb+0.22,b+1.1+t,q[1],q[2],q[3]); });   // clear storage jars over the robot bay
-    [['トマト',0xc8372f,'#c8372f'],['ツナ',0x2f6fb5,'#2f6fb5'],['コーン',0xe8b84a,'#b88a1a']].forEach(function(q,k){ const x=x0+0.06+k*0.08, z=zb+0.12, y=b+NI+t; const c=new THREE.Mesh(new THREE.CylinderGeometry(0.037,0.037,0.1,18),lam(0xd6d9dc,{roughness:0.3,metalness:0.7})); c.position.set(x,y+0.05,z); LG[1].add(c);
-      const w=new THREE.Mesh(new THREE.CylinderGeometry(0.0375,0.0375,0.07,18,1,true,-Math.PI/2,Math.PI),lblM(q[0],'#ffffff',q[2],40,'缶')); w.position.set(x,y+0.05,z); LG[1].add(w); });   // cans with paper labels
-    [[0.3,0xd8453c,'カップ麺'],[0.4,0xf2c33a,'カップ麺']].forEach(function(q){ const x=x0+q[0], y=b+NI+t; const c=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.035,0.1,18),[lblM('ヌードル','#ffffff','#'+q[1].toString(16).padStart(6,'0'),34),lam(q[1]),lam(q[1])]); c.position.set(x,y+0.05,zb+0.14); LG[1].add(c); });   // instant noodle cups
-    pk(x0+0.12,zb+0.36,b+NI+t,0.2,0.05,0.07,0xf2d36b,lblM('スパゲッティ','#f7e6a0','#1d4f9e',30,'500g')).rotation.x=0; pk(x0+0.36,zb+0.38,b+NI+t,0.16,0.08,0.05,0xd9a441,lblM('ポテチ','#f2c33a','#b3241c',38));   // pasta and a bag of crisps
-    const SG=new THREE.Group(); SG.userData.keep=true; LG[1].add(SG);                                               // the adjustable shelf in the cupboard over the counter, with cereal boxes on it
-    (function(){ const m=new THREE.Mesh(new THREE.BoxGeometry(x1-x0-2*t,t,zf-zb-t-0.03),inner); m.position.set((x0+x1)/2,0,(zb+t+zf-0.03)/2); SG.add(m);
-      [[-0.13,0.24,0xb26b5a,'グラノーラ'],[-0.025,0.22,0xf2c33a,'コーンフレーク'],[0.075,0.12,0x2a2a2a,'コーヒー'],[0.15,0.13,0x6b8f5a,'緑茶']].forEach(function(q,k){ const sm=lam(q[2],{roughness:0.6}), fc=lblM(q[3],'#'+q[2].toString(16).padStart(6,'0'),k===1?'#b3241c':'#ffffff',q[3].length>4?26:36); const o=k<2?new THREE.Mesh(new THREE.BoxGeometry(0.075,q[1],0.2),[sm,sm,sm,sm,fc,sm]):new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.04,q[1],18),[fc,sm,sm]); o.position.set((x0+x1)/2+q[0],t/2+q[1]/2,(zb+zf)/2+(k<2?0:0.06)); SG.add(o); }); })();   // cereal boxes, coffee and tea canisters
+    const pack=function(par,kind,o,x,y,z,ry,rx){ const g=Catalog.pack(kind,o); g.position.set(x,y,z); g.rotation.set(rx||0,ry||0,0); par.add(g); return g; };   // packaging told by form and print, no big words
+    [[0.055,0.2,'rice',0.78],[0.145,0.2,'oats',0.7],[0.235,0.18,'beans',0.62],[0.325,0.18,'lentil',0.55],[0.415,0.16,'sugar',0.66]].forEach(function(q){ pack(LG[1],'jar',{r:0.04,h:q[1],grain:q[2],fill:q[3]},x0+q[0]+0.005,b+1.1+t,zb+0.22,0); });   // glass jars with oak lids over the robot bay
+    [[0xffffff,0xc8372f,'tomato'],[0xf4efe2,0x2f6fb5,'fish'],[0x2f7a3a,0xe8b84a,'corn']].forEach(function(q,k){ pack(LG[1],'can',{r:0.037,h:0.105,c:q[0],a:q[1],m:q[2],seed:k+1},x0+0.06+k*0.08,b+NI+t,zb+0.12,0.3*k); });   // ribbed cans, pull tabs up
+    [[0xd8453c,0xf6efe2],[0xf2c33a,0x2f6b3a]].forEach(function(q,k){ pack(LG[1],'cup',{r:0.045,h:0.1,c:q[0],a:q[1],m:'noodle',seed:k+5},x0+0.3+k*0.1,b+NI+t,zb+0.14,0); });   // instant noodle cups under foil lids
+    pack(LG[1],'box',{w:0.2,h:0.07,d:0.05,c:0x1d4f9e,a:0xf7e6a0,m:'pasta',win:0xf3d77e,seed:9},x0+0.13,b+NI+t+0.025,zb+0.36,0,-Math.PI/2);   // spaghetti box lying flat, window up
+    pack(LG[1],'bag',{w:0.17,h:0.24,d:0.07,c:0xe2a72a,a:0xb3241c,m:'chips',seed:4},x0+0.36,b+NI+t+0.034,zb+0.36,0.2,-Math.PI/2);   // crisp bag lying flat, crimped seals
+    const SG=new THREE.Group(); SG.userData.keep=true; LG[1].add(SG);                                               // the adjustable shelf in the cupboard over the counter, with cereal, granola, coffee and tea on it
+    (function(){ const m=new THREE.Mesh(new THREE.BoxGeometry(x1-x0-2*t,t,zf-zb-t-0.03),inner); m.position.set((x0+x1)/2,0,(zb+t+zf-0.03)/2); SG.add(m); const cx=(x0+x1)/2, cz=(zb+zf)/2;
+      pack(SG,'box',{w:0.17,h:0.26,d:0.065,c:0xf2c33a,a:0xb3241c,m:'cereal',seed:11},cx-0.135,t/2,cz-0.02,0); pack(SG,'pouch',{w:0.12,h:0.22,d:0.07,c:0xb26b5a,a:0xf6efe2,m:'berry',seed:12},cx+0.02,t/2,cz,0);
+      pack(SG,'tin',{r:0.038,h:0.15,c:0x2a2a2a,a:0xc9a24a,m:'coffee',seed:13},cx+0.12,t/2,cz+0.05,0); pack(SG,'tin',{r:0.034,h:0.13,c:0x6b8f5a,a:0xf2efe2,m:'leaf',seed:14},cx+0.19,t/2,cz+0.04,0); })();
     const S_HI=b+1.588, S_LO=b+1.524; let sU=1, sT=1, sP=1, sL=null; const sSet=function(){ SG.position.set(0,S_LO+(S_HI-S_LO)*sU,0.06*Math.sin(Math.PI*sP)); }; sSet();
     addCol(1,x0,x1,zb,zf,b,b+CH,'w');
     /* the band over the appliance cabinet and over the fridge; a dark vent recess between the fridge and the band */
