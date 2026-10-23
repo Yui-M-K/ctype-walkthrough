@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261026g">
+<link rel="stylesheet" href="lib/storeys.css?v=20261026h">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261026g"></script>
-<script src="lib/furniture.js?v=20261026g"></script>
-<script src="lib/catalog.js?v=20261026g"></script>
-<script src="lib/look.js?v=20261026g"></script>
-<script src="lib/houses.js?v=20261026g"></script>
-<script src="lib/perf.js?v=20261026g"></script>
-<script src="lib/finish.js?v=20261026g"></script>
-<script src="lib/storeys.js?v=20261026g"></script>
+<script src="lib/people.js?v=20261026h"></script>
+<script src="lib/furniture.js?v=20261026h"></script>
+<script src="lib/catalog.js?v=20261026h"></script>
+<script src="lib/look.js?v=20261026h"></script>
+<script src="lib/houses.js?v=20261026h"></script>
+<script src="lib/perf.js?v=20261026h"></script>
+<script src="lib/finish.js?v=20261026h"></script>
+<script src="lib/storeys.js?v=20261026h"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -128,7 +128,7 @@ liftIds:{1:'lift',2:'lift'},
 editOrbit:{yaw:0,pitch:1.42,dist:20,tx:2.9,tz:4.3},
 /* rooms: storey, plan box, name, label, wall colour role (plan in cm: 5.8 x 8.5 m, x east / y south, the street on the south) */
 rooms:[
-  {l:0,x0:0,y0:0,x1:310,y1:300,n:'鏡子房',j:'約 6 帖',w:'peach'},{l:0,x0:310,y0:0,x1:580,y1:290,n:'儲藏室',j:'納戸',w:'peach'},
+  {l:0,x0:0,y0:0,x1:310,y1:300,n:'鏡子房',j:'約 5.7 帖',w:'peach'},{l:0,x0:310,y0:0,x1:580,y1:290,n:'儲藏室',j:'納戸',w:'peach'},
   {l:0,x0:0,y0:300,x1:115,y1:470,n:'廁所',j:'1 樓・樓梯下',w:'wc'},{l:0,x0:0,y0:470,x1:115,y1:645,n:'階梯',j:'1 樓 → 2 樓',w:'hall'},{l:0,x0:0,y0:645,x1:115,y1:700,n:'階梯',j:'1 樓 → 2 樓',w:'hall'},
   {l:0,x0:115,y0:300,x1:270,y1:720,n:'玄關廳',j:'ホール',w:'hall'},
   {l:0,x0:0,y0:700,x1:85,y1:790,n:'玄關',j:'鞋櫃',w:'hall'},{l:0,x0:85,y0:700,x1:115,y1:720,n:'玄關',j:'鞋櫃',w:'hall'},{l:0,x0:85,y0:720,x1:270,y1:790,n:'玄關',j:'土間',w:'hall'},{l:0,x0:0,y0:790,x1:270,y1:850,n:'玄關門廊',j:'ポーチ（直通車庫）',w:'outside'},
@@ -136,15 +136,15 @@ rooms:[
   {l:1,x0:0,y0:0,x1:115,y1:120,n:'淋浴間',j:'2 樓・從脫衣間進出',w:'bath'},{l:1,x0:0,y0:120,x1:115,y1:225,n:'廁所',j:'2 樓・附小洗手台',w:'wc'},
   {l:1,x0:115,y0:0,x1:215,y1:120,n:'脫衣間',j:'淋浴前',w:'utility'},{l:1,x0:115,y0:120,x1:215,y1:225,n:'走道',j:'通往廁所・脫衣間',w:'hall'},{l:1,x0:215,y0:0,x1:580,y1:205,n:'書房',j:'約 4.8 帖・3D 列印機',w:'mist'},{l:1,x0:215,y0:205,x1:371,y1:225,n:'書房',j:'約 4.8 帖・3D 列印機',w:'mist'},
   {l:1,x0:0,y0:225,x1:115,y1:345,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓',w:'hall'},{l:1,x0:0,y0:345,x1:115,y1:690,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓',w:'hall'},{l:1,x0:0,y0:690,x1:115,y1:850,n:'階梯',j:'2 樓 → 3 樓',w:'hall'},
-  {l:1,x0:371,y0:205,x1:580,y1:490,n:'廚房',j:'LDK',w:'oat'},
-  {l:1,x0:115,y0:225,x1:380,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},{l:1,x0:380,y0:490,x1:580,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},{l:1,x0:290,y0:850,x1:530,y1:945,n:'LDK',j:'約 23 帖',w:'oat'},
+  {l:1,x0:371,y0:205,x1:580,y1:490,n:'廚房',j:'帖數計入 LDK',w:'oat',noJo:1},
+  {l:1,x0:115,y0:225,x1:371,y1:850,n:'LDK',j:'約 18.2 帖',w:'oat'},{l:1,x0:371,y0:490,x1:580,y1:850,n:'LDK',j:'約 18.2 帖',w:'oat'},{l:1,x0:290,y0:850,x1:530,y1:945,n:'出窓',j:'ごろ寝區（離地 40 cm 的平台，不計入 LDK 帖數）',w:'oat',noJo:1},
   {l:2,x0:245,y0:850,x1:580,y1:945,n:'陽台',j:'吧台・植物',w:'outside'},
   {l:2,x0:0,y0:0,x1:160,y1:150,n:'三溫暖',j:'1.5 × 1.4 m・從洗面室進出',w:'utility'},{l:2,x0:0,y0:150,x1:160,y1:245,n:'廁所',j:'3 樓・從洗面室進出',w:'wc'},
   {l:2,x0:160,y0:0,x1:330,y1:225,n:'洗面室',j:'洗面・脫衣',w:'utility'},{l:2,x0:330,y0:0,x1:580,y1:175,n:'浴室',j:'1624 整體浴室・浴缸 1.6 m',w:'bath'},
   {l:2,x0:245,y0:225,x1:580,y1:460,n:'洗衣更衣間',j:'洗脫烘・吊衣桿',w:'dress'},{l:2,x0:330,y0:175,x1:580,y1:225,n:'洗衣更衣間',j:'洗脫烘・吊衣桿',w:'dress'},
   {l:2,x0:0,y0:245,x1:115,y1:360,n:'階梯',j:'3 樓 ⇄ 2 樓',w:'hall'},{l:2,x0:0,y0:360,x1:115,y1:690,n:'階梯',j:'3 樓 ⇄ 2 樓',w:'hall'},
   {l:2,x0:115,y0:245,x1:245,y1:690,n:'走廊',j:'廊下',w:'hall'},{l:2,x0:160,y0:225,x1:245,y1:245,n:'走廊',j:'廊下',w:'hall'},
-  {l:2,x0:245,y0:460,x1:580,y1:850,n:'主臥',j:'約 6.5 帖',w:'oat'},
+  {l:2,x0:245,y0:460,x1:580,y1:850,n:'主臥',j:'約 8.1 帖',w:'oat'},
   {l:2,x0:0,y0:690,x1:245,y1:850,n:'更衣間',j:'WIC・換季衣物',w:'dress'}
 ],
 /* accent walls: TV wall in the living room (sage), head wall of the bedroom (mist), north wall of the study (peach) */

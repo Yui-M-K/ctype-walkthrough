@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家（寬敞版） 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261026g">
+<link rel="stylesheet" href="lib/storeys.css?v=20261026h">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -46,7 +46,7 @@
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
     <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿，兩指一起拖曳可轉向與抬頭低頭；電腦：滑鼠拖曳轉向，WASD／方向鍵移動，Shift 加速，Ctrl 蹲下（再按一次站起來）。走近門或家具並面向它，畫面下方會列出操作按鈕；電腦上也可以把滑鼠移到東西上（會亮框並顯示動作）直接點擊，或按 E 互動（沒指著東西時 E 操作列表第一個，1–3 鍵選列表）。方向鍵左右可原地轉向。階梯直接走上去就會換樓層。「俯瞰」可選擇看哪一層（屋頂與上層會被拿掉）。</p>
-    <p class="help"><b>這棟房子：</b>依「住宅要望書」設計的三層透天，建物 6.3 × 8.5 m（每層約 16 坪）、土地約 52 坪。1F 多功能室（鏡牆・隔音板・緣側）與納戸、玄關貓用柵欄防脫逃、車庫含 Tesla 充電樁；2F 約 23 帖的 LDK（地暖、間接照明、對面式廚房、貓走道）、浴室含單人三溫暖、洗面脫衣室；3F 主臥＋更衣間、可日後隔成兩間的書房。全室無段差、拉門為主、樓梯雙側扶手與感應腳燈。鄰地三面 1.8 m 木格柵、臨路矮牆＋門扉＋伸縮門圍起整塊地。耐震・防火・隔音無法在 3D 呈現，以說明代替。主臥的窗簾會依「日照時間」自動開關。</p>
+    <p class="help"><b>這棟房子：</b>依「住宅要望書」設計的三層透天，建物 6.3 × 8.5 m（每層約 16 坪）、土地約 52 坪。1F 多功能室（鏡牆・隔音板・緣側）與納戸、玄關貓用柵欄防脫逃、車庫含 Tesla 充電樁；2F 約 21 帖的 LDK（地暖、間接照明、對面式廚房、貓走道）、浴室含單人三溫暖、洗面脫衣室；3F 主臥＋更衣間、可日後隔成兩間的書房。全室無段差、拉門為主、樓梯雙側扶手與感應腳燈。鄰地三面 1.8 m 木格柵、臨路矮牆＋門扉＋伸縮門圍起整塊地。耐震・防火・隔音無法在 3D 呈現，以說明代替。主臥的窗簾會依「日照時間」自動開關。</p>
   </div>
 </div>
 <div id="load">載入 3D 場景…<small>首次開啟需要幾秒鐘</small></div>
@@ -55,14 +55,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261026g"></script>
-<script src="lib/furniture.js?v=20261026g"></script>
-<script src="lib/catalog.js?v=20261026g"></script>
-<script src="lib/look.js?v=20261026g"></script>
-<script src="lib/houses.js?v=20261026g"></script>
-<script src="lib/perf.js?v=20261026g"></script>
-<script src="lib/finish.js?v=20261026g"></script>
-<script src="lib/storeys.js?v=20261026g"></script>
+<script src="lib/people.js?v=20261026h"></script>
+<script src="lib/furniture.js?v=20261026h"></script>
+<script src="lib/catalog.js?v=20261026h"></script>
+<script src="lib/look.js?v=20261026h"></script>
+<script src="lib/houses.js?v=20261026h"></script>
+<script src="lib/perf.js?v=20261026h"></script>
+<script src="lib/finish.js?v=20261026h"></script>
+<script src="lib/storeys.js?v=20261026h"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -101,7 +101,7 @@ liftIds:{1:'lift',2:'lift2'},
 editOrbit:{yaw:0,pitch:1.42,dist:22,tx:3.15,tz:4.6},
 /* rooms: storey, plan box, name, label, wall colour role */
 rooms:[
-  {l:0,x0:0,y0:0,x1:330,y1:350,n:'多功能室',j:'約 7 帖',w:'peach'},{l:0,x0:330,y0:0,x1:630,y1:350,n:'納戸',j:'收納',w:'utility'},
+  {l:0,x0:0,y0:0,x1:330,y1:350,n:'多功能室',j:'約 7.1 帖',w:'peach'},{l:0,x0:330,y0:0,x1:630,y1:350,n:'納戸',j:'收納',w:'utility'},
   {l:0,x0:250,y0:350,x1:380,y1:500,n:'廁所',j:'1 樓',w:'wc'},{l:0,x0:130,y0:350,x1:250,y1:600,n:'走廊',j:'廊下',w:'hall'},{l:0,x0:250,y0:500,x1:380,y1:600,n:'走廊',j:'廊下',w:'hall'},
   {l:0,x0:0,y0:350,x1:130,y1:720,n:'階梯',j:'1 樓 → 2 樓',w:'hall'},{l:0,x0:0,y0:720,x1:130,y1:850,n:'階梯',j:'1 樓 → 2 樓',w:'hall'},
   {l:0,x0:130,y0:600,x1:380,y1:740,n:'玄關廳',j:'ホール',w:'genkan'},{l:0,x0:130,y0:740,x1:250,y1:850,n:'玄關廳',j:'ホール',w:'genkan'},{l:0,x0:250,y0:740,x1:380,y1:850,n:'玄關',j:'土間',w:'genkan'},
@@ -109,13 +109,13 @@ rooms:[
   {l:1,x0:0,y0:0,x1:250,y1:220,n:'浴室',j:'浴缸 + 三溫暖',w:'bath'},{l:1,x0:340,y0:0,x1:430,y1:120,n:'廁所',j:'2 樓',w:'wc'},{l:1,x0:250,y0:0,x1:340,y1:120,n:'洗面室',j:'洗面・脫衣',w:'utility'},{l:1,x0:250,y0:120,x1:430,y1:300,n:'洗面室',j:'洗面・脫衣',w:'utility'},
   {l:1,x0:430,y0:0,x1:630,y1:250,n:'廚房',j:'LDK',w:'oat'},{l:1,x0:0,y0:220,x1:130,y1:390,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓',w:'hall'},
   {l:1,x0:0,y0:390,x1:130,y1:720,n:'階梯',j:'2 樓 ⇄ 1 / 3 樓',w:'hall'},{l:1,x0:0,y0:720,x1:130,y1:850,n:'階梯',j:'2 樓 → 3 樓',w:'hall'},
-  {l:1,x0:130,y0:220,x1:250,y1:300,n:'LDK',j:'約 23 帖',w:'oat'},{l:1,x0:130,y0:300,x1:430,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},{l:1,x0:430,y0:250,x1:630,y1:850,n:'LDK',j:'約 23 帖',w:'oat'},
+  {l:1,x0:130,y0:220,x1:250,y1:300,n:'LDK',j:'約 21.3 帖',w:'oat'},{l:1,x0:130,y0:300,x1:430,y1:850,n:'LDK',j:'約 21.3 帖',w:'oat'},{l:1,x0:430,y0:250,x1:630,y1:850,n:'LDK',j:'約 21.3 帖',w:'oat'},
   {l:1,x0:0,y0:850,x1:630,y1:1010,n:'陽台',j:'BBQ・日光浴',w:'outside'},
   {l:2,x0:0,y0:120,x1:130,y1:250,n:'廁所',j:'3 樓',w:'wc'},{l:2,x0:0,y0:0,x1:280,y1:120,n:'儲藏室',j:'棉被・換季',w:'utility'},{l:2,x0:130,y0:120,x1:280,y1:250,n:'儲藏室',j:'棉被・換季',w:'utility'},
   {l:2,x0:0,y0:250,x1:130,y1:390,n:'階梯',j:'3 樓 ⇄ 2 樓',w:'hall'},{l:2,x0:0,y0:390,x1:130,y1:720,n:'階梯',j:'3 樓 ⇄ 2 樓',w:'hall'},
   {l:2,x0:130,y0:250,x1:280,y1:560,n:'走廊',j:'廊下',w:'hall'},
-  {l:2,x0:280,y0:0,x1:630,y1:470,n:'書房',j:'約 10 帖・日後可隔成兩間',w:'mist'},
-  {l:2,x0:280,y0:470,x1:630,y1:850,n:'主臥',j:'約 8 帖',w:'oat'},
+  {l:2,x0:280,y0:0,x1:630,y1:470,n:'書房',j:'約 10.2 帖・日後可隔成兩間',w:'mist'},
+  {l:2,x0:280,y0:470,x1:630,y1:850,n:'主臥',j:'約 8.2 帖',w:'oat'},
   {l:2,x0:130,y0:560,x1:280,y1:850,n:'更衣間',j:'WIC',w:'dress'},{l:2,x0:0,y0:720,x1:130,y1:850,n:'更衣間',j:'WIC',w:'dress'}
 ],
 /* accent walls */
