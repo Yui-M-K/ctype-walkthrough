@@ -26,6 +26,8 @@
 - [Poly Haven](https://polyhaven.com/)（CC0）: lebombo（HDRI，環境光）, laminate_floor_02, wood_floor, white_planks_clean, plastered_wall, jogging_melange（法線・色）, rough_linen（色）, oak_veneer_01, oak_veneer_03
 - [ambientCG](https://ambientcg.com/)（CC0）: Tiles107, Tiles141, Tiles040, Tiles133A, Tiles105, Tiles071, Concrete031, Concrete008, Marble021
 
+2F 試作的 PBR 材質（`assets/textures/<名稱>/` 的 albedo・normal・rough，1K）：Poly Haven oak_wood_planks（2F 木地板，調色成原本的淺橡木）；ambientCG Marble025（廚房石英檯面）、Marble012（2F 淋浴間灰色大理石，去藍・柔化）、Leather025（電動躺椅沙發的合成皮）、Plaster001（2F 牆面的法線）。全部 CC0。
+
 直接用 `file://` 開啟時瀏覽器不允許載入貼圖，會自動改用程式繪製的材質；請用網址（http/https）開啟以看到完整質感。
 
 ## 3D モデル（`models/`）
