@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261025p">
+<link rel="stylesheet" href="lib/storeys.css?v=20261025q">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261025p"></script>
-<script src="lib/furniture.js?v=20261025p"></script>
-<script src="lib/catalog.js?v=20261025p"></script>
-<script src="lib/look.js?v=20261025p"></script>
-<script src="lib/houses.js?v=20261025p"></script>
-<script src="lib/perf.js?v=20261025p"></script>
-<script src="lib/finish.js?v=20261025p"></script>
-<script src="lib/storeys.js?v=20261025p"></script>
+<script src="lib/people.js?v=20261025q"></script>
+<script src="lib/furniture.js?v=20261025q"></script>
+<script src="lib/catalog.js?v=20261025q"></script>
+<script src="lib/look.js?v=20261025q"></script>
+<script src="lib/houses.js?v=20261025q"></script>
+<script src="lib/perf.js?v=20261025q"></script>
+<script src="lib/finish.js?v=20261025q"></script>
+<script src="lib/storeys.js?v=20261025q"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -252,7 +252,7 @@ build:function(E){
      storage room behind it, hall, genkan in front of the hall (cat gate at the step), powder room off the stair foot, garage */
   wall(0,0,0,580,0,TE,[{a:425,b:515,sill:1.0,head:2.0}]);   // storage room window at a living-room height, so it can become a child's room
   wall(0,0,0,0,790,TE,[{a:55,b:245,k:'slide2',mat:M.glass,head:2.15,screen:-1},{a:555,b:615,sill:1.5,head:2.3,fix:1}]);   // stair window above the low end of the rail
-  wall(0,0,790,274.5,790,TE,[{a:115,b:215,k:'door',hinge:'b',sw:1,mat:M.entry,head:2.18,handle:'bar',keypad:1,drop:0.15}]);    // front door set back 60 cm under the house: a covered porch that opens into the garage
+  wall(0,0,790,274.5,790,TE,[{a:115,b:215,k:'door',hinge:'a',sw:1,mat:M.entry,head:2.18,handle:'bar',keypad:1,drop:0.15}]);    // front door set back 60 cm under the house: hinged on the west, so the open leaf leaves the way east to the garage clear
   wall(0,0,850,270,850,TE,[{a:0,b:270,k:'open',head:2.25,jamb:false}]);   // no corner pier: the 2F floor cantilevers 60 cm over the porch
   wall(0,270,850,580,850,TE,[{a:276,b:575,k:'open',head:2.25}]);
   wall(0,580,0,580,850,TE,[{a:300,b:400,sill:1.6,head:2.1}]);
@@ -297,7 +297,7 @@ build:function(E){
   wall(1,115,0,115,120,TI,[{a:15,b:95,k:'door',fold:1,hinge:'a',sw:-1,mat:M.frost}]);   // shower door from the changing room: bi-fold, folding into the shower
   wall(1,115,120,115,225-TI*50,TI,[{a:140,b:210,k:'door',hinge:'a',sw:1}]);   // toilet door opens out into the passage, hinged at its north end
   wall(1,215,0,215,225-TI*50,TI,[{a:31,b:89,k:'open',sill:0.85,head:1.75,jamb:false}]);   // changing room niche, closed by a 10 cm build-out on the study side
-  wall(1,0,225,371+TI*50,225,TI,[{a:80,b:108,k:'open',sill:0.12,head:1.225,jamb:false},{a:125,b:205,k:'open',head:2.27,jamb:false},{a:233,b:317,k:'door',hinge:'a',sw:-1}]);   // study door slides inside the study, clear of the pantry
+  wall(1,0,225,371+TI*50,225,TI,[{a:80,b:108,k:'open',sill:0.12,head:1.225,jamb:false},{a:125,b:205,k:'open',head:2.27,jamb:false},{a:233,b:317,k:'door',hinge:'b',sw:-1}]);   // study door hinged on the east: the open leaf rests beside the jog bookshelf, the switch on the latch side
   wall(1,371-TI*50,205,580,205,TI); wall(1,371,205,371,225,TI);   // the study's jog stops at the pantry's east side, clear of the appliance cabinet
   wall(1,115,345,115,670,TI);
   slab(1,0,0,580,345); slab(1,115,345,580,645); slab(1,0,645,580,850);
@@ -313,12 +313,12 @@ build:function(E){
   wall(2,245,850,580,850,TE,[{a:250,b:530,k:'slide2',mat:M.glass,head:2.15,screen:1}]);
   /* 3F north (C): sauna and toilet on the stair side, washroom in the middle, bath to the east; the laundry closet (washer-dryer, rails) behind the washroom */
   wall(2,160,0,160,150,TI,[{a:5,b:145,k:'open',head:1.95}]);   // the sauna cabin's glass front fills this opening
-  wall(2,160,150,160,245-TI*50,TI,[{a:162,b:232,k:'door',hinge:'a',sw:1}]);
+  wall(2,160,150,160,245-TI*50,TI,[{a:155,b:220,k:'door',hinge:'a',sw:1}]);   // toilet door opens out into the washroom, its swing stops short of the washroom's own door
   wall(2,0,150,160,150,TI);
-  wall(2,0,245,160+TI*50,245,TI,[{a:81,b:109,k:'open',sill:0.12,head:1.225,jamb:false}]); wall(2,160,225,330+TI*50,225,TI,[{a:165,b:240,k:'slide',hinge:'a',face:1,outset:1},{a:250,b:325,k:'door',hinge:'b',sw:1}]);   // washroom doors: to the hall, and through to the laundry closet
+  wall(2,0,245,160+TI*50,245,TI,[{a:81,b:109,k:'open',sill:0.12,head:1.225,jamb:false}]); wall(2,160,225,330+TI*50,225,TI,[{a:165,b:240,k:'door',hinge:'b',sw:-1.11},{a:250,b:325,k:'door',hinge:'b',sw:1}]);   // washroom doors: from the hall (opens in, hinged on the east, clear of the toilet door), and through to the laundry closet
   wall(2,330-TI*50,175,580,175,TI); wall(2,330,175,330,225-TI*50,TI);
   wall(2,330,0,330,175,TI,[{a:45,b:125,k:'door',fold:1,hinge:'b',sw:1,mat:lam(0xf2f1ee,{roughness:0.35})}]);   // bi-fold bath door, folding into the bath
-  wall(2,245,225,245,460,TI,[{a:285,b:365,k:'slide',hinge:'b',face:-1}]);   // a sliding door from the hall, so the ironing board and the washroom door have the room to themselves
+  wall(2,245,225,245,460,TI,[{a:285,b:365,k:'slide',hinge:'b',pocket:1}]);   // a pocket sliding door from the hall: the leaf runs into the wall, clear of the photo wall and the extinguisher on the hall side
   wall(2,245,460,580,460,TI);
   wall(2,245,460,245,850,TI,[{a:482,b:562,k:'door',hinge:'a',sw:1}]);   // hinged at the corner so the open leaf folds back toward the headboard wall
   wall(2,0,690,245,690,TI,[{a:145,b:240,k:'slide',hinge:'a',face:1}]);   // 95 cm closet door, parks inside the closet clear of the cubbies
@@ -829,7 +829,7 @@ fixtures:function(E){
   fixture(2,Catalog.bathStool(),WX(2,420),WZ(2,128),0); fixture(2,Catalog.washBowl(),WX(2,455),WZ(2,150),0);   // stool facing the east wall's mirror, bowl by the wall
   fixture(2,Catalog.bathDryer(CH),WX(2,420),WZ(2,90),0); fixture(2,Catalog.laundryPole(CH,1.1,true),WX(2,420),WZ(2,40),1);   // ceiling dryer over the bath, the drying pole along the south side
   [[0,155,180],[0,192,560],[1,350,600],[1,470,330],[1,57,280],[2,412,590],[2,440,300],[2,180,480],[1,412,110]].forEach(function(q){ fixture(q[0],Catalog.smokeAlarm(CH),WX(q[0],q[1]),WZ(q[0],q[2]),0); });
-  fixture(1,Catalog.wallAC(2.34),WX(1,115)+TI/2,WZ(1,600),0); fixture(1,Catalog.acRemote(),WX(1,115)+TI/2,WZ(1,655),0); bx(LG[1],WX(1,115)+TI/2,WX(1,115)+TI/2+0.008,WZ(1,655)-0.035,WZ(1,655)+0.035,E.base(1)+2.0,E.base(1)+2.12,lam(0xf4f3ef,{roughness:0.35})); fixture(2,Catalog.wallAC(2.4),WX(2,300),WZ(2,460)+TI/2,3); fixture(1,Catalog.wallAC(2.3),WX(1,215)+TI/2+0.1,WZ(1,172),0); fixture(0,Catalog.wallAC(2.4),WX(0,310)-TI/2,WZ(0,150),2);   // living, bedroom, study (2F), mirror room
+  fixture(1,Catalog.wallAC(2.34),WX(1,115)+TI/2,WZ(1,600),0); fixture(1,Catalog.acRemote(),WX(1,115)+TI/2,WZ(1,655),0); bx(LG[1],WX(1,115)+TI/2,WX(1,115)+TI/2+0.008,WZ(1,655)-0.035,WZ(1,655)+0.035,E.base(1)+2.0,E.base(1)+2.12,lam(0xf4f3ef,{roughness:0.35})); fixture(2,Catalog.wallAC(2.4),WX(2,300),WZ(2,460)+TI/2,3); fixture(1,Catalog.wallAC(2.36),WX(1,215)+TI/2+0.1,WZ(1,172),0); fixture(0,Catalog.wallAC(2.4),WX(0,310)-TI/2,WZ(0,150),2);   // living, bedroom, study (2F), mirror room
   fixture(2,Catalog.acRemote(),WX(2,365),WZ(2,460)+TI/2,3); fixture(1,Catalog.acRemote(),WX(1,215)+TI/2+0.1,WZ(1,196),0); fixture(0,Catalog.acRemote(),WX(0,310)-TI/2,WZ(0,90),2);   // AC remotes beside each unit's door-side wall
   (function(){ const b=E.base(2), zs=WZ(2,460)-TI/2, xw=WX(2,245)+TI/2, xe=WX(2,580)-TE/2, D=0.6, zf=zs-D, top=b+CH-0.005, W=M.cabF, oak=M.oak, t=0.018, rv=0.003, oc={cast:false}, inn=lam(0xe1d7c7,{roughness:0.6}), kick=lam(0x8f887d,{roughness:0.8});   // laundry & dressing room: family wardrobe on the south wall
     const xs=[xw,xw+0.48,xw+1.28,xw+1.88,WX(2,520)];   // ironing | short-hang | long-hang | regular
@@ -1163,7 +1163,7 @@ fixtures:function(E){
     addCol(1,xt,xq,zn,zf,b,b+H,'f'); addCol(1,xq,xe,zn,zf,b,b+HC,'f'); addCol(1,xc,xe,zf,zs,b+yc,b+HC,'f'); addCol(1,xc,xe,zs-t,zs,b,b+HC,'f');
     [3.45,4.65].forEach(function(x){ bx(LG[1],x-0.06,x+0.06,zn,zn+0.008,b+0.82,b+0.9,lam(0xf4f3ef,{roughness:0.35})); bx(LG[1],x+0.02,x+0.04,zn+0.008,zn+0.009,b+0.85,b+0.855,lam(0x2b2c2e),oc); });   // outlets with USB-C over the desk, under the window
     [[WX(1,520)+0.05,xe]].forEach(function(r){ if(r[1]-r[0]>0.25) bx(LG[1],r[0],r[1],zn,zn+0.2,b+1.55,b+1.575,oak); });   // floating oak shelf east of the window
-    E.cylm(LG[1],WX(1,233)+0.06,WZ(1,225)-TI/2-0.86,0.015,0.015,b,b+0.03,lam(0x55595c,{roughness:0.8}),oc);   // floor door stop for the study door
+    E.cylm(LG[1],WX(1,317)+0.035,WZ(1,225)-TI/2-0.7,0.015,0.015,b,b+0.03,lam(0x55595c,{roughness:0.8}),oc);   // floor door stop for the study door
     (function(){ const x0=WX(1,322), x1=WX(1,371)-TI/2, zf2=WZ(1,205)-TI/2, zb2=WZ(1,225)-TI/2, top=b+CH-0.003, rnd=E.rnd||Math.random, oak2=M.oak;   // shallow floor-to-ceiling bookshelf in the 20 cm jog beside the study door
       bx(LG[1],x0,x0+t,zf2,zb2,b,top,W); bx(LG[1],x1-t,x1,zf2,zb2,b,top,W); bx(LG[1],x0,x1,zf2,zb2,b,b+0.08,kick,oc); bx(LG[1],x0,x1,zf2,zb2,top-t,top,W); bx(LG[1],x0+t,x1-t,zb2-0.008,zb2,b+0.08,top-t,inn,oc);
       const ys=[0.08,0.34,0.58,0.8,1.02,1.26,1.52,1.8,2.1]; ys.forEach(function(y){ bx(LG[1],x0+t,x1-t,zf2+0.005,zb2-0.008,b+y,b+y+t,W); });
@@ -1753,8 +1753,8 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,245)-TI/2-WZ(2,19
         if(t.indexOf('*')>=0){ const sl=new THREE.Mesh(new THREE.BoxGeometry(0.004,0.05,0.002),ln); sl.position.set(x+0.024,-0.008,0.015); G.add(sl); } });   // * = dimmer
       const lab=new THREE.Mesh(new THREE.PlaneGeometry(w-0.01,0.0125),tx(lb)); lab.position.set(0,0.052,0.0085); G.add(lab); };
     [[0,225,785.5,'N',['玄關','門廊','庭院']],[0,119.5,560,'E',['樓梯','走廊']],[0,265.5,330,'W',['鏡子房*']],
-     [1,119.5,380,'E',['樓梯','客廳*','餐桌*','間接燈*']],[1,577,330,'W',['廚房','手元燈']],[1,225,220.5,'N',['書房*','間接燈']],[1,210,130,'W',['走道']],
-     [2,119.5,370,'E',['樓梯','走廊']],[2,249.5,577,'E',['主臥*','床頭燈*','陽台']],[2,250,229.5,'S',['洗面室','浴室*','換氣']],[2,240,240,'W',['洗衣間']]].forEach(function(q){ plate.apply(null,q); }); })();
+     [1,119.5,380,'E',['樓梯','客廳*','餐桌*','間接燈*']],[1,577,330,'W',['廚房','手元燈']],[1,229.5,212,'E',['書房*','間接燈']],[1,210,212,'W',['走道']],
+     [2,119.5,370,'E',['樓梯','走廊']],[2,249.5,577,'E',['主臥*','床頭燈*','陽台']],[2,240,258,'W',['洗面室','浴室*','換氣','洗衣間']]].forEach(function(q){ plate.apply(null,q); }); })();
   /* fire extinguishers (Tiger ECO NEUT 1 L), one a floor, on the escape route */
   [[1,WX(1,219),WZ(1,225)+TI/2+0.07,3],[2,WX(2,245)-TI/2-0.07,WZ(2,385),2],[0,WX(0,270)-TI/2-0.07,WZ(0,600),2]].forEach(function(q){ fixture(q[0],Catalog.fireExtinguisher(),q[1],q[2],q[3]); });
 })();
