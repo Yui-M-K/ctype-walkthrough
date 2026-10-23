@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261025r">
+<link rel="stylesheet" href="lib/storeys.css?v=20261025s">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261025r"></script>
-<script src="lib/furniture.js?v=20261025r"></script>
-<script src="lib/catalog.js?v=20261025r"></script>
-<script src="lib/look.js?v=20261025r"></script>
-<script src="lib/houses.js?v=20261025r"></script>
-<script src="lib/perf.js?v=20261025r"></script>
-<script src="lib/finish.js?v=20261025r"></script>
-<script src="lib/storeys.js?v=20261025r"></script>
+<script src="lib/people.js?v=20261025s"></script>
+<script src="lib/furniture.js?v=20261025s"></script>
+<script src="lib/catalog.js?v=20261025s"></script>
+<script src="lib/look.js?v=20261025s"></script>
+<script src="lib/houses.js?v=20261025s"></script>
+<script src="lib/perf.js?v=20261025s"></script>
+<script src="lib/finish.js?v=20261025s"></script>
+<script src="lib/storeys.js?v=20261025s"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -1429,7 +1429,7 @@ fixture(2,Catalog.toilet({shelf:false,remote:{side:1,dist:WZ(2,245)-TI/2-WZ(2,19
   const pins=function(y0,y1,b){ [x0+t,b-t-0.003].forEach(function(x){ [zf+0.05,z1-0.06].forEach(function(z){ for(let y=y0+0.06;y<y1-0.05;y+=0.032) bx(LG[0],x,x+0.003,z-0.003,z+0.003,y-0.003,y+0.003,seam,oc); }); }); };   // shelf-pin holes every 32 mm
   pins(0,LO,xa); pins(HI,top,xe);
   const shelf=function(a,b,y){ bx(LG[0],a,b,zf+0.02,z1-t,y,y+t,W,oc); };
-  [0.18,0.36,0.54].forEach(function(y){ shelf(x0+t,xa-t,y); });   // one board across the whole width on every level, the top level tall enough for long boots [1.68,1.94,2.2].forEach(function(y){ shelf(x0+t,xe-t,y); });
+  [0.18,0.36,0.54].forEach(function(y){ shelf(x0+t,xa-t,y); }); [1.68,1.94,2.2].forEach(function(y){ shelf(x0+t,xe-t,y); });   // one board across the whole width on every level, the top level tall enough for long boots
   const pair=function(grp,cx,y,zc,s){ const sc=s[3]||1; [-1,1].forEach(function(sd){ const g=Catalog.shoe(s[0],s[1],s[2]); g.scale.setScalar(sc); g.rotation.y=Math.PI/2-sd*0.05; g.position.set(cx+sd*0.052*sc,y+0.001,zc+(sd>0?0.012:0)); g.traverse(function(o){ if(o.isMesh) o.castShadow=true; }); grp.add(g); }); };   // a pair, toes to the door, the right one a little back
   const SHOES=[['sneaker',0xf2efe8,0xf7f5f0,0.88],['loafer',0x3a2a20,0x6b4a33,1],['sneaker',0x2f3a4a,0xf1efe9,1],['pump',0xd9c3a5,0xb9a184,0.88],['loafer',0x1d1e21,0x1d1e21,1],['sneaker',0x9fb0bf,0xf1efe9,0.88],['sandal',0x8c5a3c,0xcdb89a,0.88],['pump',0x1d1e21,0x1d1e21,0.88],['sneaker',0x5a6b58,0xf1efe9,1],['loafer',0x8c5a3c,0x5c3a24,0.88],['sandal',0x1d1e21,0xb9a184,1]];   // hers 23.8 cm, his 27 cm
   let si=0; [t,0.18+t,0.36+t,HI+t,1.68+t].forEach(function(y){ (y>1?[x0+t,x0+t+0.249,x0+t+0.498]:[x0+t,x0+t+0.27]).forEach(function(xb){ pair(LG[0],xb+0.125,y,zf+0.2,SHOES[si++%SHOES.length]); }); });
@@ -1764,11 +1764,11 @@ lighting:function(E){
   /* 1F: battens in the garage and storage room, downlights along the hall and in the small rooms, a round light in the mirror room */
   light(0,155,180,0xffe2b8,0.5,7);
   batten(0,445,145,1.2,true,0.45); batten(0,350,570,1.2,false,0.5); batten(0,500,570,1.2,false,0.5);
-  [[192,400],[192,560],[192,720]].forEach(function(p){ downlight(0,p[0],p[1],0.35); }); downlight(0,57,322,0.25);   // toilet: under the landing, where the ceiling is full height (the flight runs over the rest) downlight(0,57,700,0.3);
+  [[192,400],[192,560],[192,720]].forEach(function(p){ downlight(0,p[0],p[1],0.35); }); downlight(0,57,322,0.25); downlight(0,57,700,0.3);   // toilet: under the landing, where the ceiling is full height (the flight runs over the rest)
   /* 2F: round smart lights over the living, dining and study, downlights along the kitchen counter and in the shower room, toilet and washroom, pendants over the island */
   light(1,350,660,0xffe2b8,0.5,7); pendant(1,165,430); downlight(1,240,285,0.3);   // dining pendant over the fold-out table; a downlight for the landing / arch side
   [[400,310],[470,310],[540,310]].forEach(function(p){ downlight(1,p[0],p[1],0.3); });
-  downlight(1,57,172,0.25); downlight(1,57,280,0.3); downlight(1,57,60,0.3,4.5,true); downlight(1,180,110,0.3); downlight(1,165,172,0.22);   // shower: damp-proof; passage: sensor downlight downlight(1,57,750,0.3); light(1,412,110,0xffe2b8,0.5,7);
+  downlight(1,57,172,0.25); downlight(1,57,280,0.3); downlight(1,57,60,0.3,4.5,true); downlight(1,180,110,0.3); downlight(1,165,172,0.22); downlight(1,57,750,0.3); light(1,412,110,0xffe2b8,0.5,7);   // shower: damp-proof; passage: sensor downlight
   pendant(1,420,412.5); pendant(1,485,412.5);
   /* 3F: round light in the bedroom, downlights in the hall, closets and wet rooms */
   light(2,412,650,0xffe2b8,0.5,7); [[330,330],[490,330]].forEach(function(p){ downlight(2,p[0],p[1],0.3); });
