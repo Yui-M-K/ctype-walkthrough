@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261026i">
+<link rel="stylesheet" href="lib/storeys.css?v=20261026k">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261026i"></script>
-<script src="lib/furniture.js?v=20261026i"></script>
-<script src="lib/catalog.js?v=20261026i"></script>
-<script src="lib/look.js?v=20261026i"></script>
-<script src="lib/houses.js?v=20261026i"></script>
-<script src="lib/perf.js?v=20261026i"></script>
-<script src="lib/finish.js?v=20261026i"></script>
-<script src="lib/storeys.js?v=20261026i"></script>
+<script src="lib/people.js?v=20261026k"></script>
+<script src="lib/furniture.js?v=20261026k"></script>
+<script src="lib/catalog.js?v=20261026k"></script>
+<script src="lib/look.js?v=20261026k"></script>
+<script src="lib/houses.js?v=20261026k"></script>
+<script src="lib/perf.js?v=20261026k"></script>
+<script src="lib/finish.js?v=20261026k"></script>
+<script src="lib/storeys.js?v=20261026k"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -1148,17 +1148,31 @@ fixtures:function(E){
     const rrS=function(w,d,r){ const s2=new THREE.Shape(), a=w/2, c=d/2; s2.moveTo(-a+r,-c); s2.lineTo(a-r,-c); s2.quadraticCurveTo(a,-c,a,-c+r); s2.lineTo(a,c-r); s2.quadraticCurveTo(a,c,a-r,c); s2.lineTo(-a+r,c); s2.quadraticCurveTo(-a,c,-a,c-r); s2.lineTo(-a,-c+r); s2.quadraticCurveTo(-a,-c,-a+r,-c); return s2; };
     const slab=function(w,d,h,r,mt,x,y,z){ const g=new THREE.ExtrudeGeometry(rrS(w,d,r),{depth:h,bevelEnabled:false,curveSegments:6}); g.rotateX(-Math.PI/2); return put(g,mt,x,y,z); };
     slab(0.9,0.38,0.003,0.02,lam(0x3a3d42,{roughness:0.95}),cx,D,zn+0.43,false);   // felt desk mat with rounded corners
-    (function(){ const sv=lam(0x2a2c30,{metalness:0.5,roughness:0.35}); const ft=put(new THREE.CylinderGeometry(0.11,0.11,0.012,32),sv,cx,D+0.006,zn+0.12); ft.scale.set(1.3,1,0.75); put(new THREE.BoxGeometry(0.05,0.3,0.025),sv,cx,D+0.16,zn+0.08);   // monitor stand: oval foot, flat neck
-      put(new THREE.BoxGeometry(0.615,0.365,0.03),lam(0x1d1e21,{roughness:0.4}),cx,D+0.4,zn+0.11); const sc=put(new THREE.PlaneGeometry(0.6,0.338),lam(0x0c1118,{roughness:0.12,metalness:0.3}),cx,D+0.405,zn+0.1255,false);   // 27-inch, thin bezel
-      put(new THREE.BoxGeometry(0.4,0.02,0.03),lam(0x2a2c30,{metalness:0.5,roughness:0.4}),cx,D+0.593,zn+0.115); put(new THREE.BoxGeometry(0.36,0.004,0.004),new THREE.MeshBasicMaterial({color:0xfff2dc}),cx,D+0.582,zn+0.13,false);   // light bar
-      put(new THREE.BoxGeometry(0.05,0.025,0.025),M.black,cx,D+0.62,zn+0.11); E.cylm(LG[1],cx,zn+0.123,0.007,0.007,D+0.615,D+0.625,lam(0x2b4a7a,{roughness:0.1}),oc); })();   // webcam
+    (function(){ const sv=lam(0x2a2c30,{metalness:0.55,roughness:0.32}), shell=lam(0x17181a,{roughness:0.4}), Rc=1.5, Wp=0.815, Hp=0.345, Wb=0.835, Hb=0.373, by=D+0.115, G=new THREE.Group(); G.position.set(cx,by,zn+0.105); LG[1].add(G);   // 34-inch 21:9 ultrawide, 1500R: 81.5 x 34.5 cm screen, thin bezels, a slightly deeper chin, slim curved back
+      const th=Wb/Rc, n=24, arc=function(r,dir){ const q=[]; for(let k=0;k<=n;k++){ const f=-th/2+th*k/n; q.push(new THREE.Vector2(r*Math.sin(f),r*Math.cos(f)-Rc)); } return dir>0?q:q.reverse(); };
+      const sh=new THREE.Shape(arc(Rc,1).concat(arc(Rc+0.022,-1))), hg=new THREE.ExtrudeGeometry(sh,{depth:Hb,bevelEnabled:true,bevelThickness:0.003,bevelSize:0.003,bevelSegments:2,curveSegments:2}); hg.rotateX(-Math.PI/2); hg.translate(0,0.003,0);
+      const body=new THREE.Mesh(hg,shell); body.position.y=0; body.castShadow=true; G.add(body);   // housing: a curved slab, y from 0 (bottom) to the top edge
+      const cv=document.createElement('canvas'); cv.width=512; cv.height=216; const g=cv.getContext('2d'), gd=g.createLinearGradient(0,0,512,216); gd.addColorStop(0,'#1d2b4a'); gd.addColorStop(0.5,'#4b3f7a'); gd.addColorStop(1,'#d58b6e'); g.fillStyle=gd; g.fillRect(0,0,512,216); g.fillStyle='rgba(255,255,255,0.16)'; g.fillRect(14,14,150,70); g.fillRect(14,96,150,50); g.fillStyle='rgba(20,24,34,0.65)'; g.fillRect(0,198,512,18);
+      const tx=new THREE.CanvasTexture(cv); tx.colorSpace=THREE.SRGBColorSpace; tx.anisotropy=4; const pg=new THREE.BufferGeometry(), pos=[], uv=[], idx=[], m=40, y0=0.02;
+      for(let k=0;k<=m;k++){ const f=-Wp/Rc/2+Wp/Rc*k/m; [0,1].forEach(function(t){ pos.push(Rc*Math.sin(f),y0+t*Hp,Rc-Rc*Math.cos(f)+0.0045); uv.push(k/m,t); }); if(k) idx.push(2*k-2,2*k,2*k-1,2*k-1,2*k,2*k+1); }
+      pg.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); pg.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2)); pg.setIndex(idx); pg.computeVertexNormals();
+      const scr=new THREE.Mesh(pg,new THREE.MeshBasicMaterial({map:tx,side:THREE.DoubleSide,color:0xd8d8d8})); scr.renderOrder=1; G.add(scr);
+      const led=new THREE.Mesh(new THREE.CircleGeometry(0.0022,10),new THREE.MeshBasicMaterial({color:0xfff2dc})); led.position.set(0.3,0.008,Rc-Rc*Math.cos(0.3/Rc)+0.0055); led.rotation.y=-0.2; G.add(led);   // power LED in the chin
+      const at=function(geo,mt,x,y,z){ const o=new THREE.Mesh(geo,mt); o.position.set(x,y,z); o.castShadow=true; G.add(o); return o; };
+      const hub=at(new THREE.CylinderGeometry(0.035,0.04,0.014,20),sv,0,0.19,-0.032); hub.rotation.x=Math.PI/2;   // VESA hub on the back
+      const neck=at(new THREE.BoxGeometry(0.06,0.17,0.016),sv,0,0.045,-0.044); neck.rotation.x=-0.12; neck.geometry.translate(0,0.07,0);
+      const hole=at(new THREE.BoxGeometry(0.022,0.05,0.002),M.black,0,0.09,-0.0345); hole.rotation.x=-0.12;   // cable hole in the neck
+      const fg=new THREE.ExtrudeGeometry(rrS(0.3,0.15,0.04),{depth:0.01,bevelEnabled:true,bevelThickness:0.002,bevelSize:0.002,bevelSegments:2,curveSegments:6}); fg.rotateX(-Math.PI/2); const foot=at(fg,sv,0,-0.113,0.0);   // flat rounded foot, as wide as a real one
+      const bar=at(new THREE.CylinderGeometry(0.011,0.011,0.4,16),lam(0x2a2c30,{metalness:0.5,roughness:0.4}),0,Hb+0.014,Rc-Rc*Math.cos(0.0)+0.002); bar.rotation.z=Math.PI/2; bar.position.z=-0.004;   // monitor light bar clipped on top
+      const bl=at(new THREE.BoxGeometry(0.36,0.003,0.01),new THREE.MeshBasicMaterial({color:0xfff2dc}),0,Hb+0.0035,0.006); bl.userData.glow=1;
+      at(new THREE.BoxGeometry(0.05,0.022,0.02),M.black,0,Hb+0.037,0.0); at(new THREE.CylinderGeometry(0.0055,0.0055,0.004,12),lam(0x2b4a7a,{roughness:0.1}),0,Hb+0.037,0.012).rotation.x=Math.PI/2; })();   // webcam on top
     (function(){ const kb=lam(0x2a2c30,{roughness:0.5}), kc=lam(0x3b3e43,{roughness:0.6}), kx=cx-0.06, kz=zn+0.42; const base=slab(0.36,0.125,0.015,0.008,kb,kx,D+0.003,kz); base.rotation.x=0.04;   // low-profile keyboard
       const key=new THREE.BoxGeometry(0.015,0.006,0.015), im=new THREE.InstancedMesh(key,kc,15*5+6), mm=new THREE.Matrix4(); let n=0;
       for(let r=0;r<5;r++) for(let c=0;c<15;c++){ mm.makeTranslation(kx-0.165+c*0.0235+(r%2)*0.006,D+0.022+r*0.0005,kz-0.045+r*0.021); im.setMatrixAt(n++,mm); }
       for(let i=0;i<6;i++){ mm.makeScale(i===2?6:1,1,1); mm.setPosition(kx-0.12+i*0.045,D+0.022,kz+0.058); im.setMatrixAt(n++,mm); }   // bottom row with a long space bar
       im.castShadow=true; LG[1].add(im);
       const ms=put(new THREE.SphereGeometry(0.03,20,12,0,Math.PI*2,0,Math.PI/2),lam(0x1d1e21,{roughness:0.35}),cx+0.22,D+0.003,zn+0.44); ms.scale.set(1.05,0.65,1.7); put(new THREE.CylinderGeometry(0.004,0.004,0.006,10),lam(0x6b6e72),cx+0.22,D+0.021,zn+0.405).rotation.z=Math.PI/2; })();   // mouse with a wheel
-    (function(){ const sp=lam(0xeceae4,{roughness:0.5}), gr=lam(0x6f6d68,{roughness:0.9}); [-1,1].forEach(function(sd){ const x=cx+sd*0.43; slab(0.09,0.12,0.17,0.02,sp,x,D,zn+0.13); put(new THREE.PlaneGeometry(0.075,0.15),gr,x,D+0.09,zn+0.191,false);
+    (function(){ const sp=lam(0xeceae4,{roughness:0.5}), gr=lam(0x6f6d68,{roughness:0.9}); [-1,1].forEach(function(sd){ const x=cx+sd*0.51; slab(0.09,0.12,0.17,0.02,sp,x,D,zn+0.13); put(new THREE.PlaneGeometry(0.075,0.15),gr,x,D+0.09,zn+0.191,false);
       [[0.13,0.022],[0.055,0.032]].forEach(function(q){ const r=put(new THREE.RingGeometry(q[1]*0.55,q[1],24),lam(0x4a4844,{roughness:0.6}),x,D+q[0],zn+0.192,false); }); }); })();   // desktop speakers with grilles and drivers
     (function(){ const mac=lam(0x2e3440,{metalness:0.7,roughness:0.35}), x=cx+0.62, z=zn+0.36, G=new THREE.Group(); G.position.set(x,D,z); G.rotation.y=-0.35; LG[1].add(G);   // MacBook Air 13" (30.4 x 21.5 x 1.13 cm), midnight
       const b0=new THREE.Mesh(new THREE.ExtrudeGeometry(rrS(0.304,0.215,0.012),{depth:0.006,bevelEnabled:true,bevelThickness:0.0015,bevelSize:0.0015,bevelSegments:2,curveSegments:6}).rotateX(-Math.PI/2),mac); b0.position.y=0.0015; b0.castShadow=true; G.add(b0);
