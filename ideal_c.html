@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261025x">
+<link rel="stylesheet" href="lib/storeys.css?v=20261025y">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261025x"></script>
-<script src="lib/furniture.js?v=20261025x"></script>
-<script src="lib/catalog.js?v=20261025x"></script>
-<script src="lib/look.js?v=20261025x"></script>
-<script src="lib/houses.js?v=20261025x"></script>
-<script src="lib/perf.js?v=20261025x"></script>
-<script src="lib/finish.js?v=20261025x"></script>
-<script src="lib/storeys.js?v=20261025x"></script>
+<script src="lib/people.js?v=20261025y"></script>
+<script src="lib/furniture.js?v=20261025y"></script>
+<script src="lib/catalog.js?v=20261025y"></script>
+<script src="lib/look.js?v=20261025y"></script>
+<script src="lib/houses.js?v=20261025y"></script>
+<script src="lib/perf.js?v=20261025y"></script>
+<script src="lib/finish.js?v=20261025y"></script>
+<script src="lib/storeys.js?v=20261025y"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -1419,13 +1419,13 @@ fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥
   spray(xb-0.06,za+0.31,0.136,0.032,0.17,0xeef4f6,lbl([['アルコール',15,60],['除菌',22,95],['キッチン',13,130]],'#f4fbfd','#0a6a8a','#7fc6dd'),0x2a7fb0);   // alcohol spray
   labelled(0.1,0.13,0.07,xb-0.065,0.136,za+0.13,lam(0xf6f6f2,{roughness:0.5}),lbl([['食洗機用',16,55],['洗剤',22,90],['ジェル',14,130]],'#ffffff','#2a7a3e','#8bc34a'));   // dishwasher detergent
   /* upper tier: sponges, gloves, a brush, a small soap bottle */
-  [[0.0,0xf2d36b],[0.035,0xf6c94e],[0.07,0x7fb8e0]].forEach(function(q,i){ const x=xa+0.06, z=za+0.07+q[0]*0.4, y=0.386; put(new THREE.BoxGeometry(0.07,0.025,0.11),lam(q[1],{roughness:0.9}),x,y+0.0125+i*0.033,z); put(new THREE.BoxGeometry(0.07,0.008,0.11),lam(0x2f7d4a,{roughness:0.95}),x,y+0.029+i*0.033,z); });   // spare sponges, scrub side up
+  [[0.07,0,0xf2d36b],[0.07,1,0xf6c94e],[0.19,0,0x7fb8e0]].forEach(function(q){ const x=xa+0.05, z=za+q[0], y=0.386+q[1]*0.033; put(new THREE.BoxGeometry(0.07,0.025,0.11),lam(q[2],{roughness:0.9}),x,y+0.0125,z); put(new THREE.BoxGeometry(0.07,0.008,0.11),lam(0x2f7d4a,{roughness:0.95}),x,y+0.029,z); });   // spare sponges, scrub side up, inside the tier's rim
   labelled(0.11,0.15,0.02,xb-0.07,0.386,za+0.12,lam(0xf8d7df,{roughness:0.6}),lbl([['ゴム手袋',18,40],['Mサイズ',14,170]],'#fde8ee','#a3324f',null));   // rubber gloves pack
   (function(){ const hm=lam(0xe9e3d6,{roughness:0.5}), h=put(new THREE.CylinderGeometry(0.009,0.011,0.16,10),hm,xa+0.12,0.4,za+0.3); h.rotation.x=Math.PI/2; const br=put(new THREE.CylinderGeometry(0.025,0.022,0.035,14),lam(0xd8c39a,{roughness:0.95}),xa+0.12,0.4,za+0.4); br.rotation.x=Math.PI/2; })();   // dish brush
   (function(){ const bm=lam(0xf3f7ea,{roughness:0.25,transparent:true,opacity:0.92}); put(new THREE.CylinderGeometry(0.03,0.03,0.13,16),bm,xb-0.06,0.386+0.065,za+0.33); put(new THREE.CylinderGeometry(0.012,0.016,0.025,12),lam(0x3a8f5a,{roughness:0.4}),xb-0.06,0.386+0.142,za+0.33); })();   // a spare dish-soap bottle
   const sinkT=function(){ return furnThings.find(function(t){ try{ return /水槽下櫃/.test(t.label()); }catch(e){ return false; } }); }, isOpen=function(){ const t=sinkT(); return !!t&&/關上/.test(t.label()); };
   let cur=0, want=0, last=null;
-  furnThings.push({pt:[(xa+xb)/2,Z0-0.35],l:1,on:function(){ return isOpen(); },label:function(){ return want?'推回清潔用品架':'拉出清潔用品架'; },act:function(){ want=want?0:1; last=null; }});
+  furnThings.push({pt:[(xa+xb)/2,Z0-0.35],l:1,part:[R],on:function(){ return isOpen(); },label:function(){ return want?'推回水槽下收納架':'拉出水槽下收納架'; },act:function(){ want=want?0:1; last=null; }});
   furnAnims.push({live:function(){ return cur!==(want&&isOpen()?1:0); },f:function(t2){ const tg=want&&isOpen()?1:0; if(!isOpen()) want=0; if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*1.5?tg:cur+Math.sign(tg-cur)*dt*1.5; R.position.z=-0.36*cur; return true; }});
 })();
 (function(){                                   // hand towels on a short bar beside every basin and by the kitchen sink: [storey, x, z, wall normal angle, bar height, colour]
@@ -1439,7 +1439,7 @@ fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥
   towel(0,WX(0,55),WZ(0,300)+TI/2,0,1.05,0xe8dcc6);                          // 1F powder room, north wall beside the basin
   towel(1,WX(1,165),WZ(1,0)+TE/2,0,1.25,0xf4f2ed,null,true);                  // 2F changing room: a 60 x 120 cm bath towel folded in thirds on a 66 cm bar, centred on the north wall
   towel(2,WX(2,330)-TI/2,WZ(2,190),-Math.PI/2,1.05,0xe8dcc6);                // 3F washroom, on the east wall beside the bath door
-  (function(){ const S=E.sinkPiece&&E.sinkPiece.sinkLeaves; if(S) towel(1,S.hw/2,-S.ft,Math.PI,0.5,0xe8dcc6,S.left); })();   // kitchen: on the sink cupboard's west leaf (the right one standing at the sink), below its notch; swings with the door
+  (function(){ const S=E.sinkPiece&&E.sinkPiece.sinkLeaves; if(S) towel(1,S.hw/2-0.03,-S.ft,Math.PI,0.79,0xe8dcc6,S.left); })();   // kitchen: on the sink cupboard's west leaf just under the worktop edge (bar 79 cm), clear of its notch; swings with the door
 })();
 (function(){                                   // genkan built-in: a floating shoe cabinet to the ceiling and a bench joined to it in the same white with the same oak edge; shoes in daily use under the bench, hooks above it
   const x0=WX(0,0)+TE/2, xa=WX(0,65), z1=WZ(0,790)-TE/2, D=0.38, zf=z1-D, top=CH-0.005, oc={cast:false};
