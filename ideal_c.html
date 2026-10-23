@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261026d">
+<link rel="stylesheet" href="lib/storeys.css?v=20261026e">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261026d"></script>
-<script src="lib/furniture.js?v=20261026d"></script>
-<script src="lib/catalog.js?v=20261026d"></script>
-<script src="lib/look.js?v=20261026d"></script>
-<script src="lib/houses.js?v=20261026d"></script>
-<script src="lib/perf.js?v=20261026d"></script>
-<script src="lib/finish.js?v=20261026d"></script>
-<script src="lib/storeys.js?v=20261026d"></script>
+<script src="lib/people.js?v=20261026e"></script>
+<script src="lib/furniture.js?v=20261026e"></script>
+<script src="lib/catalog.js?v=20261026e"></script>
+<script src="lib/look.js?v=20261026e"></script>
+<script src="lib/houses.js?v=20261026e"></script>
+<script src="lib/perf.js?v=20261026e"></script>
+<script src="lib/finish.js?v=20261026e"></script>
+<script src="lib/storeys.js?v=20261026e"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -597,7 +597,7 @@ return [
   /* 2F dining (folding six-seat table on the north wall); the litter box sits in the 1F hall */
   ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,150,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,37.4,808,'E',function(){ return Catalog.litterRobot({mat:[-0.355,0.44,-0.309,0.72]}); }],['robot','dreameX40',1,346,257.2,'S'],
   /* 2F kitchen: appliance cabinet (dish cupboard in its base) and fridge against the bath wall, bins beside the peninsula */
-  ['fridge','fridgeHitachi',1,541,244.5,'S',function(){ const p=Catalog.make('fridgeHitachi'); p.doorMaxL=1.5; p.doorMaxR=1.25; return p; }],['sinkRack','overSinkRack',1,332.5,410,'E'],['bins','binCabinet',1,300,412.5,'W',function(){ return Catalog.binCabinet(true); }],['appl','applianceCabinet',1,437.25,244.5,'S',function(){ return Catalog.applianceCabinet({dishes:true,full:true,depth:0.7,width:1.325,height:1.89,oak:true,kick:0xd9d3c8,k2:true}); }],
+  ['fridge','fridgeHitachi',1,541,244.5,'S',function(){ const p=Catalog.make('fridgeHitachi'); p.doorMaxL=1.5; p.doorMaxR=1.25; return p; }],['sinkRack','overSinkRack',1,332.5,410,'E'],['bins','binCabinet',1,300,412.5,'W',function(){ return Catalog.binCabinet(true); }],['appl','applianceCabinet',1,437.25,244.5,'S',function(){ return Catalog.applianceCabinet({dishes:true,full:true,depth:0.7,width:1.325,height:1.89,oak:true,kick:0xd9d3c8,k2:true,narrow:true}); }],
   /* 3F balcony */
   ['plantB1','plant',2,335,920,'E',null,{off:true}],['plantB2','plantS',2,380,925,'E',null,{off:true}],
   /* garden BBQ deck */
