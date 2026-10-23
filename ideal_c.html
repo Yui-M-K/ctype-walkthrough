@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261025w">
+<link rel="stylesheet" href="lib/storeys.css?v=20261025x">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261025w"></script>
-<script src="lib/furniture.js?v=20261025w"></script>
-<script src="lib/catalog.js?v=20261025w"></script>
-<script src="lib/look.js?v=20261025w"></script>
-<script src="lib/houses.js?v=20261025w"></script>
-<script src="lib/perf.js?v=20261025w"></script>
-<script src="lib/finish.js?v=20261025w"></script>
-<script src="lib/storeys.js?v=20261025w"></script>
+<script src="lib/people.js?v=20261025x"></script>
+<script src="lib/furniture.js?v=20261025x"></script>
+<script src="lib/catalog.js?v=20261025x"></script>
+<script src="lib/look.js?v=20261025x"></script>
+<script src="lib/houses.js?v=20261025x"></script>
+<script src="lib/perf.js?v=20261025x"></script>
+<script src="lib/finish.js?v=20261025x"></script>
+<script src="lib/storeys.js?v=20261025x"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -613,7 +613,6 @@ return [
   ['artBed','artPortrait',2,249.5,795,'E'],
   /* 3F walk-in closet, hall */
   ['mirrorW','fullMirror',2,238.5,740,'W'],
-  ['artHall','artSmall',2,6.5,610,'E'],
   /* 2F study */
   ['duo','gamingChair',1,391,104,'N'],['printer','printer3d',1,543,176,'W',function(){ return Catalog.printer3d(1.0); }],['shelf3','bookshelf',1,420,184.75,'N',null,{off:true}],['rugS','rugRoundSun',1,420,135,'E',null,{off:true}],['plant3','plantS',1,560,112,'E'],
   ['laundryPole','laundryPole',2,430,320,'E',function(){ return Catalog.laundryPole(E.CH,1.8); },{off:true}],['washer','washer',2,540,216,'S',function(){ return Catalog.washer({hingeLeft:true,swing:1.6}); }]
@@ -1382,7 +1381,7 @@ fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥
   const W=M.cabF, grey=lam(0x9aa0a6,{metalness:0.6,roughness:0.35}), oc={cast:false};
   [[0,WX(0,98),WZ(0,300)+TI/2,0],[1,WX(1,94),WZ(1,225)-TI/2,Math.PI],[2,WX(2,95),WZ(2,245)-TI/2,Math.PI]].forEach(function(q){   // recessed in the wall: the box fills the wall's thickness
     const G=new THREE.Group(); G.position.set(q[1]-Math.sin(q[3])*TI,E.base(q[0]),q[2]-Math.cos(q[3])*TI); G.rotation.y=q[3]; LG[q[0]].add(G);
-    const box=function(w,h,d,x,y,z,m){ const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m); o.position.set(x,y,z); o.castShadow=true; G.add(o); return o; };
+    const box=function(w,h,d,x,y,z,m){ const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m); o.position.set(x,y,z); o.castShadow=o.receiveShadow=true; G.add(o); return o; };
     const W0=0.28, w=W0-0.004, y0=0.12, y1=1.225, ym=0.67, ys=0.94, d=TI, t=0.012, inner=lam(0xe9e6df,{roughness:0.8});   // fills the wall opening; top level with the wainscot's capping rail
     const outer=E.WM[E.wallRoleAt(q[0],q[1]-Math.sin(q[3])*(TI+0.06),q[2]-Math.cos(q[3])*(TI+0.06))]||W;
     box(W0,y1-y0,t,0,(y0+y1)/2,t/2,outer); box(w-2*t,y1-y0-2*t,0.002,0,(y0+y1)/2,t+0.001,inner);   // the other room sees plain wall
@@ -1789,9 +1788,9 @@ fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥
       lb.forEach(function(t,i){ const x=-w/2+0.005+0.075*(i+0.5), r=new THREE.Mesh(new THREE.BoxGeometry(0.066,0.095,0.006),rk); r.position.set(x,-0.006,0.011); G.add(r); const d=new THREE.Mesh(new THREE.BoxGeometry(0.008,0.003,0.002),led); d.position.set(x,0.03,0.015); G.add(d);
         if(t.indexOf('*')>=0){ const sl=new THREE.Mesh(new THREE.BoxGeometry(0.004,0.05,0.002),ln); sl.position.set(x+0.024,-0.008,0.015); G.add(sl); } });   // * = dimmer
       const lab=new THREE.Mesh(new THREE.PlaneGeometry(w-0.01,0.0125),tx(lb)); lab.position.set(0,0.052,0.0085); G.add(lab); };
-    [[0,225,785.5,'N',['玄關','門廊','庭院']],[0,119.5,560,'E',['樓梯','走廊']],[0,265.5,330,'W',['鏡子房*']],
-     [1,119.5,380,'E',['樓梯','客廳*','餐桌*','間接燈*']],[1,577,330,'W',['廚房','手元燈']],[1,229.5,212,'E',['書房*','間接燈']],[1,210,212,'W',['走道']],
-     [2,119.5,370,'E',['樓梯','走廊']],[2,249.5,577,'E',['主臥*','床頭燈*','陽台']],[2,240,258,'W',['洗面室','浴室*','換氣','洗衣間']]].forEach(function(q){ plate.apply(null,q); }); })();
+    [[0,232,783.5,'N',['玄關','門廊','庭院']],[0,119.5,560,'E',['樓梯','走廊']],[0,265.5,330,'W',['鏡子房*']],
+     [1,119.5,380,'E',['樓梯','客廳*','餐桌*','間接燈*']],[1,577,330,'W',['廚房','手元燈']],[1,229.5,212,'E',['書房*','間接燈']],[1,210.5,212,'W',['走道']],
+     [2,6.5,335,'E',['樓梯','走廊']],[2,249.5,577,'E',['主臥*','床頭燈*','陽台']],[2,240.5,258,'W',['洗面室','浴室*','換氣','洗衣間']]].forEach(function(q){ plate.apply(null,q); }); })();
   /* fire extinguishers (Tiger ECO NEUT 1 L), one a floor, on the escape route */
   [[1,WX(1,219),WZ(1,225)+TI/2+0.07,3],[2,WX(2,245)-TI/2-0.07,WZ(2,385),2],[0,WX(0,270)-TI/2-0.07,WZ(0,600),2]].forEach(function(q){ fixture(q[0],Catalog.fireExtinguisher(),q[1],q[2],q[3]); });
 })();
