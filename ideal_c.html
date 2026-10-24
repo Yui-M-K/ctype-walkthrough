@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261028h">
+<link rel="stylesheet" href="lib/storeys.css?v=20261028i">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261028h"></script>
-<script src="lib/furniture.js?v=20261028h"></script>
-<script src="lib/catalog.js?v=20261028h"></script>
-<script src="lib/look.js?v=20261028h"></script>
-<script src="lib/houses.js?v=20261028h"></script>
-<script src="lib/perf.js?v=20261028h"></script>
-<script src="lib/finish.js?v=20261028h"></script>
-<script src="lib/storeys.js?v=20261028h"></script>
+<script src="lib/people.js?v=20261028i"></script>
+<script src="lib/furniture.js?v=20261028i"></script>
+<script src="lib/catalog.js?v=20261028i"></script>
+<script src="lib/look.js?v=20261028i"></script>
+<script src="lib/houses.js?v=20261028i"></script>
+<script src="lib/perf.js?v=20261028i"></script>
+<script src="lib/finish.js?v=20261028i"></script>
+<script src="lib/storeys.js?v=20261028i"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -859,11 +859,11 @@ fixtures:function(E){
     bx(LG[2],xa+0.02,xb-0.02,zt+0.005,zt+0.015,yS-0.004,yS,E.dusk(new THREE.MeshBasicMaterial({color:0xffe3bf})),oc);   // warm LED strip under the shelf's front edge
     (function(){ const r=new THREE.Mesh(new THREE.CylinderGeometry(0.0125,0.0125,xb-xa,14),steel); r.rotation.z=Math.PI/2; r.position.set((xa+xb)/2,yR,zm); LG[2].add(r);
       [xa,xb-0.012].forEach(function(x){ bx(LG[2],x,x+0.012,zm-0.025,zm+0.025,yR-0.02,yR+0.02,steel,oc); }); bx(LG[2],(xa+xb)/2-0.006,(xa+xb)/2+0.006,zm-0.006,zm+0.006,yR,yS,steel,oc); })();   // rail on end flanges and a centre drop from the shelf
-    const hangRow=function(x0,list,gap){ let x=x0, k=0; list.forEach(function(q){ const g=CL.hang(q[0],q[1]), bb=new THREE.Box3().setFromObject(g), th=bb.max.z-bb.min.z; x+=th/2; put(LG[2],g,x-(bb.max.z+bb.min.z)/2,yR,zm,Math.PI/2+((k*37)%7-3)*0.008); x+=th/2+gap[k%gap.length]; k++; }); return x; };   // spaced by each garment's real width
-    const P={cream:0xf2ebdd,beige:0xd8c3a3,navy:0x2f3a52,sage:0x9aab8f,grey:0xb9bcbf,pink:0xd9a9a6,camel:0xc19a6b,oat:0xeee5d3,char:0x55575b};
-    const xL=hangRow(xa+0.015,[['coat',{c:P.camel,len:1.05}],['puffer',{c:P.grey,len:0.92}],['dress',{c:P.sage,len:1.58,flare:0.1,seed:1}],['dress',{c:P.cream,len:1.42,flare:0.09,seed:2,sleeve:1}]],[0.02,0.015,0.02,0.02]);   // long zone, ~60 cm left empty to the floor
+    const hangRow=function(x0,list,gap){ let x=x0, k=0; list.forEach(function(q){ const g=CL.hang(q[0],q[1]); g.rotation.y=Math.PI/2+((k*37)%7-3)*0.028; g.updateMatrixWorld(true); const bb=new THREE.Box3().setFromObject(g), th=bb.max.x-bb.min.x, dz=((k*53)%5-2)*0.004; x+=th/2; g.position.set(x-(bb.max.x+bb.min.x)/2,yR,zm+dz); LG[2].add(g); g.updateMatrixWorld(true); const b2=new THREE.Box3().setFromObject(g); if(b2.max.z>zs-0.013) g.position.z-=b2.max.z-(zs-0.013); else if(b2.min.z<zt+0.003) g.position.z+=zt+0.003-b2.min.z; x+=th/2+gap[k%gap.length]; k++; }); return x; };   // turned a little each, staggered in depth, spaced by their real width
+    const P={cream:0xeee4cf,beige:0xcdb48e,navy:0x26324a,sage:0x86a07c,grey:0x9fa4a8,pink:0xd39592,camel:0xb5844e,oat:0xe7dcc6,char:0x4a4c50,denim:0x5b7290};
+    const xL=hangRow(xa+0.025,[['coat',{c:P.camel,len:1.05}],['puffer',{c:P.grey,len:0.92}],['dress',{c:P.sage,len:1.58,flare:0.1,seed:1}],['dress',{c:P.cream,len:1.42,flare:0.09,seed:2,sleeve:1}]],[0.02,0.015,0.02,0.02]);   // long zone, ~60 cm left empty to the floor
     const xM=hangRow(Math.max(xL,xa+0.62),[['dress',{c:P.pink,len:1.12,flare:0.1,seed:3,sleeve:1}],['skirt',{c:P.beige,len:0.66,seed:2}],['trousers',{c:P.navy,len:1.0}],['trousers',{c:P.grey,len:0.98}]],[0.02,0.015,0.02,0.02]);
-    hangRow(Math.max(xM+0.01,xb-0.92),[['shirt',{c:0xfbfaf6}],['shirt',{c:P.cream}],['knit',{c:P.sage}],['knit',{c:P.oat}],['tee',{c:P.grey}],['tee',{c:P.navy}],['knit',{c:P.pink}],['shirt',{c:0xcfdbe6}]],[0.012,0.015,0.012,0.015,0.012,0.015,0.012,0.015]);   // short tops over the chest
+    hangRow(Math.max(xM+0.01,xb-0.92),[['shirt',{c:0xf7f5f0}],['shirt',{c:P.denim}],['knit',{c:P.sage}],['knit',{c:P.oat}],['tee',{c:P.char}],['tee',{c:P.navy}],['knit',{c:P.pink}]],[0.012,0.015,0.012,0.015,0.012,0.015,0.012,0.015]);   // short tops over the chest
     /* drawer chest under the short tops: oak, 80 cm, four drawers; the top one a velvet tray for watches, hair accessories and sunglasses */
     (function(){ const cx1=xb-0.015, cx0=cx1-0.88, cz1=zs-0.02, cz0=cz1-0.44, y0=b+0.1, H=0.8, ot=0.016, fr=lam(0xe8d5b5,{roughness:0.5,map:M.oak.map||null});
       bx(LG[2],cx0,cx1,cz0+0.03,cz1,y0,y0+0.05,kick,oc); [[cx0,cx0+ot],[cx1-ot,cx1]].forEach(function(r){ bx(LG[2],r[0],r[1],cz0,cz1,y0,y0+H,fr); }); bx(LG[2],cx0,cx1,cz0,cz1,y0+H-ot,y0+H,fr); bx(LG[2],cx0+ot,cx1-ot,cz1-0.01,cz1,y0+0.05,y0+H-ot,inn,oc);
@@ -970,9 +970,9 @@ fixtures:function(E){
       const dG=new THREE.Group(); dG.position.set(xw+0.005,0,zb); dG.userData.keep=true; LG[2].add(dG); const DW=zb-za, fw=0.025, mir=lam(0xdfe8ec,{metalness:1,roughness:0.04,envMapIntensity:1.2});
       const fr=[bx(dG,0,0.02,-DW,-DW+fw,y0,y1,oakL),bx(dG,0,0.02,-fw,0,y0,y1,oakL),bx(dG,0,0.02,-DW+fw,-fw,y0,y0+fw,oakL),bx(dG,0,0.02,-DW+fw,-fw,y1-fw,y1,oakL)];
       const mm=bx(dG,0.004,0.015,-DW+fw,-fw,y0+fw,y1-fw,mir,oc), mpl=Walk.planarMirror(THREE,DW-2*fw,y1-y0-2*fw); mpl.rotation.y=Math.PI/2; mpl.position.set(0.0155,(y0+y1)/2,-DW/2); dG.add(mpl); bx(dG,0,0.004,-DW+fw,-fw,y0+fw,y1-fw,vel,oc);
-      const holes=(function(){ const c=document.createElement('canvas'); c.width=256; c.height=512; const g=c.getContext('2d'); g.fillStyle='#e2c9a0'; g.fillRect(0,0,256,512); g.fillStyle='#4a3826'; for(let j=0;j<46;j++) for(let i=0;i<24;i++){ g.beginPath(); g.arc(5.3+i*10.6,5.5+j*11.1,2.1,0,Math.PI*2); g.fill(); } const tx=new THREE.CanvasTexture(c); tx.colorSpace=THREE.SRGBColorSpace; return lam(0xffffff,{map:tx,roughness:0.55}); })();
-      const ey0=(y0+y1)/2+0.04, ey1=y1-fw-0.02; bx(dG,-0.006,0,-DW+fw+0.02,-fw-0.02,ey0,ey1,holes);   // perforated board, 16 rows of holes
-      for(let j=0;j<9;j++) for(let i=0;i<8;i++){ if((i+j)%3) continue; const zz=-DW+fw+0.02+(0.5+i*3)*(DW-2*fw-0.04)/24, yy=ey1-(0.5+j*3)*(ey1-ey0)/46; const s=new THREE.Mesh(new THREE.SphereGeometry(0.003,8,6),[pearl,gold,gem,silv][(i+j)%4]); s.position.set(-0.008,yy,zz); dG.add(s); }   // studs in the holes
+      const holes=(function(){ const c=document.createElement('canvas'); c.width=512; c.height=1024; const g=c.getContext('2d'); g.fillStyle='#f1e8d8'; g.fillRect(0,0,512,1024); for(let j=0;j<46;j++) for(let i=0;i<24;i++){ const x=10.6+i*21.2, y=11+j*22.2; g.fillStyle='rgba(120,100,80,0.25)'; g.beginPath(); g.arc(x+0.5,y+0.5,3.1,0,Math.PI*2); g.fill(); g.fillStyle='#262220'; g.beginPath(); g.arc(x,y,2.5,0,Math.PI*2); g.fill(); } const tx=new THREE.CanvasTexture(c); tx.colorSpace=THREE.SRGBColorSpace; tx.anisotropy=8; return lam(0xffffff,{map:tx,roughness:0.55}); })();
+      const ey0=(y0+y1)/2+0.04, ey1=y1-fw-0.02; holes.map.repeat.set(1/(DW-2*fw-0.04),1/(ey1-ey0)); bx(dG,-0.006,0,-DW+fw+0.02,-fw-0.02,ey0,ey1,holes);   // perforated board, 16 rows of holes
+      for(let j=0;j<11;j++) for(let i=0;i<8;i++){ if((i*5+j*3)%4===1) continue; const zz=-DW+fw+0.02+(0.5+i*3)*(DW-2*fw-0.04)/24, yy=ey1-(0.5+j*3)*(ey1-ey0)/46; const s=new THREE.Mesh(new THREE.SphereGeometry(0.0042,10,8),[pearl,gold,gem,silv][(i+j)%4]); s.position.set(-0.009,yy,zz); dG.add(s); if((i+j)%2===0) drop(dG,-0.01,yy-0.004,zz+0.012,(i+j)%3,(i%2)?gold:silv); }   // studs pinned in the holes, a few hook earrings beside them
       [ey0+0.06,ey0+0.16].forEach(function(y,r){ bx(dG,-0.014,-0.006,-DW+fw+0.02,-fw-0.02,y-0.004,y+0.004,oakL,oc); for(let i=0;i<7;i++) drop(dG,-0.012,y-0.006,-DW+fw+0.035+i*(DW-2*fw-0.07)/6,(i+r+1)%3,(i+r)%2?gold:silv); });   // bars for hook and drop earrings
       [ey0-0.08,(y0+ey0)/2-0.05].forEach(function(y,r){ bx(dG,-0.012,-0.006,-DW+fw+0.02,-fw-0.02,y-0.006,y+0.006,oakL,oc); for(let i=0;i<7;i++){ const z=-DW+fw+0.035+i*(DW-2*fw-0.07)/6; E.cylm(dG,-0.012,z,0.0015,0.0015,y-0.004,y-0.002,gold); necklace(dG,-0.01,y-0.006,z,r?0.13+0.02*(i%3):0.09+0.03*(i%2),i%2?gold:silv,i%3===0?1:i%3===1?0:null); } });   // short then long necklaces
       [y0+0.15,(y0+y1)/2,y1-0.15].forEach(function(y){ E.cylm(dG,0.001,0.0,0.004,0.004,y-0.03,y+0.03,lam(0xc9a24a,{metalness:0.8,roughness:0.3})); });   // hinges on the hall-door side
@@ -983,7 +983,7 @@ fixtures:function(E){
       bx(LG[2],x0,x1,zn,z1,b+H-0.03,b+H,oak); [[x0,x0+t],[x1-t,x1]].forEach(function(r){ bx(LG[2],r[0],r[1],zn,z1,b,b+H-0.03,W); }); bx(LG[2],x0,x1,zn,zn+0.01,b,b+H-0.03,inn,oc); bx(LG[2],x0,x1,zn,z1-0.04,b,b+0.08,kick,oc);
       const nb=3, bw=(x1-x0-2*t)/nb; ['爸爸','媽媽','寶寶'].forEach(function(nm,k){ const G=new THREE.Group(); G.userData.keep=true; LG[2].add(G); const xa=x0+t+k*bw+0.01, xb=xa+bw-0.02;
         bx(G,xa,xb,zn+0.05,z1-0.02,b+0.1,b+0.112,lam(0x8a8e92,{metalness:0.5})); const bk=bx(G,xa+0.01,xb-0.01,zn+0.08,z1-0.03,b+0.112,b+0.52,lam([0xd9c6a5,0xc9b896,0xb9aa94][k],{roughness:0.9}));   // woven basket on runners
-        bx(G,(xa+xb)/2-0.05,(xa+xb)/2+0.05,z1-0.031,z1-0.03,b+0.42,b+0.47,(function(){ const cv=document.createElement('canvas'); cv.width=128; cv.height=64; const g=cv.getContext('2d'); g.fillStyle='#f6f1e6'; g.fillRect(0,0,128,64); g.fillStyle='#55606a'; g.font='bold 34px "Hiragino Sans",sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText(nm,64,34); const tx=new THREE.CanvasTexture(cv); tx.colorSpace=THREE.SRGBColorSpace; return lam(0xffffff,{map:tx}); })(),oc);   // name tag
+        bx(G,(xa+xb)/2-0.03,(xa+xb)/2+0.03,z1-0.036,z1-0.03,b+0.43,b+0.46,lam(0x8a6a48,{roughness:0.6}),oc); E.cylm(G,(xa+xb)/2,z1-0.0375,0.008,0.008,b+0.4435,b+0.4465,lam([0x6f8fb0,0xd39c98,0x9fbf8f][k],{roughness:0.4})).rotation.x=Math.PI/2;   // a small leather tag with each person's colour dot
         [0,1].forEach(function(i){ bx(G,xa+0.04+i*0.1,xa+0.12+i*0.1,zn+0.15,zn+0.4,b+0.45,b+0.5,fab([0xf4f1ea,0x9fb4c6,0xe9c3bd][(k+i)%3])); });
         acts(nm+'的洗衣籃',null,[bk],function(e){ G.position.z=0.35*e; },[(xa+xb)/2,z1+0.5]); });
       /* over the washer: a washer-surround unit - slim side panels to the floor, a closed two-door detergent cupboard ending 35 cm under the ceiling, an open top with two oak boxes, towels and a small plant */
@@ -994,7 +994,7 @@ fixtures:function(E){
         [[0.08,0xf4f1ea],[0.2,0xd9e4ec],[0.32,0xe8dcc6]].forEach(function(q){ const st=Catalog.clothes.fold(0.1,0.24,[q[1],q[1],q[1]],0.03); st.position.set(wx0+t+q[0],(cy0+cy1)/2+t,zn+0.2); LG[2].add(st); });   // cloths and towels on the shelf
         const w=(wx1-wx0)/2-2*rv; [[wx0+rv,1],[wx1-rv,-1]].forEach(function(r,k){ const G=new THREE.Group(); G.position.set(r[0],0,pz+t); G.userData.keep=true; LG[2].add(G); const m=bx(G,r[1]>0?0:-w,r[1]>0?w:0,-t,0,cy0+rv,cy1-rv,W);
           const n=E.notchPull(W.color.getHex(),0.14); n.position.set(r[1]*w,cy0+0.1,0); n.rotation.z=-r[1]*Math.PI/2; G.add(n); acts(['洗衣機上吊櫃（左）','洗衣機上吊櫃（右）'][k],null,[m],function(e){ G.rotation.y=-r[1]*(k?1.42:1.5)*e; },[r[0]+r[1]*w/2,pz+0.6]); });   // overlay doors covering the panel edges
-        const box=lam(0xd2b083,{roughness:0.55,map:M.oak.map||null}); [[0.04,0.26],[0.29,0.51]].forEach(function(r){ const xa=wx0+t+r[0]*1, xb=wx0+t+r[1]*1; bx(LG[2],xa,Math.min(xb,xa+0.24),zn+0.06,zn+0.36,cy1,cy1+0.2,box); bx(LG[2],(xa+Math.min(xb,xa+0.24))/2-0.03,(xa+Math.min(xb,xa+0.24))/2+0.03,zn+0.359,zn+0.362,cy1+0.15,cy1+0.17,lam(0x8a6a48),oc); });   // two oak boxes with a finger hole
+        const box=lam(0xd2b083,{roughness:0.55,map:M.oak.map||null}); [[0.06,0.27],[0.3,0.51]].forEach(function(r){ const xa=wx0+t+r[0], xb=wx0+t+r[1]; bx(LG[2],xa,xb,zn+0.1,zn+0.4,cy1,cy1+0.2,box); bx(LG[2],(xa+xb)/2-0.03,(xa+xb)/2+0.03,zn+0.4,zn+0.403,cy1+0.15,cy1+0.17,lam(0x8a6a48),oc); });   // two oak boxes square on the top, well inside its edges   // two oak boxes with a finger hole
         const pl=new THREE.Group(); pl.position.set(wx1-0.06,cy1,zn+0.45); LG[2].add(pl); E.cylm(pl,0,0,0.045,0.035,0,0.08,lam(0xeae6de,{roughness:0.6})); for(let i=0;i<7;i++){ const a=i/7*Math.PI*2, lf=new THREE.Mesh(new THREE.SphereGeometry(0.03,8,6),lam(i%2?0x6f9a5b:0x4f7a46,{roughness:0.8})); lf.scale.set(0.5,1.4,0.5); lf.position.set(Math.cos(a)*0.03,0.12+0.02*(i%3),Math.sin(a)*0.03); lf.rotation.set(Math.sin(a)*0.5,0,-Math.cos(a)*0.5); pl.add(lf); }   // a small pothos-like plant
         addCol(2,wx0,wx0+t,zn,pz,b,cy1,'f'); })();
       /* over the folding counter: two floating oak shelves on concealed brackets, lidded rattan baskets for laundry supplies, a small plant */
