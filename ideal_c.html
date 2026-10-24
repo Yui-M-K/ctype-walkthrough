@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261028c">
+<link rel="stylesheet" href="lib/storeys.css?v=20261028d">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261028c"></script>
-<script src="lib/furniture.js?v=20261028c"></script>
-<script src="lib/catalog.js?v=20261028c"></script>
-<script src="lib/look.js?v=20261028c"></script>
-<script src="lib/houses.js?v=20261028c"></script>
-<script src="lib/perf.js?v=20261028c"></script>
-<script src="lib/finish.js?v=20261028c"></script>
-<script src="lib/storeys.js?v=20261028c"></script>
+<script src="lib/people.js?v=20261028d"></script>
+<script src="lib/furniture.js?v=20261028d"></script>
+<script src="lib/catalog.js?v=20261028d"></script>
+<script src="lib/look.js?v=20261028d"></script>
+<script src="lib/houses.js?v=20261028d"></script>
+<script src="lib/perf.js?v=20261028d"></script>
+<script src="lib/finish.js?v=20261028d"></script>
+<script src="lib/storeys.js?v=20261028d"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -1085,7 +1085,7 @@ fixtures:function(E){
       for(let v=0;v<14;v++){ let x=rnd()*1024, y=-20, w=0.6+rnd()*(v<3?3.5:1.6); g.strokeStyle='rgba('+(v<3?'120,118,116,':'150,148,146,')+(0.25+rnd()*0.35)+')'; g.lineWidth=w; g.beginPath(); g.moveTo(x,y);
         while(y<1044){ x+=(rnd()-0.45)*60; y+=20+rnd()*50; g.lineTo(x,y); if(rnd()<0.08){ const bx2=x, by=y; g.moveTo(bx2,by); g.lineTo(bx2+(rnd()-0.5)*160,by+60+rnd()*80); g.moveTo(bx2,by); } } g.stroke(); }
       const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=E.ANISO||8; t.wrapS=t.wrapT=THREE.RepeatWrapping; return t; };
-    const MW=E.FIN.pbrMaps(lam(0x8a8682,{map:marble(97),roughness:0.24,envMapIntensity:0.9}),'stone_darkgrey',1.5,1.5,{normal:false,rough:false,color:0xffffff}), MF=E.FIN.pbrMaps(lam(0x77736f,{map:marble(311,true),roughness:0.55,envMapIntensity:0.5}),'stone_darkgrey',0.9,0.9,{normal:false,rough:false,color:0xcfccc8}), grout=lam(0x9a9691,{roughness:0.6}), chrome=lam(0xd9dde1,{metalness:0.92,roughness:0.16,envMapIntensity:1.1}), e=0.012;
+    const MW=E.FIN.pbrMaps(lam(0x8a8682,{map:marble(97),roughness:0.24,envMapIntensity:0.9}),'stone_darkgrey',2.0,2.0,{normal:false,rough:false,color:0xffffff}), MF=E.FIN.pbrMaps(lam(0x77736f,{map:marble(311,true),roughness:0.55,envMapIntensity:0.5}),'stone_darkgrey',1.6,1.6,{normal:false,rough:false,color:0xcfccc8}), grout=lam(0x9a9691,{roughness:0.6}), chrome=lam(0xd9dde1,{metalness:0.92,roughness:0.16,envMapIntensity:1.1}), e=0.012;
     const slab=function(a,c,d,f,y0,y1,mt){ return bx(LG[1],a,c,d,f,y0,y1,mt||MW); };
     /* walls: north (round the window), west, south build-out, the east wall beside the folding door */
     const wa=WX(1,30), wb=WX(1,75), ws=b+1.5, wh=b+2.0;
