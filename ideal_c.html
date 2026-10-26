@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261028s">
+<link rel="stylesheet" href="lib/storeys.css?v=20261028t">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261028s"></script>
-<script src="lib/furniture.js?v=20261028s"></script>
-<script src="lib/catalog.js?v=20261028s"></script>
-<script src="lib/look.js?v=20261028s"></script>
-<script src="lib/houses.js?v=20261028s"></script>
-<script src="lib/perf.js?v=20261028s"></script>
-<script src="lib/finish.js?v=20261028s"></script>
-<script src="lib/storeys.js?v=20261028s"></script>
+<script src="lib/people.js?v=20261028t"></script>
+<script src="lib/furniture.js?v=20261028t"></script>
+<script src="lib/catalog.js?v=20261028t"></script>
+<script src="lib/look.js?v=20261028t"></script>
+<script src="lib/houses.js?v=20261028t"></script>
+<script src="lib/perf.js?v=20261028t"></script>
+<script src="lib/finish.js?v=20261028t"></script>
+<script src="lib/storeys.js?v=20261028t"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -1949,8 +1949,8 @@ fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥
 
   /* west wall between the cleaning station and the door: a fold-down work shelf, the step stool on its hook */
   (function(){ const zc=WZ(0,135), w=0.5, Dp=0.4, y=0.9, g=new THREE.Group(); g.position.set(xW+0.024,y,zc); g.userData.keep=true; LG[0].add(g);
-    bx(LG[0],xW,xW+0.02,zc-w/2,zc+w/2,y,y+0.04,oak,oc); const lf=bx(g,0,Dp,-0.022,0,-w/2,w/2,oak);
-    const arms=[-1,1].map(function(s){ const ag=new THREE.Group(); ag.position.set(xW+0.01,y-0.27,zc+s*(w/2+0.012)); ag.userData.keep=true; LG[0].add(ag); bx(ag,-0.006,0.006,-0.006,0.4,-0.008,0.008,std); bx(LG[0],xW,xW+0.004,zc+s*(w/2+0.012)-0.012,zc+s*(w/2+0.012)+0.012,y-0.29,y-0.25,std,oc); return ag; });   // folding stays
+    bx(LG[0],xW,xW+0.02,zc-w/2,zc+w/2,y,y+0.04,oak,oc); const lf=bx(g,0,Dp,-w/2,w/2,-0.022,0,oak);
+    const arms=[-1,1].map(function(s){ const ag=new THREE.Group(); ag.position.set(xW+0.01,y-0.27,zc+s*(w/2+0.012)); ag.userData.keep=true; LG[0].add(ag); bx(ag,-0.006,0.006,-0.008,0.008,-0.006,0.4,std); bx(LG[0],xW,xW+0.004,zc+s*(w/2+0.012)-0.012,zc+s*(w/2+0.012)+0.012,y-0.29,y-0.25,std,oc); return ag; });   // folding stays
     const set=function(e){ g.rotation.z=-Math.PI/2*(1-e); arms.forEach(function(ag){ ag.rotation.z=-Math.PI+(Math.PI-Math.atan2(0.37,0.3))*e; }); }; set(0);
     const A=anim(set,1.4); furnThings.push({pt:[xW+0.7,zc],l:0,part:[lf],label:function(){ return A.get()?'收起摺疊工作台':'放下摺疊工作台'; },act:A.toggle});
     const sz=WZ(0,177), al=lam(0xd9dcdf,{metalness:0.7,roughness:0.35}); bx(LG[0],xW,xW+0.02,sz-0.02,sz+0.02,1.0,1.04,oak); E.cylm(LG[0],xW+0.04,sz,0.008,0.008,1.0,1.03,std,10);   // peg for the two-step stool
