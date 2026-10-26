@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261028t">
+<link rel="stylesheet" href="lib/storeys.css?v=20261028u">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261028t"></script>
-<script src="lib/furniture.js?v=20261028t"></script>
-<script src="lib/catalog.js?v=20261028t"></script>
-<script src="lib/look.js?v=20261028t"></script>
-<script src="lib/houses.js?v=20261028t"></script>
-<script src="lib/perf.js?v=20261028t"></script>
-<script src="lib/finish.js?v=20261028t"></script>
-<script src="lib/storeys.js?v=20261028t"></script>
+<script src="lib/people.js?v=20261028u"></script>
+<script src="lib/furniture.js?v=20261028u"></script>
+<script src="lib/catalog.js?v=20261028u"></script>
+<script src="lib/look.js?v=20261028u"></script>
+<script src="lib/houses.js?v=20261028u"></script>
+<script src="lib/perf.js?v=20261028u"></script>
+<script src="lib/finish.js?v=20261028u"></script>
+<script src="lib/storeys.js?v=20261028u"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -594,7 +594,7 @@ return [
       const st=function(id){ const B=bb[id]; return [cx(B),B.max.y,(B.min.z+B.max.z)/2-0.02]; }, H=bb.catHouse, ledge=[cx(H),H.min.y+0.02,H.min.z+0.08], roof=[cx(H),H.max.y,H.max.z-0.2], bed=[cx(bb.catBed),bb.catBed.min.y+0.06,bb.catBed.max.z-0.2];
       const up=[st('catC'),st('catA'),bed,ledge,roof,st('catBridge')], from=[E.WX(1,250),E.WZ(1,790)];
       return {spots:spots,perch:{routes:[{from:from,seq:up.concat(up.slice(0,-1).reverse()),rest:5,to:from,face:0},{from:from,seq:up.slice(0,3),rest:5,to:[E.WX(1,200),E.WZ(1,790)],face:0}]}}; }}), names={stretch:'咘咘伸了個懶腰',belly:'咘咘翻肚給你看',love:'咘咘在撒嬌',scratch:'咘咘坐起來抓頭',groom:'咘咘在理毛'}; let last=null;   // pet her: one of five actions, never the same twice in a row
-    p.actions=(p.actions||[]).concat([{x:0.45,z:0,part:p.group.children.slice(0,1),label:function(){ return '摸摸咘咘'; },act:function(){ if(p.airborne()) return; const ks=Object.keys(names).filter(function(k){ return k!==last; }), k=ks[Math.floor(Math.random()*ks.length)]; last=k; const v=p.group.worldToLocal(new THREE.Vector3(E.player.x,p.group.getWorldPosition(new THREE.Vector3()).y,E.player.z)); p.play(k,{yaw:Math.max(-1.2,Math.min(1.2,Math.atan2(-v.z,v.x)))}); E.toast(names[k]); }}]); const eye=new THREE.Vector3(); p.rig.lookAt(function(){ return eye.set(E.player.x,p.group.getWorldPosition(eye).y+1.3,E.player.z); }); if(location.hash==='#debug'){ window.__catPlay=function(k){ p.play(k,{yaw:0.6}); }; window.__catNudge=p.nudge; } return p; }],['catBowls','catFeedStation',1,555.5,504,'W'],
+    p.actions=(p.actions||[]).concat([{x:0.45,z:0,part:p.group.children.slice(0,1),label:function(){ return '摸摸咘咘'; },act:function(){ if(p.airborne()) return; const ks=Object.keys(names).filter(function(k){ return k!==last; }), k=ks[Math.floor(Math.random()*ks.length)]; last=k; const v=p.group.worldToLocal(new THREE.Vector3(E.player.x,p.group.getWorldPosition(new THREE.Vector3()).y,E.player.z)); p.play(k,{yaw:Math.max(-1.2,Math.min(1.2,Math.atan2(-v.z,v.x)))}); E.toast(names[k]); }}]); const eye=new THREE.Vector3(); p.rig.lookAt(function(){ return eye.set(E.player.x,p.group.getWorldPosition(eye).y+1.3,E.player.z); }); if(location.hash==='#debug'){ window.__catPlay=function(k){ p.play(k,{yaw:0.6}); }; window.__catNudge=p.nudge; window.__catPiece=p; } return p; }],['catBowls','catFeedStation',1,555.5,504,'W'],
   /* 2F dining (folding six-seat table on the north wall); the litter box sits in the 1F hall */
   ['broom','cleanWall',0,314.5,58,'E'],['suitL','suit30P',0,433,257.5,'W'],['suitM','suit29B',0,471,259,'W'],['suitS','suit24P',0,502,263,'W'],['litter','litterRobot',1,37.4,808,'E',function(){ return Catalog.litterRobot({mat:[-0.355,0.44,-0.309,0.72]}); }],['robot','dreameX40',1,346,257.2,'S'],
   /* 2F kitchen: appliance cabinet (dish cupboard in its base) and fridge against the bath wall, bins beside the peninsula */

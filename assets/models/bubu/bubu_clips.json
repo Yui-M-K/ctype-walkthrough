@@ -1,0 +1,152 @@
+{
+ "file": "bubu.glb",
+ "units": "metre",
+ "up": "Y",
+ "forward": "+Z",
+ "origin": "feet centre (x=0, z=0 below body centre)",
+ "fps": 30,
+ "morph_targets": {
+  "meshes": [
+   "Eye_L",
+   "Eye_R",
+   "EyeSpark1_L",
+   "EyeSpark1_R",
+   "EyeSpark2_L",
+   "EyeSpark2_R"
+  ],
+  "Open": "0=closed line eyes (texture), 1=bead eyes",
+  "Blink": "use with Open=1: weight 1 flattens beads (closed eye)"
+ },
+ "clips": {
+  "idle_stand": {
+   "duration_s": 3.0,
+   "frames": 91,
+   "fps": 30,
+   "loop": true
+  },
+  "walk": {
+   "duration_s": 0.5,
+   "frames": 16,
+   "fps": 30,
+   "loop": true,
+   "ground_speed_mps": 0.4
+  },
+  "run_trot": {
+   "duration_s": 0.3,
+   "frames": 10,
+   "fps": 30,
+   "loop": true,
+   "ground_speed_mps": 0.95
+  },
+  "sit": {
+   "duration_s": 3.2,
+   "frames": 97,
+   "fps": 30,
+   "loop": true
+  },
+  "sit_to_stand": {
+   "duration_s": 0.9,
+   "frames": 28,
+   "fps": 30,
+   "loop": false
+  },
+  "stand_to_sit": {
+   "duration_s": 0.9,
+   "frames": 28,
+   "fps": 30,
+   "loop": false
+  },
+  "lie_side": {
+   "duration_s": 3.6,
+   "frames": 109,
+   "fps": 30,
+   "loop": true
+  },
+  "curl_sleep": {
+   "duration_s": 4.0,
+   "frames": 121,
+   "fps": 30,
+   "loop": true
+  },
+  "belly_up": {
+   "duration_s": 3.6,
+   "frames": 109,
+   "fps": 30,
+   "loop": true
+  },
+  "loaf": {
+   "duration_s": 3.4,
+   "frames": 103,
+   "fps": 30,
+   "loop": true
+  },
+  "stand_to_loaf": {
+   "duration_s": 1.2,
+   "frames": 37,
+   "fps": 30,
+   "loop": false
+  },
+  "loaf_to_stand": {
+   "duration_s": 1.2,
+   "frames": 37,
+   "fps": 30,
+   "loop": false
+  },
+  "jump_prep": {
+   "duration_s": 0.2667,
+   "frames": 9,
+   "fps": 30,
+   "loop": false
+  },
+  "jump_up": {
+   "duration_s": 0.9,
+   "frames": 28,
+   "fps": 30,
+   "loop": false,
+   "root_motion": {
+    "forward_m": 0.45,
+    "up_m": 0.3
+   }
+  },
+  "jump_down": {
+   "duration_s": 0.9333,
+   "frames": 29,
+   "fps": 30,
+   "loop": false,
+   "root_motion": {
+    "forward_m": 0.38,
+    "up_m": -0.3
+   }
+  },
+  "stretch": {
+   "duration_s": 3.4,
+   "frames": 103,
+   "fps": 30,
+   "loop": false
+  },
+  "groom": {
+   "duration_s": 6.1,
+   "frames": 184,
+   "fps": 30,
+   "loop": false
+  },
+  "scratch_head": {
+   "duration_s": 4.3,
+   "frames": 130,
+   "fps": 30,
+   "loop": false
+  },
+  "love_lap": {
+   "duration_s": 2.7,
+   "frames": 82,
+   "fps": 30,
+   "loop": true
+  },
+  "pet_react": {
+   "duration_s": 1.5,
+   "frames": 46,
+   "fps": 30,
+   "loop": false
+  }
+ }
+}

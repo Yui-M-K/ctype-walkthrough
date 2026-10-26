@@ -28,6 +28,8 @@
 
 2F 試作的 PBR 材質（`assets/textures/<名稱>/` 的 albedo・normal・rough，1K）：Poly Haven oak_wood_planks（2F 木地板，調色成原本的淺橡木）；ambientCG Marble025（廚房石英檯面）、Onyx008（2F 淋浴間深灰色石材，去色・降對比；原本試的 Marble012 保留在 assets）、Plaster001（2F 牆面的法線）；Poly Haven hinoki_planks（3F 浴室的淺檜木主牆與地磚，去色調亮）。ambientCG Marble024（1F 廁所的灰米色石紋磚 `stone_greige`，加上 60 × 60 cm 磚縫）。3F 浴室的白磁磚（`tile_white`）、1F 廁所的石灰塗料牆（`limewash`）和直條紋橡木的法線（`flute_oak`）是程式產生的。全部 CC0。
 
+咘咘的 3D 模型（`assets/models/bubu/bubu.glb`，meshopt 壓縮，含 20 段動作和眼睛的形態鍵；`bubu_clips.json` 是動作清單）是自己用 Blender 做的。休息時的麵包坐維持最早的程式模型；網址加 `?cat=old` 會改回原本的程式骨架。
+
 直接用 `file://` 開啟時瀏覽器不允許載入貼圖，會自動改用程式繪製的材質；請用網址（http/https）開啟以看到完整質感。
 
 ## 3D モデル（`models/`）
