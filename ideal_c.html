@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261028m">
+<link rel="stylesheet" href="lib/storeys.css?v=20261028n">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261028m"></script>
-<script src="lib/furniture.js?v=20261028m"></script>
-<script src="lib/catalog.js?v=20261028m"></script>
-<script src="lib/look.js?v=20261028m"></script>
-<script src="lib/houses.js?v=20261028m"></script>
-<script src="lib/perf.js?v=20261028m"></script>
-<script src="lib/finish.js?v=20261028m"></script>
-<script src="lib/storeys.js?v=20261028m"></script>
+<script src="lib/people.js?v=20261028n"></script>
+<script src="lib/furniture.js?v=20261028n"></script>
+<script src="lib/catalog.js?v=20261028n"></script>
+<script src="lib/look.js?v=20261028n"></script>
+<script src="lib/houses.js?v=20261028n"></script>
+<script src="lib/perf.js?v=20261028n"></script>
+<script src="lib/finish.js?v=20261028n"></script>
+<script src="lib/storeys.js?v=20261028n"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -220,7 +220,7 @@ noteText:{
   fridge:['日立 冰箱 R-HZC54Y','540 L・真空冰溫・寬 65 × 深 69.9 × 高 184.3 cm・水晶白玻璃門；上面是對開門的冷藏室，下面依序是製冰室／切換室、蔬果室、冷凍室，全部可以打開'],
   washer:['滾筒洗脫烘洗衣機','放在 3F 洗衣更衣間，洗完直接烘乾，掛上旁邊的吊衣桿'],
   tv:['85 吋電視（壁掛）＋落地電視櫃','電視用薄型壁掛架掛在東牆、離牆約 2.5 cm，下緣比電視櫃高約 12 cm、畫面中心離地約 1.05 m（坐在沙發上眼睛約 1.33 m，畫面中心在視線下方約 6°、上緣在視線上方約 5.5°），觀看距離約 2.6 m，THX 建議的 40° 視角，電影院的沉浸感，聲霸掛在畫面下方；主機層上板往西推開（滑進左側檯面下）：下降 2.8 cm 落到隱藏滑軌上再往西滑，東端留一點和手指凹口方便拉回，不用往上掀，碰不到聲霸和電視；電視櫃：左右是深抽屜（書・桌遊），中間主機層有下掀門和可往西推開的上板，背牆插座排＋散熱孔；電視櫃長 240 cm，主機層背板上有一排插座（含 USB-C）、上下兩排通風孔和對著牆上配線出口的開口，Switch 底座、路由器和電視盒都插在上面'],
-  sofa:'210 × 97 × 100 cm，中間有杯架小桌、扶手有 USB；電源接沙發下方的地板插座，電線不外露。坐著時眼睛到電視畫面的觀看距離約 2.6 m（躺平約 2.65 m），THX 建議的 40° 視角，電影院的沉浸感；中間座位正對畫面中心，沙發背到樓梯側牆留約 134 cm',
+  sofa:'210 × 97 × 100 cm（參考 NITORI 三人座電動躺椅），柔軟的灰米色布面（同布滾邊）：捲邊扶手寬約 16 cm、高 58.5，三個座位 58／52／58 cm、座高 45，座墊微微鼓起、前緣圓弧往下，靠背是三道橫向車縫；每個座位的腳靠是兩片：收起時是座位前面那片板，展開時剪刀式黑色連桿把它往前往上推、前端小片翻出來接成平的一片（尾端有圓枕），躺平深度 163 cm；單馬達：先出腳靠、再倒靠背，靠背會往前滑約 15 cm（離牆 15 cm 就夠）；左右座可各自躺平；中間靠背放下變成 37 × 34 cm 橡木托盤（兩個 8.5 cm 杯架）；扶手外側有 USB 和兩顆按鈕；電源接沙發下方的地板插座，電線不外露。坐著時眼睛到電視畫面的觀看距離約 2.6 m（躺平約 2.65 m），THX 建議的 40° 視角，電影院的沉浸感；中間座位正對畫面中心，沙發背到樓梯側牆留約 134 cm',
   lift:'茶几／餐桌／書桌三段高度，四張同尺寸凳子收在桌下；暫時貼在電視櫃正前方（讓沙發躺平時腳靠碰不到），所以電視櫃的抽屜和下掀門、茶几靠電視那側的抽屜和凳子收納門，要先把茶几往沙發那邊移開才能打開；地板插座跟著移到桌下',
   massage:'HY-5018：直立 146 × 74.5 × 114.5 cm，躺平 169 cm，腳靠會伸縮；放在沙發北端和半島之間、斜向電視，插在旁邊地板的地板插座',
   dryer:'收在沙發南端和南牆之間的角落（不擋走道），坐在沙發上就能吹頭髮；底座旁有專用的地板插座',
