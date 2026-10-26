@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261028j">
+<link rel="stylesheet" href="lib/storeys.css?v=20261028k">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261028j"></script>
-<script src="lib/furniture.js?v=20261028j"></script>
-<script src="lib/catalog.js?v=20261028j"></script>
-<script src="lib/look.js?v=20261028j"></script>
-<script src="lib/houses.js?v=20261028j"></script>
-<script src="lib/perf.js?v=20261028j"></script>
-<script src="lib/finish.js?v=20261028j"></script>
-<script src="lib/storeys.js?v=20261028j"></script>
+<script src="lib/people.js?v=20261028k"></script>
+<script src="lib/furniture.js?v=20261028k"></script>
+<script src="lib/catalog.js?v=20261028k"></script>
+<script src="lib/look.js?v=20261028k"></script>
+<script src="lib/houses.js?v=20261028k"></script>
+<script src="lib/perf.js?v=20261028k"></script>
+<script src="lib/finish.js?v=20261028k"></script>
+<script src="lib/storeys.js?v=20261028k"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -175,7 +175,7 @@ notes:[
   [0,440,-30,'床暖房熱源機（熱泵）','溫水式地暖專用的室外熱泵（約 80 × 30 × 65 cm），放在北側通路エコキュート儲熱水槽和熱泵之間，墊塑膠腳、避開エコキュート的配管蓋；出風口朝北側圍籬，前方約 63 cm，通路仍可通行和維修。往返兩條保溫管從機器西側沿外牆的配管蓋（在儲藏室窗戶西邊）往上，進 2F 樓板，接到廚房下方的分歧集管，再分成客廳和餐廳廚房兩區；200V 專用迴路'],
   [1,361,434.5,'抽拉式水龍頭','蓮蓬頭可拉出：拉出斜沖 → 換角度沖 → 收回，附金屬軟管'],
   [1,361,417.5,'廚餘處理機','裝在水槽下，排水口是橡膠防濺蓋；台面有氣壓開關，打開水槽下櫃可看到本體'],
-  [1,433.5,385,'嵌入式洗碗機','Panasonic NP-60MS8W（寬 60 cm、抽屜式、門片和廚房同款白色）：本體 59.8 × 62.7 × 45 cm，約 7 人份；下面是放洗碗機洗劑的收納抽屜。官方要求檯面深 65 cm 以上，半島目前約 64 cm，實際施工要跟廚具廠確認'],
+  [1,300,412.5,'垃圾桶櫃','半島西端，川崎市的分類：三個抽拉桶，各自在全展開滑軌上、緩衝關門，門片和廚房同款白色：一側是最大的有蓋「普通ごみ」桶（用半透明袋），另一側上層「プラスチック資源」、下層「空き缶・ペットボトル」（同一袋）；門片內側上緣各有一個小色標（橘・藍・綠）'],[1,333,390,'水槽下置物籃','水槽下櫃、廚餘處理機左邊：橡木蓋的白色收納盒，蓋子往後掀；裡面掛三個不同顏色的布袋（玻璃瓶・小金屬・紙類），旁邊一個有蓋的電池盒，收集日前先放這裡；右邊是全展開滑軌的兩層拉籃（洗碗精補充包・漂白水・酒精噴霧・洗碗機洗劑，上層海綿・手套・刷子）'],[1,433.5,385,'嵌入式洗碗機','Panasonic NP-60MS8W（寬 60 cm、抽屜式、門片和廚房同款白色）：本體 59.8 × 62.7 × 45 cm，約 7 人份；下面是放洗碗機洗劑的收納抽屜。官方要求檯面深 65 cm 以上，半島目前約 64 cm，實際施工要跟廚具廠確認'],
   [1,523.5,412.5,'IH 爐＋抽油煙機','嵌入式三口 IH（60 cm 型，60 × 50 cm 黑玻璃面板、細框）：前方兩口 Ø22 cm、後方一口小的，前緣觸控條（主電源・各口火力・計時）；不附魚烤爐；與水槽在同一座半島'],
   [1,346,258,'食品收納櫃（系統櫃）','寬 50 cm，白色，和家電櫃、冰箱、半島同一種白；踢腳 10 cm、門片分界 85 cm、吊櫃下緣 189 cm 三條線和家電櫃拉齊。下面一扇門（到 85 cm）是掃地機器人櫃：放 Dreame X40 Ultra 和自動給排水款基地（34 × 45.7 × 59 cm），櫃內一直到離地 1.1 m 的固定層板都是機器人空間，基地上蓋往上掀需要的 30 cm 綽綽有餘；機器人從門下方 12.5 cm 的開口自己進出；上面一扇門從 85 cm 做到 189 cm 的吊櫃線，打開後下段就是機器人櫃的上方，1.1 m 以上是層板可調的食品櫃；再上方是做到天花板的吊櫃'],[1,500,240,'上方吊櫃（家電櫃・冰箱・食品櫃）','做到天花板不積灰，可打開；冰箱上方留散熱空間'],
   [2,540,90,'浴缸（1624 整體浴室）','1624 規格（內部約 1.6 × 2.4 m，參考 TOTO sazana／LIXIL リデア）：1.6 m 浴缸橫跨東端，外框和牆面切齊、窄邊、前面一片裙板；整間左右對調過：南端靠背、北端是一整排座階（和浴缸內寬同寬、深 28 cm、離浴缸邊緣約 25 cm，圓角和浴缸內側接順，上面有防滑紋：半身浴、小孩坐、進出浴缸時的踏板），排水孔在座階前面的深處；北牆高處的電視從南端靠背那側看；橡木浴缸托盤放蠟燭和小盆栽；西側約 1.6 × 1.6 m 是寬敞的洗身體區，門在西牆（摺疊門，比原本往南移 25 cm）'],[2,570,90,'浴室東牆・北牆','材質：白磁磚＋檜木紋。其他牆是 30 × 60 cm 霧面白磁磚（淺灰細縫，縫一路對齊），浴缸後面的東牆是淺色檜木紋直向板的主牆，地板是淺檜木紋的防滑地磚，天花板和浴缸裙板白色；主牆上有亮燈的壁龕（白框、木紋底）放琥珀色瓶子；淋浴組（龍頭配浴凳）、鏡子、置物檯改到洗身體區的北牆（從門進來的左手邊），五金統一亮面鍍鉻（銀色）；間接照明 2700K：天花板凹槽洗亮石牆、檯面下一條燈、浴缸裙板下浮光、壁龕燈，傍晚自動亮起'],
@@ -1696,35 +1696,43 @@ fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥
       furnThings.push({pt:[q[1]+nx*0.45,q[2]+nz*0.45],l:q[0],part:L.parts,on:function(){ return true; },label:function(){ return (L.tg?'關上':'打開')+n[0]; },act:function(){ L.tg=L.tg?0:1; L.last=null; }});
       furnAnims.push({live:function(){ return L.cur!==L.tg; },f:function(t2){ if(L.last===null) L.last=t2; const dt=Math.min(0.05,t2-L.last); L.last=t2; L.cur=Math.abs(L.tg-L.cur)<dt*2.5?L.tg:L.cur+Math.sign(L.tg-L.cur)*dt*2.5; L.pv.rotation.y=-L.cur*1.5; return true; }}); }); });
 })();
-(function(){                                   // kitchen: a two-tier wire rack on runners inside the sink cupboard, with cleaning things; it slides out once the door is open
-  const X0=WX(1,318.5), Z0=WZ(1,382.5), b=E.base(1), wire=lam(0xd2d5d8,{metalness:0.85,roughness:0.25}), oc={cast:false};
-  const R=new THREE.Group(); R.userData.keep=true; LG[1].add(R); const xa=X0+0.545, xb=X0+0.785, za=Z0+0.05, zb=Z0+0.5;   // 2 cm clear of the disposer body (r 9.65 cm at x 0.425)
-  const rod=function(x0,x1,y0,y1,z0,z1){ bx(R,x0,x1,z0,z1,y0,y1,wire,oc); };
-  [0.13,0.38].forEach(function(y){ rod(xa,xb,b+y,b+y+0.006,za,zb); [xa,xb-0.006].forEach(function(x){ rod(x,x+0.006,b+y,b+y+0.08,za,zb); }); rod(xa,xb,b+y,b+y+0.08,za,za+0.006); rod(xa,xb,b+y+0.074,b+y+0.08,zb-0.006,zb); });
-  [xa,xb-0.006].forEach(function(x){ rod(x,x+0.006,b+0.13,b+0.46,za,za+0.006); });
-  bx(LG[1],xa-0.01,xb+0.01,za,zb,b+0.1,b+0.11,lam(0x2a2d31,{roughness:0.5}),oc);   // runner
-  const lbl=function(lines,bg,fg,acc){ const c=document.createElement('canvas'); c.width=128; c.height=192; const g=c.getContext('2d'); g.fillStyle=bg; g.fillRect(0,0,128,192); if(acc){ g.fillStyle=acc; g.fillRect(0,118,128,30); }
-    g.fillStyle=fg; g.textAlign='center'; lines.forEach(function(q,i){ g.font='700 '+q[1]+'px "Hiragino Sans","Noto Sans JP",sans-serif'; g.fillText(q[0],64,q[2]); }); const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=4; return lam(0xffffff,{map:t,roughness:0.4}); };
-  const put=function(geo,mt,x,y,z,ry){ const m=new THREE.Mesh(geo,mt); m.position.set(x,b+y,z); if(ry) m.rotation.y=ry; m.castShadow=true; R.add(m); return m; };
-  const labelled=function(w,h,d,x,y,z,body,face){ return put(new THREE.BoxGeometry(w,h,d),[body,body,body,body,body,face],x,y+h/2,z); };   // label on the -z face, toward the cook
-  const spray=function(x,z,y,r,h,c,lab,head){ const bm=lam(c,{roughness:0.3}); put(new THREE.CylinderGeometry(r,r*1.05,h,18),bm,x,y+h/2,z); const L=put(new THREE.CylinderGeometry(r+0.0015,r+0.0015,h*0.5,18,1,true,Math.PI*0.6,Math.PI*0.8),lab,x,y+h*0.45,z);
-    const hm=lam(head,{roughness:0.45}); put(new THREE.CylinderGeometry(r*0.45,r*0.6,0.03,12),hm,x,y+h+0.015,z); put(new THREE.BoxGeometry(0.03,0.045,0.07),hm,x,y+h+0.05,z-0.01); put(new THREE.BoxGeometry(0.018,0.018,0.02),hm,x,y+h+0.06,z-0.055);
-    const tr=put(new THREE.BoxGeometry(0.014,0.05,0.012),hm,x,y+h+0.02,z-0.04); tr.rotation.x=0.35; };
-  /* lower tier: the tall ones */
-  labelled(0.12,0.2,0.045,xa+0.07,0.136,za+0.07,lam(0x9fd3e6,{roughness:0.5}),lbl([['キュキュット',18,60],['つめかえ用',14,90],['770mL',16,170]],'#e8f6fb','#0e5f8a','#2f9fd4'));   // dish-soap refill pouch
-  (function(){ const bm=lam(0xf4f4ef,{roughness:0.35}); put(new THREE.BoxGeometry(0.075,0.2,0.105),bm,xa+0.06,0.136+0.1,za+0.2); labelled(0.072,0.11,0.002,xa+0.06,0.17,za+0.2-0.054,bm,lbl([['キッチン',16,50],['ハイター',20,80],['塩素系',13,110]],'#ffffff','#1d4f9e','#e23c3c'));
-    put(new THREE.CylinderGeometry(0.02,0.02,0.03,14),lam(0x1d4f9e,{roughness:0.4}),xa+0.06,0.351,za+0.18); put(new THREE.TorusGeometry(0.022,0.006,6,12,Math.PI),bm,xa+0.06,0.31,za+0.23).rotation.y=Math.PI/2; })();   // kitchen bleach with a handle
-  spray(xb-0.06,za+0.31,0.136,0.032,0.17,0xeef4f6,lbl([['アルコール',15,60],['除菌',22,95],['キッチン',13,130]],'#f4fbfd','#0a6a8a','#7fc6dd'),0x2a7fb0);   // alcohol spray
-  labelled(0.1,0.13,0.07,xb-0.065,0.136,za+0.13,lam(0xf6f6f2,{roughness:0.5}),lbl([['食洗機用',16,55],['洗剤',22,90],['ジェル',14,130]],'#ffffff','#2a7a3e','#8bc34a'));   // dishwasher detergent
-  /* upper tier: sponges, gloves, a brush, a small soap bottle */
-  [[0.07,0,0xf2d36b],[0.07,1,0xf6c94e],[0.19,0,0x7fb8e0]].forEach(function(q){ const x=xa+0.05, z=za+q[0], y=0.386+q[1]*0.033; put(new THREE.BoxGeometry(0.07,0.025,0.11),lam(q[2],{roughness:0.9}),x,y+0.0125,z); put(new THREE.BoxGeometry(0.07,0.008,0.11),lam(0x2f7d4a,{roughness:0.95}),x,y+0.029,z); });   // spare sponges, scrub side up, inside the tier's rim
-  labelled(0.11,0.15,0.02,xb-0.07,0.386,za+0.12,lam(0xf8d7df,{roughness:0.6}),lbl([['ゴム手袋',18,40],['Mサイズ',14,170]],'#fde8ee','#a3324f',null));   // rubber gloves pack
-  (function(){ const hm=lam(0xe9e3d6,{roughness:0.5}), h=put(new THREE.CylinderGeometry(0.009,0.011,0.16,10),hm,xa+0.12,0.4,za+0.3); h.rotation.x=Math.PI/2; const br=put(new THREE.CylinderGeometry(0.025,0.022,0.035,14),lam(0xd8c39a,{roughness:0.95}),xa+0.12,0.4,za+0.4); br.rotation.x=Math.PI/2; })();   // dish brush
-  (function(){ const bm=lam(0xf3f7ea,{roughness:0.25,transparent:true,opacity:0.92}); put(new THREE.CylinderGeometry(0.03,0.03,0.13,16),bm,xb-0.06,0.386+0.065,za+0.33); put(new THREE.CylinderGeometry(0.012,0.016,0.025,12),lam(0x3a8f5a,{roughness:0.4}),xb-0.06,0.386+0.142,za+0.33); })();   // a spare dish-soap bottle
+(function(){                                   // kitchen sink cupboard: a two-tier wire rack on full-extension ball-bearing slides (right of the disposer), a lidded box for occasional waste (left of it)
+  const X0=WX(1,318.5), Z0=WZ(1,382.5), b=E.base(1), wire=lam(0xd2d5d8,{metalness:0.85,roughness:0.25}), dk=lam(0x2a2d31,{roughness:0.5}), zinc=lam(0xb9bec4,{metalness:0.8,roughness:0.35}), oc={cast:false};
+  const fl=b+0.118, xa=X0+0.545, xb=X0+0.785, za=Z0+0.05, zb=Z0+0.4, D=zb-za;   // the rack stops 4 cm short of the dishwasher drain hose that crosses the back
+  const PK=function(kind,o,par,x,y,z,ry){ const g=Catalog.pack(kind,o); g.position.set(x,y,z); g.rotation.y=ry||0; par.add(g); return g; };
+  /* slides: a fixed outer member screwed to the cupboard floor at each side, an intermediate member, and the inner member carrying the rack */
+  const MID=new THREE.Group(), R=new THREE.Group(); MID.userData.keep=true; R.userData.keep=true; LG[1].add(MID); LG[1].add(R);
+  [xa-0.002,xb-0.012].forEach(function(x){ bx(LG[1],x,x+0.014,za,zb,fl,fl+0.03,zinc,oc); bx(LG[1],x+0.002,x+0.012,za+0.002,zb-0.002,fl+0.026,fl+0.03,dk,oc); [za+0.05,zb-0.05].forEach(function(z){ E.cylm(LG[1],x+0.007,z,0.004,0.004,fl+0.03,fl+0.031,dk); });   // fixed members with screws
+    bx(MID,x+0.003,x+0.011,za,zb,fl+0.006,fl+0.026,zinc,oc); bx(R,x+0.004,x+0.01,za,zb,fl+0.008,fl+0.024,lam(0xd8dcdf,{metalness:0.85,roughness:0.25}),oc); bx(R,x+0.002,x+0.012,za-0.006,za,fl+0.004,fl+0.028,dk,oc); });   // intermediate member; inner member with its front stop
+  /* the rack: a welded frame with four corner posts joining two wire tiers */
+  const rod=function(x0,x1,y0,y1,z0,z1){ bx(R,x0,x1,z0,z1,y0,y1,wire,oc); }, r=0.006, Y1=fl+0.03, Y2=fl+0.27, H=0.075;
+  [[xa,za],[xb-r,za],[xa,zb-r],[xb-r,zb-r]].forEach(function(q){ rod(q[0],q[0]+r,Y1,Y2+H,q[1],q[1]+r); });   // corner posts
+  [Y1,Y2].forEach(function(y){ rod(xa,xb,y,y+r,za,za+r); rod(xa,xb,y,y+r,zb-r,zb); rod(xa,xa+r,y,y+r,za,zb); rod(xb-r,xb,y,y+r,za,zb);   // tier frame
+    for(let i=1;i<6;i++){ const x=xa+i*(xb-xa)/6; rod(x-0.0015,x+0.0015,y,y+0.003,za,zb); } rod(xa,xb,y,y+0.003,(za+zb)/2-0.0015,(za+zb)/2+0.0015);   // wire floor
+    rod(xa,xb,y+H-r,y+H,za,za+r); rod(xa,xb,y+H-r,y+H,zb-r,zb); rod(xa,xa+r,y+H-r,y+H,za,zb); rod(xb-r,xb,y+H-r,y+H,za,zb); });   // top rims
+  rod(xa+0.04,xb-0.04,Y2+H+0.03,Y2+H+0.04,za-0.004,za+0.004); [xa+0.04,xb-0.05].forEach(function(x){ rod(x,x+0.01,Y2+H,Y2+H+0.04,za-0.004,za+0.004); });   // a pull bar on the front
+  /* lower tier: the tall refills; upper tier: sponges, gloves, a brush and a spare soap */
+  PK('pouch',{w:0.11,h:0.2,d:0.06,c:0xe8f6fb,a:0x2f9fd4,m:'drop',seed:21},R,xa+0.065,Y1+0.004,za+0.07,Math.PI);   // dish-soap refill pouch
+  PK('bottle',{r:0.032,h:0.2,c:0xffffff,a:0xe23c3c,m:'drop',sq:1,cap:0x1d4f9e,seed:22},R,xa+0.06,Y1+0.004,za+0.19,Math.PI);   // kitchen bleach
+  PK('bottle',{r:0.03,h:0.17,c:0xf4fbfd,a:0x7fc6dd,m:'drop',cap:0x2a7fb0,seed:23},R,xb-0.06,Y1+0.004,za+0.26,Math.PI);   // alcohol spray (trigger head below)
+  (function(){ const hm=lam(0x2a7fb0,{roughness:0.45}), x=xb-0.06, z=za+0.26, y=Y1+0.004+0.17; bx(R,x-0.015,x+0.015,z-0.02,z+0.015,y,y+0.035,hm); bx(R,x-0.008,x+0.008,z-0.045,z-0.02,y+0.015,y+0.03,hm); const tr=bx(R,x-0.006,x+0.006,z-0.035,z-0.028,y-0.03,y+0.005,hm); tr.rotation.x=0.3; })();
+  PK('box',{w:0.1,h:0.13,d:0.07,c:0xffffff,a:0x8bc34a,m:'drop',seed:24},R,xb-0.065,Y1+0.004,za+0.1,Math.PI);   // dishwasher detergent
+  [[0.05,0,0xf2d36b],[0.05,1,0xf6c94e],[0.15,0,0x7fb8e0]].forEach(function(q){ const x=xa+0.05, z=za+q[0]+0.02, y=Y2+0.004+q[1]*0.033; bx(R,x-0.035,x+0.035,z-0.055,z+0.055,y,y+0.025,lam(q[2],{roughness:0.9})); bx(R,x-0.035,x+0.035,z-0.055,z+0.055,y+0.025,y+0.033,lam(0x2f7d4a,{roughness:0.95})); });   // spare sponges, scrub side up
+  PK('box',{w:0.11,h:0.15,d:0.02,c:0xfde8ee,a:0xa3324f,m:'plain',seed:25},R,xb-0.07,Y2+0.004,za+0.12,Math.PI).rotation.x=0;   // rubber gloves
+  (function(){ const hm=lam(0xe9e3d6,{roughness:0.5}), h=new THREE.Mesh(new THREE.CylinderGeometry(0.009,0.011,0.16,10),hm); h.rotation.x=Math.PI/2; h.position.set(xa+0.12,Y2+0.016,za+0.22); R.add(h); const br=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.022,0.035,14),lam(0xd8c39a,{roughness:0.95})); br.rotation.x=Math.PI/2; br.position.set(xa+0.12,Y2+0.026,za+0.32); R.add(br); })();   // dish brush
+  PK('bottle',{r:0.026,h:0.12,c:0xf3f7ea,a:0x3a8f5a,m:'plain',cap:0x3a8f5a,seed:26},R,xb-0.06,Y2+0.004,za+0.29,Math.PI);   // a spare dish-soap bottle
   const sinkT=function(){ return furnThings.find(function(t){ try{ return /水槽下櫃/.test(t.label()); }catch(e){ return false; } }); }, isOpen=function(){ const t=sinkT(); return !!t&&/關上/.test(t.label()); };
-  let cur=0, want=0, last=null;
+  let cur=0, want=0, last=null; const EXT=D-0.01;   // full extension: the whole rack clears the cupboard front, then the stops catch
   furnThings.push({pt:[(xa+xb)/2,Z0-0.35],l:1,part:[R],on:function(){ return isOpen(); },label:function(){ return want?'推回水槽下收納架':'拉出水槽下收納架'; },act:function(){ want=want?0:1; last=null; }});
-  furnAnims.push({live:function(){ return cur!==(want&&isOpen()?1:0); },f:function(t2){ const tg=want&&isOpen()?1:0; if(!isOpen()) want=0; if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*1.5?tg:cur+Math.sign(tg-cur)*dt*1.5; R.position.z=-0.36*cur; return true; }});
+  furnAnims.push({live:function(){ return cur!==(want&&isOpen()?1:0); },f:function(t2){ const tg=want&&isOpen()?1:0; if(!isOpen()) want=0; if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*1.5?tg:cur+Math.sign(tg-cur)*dt*1.5; const e=cur*cur*(3-2*cur); R.position.z=-EXT*e; MID.position.z=-EXT*0.5*e; return true; }});
+  /* left of the disposer: a lidded box for glass bottles, batteries, small metal and paper until collection day; cloth bags hang inside */
+  (function(){ const x0=X0+0.07, x1=X0+0.3, z0=Z0+0.05, z1=Z0+0.32, y0=fl, h=0.24, wh=lam(0xf4f2ee,{roughness:0.4}), oakL=lam(0xd9bf96,{roughness:0.5,map:M.oak.map||null}), t=0.008;
+    bx(LG[1],x0,x1,z0,z1,y0,y0+t,wh); bx(LG[1],x0,x0+t,z0,z1,y0,y0+h,wh); bx(LG[1],x1-t,x1,z0,z1,y0,y0+h,wh); bx(LG[1],x0,x1,z0,z0+t,y0,y0+h,wh); bx(LG[1],x0,x1,z1-t,z1,y0,y0+h,wh);
+    [[0.04,0x9fb4c6],[0.11,0xe8c46f],[0.18,0xb9cba8]].forEach(function(q){ const x=x0+q[0]+0.015; bx(LG[1],x-0.03,x+0.03,z1-t-0.002,z1-t,y0+h-0.03,y0+h-0.01,lam(0xc9ccd0,{metalness:0.7}),oc); bx(LG[1],x-0.032,x+0.032,z0+0.05,z1-t-0.006,y0+t,y0+h-0.035,lam(q[1],{roughness:0.95})); });   // three cloth bags on hooks along the back: glass, metal, paper
+    (function(){ const bxx=x1-0.035, bz=z0+0.05; bx(LG[1],bxx-0.022,bxx+0.022,bz-0.032,bz+0.032,y0+t,y0+t+0.06,lam(0xf2c33a,{roughness:0.5})); bx(LG[1],bxx-0.024,bxx+0.024,bz-0.034,bz+0.034,y0+t+0.06,y0+t+0.068,lam(0x2b2c2e,{roughness:0.5})); })();   // small lidded battery box
+    const LD=new THREE.Group(); LD.position.set(0,y0+h,z1); LD.userData.keep=true; LG[1].add(LD); const lid=bx(LD,x0-0.004,x1+0.004,-(z1-z0)-0.004,0,0,0.014,oakL); bx(LD,(x0+x1)/2-0.04,(x0+x1)/2+0.04,-(z1-z0)-0.012,-(z1-z0)-0.004,0.002,0.012,oakL,oc);   // oak lid hinged at the back, with a finger lip
+    let lc=0, lt=0, ll=null; furnThings.push({pt:[(x0+x1)/2,Z0-0.35],l:1,part:[lid],on:function(){ return isOpen(); },label:function(){ return lt?'蓋上水槽下置物籃':'打開水槽下置物籃'; },act:function(){ lt=lt?0:1; ll=null; }});
+    furnAnims.push({live:function(){ return lc!==(lt&&isOpen()?1:0); },f:function(t2){ const tg=lt&&isOpen()?1:0; if(!isOpen()) lt=0; if(ll===null) ll=t2; const dt=Math.min(0.05,t2-ll); ll=t2; lc=Math.abs(tg-lc)<dt*2?tg:lc+Math.sign(tg-lc)*dt*2; LD.rotation.x=1.25*lc*lc*(3-2*lc); return true; }}); })();
 })();
 (function(){                                   // hand towels on a short bar beside every basin and by the kitchen sink: [storey, x, z, wall normal angle, bar height, colour]
   const bar=lam(0xc3c6c9,{metalness:0.85,roughness:0.3}), oc={cast:false};
