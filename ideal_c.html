@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261028r">
+<link rel="stylesheet" href="lib/storeys.css?v=20261028s">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261028r"></script>
-<script src="lib/furniture.js?v=20261028r"></script>
-<script src="lib/catalog.js?v=20261028r"></script>
-<script src="lib/look.js?v=20261028r"></script>
-<script src="lib/houses.js?v=20261028r"></script>
-<script src="lib/perf.js?v=20261028r"></script>
-<script src="lib/finish.js?v=20261028r"></script>
-<script src="lib/storeys.js?v=20261028r"></script>
+<script src="lib/people.js?v=20261028s"></script>
+<script src="lib/furniture.js?v=20261028s"></script>
+<script src="lib/catalog.js?v=20261028s"></script>
+<script src="lib/look.js?v=20261028s"></script>
+<script src="lib/houses.js?v=20261028s"></script>
+<script src="lib/perf.js?v=20261028s"></script>
+<script src="lib/finish.js?v=20261028s"></script>
+<script src="lib/storeys.js?v=20261028s"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -198,7 +198,7 @@ notes:[
   [0,240,850,'監視攝影機','共 3 台：玄關門廊、大門門扉（西南角）、西側庭院・緣側'],[0,445,620,'Tesla 哨兵模式（車庫監視）','車庫不另裝攝影機，由車上鏡頭錄影：需手動開啟（控制→安全性→哨兵模式），車子插著充電樁不怕耗電，「在家時不啟用」不要勾；錄影存在車上的 USB 隨身碟'],[0,300,-10,'感應燈','北側後方 2 盞，有人靠近自動亮起'],
   [1,555,815,'肯蒂亞椰子','美化佈置：客廳角落的大型植栽，對貓無毒'],[2,275,895,'橄欖樹','美化佈置：3F 陽台的西端，對貓無毒'],[1,495,660,'橡木吊燈','美化佈置：茶几／餐桌上方，Ø40 cm 扁圓燈罩'],
   [2,575,700,'鼠尾草綠主牆','美化佈置：主臥床頭那面牆（東牆，繞開高窗）'],[2,240,420,'照片牆','美化佈置：3F 走廊，咘咘和旅行照片'],[0,-3,1010,'門牌','美化佈置：宅配箱門柱上的咘咘門牌'],
-  [0,445,140,'除濕機・加濕機','收在儲藏室，換季時拿出來'],
+  [0,440,120,'儲藏室（家庭倉庫）','整間是淺橡木的可拆式收納系統：牆上鎖 32 mm 孔距的鋁立柱，層板、抽屜櫃和上櫃都掛在上面，櫃子底下各自放踢腳台座，要改房間時可以整組拆下帶走。北牆是高櫃（下面三個抽屜放衛生紙、洗劑補充包、電池燈泡工具，中段的開放層板放亞麻盒和藤籃，上櫃放季節裝飾），窗下是 83 cm 高的矮抽屜櫃（貓糧密封箱和罐頭、貓砂和寵物用品），離地 1 m 的窗台以上全部空著；東牆是掛衣區（大衣、西裝和洋裝的防塵套，上櫃放客用棉被）和抽屜區（寶特瓶水、罐裝飲料、零食存貨，上櫃放電風扇和電暖器）；層板下的 LED 有人進房間就會亮；地板是橡木，牆面是暖色灰泥'],[0,560,265,'除濕機・加濕機','東南角的開放格：除濕機放在地上，直接插在離地約 70 cm 的專用插座上運轉，加濕機收在上面的層板，冬天再拿出去用'],[0,550,207,'防災品格','東牆有一格是安全橙色的背板：地上兩箱 2 L 寶特瓶水和 20 L 水桶，伸手就拿得到的高度放緊急避難包（有反光條，沒有印字），上面一層是黃色安全帽、頭燈、手電筒和手搖收音機，再上一層是急救箱和攜帶式電源，上櫃放備用食品和簡易廁所'],[0,450,262,'行李箱格','南牆下方空著，三個行李箱（30、29、24 吋）直立並排、輪子著地，拉桿朝上，拿了就能出門；上面三層層板放橡木箱、亞麻盒和旅行用的收納袋，上櫃放旅行用品'],[0,356,268,'分電盤蓋','分電盤和情報分電盤外面加一片和收納同材質的橡木蓋（磁吸扣），鉸鏈在離門比較遠的那一側，打開時不會擋到門口；迴路配置圖貼在蓋子內側'],[0,322,135,'摺疊工作台＋踏台','西牆在清潔用具和門之間：50 × 40 cm 的橡木摺疊工作台（離地 90 cm，放下來可以拆箱、打包），旁邊掛著兩階踏台，拿上櫃的東西時用'],[0,400,200,'可改小孩房','收納全部掛在牆上的立柱上，櫃子各自有踢腳台座，拆掉後牆上只剩螺絲孔；窗戶是一般高度，冷氣孔和插座也預留好了，地板和牆面可以直接當小孩房用'],
   [0,265,505,'玄關廳飾り棚ニッチ','牆面嵌入式壁龕 120 × 30 cm（離地 1 m），上緣內藏暖色 LED 燈條往下打亮背板，放細長花瓶插一枝乾燥枝、兩個小陶器和一個相框；上方掛畫。背面是車庫牆，實際施工時壁龕背面需補防火板'],
   [0,72,425,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],[1,43.5,172.5,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],[2,20,215,'3F 廁所（美化）','馬桶後面是主題牆：暖灰米色塗料＋到腰高的直條橡木格柵和一條窄平台，天花板燈槽往下打暖光（2700K）；南牆一個做到天花板的吊櫃：下段開放格放垂下來的黃金葛和擴香，上面兩扇平門放備用衛生紙，下緣藏一條暖光 LED；北牆一幅小畫，窗台放一小盆虎尾蘭；其他牆面是霧面磁磚腰牆'],[2,43.5,197.5,'免治馬桶','Panasonic アラウーノ（無水箱，全白，38.3 × 70 × 54 cm），牆上 Panasonic 遙控器'],
   [0,165,805,'玄關電子鎖','密碼＋感應卡開鎖；門外的密碼面板有滑蓋，平常蓋著'],[0,-128,995,'門扉','單扇木門，掛在對講機門柱上，關上時自動扣上門閂（ラッチ）；撥桿鎖（離地約 95 cm）：外側用鑰匙、內側轉旋鈕鎖上'],
@@ -596,7 +596,7 @@ return [
       return {spots:spots,perch:{routes:[{from:from,seq:up.concat(up.slice(0,-1).reverse()),rest:5,to:from,face:0},{from:from,seq:up.slice(0,3),rest:5,to:[E.WX(1,200),E.WZ(1,790)],face:0}]}}; }}), names={stretch:'咘咘伸了個懶腰',belly:'咘咘翻肚給你看',love:'咘咘在撒嬌',scratch:'咘咘坐起來抓頭',groom:'咘咘在理毛'}; let last=null;   // pet her: one of five actions, never the same twice in a row
     p.actions=(p.actions||[]).concat([{x:0.45,z:0,part:p.group.children.slice(0,1),label:function(){ return '摸摸咘咘'; },act:function(){ if(p.airborne()) return; const ks=Object.keys(names).filter(function(k){ return k!==last; }), k=ks[Math.floor(Math.random()*ks.length)]; last=k; const v=p.group.worldToLocal(new THREE.Vector3(E.player.x,p.group.getWorldPosition(new THREE.Vector3()).y,E.player.z)); p.play(k,{yaw:Math.max(-1.2,Math.min(1.2,Math.atan2(-v.z,v.x)))}); E.toast(names[k]); }}]); const eye=new THREE.Vector3(); p.rig.lookAt(function(){ return eye.set(E.player.x,p.group.getWorldPosition(eye).y+1.3,E.player.z); }); if(location.hash==='#debug'){ window.__catPlay=function(k){ p.play(k,{yaw:0.6}); }; window.__catNudge=p.nudge; } return p; }],['catBowls','catFeedStation',1,555.5,504,'W'],
   /* 2F dining (folding six-seat table on the north wall); the litter box sits in the 1F hall */
-  ['stock','stockShelf',0,375,26.5,'S'],['broom','cleanWall',0,314.5,58,'E'],['catFood','catPantry',0,332,150,'E'],['suitL','suit30P',0,428,285.5,'N'],['suitM','suit29B',0,483,285.5,'N'],['suitS','suit24P',0,458,6.5,'S'],['litter','litterRobot',1,37.4,808,'E',function(){ return Catalog.litterRobot({mat:[-0.355,0.44,-0.309,0.72]}); }],['robot','dreameX40',1,346,257.2,'S'],
+  ['broom','cleanWall',0,314.5,58,'E'],['suitL','suit30P',0,433,257.5,'W'],['suitM','suit29B',0,471,259,'W'],['suitS','suit24P',0,502,263,'W'],['litter','litterRobot',1,37.4,808,'E',function(){ return Catalog.litterRobot({mat:[-0.355,0.44,-0.309,0.72]}); }],['robot','dreameX40',1,346,257.2,'S'],
   /* 2F kitchen: appliance cabinet (dish cupboard in its base) and fridge against the bath wall, bins beside the peninsula */
   ['fridge','fridgeHitachi',1,541,244.5,'S',function(){ const p=Catalog.make('fridgeHitachi'); p.doorMaxL=1.5; p.doorMaxR=1.25; return p; }],['sinkRack','overSinkRack',1,332.5,410,'E'],['bins','binCabinet',1,300,412.5,'W',function(){ return Catalog.binCabinet(true); }],['appl','applianceCabinet',1,437.25,244.5,'S',function(){ return Catalog.applianceCabinet({dishes:true,full:true,depth:0.7,width:1.325,height:1.89,oak:true,kick:0xd9d3c8,k2:true,narrow:true}); }],
   /* 3F balcony */
@@ -1848,13 +1848,120 @@ fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥
   [[x0,0.5],[x1,0.5]].forEach(function(q){ bx(LG[0],q[0]-0.015,q[0]+0.015,zw,z0,y+q[1]-0.02,y+q[1]+0.02,cream); });   // wall brackets
   addCol(0,x0-0.02,x1+0.02,zw,z1+0.02,y,y+H,'f');
 })();
-(function(){                                   // storage room south wall: suitcases under wall-anchored shelves of light boxes with anti-fall rails; the cat rack in the corner stays clear in front
-  const x0=WX(0,398), x1=WX(0,506), zw=WZ(0,290)-TI/2, d=0.36, oc={cast:false}, boxC=[0xe9e4da,0xc9b79c,0x9fb0bf,0xd8cfc0,0xb8c7b0];
-  [x0+0.03,x1-0.05].forEach(function(x){ bx(LG[0],x,x+0.02,zw-0.015,zw,0.82,2.3,M.steel,oc); });
-  [0.86,1.38,1.9].forEach(function(y,k){ bx(LG[0],x0,x1,zw-d,zw,y,y+0.025,M.cabF);
-    bx(LG[0],x0,x1,zw-d,zw-d+0.012,y+0.06,y+0.075,M.steel,oc);   // anti-fall rail
-    for(let i=0;i<3;i++){ const a=x0+0.03+i*(x1-x0-0.04)/3, b=a+(x1-x0-0.04)/3-0.03; bx(LG[0],a,b,zw-d+0.03,zw-0.02,y+0.025,y+0.3+0.04*((i+k)%2),lam(boxC[(i+k)%5],{roughness:0.8}),oc);
-      bx(LG[0],(a+b)/2-0.05,(a+b)/2+0.05,zw-d+0.025,zw-d+0.03,y+0.13,y+0.17,lam(0xffffff),oc); } });
+(function(){                                   // 1F storage room: one light-oak modular system on wall-mounted 32 mm standards, cabinets on separate plinths; north, east and south runs, the west wall keeps the cleaning station
+  const oc={cast:false}, oak=lam(0xe2c9a0,{roughness:0.5,map:M.oak.map||null}), inn=lam(0xecdcc2,{roughness:0.6,map:M.oak.map||null}), std=lam(0xc3c7cb,{metalness:0.7,roughness:0.4}), hole=lam(0x55595e,{roughness:0.6}), plM=lam(0xc2a57c,{roughness:0.6,map:M.oak.map||null}), t=0.018, LED=[], PK=Catalog.pack;
+  const xW=WX(0,310)+TI/2, xE=WX(0,580)-TE/2, zN=WZ(0,0)+TE/2, zS=WZ(0,290)-TI/2;
+  LG[0].updateMatrixWorld(true);
+  const RUN=function(px,pz,ry){ const G=new THREE.Group(); G.position.set(px,0,pz); G.rotation.y=ry; LG[0].add(G); G.updateMatrixWorld(true); return G; };
+  const toW=function(G,x,z){ return new THREE.Vector3(x,0,z).applyMatrix4(G.matrixWorld); };
+  const col=function(G,a,c,z0,z1,y0,y1){ const p=toW(G,a,z0), q=toW(G,c,z1); addCol(0,Math.min(p.x,q.x),Math.max(p.x,q.x),Math.min(p.z,q.z),Math.max(p.z,q.z),y0,y1,'f'); };
+  const PT=function(G,x,z){ const v=toW(G,x,z); return [v.x,v.z]; };
+  const strip=function(G,a,c,y,z){ const m=new THREE.MeshBasicMaterial({color:0xe9dccb}); LED.push(m); bx(G,a,c,z-0.014,z-0.006,y-0.004,y,m,oc); };
+  const stds=function(G,xs,y0,y1){ xs.forEach(function(x){ bx(G,x-0.0125,x+0.0125,0,0.01,y0,y1,std,oc); for(let y=y0+0.04;y<y1-0.03;y+=0.096) bx(G,x-0.004,x+0.004,0.01,0.0104,y,y+0.012,hole,oc); }); };   // 32 mm system: a hole every third pitch drawn
+  const shelf=function(G,a,c,y,D,led){ bx(G,a,c,0.012,D,y,y+0.022,oak); if(led!==false) strip(G,a+0.03,c-0.03,y,D-0.01); };
+  const gable=function(G,x,y0,y1,D){ bx(G,x-t/2,x+t/2,0.012,D,y0,y1,oak); };
+  const plinth=function(G,a,c,D){ bx(G,a+0.025,c-0.025,0.03,D-0.05,0,0.075,plM); };
+  const carc=function(G,a,c,y0,y1,D){ bx(G,a,c,0.012,D-0.019,y0,y0+t,oak); bx(G,a,c,0.012,D,y1-t,y1,oak); bx(G,a+t,c-t,0.012,0.02,y0+t,y1-t,inn,oc); };
+  const anim=function(set,speed){ let v=0, tg=0, ls=null; furnAnims.push({live:function(){ return v!==tg; },f:function(tt){ if(ls===null) ls=tt; const dt=Math.min(0.05,tt-ls); ls=tt; v=Math.abs(tg-v)<dt*speed?tg:v+Math.sign(tg-v)*dt*speed; set(v*v*(3-2*v)); return true; }}); return {get:function(){ return tg; },toggle:function(){ tg=tg?0:1; ls=null; }}; };
+  const drawer=function(G,a,c,y0,y1,D,name,fill){ const g=new THREE.Group(); g.userData.keep=true; G.add(g); const r=0.0015, ya=y0+0.012, yb=y1-0.03;
+    const fr=bx(g,a+r,c-r,D-t,D,y0+r,y1-r,oak); bx(g,a+t+0.006,c-t-0.006,0.035,D-t,ya,ya+0.012,inn,oc); [a+t+0.006,c-t-0.018].forEach(function(x){ bx(g,x,x+0.012,0.035,D-t,ya,yb,inn,oc); }); bx(g,a+t+0.006,c-t-0.006,0.035,0.047,ya,yb,inn,oc);
+    const n=E.notchPull(0xe2c9a0,0.16); n.position.set((a+c)/2,y1-r,D); g.add(n); if(fill) fill(g,a+t+0.02,c-t-0.02,0.05,D-t-0.01,ya+0.012);
+    const A=anim(function(e){ g.position.z=(D-0.08)*e; },2.2); furnThings.push({pt:PT(G,(a+c)/2,D+0.55),l:0,part:[fr],label:function(){ return (A.get()?'關上':'拉開')+name; },act:A.toggle}); };
+  const doors=function(G,a,c,y0,y1,D,name,fill,noG,op){ op=op||{}; const w=(c-a)/2-0.003, parts=[], gs=[], mx=[op.maxL||1.75,op.maxR||1.75];   // maxL/maxR: opening limits beside a wall or a corner
+    [[a+0.0015,1],[c-0.0015,-1]].forEach(function(q){ const g=new THREE.Group(); g.position.set(q[0],0,D); g.userData.keep=true; G.add(g); gs.push([g,q[1]]); parts.push(bx(g,q[1]>0?0:-w,q[1]>0?w:0,-t,0,y0+0.0015,y1-0.0015,oak)); const n=E.notchPull(0xe2c9a0,0.12); n.position.set(q[1]*(w-0.07),y0+0.0015,0); n.rotation.z=Math.PI; g.add(n); });
+    carc(G,a,c,y0,y1,D-t); if(!noG){ gable(G,a+t/2,y0,y1,D-t); gable(G,c-t/2,y0,y1,D-t); } if(fill) fill(a+t,c-t,0.03,D-t-0.01,y0+t);
+    const A=anim(function(e){ gs.forEach(function(q){ q[0].rotation.y=-q[1]*mx[q[1]>0?0:1]*e; }); },1.6); furnThings.push({pt:PT(G,(a+c)/2,D+0.65),l:0,part:parts,label:function(){ return (A.get()?'關上':'打開')+name; },act:A.toggle}); };
+  const boxes=function(G,a,c,y,D,cols,h,kind){ const n=cols.length, w=(c-a-0.02)/n; cols.forEach(function(cc,i){ const x0=a+0.01+i*w+0.008, x1=x0+w-0.016, m=kind==='linen'?fab(cc):lam(cc,{roughness:0.55,map:M.oak.map||null}); bx(G,x0,x1,0.04,D-0.03,y,y+h,m);
+      if(kind==='linen'){ bx(G,(x0+x1)/2-0.03,(x0+x1)/2+0.03,D-0.031,D-0.028,y+h-0.06,y+h-0.035,lam(0x8a6e52,{roughness:0.6}),oc); } else bx(G,(x0+x1)/2-0.035,(x0+x1)/2+0.035,D-0.031,D-0.029,y+h-0.055,y+h-0.03,lam(0x6b5440,{roughness:0.9}),oc); }); };   // oak crates with a hand hole, linen boxes with a leather pull
+  const basket=(function(){ const c=document.createElement('canvas'); c.width=c.height=64; const g=c.getContext('2d'); g.fillStyle='#c9a978'; g.fillRect(0,0,64,64); for(let j=0;j<8;j++) for(let i=0;i<8;i++){ g.fillStyle=(i+j)%2?'#b08d5a':'#dcc093'; g.fillRect(i*8+((i+j)%2?0:1),j*8+1,7,6); } const tx=new THREE.CanvasTexture(c); tx.colorSpace=THREE.SRGBColorSpace; tx.wrapS=tx.wrapT=THREE.RepeatWrapping; tx.repeat.set(5,3); return lam(0xffffff,{map:tx,roughness:0.95}); })();
+  const put=function(par,o,x,y,z,ry){ o.position.set(x,y,z); o.rotation.y=ry||0; par.add(o); return o; };
+  const futon=function(par,a,c,y,z0,z1,cols){ let yy=y; cols.forEach(function(q){ bx(par,a,c,z0,z1,yy,yy+q[1],fab(q[0])); yy+=q[1]; }); };
+
+  /* north wall: a tall bay of drawers, open shelves and a top cupboard; a low drawer run under the window (top 83 cm, clear of the 1 m sill) */
+  (function(){ const G=RUN(0,zN,0), D=0.4, a=WX(0,330), c=WX(0,424), c2=xE-0.45-0.004, H=0.85;
+    stds(G,[a+0.06,c-0.06],0.9,1.92); plinth(G,a,c,D); gable(G,a+t/2,0.075,H,D-t); gable(G,c-t/2,0.075,H,D-t); carc(G,a,c,0.075,H,D);
+    drawer(G,a+t,c-t,0.075+t,0.35,D,'儲藏室抽屜（衛生紙存貨）',function(g,x0,x1,z0,z1,y){ for(let i=0;i<2;i++) for(let j=0;j<2;j++) put(g,PK('bag',{w:0.3,h:0.21,d:0.15,c:0xf7f7f4,a:[0x9fc6e0,0xe9b8c6][j],m:'plain',seed:80+i+j*2}),x0+0.17+i*0.36,y,z0+0.08+j*0.16); });
+    drawer(G,a+t,c-t,0.35,0.6,D,'儲藏室抽屜（洗劑補充包）',function(g,x0,x1,z0,z1,y){ for(let i=0;i<6;i++) put(g,PK('pouch',{w:0.12,h:0.2,d:0.06,c:[0xe8f6fb,0xf3f7ea,0xfdf0e6][i%3],a:[0x2f9fd4,0x3a8f5a,0xe08a3c][i%3],m:'drop',seed:90+i}),x0+0.08+(i%3)*0.13+(i>2?0.38:0),y,z0+0.17,0).rotation.z=0; });
+    drawer(G,a+t,c-t,0.6,H-t,D,'儲藏室抽屜（電池・燈泡・工具）',function(g,x0,x1,z0,z1,y){ [[0.05,0.15,0.18,0xd8453c],[0.25,0.2,0.14,0x2b2c2e],[0.48,0.16,0.1,0xf2c230],[0.68,0.14,0.22,0x9fb0bf]].forEach(function(q,i){ put(g,PK('box',{w:q[1],h:0.06,d:q[2],c:0xf4f1ea,a:q[3],m:'plain',seed:100+i}),x0+q[0]+q[1]/2,y,z0+0.06+q[2]/2); }); });
+    bx(G,a,c,0.012,D+0.01,H,H+0.025,oak); shelf(G,a+0.004,c-0.004,1.2,D-0.06); shelf(G,a+0.004,c-0.004,1.55,D-0.06);
+    boxes(G,a,c,1.222,D-0.06,[0xd8cfc0,0xd8cfc0,0xc9bfae],0.24,'linen'); bx(G,a+0.03,a+0.31,0.04,D-0.09,1.572,1.79,basket); boxes(G,a+0.33,c,1.572,D-0.06,[0xe2c9a0,0xe2c9a0],0.22,'oak');
+    doors(G,a,c,1.95,2.4,D,'儲藏室上櫃（季節裝飾）',function(x0,x1,z0,z1,y){ boxes(G,x0,x1,y,z1,[0xc9b79c,0xe9e4da,0x9fb0bf],0.3,'linen'); });
+    col(G,a,c,0,D+0.01,0,2.4);
+    /* under the window: pet supplies and the cat food crate */
+    plinth(G,c,c2,D); gable(G,c2-t/2,0.075,0.8,D-t); carc(G,c,c2,0.075,0.8,D); bx(G,c,c2,0.012,D+0.01,0.8,0.83,oak);
+    drawer(G,c,c2-t,0.075+t,0.45,D,'儲藏室抽屜（貓糧箱）',function(g,x0,x1,z0,z1,y){ const cr=lam(0xe8eef2,{transparent:true,opacity:0.55,roughness:0.15}); bx(g,x0+0.02,x0+0.42,z0+0.02,z1-0.04,y,y+0.24,lam(0xb5793f,{roughness:0.9}),oc); bx(g,x0+0.01,x0+0.43,z0+0.01,z1-0.03,y,y+0.3,cr,oc); bx(g,x0+0.008,x0+0.432,z0+0.008,z1-0.028,y+0.3,y+0.32,lam(0x6f9a9a,{roughness:0.4}));   // airtight kibble crate, lid on
+      for(let i=0;i<2;i++) for(let j=0;j<3;j++) put(g,PK('can',{r:0.037,h:0.04,c:0xf3efe6,a:[0x7fb8e0,0xe8a15a,0x9aab8f][j],m:'fish',seed:120+i*3+j}),x1-0.2+i*0.085,y+0.0,z0+0.06+j*0.085); });
+    drawer(G,c,c2-t,0.45,0.8-t,D,'儲藏室抽屜（貓砂・寵物用品）',function(g,x0,x1,z0,z1,y){ [0,1].forEach(function(i){ const p=PK('bag',{w:0.28,h:0.3,d:0.1,c:0xf1ece2,a:0x7a9a6a,m:'plain',seed:130+i}); p.rotation.x=-Math.PI/2; put(g,p,x0+0.16+i*0.3,y+0.05,z0+0.3); }); put(g,PK('box',{w:0.22,h:0.1,d:0.16,c:0xe8f1f6,a:0x7fb8e0,m:'plain',seed:133}),x1-0.13,y,z0+0.1); });
+    col(G,c,c2,0,D+0.01,0,0.83); })();
+
+  /* east wall: garment bay, a drawer bay, the disaster bay; 45 cm deep */
+  (function(){ const G=RUN(xE,0,-Math.PI/2), D=0.45, e0=zN, e1=WZ(0,96), e2=WZ(0,170), e3=zS-0.4;
+    [e0,e1,e2,e3,zS].forEach(function(x,i){ gable(G,i===0?x+t/2:i===4?x-t/2:x,0.075,2.4,D); }); stds(G,[e0+t+0.05,e1-t/2-0.05,e1+t/2+0.05,e2-t/2-0.05],0.9,1.92);
+    /* garment bay: coats and garment bags on the rail, linen boxes under them, guest futons up top */
+    (function(){ const a=e0+t, c=e1-t/2, zr=D/2+0.02; bx(G,a,c,0.012,D,1.86,1.882,oak); const rail=new THREE.Mesh(new THREE.CylinderGeometry(0.0125,0.0125,c-a,16),std); rail.rotation.z=Math.PI/2; rail.position.set((a+c)/2,1.8,zr); G.add(rail);
+      [['coat',0xb08a5c,0.95],['coat',0x26324a,1.05],['puffer',0x6b6f74,0.75],['coat',0x1d1e21,1.1]].forEach(function(q,k){ const gm=Catalog.clothes.hang(q[0],{c:q[1],len:q[2],seed:k+3}); gm.position.set(a+0.08+k*0.1,1.815,zr); gm.rotation.y=Math.PI/2; G.add(gm); });
+      const gb=lam(0xdfe3e6,{transparent:true,opacity:0.8,roughness:0.6}); [0,1].forEach(function(k){ const x=c-0.13+k*0.07; bx(G,x-0.03,x+0.03,zr-0.24,zr+0.24,0.52,1.76,gb); bx(G,x-0.006,x+0.006,zr-0.24,zr+0.24,1.62,1.64,lam(0xc9a87e,{roughness:0.5}),oc); });   // garment bags for the good suits and dresses
+      plinth(G,a-t,c+t/2,D); [[a+0.01,(a+c)/2-0.005],[(a+c)/2+0.005,c-0.01]].forEach(function(r){ bx(G,r[0],r[1],0.05,D-0.04,0.075,0.36,fab(0xd8cfc0)); bx(G,(r[0]+r[1])/2-0.03,(r[0]+r[1])/2+0.03,D-0.041,D-0.038,0.29,0.32,lam(0x8a6e52),oc); });
+      doors(G,a,c,1.95,2.4,D,'儲藏室上櫃（客用棉被）',function(x0,x1,z0,z1,y){ futon(G,x0+0.01,x1-0.01,y,z0+0.02,z1-0.02,[[0xf3efe6,0.1],[0xe9e2d2,0.1],[0xa9c3d9,0.16]]); },true,{maxL:1.15}); })();
+    /* drawer bay: drinks below, open shelves of boxes and baskets */
+    (function(){ const a=e1+t/2, c=e2-t/2, H=0.85; plinth(G,a-t/2,c+t/2,D); carc(G,a,c,0.075,H,D);
+      drawer(G,a,c,0.075+t,0.4,D,'儲藏室抽屜（寶特瓶水・飲料）',function(g,x0,x1,z0,z1,y){ const bm=lam(0xd9eef7,{transparent:true,opacity:0.6,roughness:0.08}), cap=lam(0x2f6fb5,{roughness:0.4}); for(let j=0;j<2;j++) for(let i=0;i<6;i++){ const b2=new THREE.Mesh(new THREE.CylinderGeometry(0.047,0.047,0.3,14),bm); b2.rotation.x=Math.PI/2; b2.position.set(x0+0.05+i*0.098,y+0.048+j*0.095,(z0+z1)/2-0.02); g.add(b2); const cp=new THREE.Mesh(new THREE.CylinderGeometry(0.015,0.015,0.02,10),cap); cp.rotation.x=Math.PI/2; cp.position.set(b2.position.x,b2.position.y,b2.position.z+0.17); g.add(cp); } });   // 2 L bottles lying in two layers
+      drawer(G,a,c,0.4,H-t,D,'儲藏室抽屜（罐裝飲料・零食存貨）',function(g,x0,x1,z0,z1,y){ for(let i=0;i<5;i++) for(let j=0;j<3;j++) put(g,PK('can',{r:0.033,h:0.122,c:[0xe8f1f6,0xf4e6c8,0xe7efe2][j],a:[0x2f6fb5,0xc9772a,0x3a8f5a][j],m:'plain',seed:140+j}),x0+0.05+i*0.075,y,z0+0.06+j*0.075); put(g,PK('box',{w:0.24,h:0.14,d:0.16,c:0xfdf0e6,a:0xe08a3c,m:'chips',seed:150}),x1-0.13,y,z1-0.11); });
+      bx(G,a,c,0.012,D+0.01,H,H+0.025,oak); shelf(G,a,c,1.2,D-0.06); shelf(G,a,c,1.55,D-0.06);
+      bx(G,a+0.03,(a+c)/2-0.01,0.04,D-0.09,1.222,1.44,basket); bx(G,(a+c)/2+0.01,c-0.03,0.04,D-0.09,1.222,1.44,basket); boxes(G,a,c,1.572,D-0.06,[0xd8cfc0,0xc9bfae],0.24,'linen');
+      doors(G,a,c,1.95,2.4,D,'儲藏室上櫃（季節家電）',function(x0,x1,z0,z1,y){ bx(G,x0+0.02,(x0+x1)/2-0.01,z0+0.02,z1-0.03,y,y+0.38,lam(0xc9a87a,{roughness:0.9})); bx(G,(x0+x1)/2+0.01,x1-0.02,z0+0.02,z1-0.03,y,y+0.3,lam(0xe9e4da,{roughness:0.9})); },true); })();   // the fan and the heater in their cartons
+    /* disaster bay: water by the case and a 20 L jerrycan on the floor, the grab bag at hand height, helmet and torch, first aid and a power station */
+    (function(){ const a=e2+t/2, c=e3-t/2; bx(G,a,c,0.006,0.012,0.075,1.92,lam(0xe8763a,{roughness:0.7}),oc);   // a safety-orange back panel marks the bay
+      bx(G,a+0.01,c-0.01,0.03,D-0.03,0,0.06,plM); [0,1].forEach(function(k){ const x0=a+0.03+k*0.24, cs=lam(0xd2b48a,{roughness:0.9}); bx(G,x0,x0+0.22,0.06,0.39,0.06,0.37,cs); bx(G,x0+0.005,x0+0.215,0.385,0.392,0.12,0.3,lam(0x9fc6e0,{roughness:0.5}),oc); });   // cases of 2 L water
+      (function(){ const x=c-0.12, z=0.22, jm=lam(0x2f6fb5,{roughness:0.45}); bx(G,x-0.1,x+0.1,z-0.17,z+0.17,0.06,0.44,jm); bx(G,x-0.03,x+0.03,z-0.17,z-0.06,0.44,0.48,jm); const cp=new THREE.Mesh(new THREE.CylinderGeometry(0.022,0.022,0.04,12),lam(0xf2f2f0)); cp.position.set(x,0.45,z+0.1); G.add(cp); })();   // 20 L jerrycan
+      shelf(G,a,c,0.62,D-0.04,false); shelf(G,a,c,1.15,D-0.06); shelf(G,a,c,1.55,D-0.06);
+      (function(){ const x=(a+c)/2-0.08, bm=fab(0xe8642c); bx(G,x-0.15,x+0.15,0.06,0.28,0.645,1.06,bm); bx(G,x-0.13,x+0.13,0.28,0.31,0.67,0.92,fab(0xd2541f)); [-0.09,0.09].forEach(function(dx){ bx(G,x+dx-0.025,x+dx+0.025,0.03,0.06,0.7,1.02,fab(0x2b2c2e),oc); }); bx(G,x-0.15,x+0.15,0.235,0.25,0.96,0.975,lam(0xf3f3ee,{roughness:0.4}),oc); })();   // the grab bag with a reflective band, no words
+      (function(){ const hm=lam(0xf2c230,{roughness:0.3}), h=new THREE.Mesh(new THREE.SphereGeometry(0.12,22,12,0,Math.PI*2,0,Math.PI/2),hm); h.scale.set(1,0.9,1.15); h.position.set(a+0.15,1.172,0.22); G.add(h); bx(G,a+0.03,a+0.27,0.08,0.36,1.172,1.18,hm,oc);   // yellow helmet, a headlamp on its brim
+        E.cylm(G,a+0.15,0.36,0.018,0.018,1.2,1.24,lam(0x2b2c2e),12); const lt=new THREE.Mesh(new THREE.CylinderGeometry(0.022,0.022,0.24,14),lam(0x2b2c2e,{roughness:0.4})); lt.rotation.z=Math.PI/2; lt.position.set(c-0.2,1.194,0.28); G.add(lt); bx(G,c-0.17,c-0.03,0.08,0.2,1.172,1.29,lam(0xd8453c,{roughness:0.5})); })();   // torch, a hand-crank radio
+      bx(G,a+0.03,a+0.31,0.06,0.3,1.572,1.75,lam(0xf4f1ea,{roughness:0.5})); [[0.17,0.04,0.012],[0.17,0.012,0.04]].forEach(function(q){ bx(G,a+q[0]-q[1],a+q[0]+q[1],0.301,0.303,1.66-q[2],1.66+q[2],lam(0xd8453c),oc); });   // first-aid box
+      bx(G,c-0.33,c-0.03,0.06,0.28,1.572,1.79,lam(0x5d6166,{roughness:0.5})); bx(G,c-0.3,c-0.06,0.281,0.283,1.68,1.74,lam(0x1d1e21,{roughness:0.3}),oc);   // portable power station
+      doors(G,a,c,1.95,2.4,D,'儲藏室上櫃（備用食品・簡易廁所）',function(x0,x1,z0,z1,y){ boxes(G,x0,x1,y,z1,[0xd2b48a,0xd2b48a],0.3,'oak'); },true,{maxR:0.9}); })();
+    /* dehumidifier niche in the corner: it runs here on its own outlet, the humidifier waits on the shelf above for winter */
+    (function(){ const a=e3+t/2, c=zS-t, xm=(a+c)/2, dh=Catalog.dehumidifier(); dh.group.position.set(xm,0.004,0.2); dh.group.rotation.y=-Math.PI/2; G.add(dh.group); bx(G,a+0.01,c-0.01,0.03,D-0.03,0,0.004,lam(0xd9dcdf,{roughness:0.5}),oc);
+      bx(G,xm-0.035,xm+0.035,0.012,0.022,0.64,0.72,lam(0xf6f5f2,{roughness:0.35}),oc); bx(G,xm-0.012,xm+0.012,0.022,0.04,0.67,0.695,lam(0xf2f2f0,{roughness:0.4}),oc); const cd=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(xm,0.68,0.04),new THREE.Vector3(xm+0.03,0.64,0.05),new THREE.Vector3(xm+0.04,0.6,0.06)]),10,0.0035,6),lam(0xf2f2f0,{roughness:0.5})); G.add(cd);
+      shelf(G,a,c,0.76,D-0.04,false); const hu=Catalog.humidifier(); hu.group.position.set(xm,0.782,0.2); hu.group.rotation.y=-Math.PI/2; G.add(hu.group); shelf(G,a,c,1.45,D-0.06); boxes(G,a,c,1.472,D-0.06,[0xd8cfc0],0.26,'linen');
+      shelf(G,a,c,1.95,D-0.04,false); boxes(G,a,c,1.972,D-0.06,[0xc9b79c],0.3,'linen'); bx(G,a,c,0.012,D,2.4-t,2.4,oak); })();   // open to the top: a door here would swing into the luggage shelves
+    col(G,e0,zS,0,D,0,2.4); })();
+
+  /* south wall: three suitcases standing in the luggage bay under open shelves; the corner beside it stays open as the way into the dehumidifier niche */
+  (function(){ const G=RUN(0,zS,Math.PI), D=0.38, a=-WX(0,505), c=-WX(0,398);
+    gable(G,a+t/2,0,2.4,D); gable(G,c-t/2,0,2.4,D); stds(G,[a+t+0.05,c-t-0.05],0.85,1.92);
+    shelf(G,a+t,c-t,0.95,D-0.04); shelf(G,a+t,c-t,1.3,D-0.04); shelf(G,a+t,c-t,1.65,D-0.04,false);
+    boxes(G,a+t,c-t,0.972,D-0.06,[0xe2c9a0,0xe2c9a0,0xe2c9a0],0.26,'oak'); boxes(G,a+t,c-t,1.322,D-0.06,[0xd8cfc0,0xc9bfae,0xd8cfc0],0.26,'linen');
+    [[0.0,0x9fb0bf],[0.36,0xc9b79c]].forEach(function(q){ bx(G,a+t+0.02+q[0]+0.05,a+t+0.02+q[0]+0.3,0.08,0.3,1.672,1.72,fab(q[1])); });   // packing cubes and travel pouches
+    doors(G,a+t,c-t,1.95,2.4,D,'儲藏室上櫃（旅行用品）',function(x0,x1,z0,z1,y){ boxes(G,x0,x1,y,z1,[0xd8cfc0,0x9fb0bf,0xc9b79c],0.3,'linen'); },true,{maxL:1.0});
+    col(G,a,c,0,D,0.9,2.4); })();
+
+  /* breaker and network panels: a flush oak cover with a magnetic catch, hinged on the far side from the door so it opens clear of the entrance; the circuit labels stay on the panels inside */
+  (function(){ const x0=WX(0,315.5), x1=WX(0,396), y0=1.28, y1=1.92, dp=0.13, z=zS-dp, W=x1-x0;
+    bx(LG[0],x0,x0+t,z,zS,y0,y1,oak); bx(LG[0],x1-t,x1,z,zS,y0,y1,oak); bx(LG[0],x0,x1,z,zS,y0,y0+t,oak); bx(LG[0],x0,x1,z,zS,y1-t,y1,oak);
+    const g=new THREE.Group(); g.position.set(x1-0.0015,0,z); g.userData.keep=true; LG[0].add(g); const lf=bx(g,-W+0.003,0,-t,0,y0+0.0015,y1-0.0015,oak);
+    const kn=new THREE.Mesh(new THREE.CylinderGeometry(0.011,0.011,0.016,14),lam(0xb9a585,{metalness:0.8,roughness:0.35})); kn.rotation.x=Math.PI/2; kn.position.set(-W+0.05,(y0+y1)/2,-t-0.008); g.add(kn);
+    const cv=document.createElement('canvas'); cv.width=128; cv.height=96; const cg=cv.getContext('2d'); cg.fillStyle='#fbfaf6'; cg.fillRect(0,0,128,96); cg.strokeStyle='#6b7480'; cg.lineWidth=2; cg.strokeRect(8,8,112,80); for(let i=0;i<8;i++){ cg.fillStyle=['#d8453c','#2f6fb5','#3a8f5a','#f2c230'][i%4]; cg.fillRect(16+i*13,22,8,16); cg.fillStyle='#9aa3ab'; cg.fillRect(16+i*13,46,8,2); cg.fillRect(16+i*13,52,6,2); }
+    const ct=new THREE.CanvasTexture(cv); ct.colorSpace=THREE.SRGBColorSpace; const card=new THREE.Mesh(new THREE.PlaneGeometry(0.2,0.15),lam(0xffffff,{map:ct,roughness:0.8})); card.position.set(-W/2,(y0+y1)/2+0.12,0.001); g.add(card);   // the circuit map on the inside of the cover
+    const A=anim(function(e){ g.rotation.y=-1.52*e; },1.6); furnThings.push({pt:[(x0+x1)/2,z-0.7],l:0,part:[lf],label:function(){ return A.get()?'關上分電盤蓋':'打開分電盤蓋'; },act:A.toggle});
+    addCol(0,x0,x1,z,zS,y0,y1,'f'); })();
+
+  /* west wall between the cleaning station and the door: a fold-down work shelf, the step stool on its hook */
+  (function(){ const zc=WZ(0,135), w=0.5, Dp=0.4, y=0.9, g=new THREE.Group(); g.position.set(xW+0.024,y,zc); g.userData.keep=true; LG[0].add(g);
+    bx(LG[0],xW,xW+0.02,zc-w/2,zc+w/2,y,y+0.04,oak,oc); const lf=bx(g,0,Dp,-0.022,0,-w/2,w/2,oak);
+    const arms=[-1,1].map(function(s){ const ag=new THREE.Group(); ag.position.set(xW+0.01,y-0.27,zc+s*(w/2+0.012)); ag.userData.keep=true; LG[0].add(ag); bx(ag,-0.006,0.006,-0.006,0.4,-0.008,0.008,std); bx(LG[0],xW,xW+0.004,zc+s*(w/2+0.012)-0.012,zc+s*(w/2+0.012)+0.012,y-0.29,y-0.25,std,oc); return ag; });   // folding stays
+    const set=function(e){ g.rotation.z=-Math.PI/2*(1-e); arms.forEach(function(ag){ ag.rotation.z=-Math.PI+(Math.PI-Math.atan2(0.37,0.3))*e; }); }; set(0);
+    const A=anim(set,1.4); furnThings.push({pt:[xW+0.7,zc],l:0,part:[lf],label:function(){ return A.get()?'收起摺疊工作台':'放下摺疊工作台'; },act:A.toggle});
+    const sz=WZ(0,177), al=lam(0xd9dcdf,{metalness:0.7,roughness:0.35}); bx(LG[0],xW,xW+0.02,sz-0.02,sz+0.02,1.0,1.04,oak); E.cylm(LG[0],xW+0.04,sz,0.008,0.008,1.0,1.03,std,10);   // peg for the two-step stool
+    [-0.14,0.14].forEach(function(dz){ bx(LG[0],xW+0.03,xW+0.05,sz+dz-0.012,sz+dz+0.012,0.42,1.02,al); }); [0.5,0.72,0.94].forEach(function(yy){ bx(LG[0],xW+0.025,xW+0.06,sz-0.13,sz+0.13,yy,yy+0.06,oak); }); })();
+
+  /* oak floor, warm plaster walls, LEDs under the shelves on a presence sensor */
+  (function(){ const FIN=E.FIN, FL=E.FL, bb=new THREE.Box3(), sw=new Map(); const FW=FL.wood.clone(); FW.color.setHex(0xffffff); FIN.pbrMaps(FW,'oak_planks',1.2/1.818,1.2/0.909,{roughness:1.1,normalScale:0.7}); sw.set(FL.wood,FW);
+    const PW=WM.peach.clone(); FIN.pbrMaps(PW,'plaster',1.5,1.5,{albedo:false,rough:false,normalScale:0.35}); sw.set(WM.peach,PW);
+    LG[0].traverse(function(o){ const n=o.isMesh&&sw.get(o.material); if(!n) return; if(!o.geometry.boundingBox) o.geometry.computeBoundingBox(); bb.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld); const x=(bb.min.x+bb.max.x)/2, z=(bb.min.z+bb.max.z)/2; if(x>WX(0,310)&&x<WX(0,580)&&z>WZ(0,0)&&z<WZ(0,290)) o.material=n; }); })();
+  let on=null; const inside=function(){ const p=E.player; return p.py<E.base(0)+1&&p.x>WX(0,310)&&p.x<WX(0,580)&&p.z>WZ(0,0)&&p.z<WZ(0,290); };
+  furnAnims.push({live:function(){ return inside()!==on; },f:function(){ on=inside(); LED.forEach(function(m){ m.color.setHex(on?0xffd9a8:0xe9dccb); }); return false; }});
 })();
 (function(){                                   // 1F hall gallery: recessed niche (飾り棚ニッチ) in the garage wall with a hidden LED wash, a runner, cove light along the east wall
   const xe=WX(0,270)-TI/2, zc=WZ(0,505), glow=E.dusk(new THREE.MeshBasicMaterial({color:0xffdcaa})), oc={cast:false}, wl=WM.hall, y0=1.0, y1=1.35, za=WZ(0,445), zb=WZ(0,565), xb=WX(0,270)+TI/2-0.008, t=0.006;
@@ -1893,47 +2000,7 @@ fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥
 (function(){ [[WX(0,240),WZ(0,850)+TE/2,3,2.32],[WX(0,0)-TE/2,WZ(0,820),2,2.3],[WX(0,0)-TE/2,WZ(0,320),2,2.6]].forEach(function(c){ const P=Catalog.securityCamera(); P.group.position.y=c[3]; fixture(0,P,c[0],c[1],c[2]); }); })();
 (function(){ const z=WZ(0,0)-TE/2, wh=lam(0xf2f2f0,{roughness:0.35}), glow=new THREE.MeshBasicMaterial({color:0xfff1d6}), oc={cast:false};   // motion-sensor lights on the north (back) wall instead of cameras
   [WX(0,150),WX(0,450)].forEach(function(x){ bx(LG[0],x-0.08,x+0.08,z-0.06,z,2.2,2.3,wh); bx(LG[0],x-0.07,x+0.07,z-0.065,z-0.06,2.21,2.29,glow,oc); const s2=new THREE.Mesh(new THREE.SphereGeometry(0.025,12,8),lam(0xe8e8e4,{roughness:0.2})); s2.position.set(x,2.17,z-0.04); LG[0].add(s2); }); })();
-(function(){                                   // mirror room: mirror wall on the north with a pull-down screen, storage at the far east end (suitcases, seasonal things)
-  const x1=WX(0,580)-TE/2, x0=x1-0.6, z0=WZ(0,0)+TE/2, z1=WZ(0,290)-TI/2, H=2.4, n=3, w=(z1-z0)/n;
-  bx(LG[0],x1-0.02,x1,z0,z1,0,H,M.cabF); bx(LG[0],x0,x1,z0,z1,H-0.02,CH,M.cabF,{cast:false}); bx(LG[0],x0,x1,z0,z1,0,0.06,M.cabF);   // hollow carcass: back, top, plinth
-  [z0,z1].forEach(function(a){ bx(LG[0],x0,x1-0.02,Math.max(z0,a-0.01),Math.min(z1,a+0.01),0.06,H-0.02,M.cabF); });   // open carcass: end panels only, shelves hang on back-wall rails so the layout can change
-  for(let i=0;i<=6;i++){ const a=z0+0.03+i*(z1-z0-0.06)/6; bx(LG[0],x1-0.03,x1-0.02,a-0.012,a+0.012,0.1,H-0.06,M.steel,{cast:false}); }
-  const boxC=[0xe9e4da,0xc9b79c,0x9fb0bf,0xd8cfc0], oc={cast:false}, X0=x0+0.03, X1=x1-0.03, bay=function(i){ return [z0+i*w+0.012,z0+(i+1)*w-0.012]; };
-  const shelf=function(i,y){ const q=bay(i); bx(LG[0],x0+0.03,x1-0.02,q[0],q[1],y,y+0.02,M.cabF,oc); };
-  const caseM=lam(0xe8eef2,{transparent:true,opacity:0.42,roughness:0.2}), clothes=[0x2f3a4a,0xb9a184,0x8c3b3b,0xdedad2,0x5a6b58,0x9aa7b8];
-  const cases=function(za,zb,y,n){ for(let k=0;k<n;k++){ const yy=y+k*0.3;   // clear drawer cases with folded seasonal clothes inside
-      bx(LG[0],X0+0.02,X1,za+0.01,zb-0.01,yy+0.04,yy+0.2,lam(clothes[(k*2+Math.round(za*7))%6],{roughness:0.9}),oc);
-      bx(LG[0],X0,X1,za,zb,yy,yy+0.28,caseM,oc); bx(LG[0],X0-0.006,X0,za+0.06,zb-0.06,yy+0.2,yy+0.23,lam(0xd8dde2),oc); } };
-  (function(){ const q=bay(0), zm=(q[0]+q[1])/2;                                   // north bay: our winter duvet up top, the guest futon set, seasonal clothes in cases
-    shelf(0,0.86); shelf(0,1.72);
-    bx(LG[0],X0,X1,q[0]+0.03,q[1]-0.03,1.74,2.08,lam(0xcfd3d6,{roughness:0.95}),oc); bx(LG[0],X0-0.004,X0,q[0]+0.2,q[1]-0.2,1.86,1.96,lam(0x8aa0b4),oc);
-    [[0.88,1.0,0xf3efe6],[1.0,1.12,0xe9e2d2],[1.12,1.3,0xa9c3d9]].forEach(function(f){ bx(LG[0],X0,X1,q[0]+0.03,q[1]-0.03,f[0],f[1],lam(f[2],{roughness:0.95}),oc); });   // shikibuton x2, kakebuton
-    bx(LG[0],X0+0.05,X1-0.05,q[0]+0.05,zm-0.02,1.3,1.42,lam(0xf6f4ef,{roughness:0.9}),oc); bx(LG[0],X0+0.05,X1-0.05,zm+0.02,q[1]-0.05,1.3,1.42,lam(0xf6f4ef,{roughness:0.9}),oc);   // pillows
-    cases(q[0]+0.02,zm-0.01,0.08,2); cases(zm+0.01,q[1]-0.02,0.08,2); })();
-  (function(){ const q=bay(1), coats=[0xb08a5c,0x26324a,0x6b6f74,0x1d1e21,0xe6dfd1,0x7c2f2f,0x46586b,0xa89880];   // middle bay: off-season coats on the rail, boxes above, cases below
-    shelf(1,1.98); bx(LG[0],(X0+X1)/2-0.012,(X0+X1)/2+0.012,q[0],q[1],1.86,1.885,M.steel,oc);
-    coats.forEach(function(c,k){ const z=q[0]+0.06+k*(q[1]-q[0]-0.12)/(coats.length-1), L=0.85+(k%3)*0.15;
-      bx(LG[0],X0+0.04,X1-0.04,z-0.025,z+0.025,1.84-L,1.8,lam(c,{roughness:0.9}),oc); });
-    [[q[0]+0.03,(q[0]+q[1])/2-0.01],[(q[0]+q[1])/2+0.01,q[1]-0.03]].forEach(function(r,k){ bx(LG[0],X0+0.02,X1-0.02,r[0],r[1],2.0,2.28,lam(boxC[k],{roughness:0.8}),oc); });
-    cases(q[0]+0.02,(q[0]+q[1])/2-0.01,0.08,2); })();
-  (function(){ const q=bay(2);                                                   // south bay: shelves of boxes, off-season appliances on the floor
-    [0.78,1.38,1.98].forEach(function(y,k){ shelf(2,y); if(k) for(let i=0;i<2;i++){ const za=q[0]+0.03+i*(q[1]-q[0])/2; bx(LG[0],X0+0.02,X1-0.02,za,za+(q[1]-q[0])/2-0.06,y+0.02,y+0.3+0.05*((i+k)%2),lam(boxC[(i+k)%4],{roughness:0.8}),oc); } });
-    for(let i=0;i<3;i++) bx(LG[0],X0+0.02,X1-0.02,q[0]+0.03+i*0.29,q[0]+0.29+i*0.29,0.8,1.0+0.04*(i%2),lam([0xd8453c,0xe9e4da,0x9fb0bf][i],{roughness:0.8}),oc);
-    const dh=Catalog.dehumidifier(), hu=Catalog.humidifier(), xm=(x0+x1)/2;
-    dh.group.position.set(xm,0.06,q[0]+0.24); dh.group.rotation.y=Math.PI; LG[0].add(dh.group);
-    hu.group.position.set(xm,0.06,q[1]-0.2); hu.group.rotation.y=Math.PI; LG[0].add(hu.group); })();
-  const DG=new THREE.Group(); DG.userData.keep=true; LG[0].add(DG);   // two full-height sliding doors on a two-track rail: no swing space needed in front
-  const hw=(z1-z0)/2, rail=function(q){ bx(LG[0],x0+q-0.012,x0+q+0.012,z0,z1,H-0.04,H-0.02,M.frame,{cast:false}); bx(LG[0],x0+q-0.006,x0+q+0.006,z0,z1,0.06,0.075,M.frame,{cast:false}); }; rail(-0.015); rail(-0.045);
-  const panel=function(zc,q){ const g=new THREE.Group(); g.position.set(x0+q,0,zc); DG.add(g);
-    const lf=new THREE.Mesh(new THREE.BoxGeometry(0.02,H-0.12,hw+0.02),M.cab); lf.position.y=0.075+(H-0.12)/2; lf.castShadow=true; g.add(lf);
-    [-1,1].forEach(function(k){ const hd=new THREE.Mesh(new THREE.BoxGeometry(0.008,0.36,0.03),M.steel); hd.position.set(-0.012,1.1,k*(hw/2-0.04)); g.add(hd); }); return g; };
-  const PA=panel(z0+hw/2,-0.045), PB=panel(z1-hw/2,-0.015), CL=['打開左側收納櫃','打開右側收納櫃','關上收納櫃'];
-  let st=0, va=0, vb=0, cl=null; const tA=function(){ return st===1?hw:0; }, tB=function(){ return st===2?-hw:0; };
-  const cset=function(){ PA.position.z=z0+hw/2+va; PB.position.z=z1-hw/2+vb; }; cset();
-  furnThings.push({pt:[x0-0.6,(z0+z1)/2],l:0,on:function(){ return true; },label:function(){ return CL[st]; },act:function(){ st=(st+1)%3; cl=null; }});
-  furnAnims.push({live:function(){ return va!==tA()||vb!==tB(); },f:function(t){ if(cl===null) cl=t; const dt=Math.min(0.05,t-cl); cl=t;
-    const mv=function(v,tg){ const d=tg-v; return Math.abs(d)<dt*1.6?tg:v+Math.sign(d)*dt*1.6; }; va=mv(va,tA()); vb=mv(vb,tB()); cset(); return true; }});
-  addCol(0,x0,x1,z0,z1,0,H,'x');
+(function(){                                   // mirror room: mirror wall on the north with a pull-down screen
   const mx0=WX(0,0)+TE/2+0.12, mx1=WX(0,310)-TI/2-0.12, mz=WZ(0,0)+TE/2;
   bx(LG[0],mx0-0.03,mx1+0.03,mz,mz+0.012,0.12,2.18,M.oak,{cast:false});
   const mw=Walk.planarMirror(THREE,mx1-mx0,2.0); mw.position.set((mx0+mx1)/2,1.15,mz+0.013); LG[0].add(mw);
@@ -2060,7 +2127,7 @@ fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥
     bx(AG,-0.27,-0.02,-0.3,-0.24,b,b+0.07,pad,oc); bx(AG,-0.27,-0.02,0.24,0.3,b,b+0.07,pad,oc); acOut(AG,-0.29,0,b+0.09,0.7,-1);   // anti-vibration feet
     coverZ(LG[2],x-0.04,x+0.04,zw,zw+0.06,b+0.45,b+2.36); bx(LG[2],x-0.05,x+0.05,zw,zw+0.075,b+2.3,b+2.42,cov); bx(LG[2],x-0.04,x+0.04,zw,zw+0.08,b+0.4,b+0.46,cov);
     addCol(2,x0,xe,zw,zw+0.36,b,b+0.64,'w'); })();
-  /* breaker panel and network panel on the storage room's south wall beside its door, centred about 1.6 m up (the east wall is the full-height closet) */
+  /* breaker panel and network panel on the storage room's south wall beside its door, centred about 1.6 m up, behind the oak cover */
   (function(){ const zw=WZ(0,290)-TI/2, pnl=lam(0xf3f2ee,{roughness:0.35}), sm=lam(0xd9d6cf,{roughness:0.5});
     [[WX(0,318),0.4,0.5,'分電盤'],[WX(0,363),0.3,0.4,'情報分電盤']].forEach(function(q){ const x0=q[0], x1=x0+q[1], y0=1.6-q[2]/2, y1=y0+q[2];
       bx(LG[0],x0,x1,zw-0.1,zw,y0,y1,pnl); bx(LG[0],x0+0.02,x1-0.02,zw-0.102,zw-0.1,y0+0.02,y1-0.02,sm,oc); bx(LG[0],(x0+x1)/2-0.04,(x0+x1)/2+0.04,zw-0.108,zw-0.1,y0+0.03,y0+0.05,dk,oc);
