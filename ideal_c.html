@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261029m">
+<link rel="stylesheet" href="lib/storeys.css?v=20261029n">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -77,14 +77,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261029m"></script>
-<script src="lib/furniture.js?v=20261029m"></script>
-<script src="lib/catalog.js?v=20261029m"></script>
-<script src="lib/look.js?v=20261029m"></script>
-<script src="lib/houses.js?v=20261029m"></script>
-<script src="lib/perf.js?v=20261029m"></script>
-<script src="lib/finish.js?v=20261029m"></script>
-<script src="lib/storeys.js?v=20261029m"></script>
+<script src="lib/people.js?v=20261029n"></script>
+<script src="lib/furniture.js?v=20261029n"></script>
+<script src="lib/catalog.js?v=20261029n"></script>
+<script src="lib/look.js?v=20261029n"></script>
+<script src="lib/houses.js?v=20261029n"></script>
+<script src="lib/perf.js?v=20261029n"></script>
+<script src="lib/finish.js?v=20261029n"></script>
+<script src="lib/storeys.js?v=20261029n"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -198,7 +198,7 @@ notes:[
   [0,155,30,'壁掛喇叭','鏡子房兩側'],
   [0,580,345,'Tesla 充電樁','車庫牆上'],
   [0,240,850,'監視攝影機','共 3 台：玄關門廊、大門門扉（西南角）、西側庭院・緣側'],[0,445,620,'Tesla 哨兵模式（車庫監視）','車庫不另裝攝影機，由車上鏡頭錄影：需手動開啟（控制→安全性→哨兵模式），車子插著充電樁不怕耗電，「在家時不啟用」不要勾；錄影存在車上的 USB 隨身碟'],[0,300,-10,'感應燈','北側後方 2 盞，有人靠近自動亮起'],
-  [1,555,815,'肯蒂亞椰子','美化佈置：客廳角落的大型植栽，對貓無毒'],[2,275,895,'橄欖樹','美化佈置：3F 陽台的西端，對貓無毒'],[1,452.05,660,'橡木吊燈','美化佈置：茶几／餐桌上方，Ø40 cm 扁圓燈罩'],
+  [1,555,815,'肯蒂亞椰子','美化佈置：客廳角落的大型植栽，對貓無毒'],[2,275,895,'橄欖樹','美化佈置：3F 陽台的西端，對貓無毒'],[1,437.05,660,'橡木吊燈','美化佈置：茶几／餐桌上方，Ø40 cm 扁圓燈罩'],
   [2,575,700,'鼠尾草綠主牆','美化佈置：主臥床頭那面牆（東牆，繞開高窗）'],[2,240,420,'照片牆','美化佈置：3F 走廊，咘咘和旅行照片'],[0,-3,1010,'門牌','美化佈置：宅配箱門柱上的咘咘門牌'],
   [0,440,120,'儲藏室（家庭倉庫）','整間是淺橡木的可拆式收納系統：牆上鎖 32 mm 孔距的鋁立柱，層板、抽屜櫃和上櫃都掛在上面，櫃子底下各自放踢腳台座，要改房間時可以整組拆下帶走。北牆是高櫃（下面三個抽屜放衛生紙、洗劑補充包、電池燈泡工具，中段的開放層板放亞麻盒和藤籃，上櫃放季節裝飾），窗下是 83 cm 高的矮抽屜櫃（貓糧密封箱和罐頭、貓砂和寵物用品），離地 1 m 的窗台以上全部空著；東牆是掛衣區（大衣、西裝和洋裝的防塵套，上櫃放客用棉被）和抽屜區（寶特瓶水、罐裝飲料、零食存貨，上櫃放電風扇和電暖器）；層板下的 LED 有人進房間就會亮；地板是橡木，牆面是暖色灰泥'],[0,560,265,'除濕機・加濕機','東南角的開放格：除濕機放在地上，直接插在離地約 70 cm 的專用插座上運轉，加濕機收在上面的層板，冬天再拿出去用'],[0,550,207,'防災品格','東牆有一格是柔和杏橘色的背板：地上兩箱 2 L 寶特瓶水和 20 L 水桶，伸手就拿得到的高度放緊急避難包（有反光條，沒有印字），上面一層是黃色安全帽、頭燈、手電筒和手搖收音機，再上一層是急救箱和攜帶式電源，上櫃放備用食品和簡易廁所'],[0,450,262,'行李箱格','南牆下方空著，三個行李箱（30、29、24 吋）直立並排、輪子著地，拉桿朝上，拿了就能出門；上面三層層板放橡木箱、亞麻盒和旅行用的收納袋，上櫃放旅行用品'],[0,356,268,'分電盤蓋','分電盤和情報分電盤外面加一片和收納同材質的橡木蓋（磁吸扣），鉸鏈在離門比較遠的那一側，打開時不會擋到門口；迴路配置圖貼在蓋子內側'],[0,322,135,'摺疊工作台＋踏台','西牆在清潔用具和門之間：50 × 40 cm 的橡木摺疊工作台（離地 90 cm，放下來可以拆箱、打包），旁邊掛著兩階踏台，拿上櫃的東西時用'],[0,400,200,'可改小孩房','收納全部掛在牆上的立柱上，櫃子各自有踢腳台座，拆掉後牆上只剩螺絲孔；窗戶是一般高度，冷氣孔和插座也預留好了，地板和牆面可以直接當小孩房用'],
   [0,265,505,'玄關廳飾り棚ニッチ','牆面嵌入式壁龕 120 × 30 cm（離地 1 m），上緣內藏暖色 LED 燈條往下打亮背板，放細長花瓶插一枝乾燥枝、兩個小陶器和一個相框；上方掛畫。背面是車庫牆，實際施工時壁龕背面需補防火板'],
@@ -222,8 +222,8 @@ noteText:{
   fridge:['日立 冰箱 R-HZC54Y','540 L・真空冰溫・寬 65 × 深 69.9 × 高 184.3 cm・水晶白玻璃門；上面是對開門的冷藏室，下面依序是製冰室／切換室、蔬果室、冷凍室，全部可以打開'],
   washer:['滾筒洗脫烘洗衣機','放在 3F 洗衣更衣間，洗完直接烘乾，掛上旁邊的吊衣桿'],
   tv:['85 吋電視（壁掛）＋落地電視櫃','電視用薄型壁掛架掛在東牆、離牆約 2.5 cm，下緣比電視櫃高約 12 cm、畫面中心離地約 1.05 m（坐在沙發上眼睛約 1.33 m，畫面中心在視線下方約 6°、上緣在視線上方約 5.5°），觀看距離約 2.6 m，THX 建議的 40° 視角，電影院的沉浸感，聲霸掛在畫面下方；主機層上板往西推開（滑進左側檯面下）：下降 2.8 cm 落到隱藏滑軌上再往西滑，東端留一點和手指凹口方便拉回，不用往上掀，碰不到聲霸和電視；電視櫃：左右是深抽屜（書・桌遊），中間主機層有下掀門和可往西推開的上板，背牆插座排＋散熱孔；電視櫃長 240 cm，主機層背板上有一排插座（含 USB-C）、上下兩排通風孔和對著牆上配線出口的開口，Switch 底座、路由器和電視盒都插在上面'],
-  sofa:'210 × 97 × 100 cm（參考 NITORI 三人座電動躺椅），柔軟的灰米色布面（同布滾邊）：捲邊扶手寬約 16 cm、高 58.5，三個座位 58／52／58 cm、座高 45，座墊微微鼓起、前緣圓弧往下，靠背是三道橫向車縫；每個座位的腳靠是兩片：收起時是座位前面那片板，展開時剪刀式黑色連桿把它往前往上推、前端小片翻出來接成平的一片（尾端有圓枕），躺平深度 163 cm；單馬達：先出腳靠、再倒靠背，靠背會往前滑約 15 cm（離牆 15 cm 就夠）；左右座可各自躺平；中間靠背放下變成 37 × 34 cm 橡木托盤（兩個 8.5 cm 杯架）；扶手外側有 USB 和兩顆按鈕；電源接沙發下方的地板插座，電線不外露。坐著時眼睛到電視畫面的觀看距離約 2.6 m（躺平約 2.65 m），THX 建議的 40° 視角，電影院的沉浸感；中間座位正對畫面中心，沙發背到樓梯側牆留約 134 cm',
-  lift:'茶几／餐桌／書桌三段高度，四張同尺寸凳子收在桌下；放在沙發躺平時腳靠尖端往前 5 cm 的位置（沙發椅背到腳靠尖端 163 cm），離電視櫃前緣約 44 cm，電視櫃的抽屜和下掀門、茶几靠電視那側的抽屜和凳子收納門都能完全打開；地板插座跟著移到桌下',
+  sofa:'210 × 97 × 100 cm（參考 NITORI 三人座電動躺椅），柔軟的灰米色布面（同布滾邊）：捲邊扶手寬約 16 cm、高 58.5，三個座位 58／52／58 cm、座高 45，座墊微微鼓起、前緣圓弧往下，靠背是三道橫向車縫；每個座位的腳靠是兩片：收起時是座位前面那片板，展開時剪刀式黑色連桿把它往前往上推、前端小片翻出來接成平的一片（尾端有圓枕），躺平深度 163 cm（椅背往後伸出本體 15 cm＋本體 97＋腳靠往前 51）；單馬達：先出腳靠、再倒靠背，座面跟著微微往前；椅背後面至少要留 15 cm；左右座可各自躺平；中間靠背放下變成 37 × 34 cm 橡木托盤（兩個 8.5 cm 杯架）；扶手外側有 USB 和兩顆按鈕；電源接沙發下方的地板插座，電線不外露。坐著時眼睛到電視畫面的觀看距離約 2.6 m（躺平約 2.65 m），THX 建議的 40° 視角，電影院的沉浸感；中間座位正對畫面中心，沙發背到樓梯側牆留約 134 cm',
+  lift:'茶几／餐桌／書桌三段高度，四張同尺寸凳子收在桌下；放在沙發躺平時腳靠尖端往前 5 cm 的位置（沙發本體前緣到腳靠尖端 51 cm），離電視櫃前緣約 59 cm，電視櫃的抽屜和下掀門、茶几靠電視那側的抽屜和凳子收納門都能完全打開；地板插座跟著移到桌下',
   massage:'HY-5018：直立 146 × 74.5 × 114.5 cm，躺平 169 cm，腳靠會伸縮；放在沙發北端和半島之間、斜向電視，插在旁邊地板的地板插座',
   dryer:'收在沙發南端和南牆之間的角落（不擋走道），坐在沙發上就能吹頭髮；底座旁有專用的地板插座',
   appl:'上層：Panasonic Bistro NE-BS9E 過熱水蒸氣微波烤箱（49.4 × 43.5 × 37 cm，上方留 8 cm）、Philips 7000 XXL Combi 氣炸鍋（HD9880，炸籃往前拉）；下層：象印 PTQ-A100 蒸氣不外漏電熱水壺（石板灰，可設 50–100°C）、象印 炎舞炊き NW-FC10 電子鍋（絹白，26 × 33 × 23.5 cm，開蓋高 47.5 cm；托盤拉出後蓋子可全開）、Philips LatteGo 全自動義式咖啡機 EP5547（香檳金，24.6 × 37.1 × 43.3 cm）、Kuvings SV-600 真空靜音果汁機（21.6 × 24 × 44.3 cm，下層淨高約 50 cm）；大同電鍋和小烤箱收進下櫃。寬 132.5 cm、深 70 cm 與冰箱齊平；上下兩層層板整層拉出，下層右端放果汁機（半島檯面兩端都太窄或靠近 IH，所以留在櫃裡）；裡面的背板和側板是淺橡木，每層層板下藏一條 3000K 暖光 LED；電線收在背後；踢腳改成淺灰米色',
@@ -589,7 +589,7 @@ layout:function(E){
 return [
   /* 2F living: corridor along the stair wall from the stair top to flight B; TV and clock on the east wall, cat walkway on the south wall beside the lounging bay */
   ['tv','tv86',1,553,660,'W',function(){ const p=Catalog.tvBoard(85,0,true,{w:1.891,h:1.135,d:0.43,len:2.4,wall:true}), on=function(){ return document.getElementById('tTv').getAttribute('aria-pressed')==='true'; };   // standing back from the TV shows its size and switches it
-    p.actions.push({x:-1.5,z:0,part:p.tvParts,label:function(){ return '85 吋電視・'+(on()?'關掉':'打開'); },act:function(){ E.setTv(!on()); }}); return p; }],['sofa','reclinerSofa',1,302,660,'E'],['lift','liftDining',1,452.05,660,'E'],['rugL','rugRound',1,445,660,'E',function(){ return Catalog.roundRug(0.85,'plain',24,0.0,true); }],['purifL','airPurifier',1,138,384,'E'],['purifB','airPurifier',2,545,815,'W'],['dryer','dryerStandPink',1,280,826,'N',function(){ return Catalog.dryerStand({pink:true,plug:[-0.2,0.012,0.0],floor:true}); }],['massage','massageChair',1,298,498,'E',function(){ const p=Catalog.massageChair(); p.group.rotation.y=-0.367; return p; }],
+    p.actions.push({x:-1.5,z:0,part:p.tvParts,label:function(){ return '85 吋電視・'+(on()?'關掉':'打開'); },act:function(){ E.setTv(!on()); }}); return p; }],['sofa','reclinerSofa',1,302,660,'E'],['lift','liftDining',1,437.05,660,'E'],['rugL','rugRound',1,430,660,'E',function(){ return Catalog.roundRug(0.85,'plain',24,0.0,true); }],['purifL','airPurifier',1,138,384,'E'],['purifB','airPurifier',2,545,815,'W'],['dryer','dryerStandPink',1,280,826,'N',function(){ return Catalog.dryerStand({pink:true,plug:[-0.2,0.012,0.0],floor:true}); }],['massage','massageChair',1,298,498,'E',function(){ const p=Catalog.massageChair(); p.group.rotation.y=-0.367; return p; }],
   ['map','worldMap',1,119.5,560,'E'],
   ['clock','wallClock',1,119.5,400,'E',function(){ return Catalog.wallClock('oak'); }],
   ['catC','catStep',1,240,843.5,'N',function(){ return Catalog.catStep(0.42); }],['catA','catStep',1,198,843.5,'N',function(){ return Catalog.catStep(0.72); }],['catBed','catBed',1,156,843.5,'N',function(){ return Catalog.catBed(1.02); }],   // one even diagonal rising west: 42 cm across and about 30 cm up per hop
@@ -2197,7 +2197,7 @@ fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥
       [1,6.5,760,'E',0.25,'e'],                                                                       // the litter robot
       [1,573.5,530,'W',0.3,'w'],                                                                      // the automatic feeder and water fountain under the coat cupboard
       [1,573.5,200,'W',1.15,'u'],                                                                     // the 3D printer on the standing counter
-      [1,452.05,700,'S',0,'f'],                                                                          // lift dining table, a floor outlet under it
+      [1,437.05,700,'S',0,'f'],                                                                          // lift dining table, a floor outlet under it
       [1,545,843.5,'N',0.25,'u'],[1,240,843.5,'N',0.25,'u'],                                         // living room, either side of the bay
       [0,-6.5,600,'W',0.4,'o'],[2,545,856.5,'S',0.4,'o'],[0,250,796.5,'S',0.4,'o'],[0,586.5,700,'E',0.4,'o']   // outdoors: garden, balcony, porch, by the car apron (pressure washer)
     ].forEach(function(q){ put(q[0],q[1],q[2],q[3],q[4],q[5]); }); })();
@@ -2274,7 +2274,7 @@ modes:function(E){
   palm(DG[1],WX(1,556),WZ(1,806),b[1],WX(1,580)-TE/2,WZ(1,850)-TE/2);
   olive(DG[2],WX(2,568),WZ(2,880),b[2],0.8); olive(DG[0],WX(0,247.5),WZ(0,820),b[0]-0.15,0.66);   // in the porch corner, clear of the front door's swing
   /* C. oak dome pendant over the lift table */
-  (function(){ const g=DG[1], x=WX(1,452.05), z=WZ(1,660), y=b[1]+CH-0.7, oak=lam(0xc9a77c,{roughness:0.55,side:T.DoubleSide});   // low, wide oak dome pendant (Ø 40 cm) with an opal diffuser
+  (function(){ const g=DG[1], x=WX(1,437.05), z=WZ(1,660), y=b[1]+CH-0.7, oak=lam(0xc9a77c,{roughness:0.55,side:T.DoubleSide});   // low, wide oak dome pendant (Ø 40 cm) with an opal diffuser
     const dome=new T.Mesh(new T.SphereGeometry(0.2,40,12,0,Math.PI*2,0,Math.PI*0.42),oak); dome.scale.y=0.6; dome.position.set(x,y,z); dome.castShadow=true; g.add(dome);
     const dif=new T.Mesh(new T.CircleGeometry(0.19,40),new T.MeshStandardMaterial({color:0xfdf8ee,emissive:0xffe2b8,emissiveIntensity:0.9,side:T.DoubleSide})); dif.rotation.x=Math.PI/2; dif.position.set(x,y+0.2*0.6*Math.cos(Math.PI*0.42),z); g.add(dif);
     const cap=new T.Mesh(new T.CylinderGeometry(0.02,0.02,0.03,16),M2(0x2a2a2a)); cap.position.set(x,y+0.13,z); g.add(cap);
