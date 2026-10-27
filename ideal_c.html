@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261028y">
+<link rel="stylesheet" href="lib/storeys.css?v=20261028z">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261028y"></script>
-<script src="lib/furniture.js?v=20261028y"></script>
-<script src="lib/catalog.js?v=20261028y"></script>
-<script src="lib/look.js?v=20261028y"></script>
-<script src="lib/houses.js?v=20261028y"></script>
-<script src="lib/perf.js?v=20261028y"></script>
-<script src="lib/finish.js?v=20261028y"></script>
-<script src="lib/storeys.js?v=20261028y"></script>
+<script src="lib/people.js?v=20261028z"></script>
+<script src="lib/furniture.js?v=20261028z"></script>
+<script src="lib/catalog.js?v=20261028z"></script>
+<script src="lib/look.js?v=20261028z"></script>
+<script src="lib/houses.js?v=20261028z"></script>
+<script src="lib/perf.js?v=20261028z"></script>
+<script src="lib/finish.js?v=20261028z"></script>
+<script src="lib/storeys.js?v=20261028z"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -2216,13 +2216,15 @@ fixture(2,Catalog.heaterPanel('浴室暖房乾燥機',['換氣','暖房','乾燥
   /* fire extinguishers (Tiger ECO NEUT 1 L), one a floor, on the escape route */
   [[1,WX(1,132),WZ(1,225)+TI/2+0.07,3],[2,WX(2,245)-TI/2-0.07,WZ(2,385),2],[0,WX(0,270)-TI/2-0.07,WZ(0,600),2]].forEach(function(q){ fixture(q[0],Catalog.fireExtinguisher(),q[1],q[2],q[3]); });
 })();
-(function(){                                   // 2F trial of photographed PBR finishes (Poly Haven / ambientCG, CC0): oak planks, quartz counter, plaster walls
-  const FIN=E.FIN, FL=E.FL, y0=E.base(1)-0.05, y1=E.base(2)-0.05, bb=new THREE.Box3(), swap=new Map();
+(function(){                                   // photographed PBR finishes (Poly Haven / ambientCG, CC0, 1K) rolled out house-wide: oak planks, quartz tops, plaster normals, greige stone normals on the genkan floor
+  const FIN=E.FIN, FL=E.FL, bb=new THREE.Box3(), swap=new Map();
   const FW=M.floor2F=FL.wood.clone(); FW.color.setHex(0xffffff); FIN.pbrMaps(FW,'oak_planks',1.2/1.818,1.2/0.909,{roughness:1.1,normalScale:0.7}); swap.set(FL.wood,FW);   // floor uv: one unit = a 1.818 x 0.909 m board; the photo covers 1.2 m
   const Q=M.top.clone(); Q.color.setHex(0xffffff); FIN.pbrMaps(Q,'quartz_white',1.2,1.2,{roughness:0.65,normalScale:0.3}); swap.set(M.top,Q);
+  const ST=FL.stone.clone(); FIN.pbrMaps(ST,'stone_greige',1.2,1.2,{albedo:false,roughness:0.9,normalScale:0.35}); swap.set(FL.stone,ST);
   Object.keys(WM).forEach(function(k){ const w=WM[k].clone(); FIN.pbrMaps(w,'plaster',1.5,1.5,{albedo:false,rough:false,normalScale:0.35}); swap.set(WM[k],w); });
-  [LG[1],E.furnG[1]].forEach(function(g){ g.updateMatrixWorld(true); g.traverse(function(o){ const n=o.isMesh&&swap.get(o.material); if(!n) return; if(!o.geometry.boundingBox) o.geometry.computeBoundingBox(); bb.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld); const y=(bb.min.y+bb.max.y)/2; if(y>y0&&y<y1) o.material=n; }); });
+  [0,1,2].forEach(function(l){ const y0=E.base(l)-0.05, y1=l<2?E.base(l+1)-0.05:E.base(2)+E.CH+0.1; [LG[l],E.furnG[l]].forEach(function(g){ g.updateMatrixWorld(true); g.traverse(function(o){ const n=o.isMesh&&swap.get(o.material); if(!n) return; if(!o.geometry.boundingBox) o.geometry.computeBoundingBox(); bb.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld); const y=(bb.min.y+bb.max.y)/2; if(y>y0&&y<y1) o.material=n; }); }); });
 })();
+
 },
 lighting:function(E){
   const {cove,light,pendant,downlight,batten}=E;
