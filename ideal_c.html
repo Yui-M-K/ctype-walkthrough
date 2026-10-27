@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261029g">
+<link rel="stylesheet" href="lib/storeys.css?v=20261029h">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -77,14 +77,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261029g"></script>
-<script src="lib/furniture.js?v=20261029g"></script>
-<script src="lib/catalog.js?v=20261029g"></script>
-<script src="lib/look.js?v=20261029g"></script>
-<script src="lib/houses.js?v=20261029g"></script>
-<script src="lib/perf.js?v=20261029g"></script>
-<script src="lib/finish.js?v=20261029g"></script>
-<script src="lib/storeys.js?v=20261029g"></script>
+<script src="lib/people.js?v=20261029h"></script>
+<script src="lib/furniture.js?v=20261029h"></script>
+<script src="lib/catalog.js?v=20261029h"></script>
+<script src="lib/look.js?v=20261029h"></script>
+<script src="lib/houses.js?v=20261029h"></script>
+<script src="lib/perf.js?v=20261029h"></script>
+<script src="lib/finish.js?v=20261029h"></script>
+<script src="lib/storeys.js?v=20261029h"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -155,7 +155,7 @@ accents:[{l:1,x0:560,x1:575,y0:250,y1:850,w:'sage'},{l:2,x0:560,x1:575,y0:465,y1
 curtains:[[0,'W',55,245,0,false,{color:0xf7f3ec,tie:true}],[1,'S',268,552,850,false,{color:0xc9d2c2},{off:0.1,top:2.474,bottom:0.43,noSheer:true}],[2,'S',250,530,850,true]],
 /* equipment notes in the menu: [storey, plan x, plan y, name, note] for built-ins; placed furniture is listed automatically (noteText[id]: note or [name, note]) */
 notes:[
-  [1,575,400,'廚房高窗','東牆冰箱和抽油煙機之間，窗台 175 cm、窗頂 200 cm、寬 140 cm 霧面：採光＋煮飯時對流通風'],[1,52,8,'淋浴間小窗（霧面）','北牆，寬 45 cm、窗台 150 cm、窗頂 200 cm：採光＋換氣'],[1,57,60,'淋浴間（飯店風大理石）','牆面整面深灰色石材（柔和流動的斜向紋路、60 cm 一段的大板、細淺色接縫、微亮面），地板是同一款石材、顏色更深的霧面、沿西牆一條長條排水溝；西牆：控溫龍頭、滑桿手持花灑，上方壁掛式 25 cm 方形頂噴花灑（「打開花灑」）；靠廁所那面牆加厚 10 cm，嵌一個 60 × 30 × 9 cm 的壁龕放洗髮精・潤髮乳・沐浴乳，上緣藏 LED；頂噴花灑那面牆的天花板邊緣有一條暖色 LED 間接燈；不放鏡子和外凸置物架'],[0,3,585,'樓梯窗（固定窗）','1F・2F 的樓梯窗離踏板較近，做成不能開的はめ殺し固定窗'],
+  [1,575,400,'廚房高窗','東牆冰箱和抽油煙機之間，窗台 175 cm、窗頂 200 cm、寬 140 cm 霧面：採光＋煮飯時對流通風'],[1,52,8,'淋浴間小窗（霧面）','北牆，寬 45 cm、窗台 150 cm、窗頂 200 cm：採光＋換氣'],[1,57,60,'淋浴間（飯店風深灰石材）','牆面整面素色深灰色石材（無紋、60 cm 一段的大板、細淺色接縫、微亮面），地板是同一款石材、顏色更深的霧面、沿西牆一條長條排水溝；西牆：控溫龍頭、滑桿手持花灑，上方壁掛式 25 cm 方形頂噴花灑（「打開花灑」）；靠廁所那面牆加厚 10 cm，嵌一個 60 × 30 × 9 cm 的壁龕放洗髮精・潤髮乳・沐浴乳，上緣藏 LED；頂噴花灑那面牆的天花板邊緣有一條暖色 LED 間接燈；不放鏡子和外凸置物架'],[0,3,585,'樓梯窗（固定窗）','1F・2F 的樓梯窗離踏板較近，做成不能開的はめ殺し固定窗'],
   [1,420,330,'廚房走道與半島檯面','廚房走道約 99 cm、半島檯面高約 88 cm'],
   [1,118,445,'對講機室內主機（7 吋彩色）','客廳樓梯側牆面，離地約 1.45 m；和門柱的對講機連動，按「應答」可看門口畫面通話'],
   [1,577,304,'エコキュート 廚房遙控器','廚房走道東端牆上的リモコンニッチ（淺凹槽，和廚房燈開關收在一起），遙控器和廚房燈的 2 連開關左右並排、整組置中，走道正中、離地約 1.3 m，煮飯時一轉頭就看得到，從客廳看不到：設定給水溫度、按「湯はり」自動放洗澡水'],[2,335,40,'エコキュート 浴室遙控器','浴室西牆、門的北側（洗身體區這邊），防水型：放洗澡水、追い焚き、和廚房通話'],
@@ -1180,11 +1180,9 @@ fixtures:function(E){
       add(new THREE.CylinderGeometry(0.024,0.026,0.012,24),xc,top+0.006,zc); add(new THREE.CylinderGeometry(0.012,0.012,h-top,16),xc,(top+h)/2,zc); const bend=new THREE.Mesh(new THREE.TorusGeometry(R,0.011,10,20,Math.PI/2),tap); bend.position.set(xc,h,zc+R); bend.rotation.y=Math.PI/2; bend.rotation.z=Math.PI/2; G.add(bend);
       add(new THREE.CylinderGeometry(0.011,0.011,0.06,16),xc,h+R,zc+R+0.03,Math.PI/2); add(new THREE.CylinderGeometry(0.009,0.009,0.02,12),xc,h+R-0.012,zc+R+0.058); })();
     E.framedMirror(G,(bx0+bx1)/2,top+0.5,z0,0.32,0.5,0,oak); })();
-  (function(){ const b=E.base(1), x0=WX(1,0)+TE/2, x1=WX(1,115)-TI/2, z0=WZ(1,0)+TE/2, z1=WZ(1,120)-TI/2, top=b+CH, BO=0.1, zs=z1-BO, oc={cast:false};   // 2F shower room: hotel-style marble, rain shower + hand shower, a recessed niche in a 10 cm build-out on the toilet side
+  (function(){ const b=E.base(1), x0=WX(1,0)+TE/2, x1=WX(1,115)-TI/2, z0=WZ(1,0)+TE/2, z1=WZ(1,120)-TI/2, top=b+CH, BO=0.1, zs=z1-BO, oc={cast:false};   // 2F shower room: hotel-style plain dark stone, rain shower + hand shower, a recessed niche in a 10 cm build-out on the toilet side
     const marble=function(seed,dark){ const c=document.createElement('canvas'); c.width=c.height=1024; const g=c.getContext('2d'); let r=seed; const rnd=function(){ r=(r*16807)%2147483647; return r/2147483647; };
       g.fillStyle=dark?'#e6e3de':'#f6f4f0'; g.fillRect(0,0,1024,1024); for(let i=0;i<9000;i++){ g.fillStyle='rgba(150,145,140,'+(rnd()*0.05)+')'; g.fillRect(rnd()*1024,rnd()*1024,2,2); }
-      for(let v=0;v<14;v++){ let x=rnd()*1024, y=-20, w=0.6+rnd()*(v<3?3.5:1.6); g.strokeStyle='rgba('+(v<3?'120,118,116,':'150,148,146,')+(0.25+rnd()*0.35)+')'; g.lineWidth=w; g.beginPath(); g.moveTo(x,y);
-        while(y<1044){ x+=(rnd()-0.45)*60; y+=20+rnd()*50; g.lineTo(x,y); if(rnd()<0.08){ const bx2=x, by=y; g.moveTo(bx2,by); g.lineTo(bx2+(rnd()-0.5)*160,by+60+rnd()*80); g.moveTo(bx2,by); } } g.stroke(); }
       const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=E.ANISO||8; t.wrapS=t.wrapT=THREE.RepeatWrapping; return t; };
     const MW=E.FIN.pbrMaps(lam(0x8a8682,{map:marble(97),roughness:0.24,envMapIntensity:0.9}),'stone_darkgrey',2.0,2.0,{normal:false,rough:false,color:0xffffff}), MF=E.FIN.pbrMaps(lam(0x77736f,{map:marble(311,true),roughness:0.55,envMapIntensity:0.5}),'stone_darkgrey',1.6,1.6,{normal:false,rough:false,color:0xcfccc8}), grout=lam(0x9a9691,{roughness:0.6}), chrome=lam(0xd9dde1,{metalness:0.92,roughness:0.16,envMapIntensity:1.1}), e=0.012;
     const slab=function(a,c,d,f,y0,y1,mt){ return bx(LG[1],a,c,d,f,y0,y1,mt||MW); };
