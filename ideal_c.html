@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261028w">
+<link rel="stylesheet" href="lib/storeys.css?v=20261028x">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -75,14 +75,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261028w"></script>
-<script src="lib/furniture.js?v=20261028w"></script>
-<script src="lib/catalog.js?v=20261028w"></script>
-<script src="lib/look.js?v=20261028w"></script>
-<script src="lib/houses.js?v=20261028w"></script>
-<script src="lib/perf.js?v=20261028w"></script>
-<script src="lib/finish.js?v=20261028w"></script>
-<script src="lib/storeys.js?v=20261028w"></script>
+<script src="lib/people.js?v=20261028x"></script>
+<script src="lib/furniture.js?v=20261028x"></script>
+<script src="lib/catalog.js?v=20261028x"></script>
+<script src="lib/look.js?v=20261028x"></script>
+<script src="lib/houses.js?v=20261028x"></script>
+<script src="lib/perf.js?v=20261028x"></script>
+<script src="lib/finish.js?v=20261028x"></script>
+<script src="lib/storeys.js?v=20261028x"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -514,7 +514,7 @@ site:function(E){
     slats(x0,LZ1,x1,LZ1,0.34,1.2,0.16); addCol(0,x0,x1,LZ1-0.09,LZ1+0.09,-0.3,1.2,'w'); };
   lowWall(PP1,CP0);
   const capM=lam(0x6b6e72,{roughness:0.5,metalness:0.4}), lampM=lam(0xfff1d6,{emissive:0xffd9a0,emissiveIntensity:0.6});
-  [[IP0,IP1,0.12],[PP0,PP1,0.18],[CP0,CX0,0.12]].forEach(function(p){ const h=p[2]; bx(ground,p[0],p[1],LZ1-h,LZ1+h,-0.3,1.45,render); bx(ground,p[0],p[1],LZ1-h-0.01,LZ1+h+0.01,1.45,1.5,capM);
+  [[IP0,IP1,0.12],[PP0,PP1,0.18],[CP0,CX0,0.12]].forEach(function(p){ const h=p[2]; if(p[0]===PP0){ const a=PP0+0.06, c=PP0+0.49; [[p[0],a,-0.3,1.45],[c,p[1],-0.3,1.45],[a,c,-0.3,0.18],[a,c,0.98,1.02],[a,c,1.3,1.45]].forEach(function(q){ bx(ground,q[0],q[1],LZ1-h,LZ1+h,q[2],q[3],render); }); } else bx(ground,p[0],p[1],LZ1-h,LZ1+h,-0.3,1.45,render); bx(ground,p[0],p[1],LZ1-h-0.01,LZ1+h+0.01,1.45,1.5,capM);
     bx(ground,(p[0]+p[1])/2-0.08,(p[0]+p[1])/2+0.08,LZ1-0.05,LZ1+0.05,1.5,1.62,lampM,{cast:false}); addCol(0,p[0],p[1],LZ1-h,LZ1+h,-0.3,1.45,'w'); });   // pillars with a lamp on each; the west one is a 機能門柱 with the parcel box built in   // pillars with a lamp on each
   (function(){ const x0=PP0+0.06, x1=PP0+0.49, zf=LZ1+0.18, st=lam(0xb9bec4,{metalness:0.8,roughness:0.32}), dk=lam(0x2a2d31,{roughness:0.4}), oc={cast:false};   // built-in parcel box (宅配ボックス) and mail slot, flush in the pillar's street face
     bx(ground,x0,x1,zf,zf+0.006,0.18,1.3,dk,oc); bx(ground,x0+0.015,x1-0.015,zf+0.006,zf+0.01,0.2,0.98,st,oc); bx(ground,x0+0.015,x1-0.015,zf+0.006,zf+0.01,1.02,1.28,st,oc);
@@ -522,10 +522,17 @@ site:function(E){
     bx(ground,x1-0.09,x1-0.035,zf+0.01,zf+0.018,0.62,0.78,lam(0x111214,{roughness:0.2}),oc); bx(ground,x1-0.08,x1-0.045,zf+0.018,zf+0.019,0.73,0.76,lam(0x9fd6ff,{emissive:0x4aa8e8}),oc);   // keypad
     bx(ground,x0+0.03,x0+0.05,zf+0.01,zf+0.03,0.45,0.7,dk,oc); bx(ground,x0+0.1,x1-0.12,zf+0.01,zf+0.012,0.86,0.9,lam(0xc9a074,{roughness:0.5}),oc);   // pull, 宅配 label strip
     bx(ground,x0+0.04,x1-0.04,zf,zf+0.006,1.33,1.42,lam(0xc9a074,{roughness:0.5}),oc);   // house number
-    const zb=LZ1-0.18;                                                                   // 前入れ後出し: take-out doors for mail and parcels on the lot side
-    bx(ground,x0,x1,zb-0.006,zb,0.18,1.3,dk,oc); bx(ground,x0+0.015,x1-0.015,zb-0.01,zb-0.006,0.2,0.98,st,oc); bx(ground,x0+0.015,x1-0.015,zb-0.01,zb-0.006,1.02,1.28,st,oc);
-    bx(ground,x1-0.05,x1-0.03,zb-0.03,zb-0.01,0.45,0.7,dk,oc); bx(ground,x1-0.05,x1-0.03,zb-0.03,zb-0.01,1.1,1.2,dk,oc);
-    bx(ground,x0+0.05,x0+0.11,zb-0.012,zb-0.01,0.84,0.9,dk,oc); })();   // dial lock
+    const zb=LZ1-0.18, ln=lam(0x3a3d42,{roughness:0.5});                                 // 前入れ後出し: take-out doors for mail and parcels on the lot side
+    [[x0,x1,0.18,0.2],[x0,x1,0.98,1.02],[x0,x1,1.28,1.3],[x0,x0+0.015,0.18,1.3],[x1-0.015,x1,0.18,1.3]].forEach(function(q){ bx(ground,q[0],q[1],zb-0.006,zb,q[2],q[3],dk,oc); });   // the door frames
+    [[0.18,0.98],[1.02,1.3]].forEach(function(r){ bx(ground,x0,x1,zb,zf,r[0],r[0]+0.004,ln,oc); bx(ground,x0,x1,zb,zf,r[1]-0.004,r[1],ln,oc); bx(ground,x0,x0+0.004,zb,zf,r[0],r[1],ln,oc); bx(ground,x1-0.004,x1,zb,zf,r[0],r[1],ln,oc); bx(ground,x0,x1,zf-0.004,zf,r[0],r[1],ln,oc); });   // steel liners of the two boxes
+    (function(){ const cb=lam(0xc9a074,{roughness:0.85}), tp=lam(0xd9c79a,{roughness:0.6}), cx=(x0+x1)/2; bx(ground,cx-0.15,cx+0.13,zb+0.05,zb+0.3,0.184,0.4,cb); bx(ground,cx-0.15,cx+0.13,zb+0.16,zb+0.19,0.4,0.402,tp,oc); bx(ground,cx-0.08,cx+0.08,zb+0.08,zb+0.26,0.4,0.52,lam(0xe8e2d6,{roughness:0.8}));   // a parcel and a soft mailer bag on it
+      [[0,0xf4f1ea],[0.006,0xe9e2d2],[0.012,0xdfe8ec]].forEach(function(q,i){ bx(ground,cx-0.12+i*0.01,cx+0.1-i*0.008,zb+0.08,zb+0.24,1.024+q[0],1.03+q[0],lam(q[1],{roughness:0.8}),oc); }); })();   // letters in the mail box
+    const door=function(y0,y1,yp,name){ const G=new THREE.Group(); G.userData.keep=true; G.position.set(x0+0.015,0,zb-0.006); ground.add(G); const lf=bx(G,0,x1-x0-0.03,-0.004,0,y0,y1,st); bx(G,x1-x0-0.065,x1-x0-0.045,-0.024,-0.004,yp-0.08,yp+0.08,dk,oc);
+      if(y0<0.5) bx(G,0.035,0.095,-0.006,-0.004,0.84,0.9,dk,oc);   // dial lock
+      let v=0, tg=0, ls=null; setTimeout(function(){ E.furnThings.push({pt:[(x0+x1)/2,zb-0.6],l:0,part:[lf],label:function(){ return (tg?'關上':'打開')+name; },act:function(){ tg=tg?0:1; ls=null; }});
+      E.furnAnims.push({live:function(){ return v!==tg; },f:function(t){ if(ls===null) ls=t; const dt=Math.min(0.05,t-ls); ls=t; v=Math.abs(tg-v)<dt*1.8?tg:v+Math.sign(tg-v)*dt*1.8; G.rotation.y=1.6*v*v*(3-2*v); return true; }}); },0); return G; };
+    door(0.2,0.98,0.58,'宅配ボックス（取出側）'); door(1.02,1.28,1.15,'信箱（取出側）');
+  })();
   bx(ground,IP0+0.13,IP0+0.27,LZ1+0.12,LZ1+0.135,1.15,1.29,lam(0x1b1d20,{roughness:0.3}),{cast:false}); bx(ground,IP0+0.17,IP0+0.23,LZ1+0.135,LZ1+0.14,1.22,1.26,lam(0x9fd6ff,{emissive:0x4aa8e8}),{cast:false});   // intercom by the gate
   (function(){                                 // one wooden gate leaf, hinged on the intercom pillar, with a lever lock and self-catching latch
     const blk=lam(0x1b1d20,{roughness:0.35,metalness:0.4});
