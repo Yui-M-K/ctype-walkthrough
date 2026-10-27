@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 家事動線版 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261029b">
+<link rel="stylesheet" href="lib/storeys.css?v=20261029e">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -37,6 +37,8 @@
       <button id="tSport" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">運動模式（Switch）</button>
       <button id="tBbq" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">烤肉模式（庭院）</button>
     </div>
+    <h3>咘咘的版本</h3>
+    <div id="catVerBtns" class="seg"><p class="help" style="grid-column:1/-1;margin:0">咘咘的 3D 模型版本：按下去會重新載入頁面並記住你的選擇；網址加 ?cat=old 或 ?glb=3 會優先於這裡的選擇。休息時的麵包坐在每個版本都一樣。</p></div>
     <h3>家具配置</h3>
     <div id="layBtns" class="seg">
       <button type="button" class="tog" data-l="1" aria-pressed="true">配置一（日常）</button>
@@ -75,14 +77,14 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261029b"></script>
-<script src="lib/furniture.js?v=20261029b"></script>
-<script src="lib/catalog.js?v=20261029b"></script>
-<script src="lib/look.js?v=20261029b"></script>
-<script src="lib/houses.js?v=20261029b"></script>
-<script src="lib/perf.js?v=20261029b"></script>
-<script src="lib/finish.js?v=20261029b"></script>
-<script src="lib/storeys.js?v=20261029b"></script>
+<script src="lib/people.js?v=20261029e"></script>
+<script src="lib/furniture.js?v=20261029e"></script>
+<script src="lib/catalog.js?v=20261029e"></script>
+<script src="lib/look.js?v=20261029e"></script>
+<script src="lib/houses.js?v=20261029e"></script>
+<script src="lib/perf.js?v=20261029e"></script>
+<script src="lib/finish.js?v=20261029e"></script>
+<script src="lib/storeys.js?v=20261029e"></script>
 <script type="module">
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -2312,6 +2314,11 @@ modes:function(E){
   const apply=function(on){ parts.forEach(function(g){ g.visible=on; }); lights.forEach(function(L){ L.visible=on; }); btn('tDecor',on); try{ localStorage.setItem('idealDecor',on?'1':'0'); }catch(_){} };
   let on=true; try{ on=localStorage.getItem('idealDecor')!=='0'; }catch(_){}
   $('tDecor').addEventListener('click',function(){ on=!on; apply(on); toast(on?'美化佈置：開':'美化佈置：關（原本的樣子）'); }); apply(on);
+})();
+(function(){                                   // cat model version from the menu: kept per viewer, ?cat=old / ?glb=N override it; switching reloads the page
+  const box=document.getElementById('catVerBtns'), cur=Catalog.catChoice(); if(!box) return;
+  Catalog.catVersions.forEach(function(c){ const b=document.createElement('button'); b.type='button'; b.className='tog'; b.textContent=c.label; b.setAttribute('aria-pressed',String(c.id===cur));
+    b.addEventListener('click',function(){ try{ localStorage.setItem('idealC.v1.catVer',c.id); }catch(_){} const u=new URL(location.href); u.searchParams.delete('cat'); u.searchParams.delete('glb'); location.href=u.toString(); }); box.appendChild(b); });
 })();
 (function(){                                   // stair handrails from the menu: both sides, west side only (on the right going down), or none; kept per viewer
   const modes=['west','both','off'], label={west:'樓梯扶手：單側（西側）',both:'樓梯扶手：兩側',off:'樓梯扶手：拆下'};
