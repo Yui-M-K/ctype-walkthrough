@@ -1,0 +1,765 @@
+<title>中央ホール型 格局提案</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 描圖紙上的平面圖：實心牆、標準門窗符號、走廊琥珀斜線、家具灰色、躺平範圍虛線 */
+:root{
+  --paper:#f2f3ef; --sheet:#fbfbf8; --ink:#232a2c; --muted:#6c7774; --rule:#cfd4cf;
+  --circ:#d27a24; --circ-soft:#f4dcc0; --wet:#d3e5ea; --stair:#dfe2de; --garage:#e8e6df; --out:#e3ecdc; --svc:#d9dbd6; --room:#fbfbf8;
+  --glass:#3f8fb0; --furn:#c9ccc6; --sun:#d9a62e; --bay:#ecdcbc; --lawn:#dde9cf;
+  --f-display:"LXGW WenKai TC","Noto Serif TC",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#15191a; --sheet:#1c2122; --ink:#e4e9e6; --muted:#97a29e; --rule:#323a3a;
+    --circ:#e8964a; --circ-soft:#4a3320; --wet:#22363c; --stair:#2a3031; --garage:#272a28; --out:#233023; --svc:#2c3130; --room:#1c2122;
+    --glass:#6fbfdf; --furn:#3a4141; --sun:#e9c46a; --bay:#4a3d26; --lawn:#1f2d1d;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#15191a; --sheet:#1c2122; --ink:#e4e9e6; --muted:#97a29e; --rule:#323a3a;
+  --circ:#e8964a; --circ-soft:#4a3320; --wet:#22363c; --stair:#2a3031; --garage:#272a28; --out:#233023; --svc:#2c3130; --room:#1c2122;
+  --glass:#6fbfdf; --furn:#3a4141; --sun:#e9c46a; --bay:#4a3d26; --lawn:#1f2d1d;
+}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 64px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:48px}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;text-wrap:balance;margin:0;line-height:1.3}
+h1{font-size:34px}
+h2{font-size:23px}
+h3{font-size:18px}
+p{margin:0;max-width:66ch}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:12px}
+.lede{font-size:16.5px}
+section{display:flex;flex-direction:column;gap:18px}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;align-items:start}
+.refs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.refs img{width:100%;height:auto;display:block}
+.side{display:flex;flex-direction:column;gap:14px}
+figure{margin:0;background:var(--sheet);border:1px solid var(--rule);padding:16px 16px 18px;display:flex;flex-direction:column;gap:10px}
+figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+figcaption b{font-family:var(--f-display);font-size:19px}
+figcaption span{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+svg{width:100%;height:auto;display:block}
+.notes{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.notes li::marker{color:var(--circ)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:6px;border:1px solid var(--ink)}
+.legend i.glass{border:none;height:4px;width:18px;vertical-align:3px;background:var(--glass)}
+.legend i.tv{fill:var(--ink)}
+.car{fill:none;stroke:var(--ink);stroke-width:3}
+.anno{font-family:var(--f-body);font-size:14px;fill:var(--circ);font-weight:500}
+.anno-b{font-family:var(--f-body);font-size:16px;fill:var(--circ);font-weight:700}
+.halfwall{fill:var(--muted);stroke:var(--ink);stroke-width:1.5}
+.ghost{background:transparent;border:1.5px dashed var(--muted)}
+.legend i.sky{background:transparent;border:2px dashed var(--sun)}
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px 32px;margin:0;padding:0;list-style:none}
+.checks li{display:grid;grid-template-columns:24px 1fr;gap:4px 10px;font-size:14.5px}
+.checks b{font-family:var(--f-mono);font-size:13px;color:var(--circ);font-weight:500;padding-top:2px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);font-size:14px}
+th{font-weight:500;color:var(--muted);font-size:12.5px;letter-spacing:.04em}
+td.n{font-family:var(--f-mono);text-align:right}
+tr.key td{font-weight:700}
+tr.key td.n.new{color:var(--circ)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px 40px}
+.two h3{margin:0 0 6px}
+.two ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px;font-size:14.5px}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">注文住宅を想定した格局提案 · 第 5 版 · 建物 5.8 × 8.5 m · 3 階建て</div>
+    <h1>中央ホール型：一樓不走長走廊</h1>
+    <p class="eyebrow">方位與鄰地為假想，南側為道路。</p>
+    <p class="lede">房間清單和現在一樣，位置全部重排。玄關改到西側中段，進門的方形玄關廳四面都是門；U 型樓梯三層疊在西北角，最上面開天窗，光從樓梯井照到一樓。二樓的家具用實際尺寸擺進去：85 吋電視照 THX 40° 的距離，電動沙發躺平、按摩椅、升降茶几、沙發後的淺桌都放得下。</p>
+    <div class="legend">
+      <span><i style="background:var(--circ-soft);border-color:var(--circ)"></i>走廊・玄關廳</span>
+      <span><i style="background:var(--wet)"></i>用水空間</span>
+      <span><i style="background:var(--stair)"></i>樓梯</span>
+      <span><i style="background:var(--garage)"></i>車庫・土間</span>
+      <span><i style="background:var(--bay)"></i>出窗・緣側・木平台</span>
+      <span><i style="background:var(--lawn)"></i>庭院</span>
+      <span><i style="background:var(--furn)"></i>家具</span>
+      <span><i class="ghost"></i>躺平範圍</span>
+    </div>
+    <div class="legend" id="legend-sym"></div>
+  </header>
+
+  <section>
+    <h2>需求清單</h2>
+    <ul class="checks">
+      <li><b>·</b><span>前提：假想自己蓋注文住宅，建物 5.8 × 8.5 m、三層，房間和設備沿用現在的家；現在的房子不改。</span></li>
+      <li><b>·</b><span>一樓不要長走廊（三樓的走廊可以接受），走廊不兼其他功能。</span></li>
+      <li><b>·</b><span>儲藏室將來可能改成房間，要能從室內直接進去。</span></li>
+      <li><b>·</b><span>規劃 LDK 時先擺家具：流理台、電視（85 吋，或小一級 75 吋）、電動沙發、按摩椅、升降茶几。不放餐桌，升降茶几兼餐桌。</span></li>
+      <li><b>·</b><span>電動沙發是 Nitori 3 人座：寬 210、深 97，躺平總長 163，躺平時椅背往後凸 15，不能貼牆。</span></li>
+      <li><b>·</b><span>廚房盡量做對面式。</span></li>
+      <li><b>·</b><span>沙發後面要有書桌（參考圖）：給我一人用，淺桌放得下電腦就好。</span></li>
+      <li><b>·</b><span>另外要一間獨立書房給男友用：電腦桌、工作台、3D 列印機、工具收納；不需要書櫃。</span></li>
+      <li><b>·</b><span>二樓要有簡單的淋浴間。</span></li>
+      <li><b>·</b><span>客廳要有出窗。</span></li>
+      <li><b>·</b><span>客廳出窗維持ごろ寝平台（外推 95 cm，接受算入樓地板面積）。</span></li>
+      <li><b>·</b><span>要有小庭園和緣側。</span></li>
+      <li><b>·</b><span>沙發後書桌區的收納櫃不是必要的。</span></li>
+      <li><b>·</b><span>廁所要連著洗面室，除非那一層沒有洗面室。</span></li>
+      <li><b>·</b><span>主臥和洗衣更衣間都能進更衣間。</span></li>
+      <li><b>·</b><span>三樓將來要能切出一間小孩房。</span></li>
+      <li><b>·</b><span>要考慮採光。</span></li>
+      <li><b>·</b><span>車庫停 Tesla Model 3，駕駛至少要能開門下車。</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>這一版怎麼對應需求</h2>
+    <ul class="checks">
+      <li><b>1</b><span>儲藏室改叫納戶，放在一樓南側，門開在玄關廳。有南窗和西窗，將來直接當房間用（5.0 帖）。</span></li>
+      <li><b>2</b><span>不放餐桌，升降茶几兼餐桌。對面式流理台、85 吋電視、電動沙發（含躺平時椅背後凸 15 cm）、按摩椅（含躺平）、升降茶几、書桌都照尺寸畫進二樓，互相不重疊。</span></li>
+      <li><b>3</b><span>二樓、三樓的廁所都開兩扇門，一扇通走廊或樓梯口，一扇直通洗面室。一樓沒有洗面室，廁所裡放洗手台。</span></li>
+      <li><b>9</b><span>男友的書房在二樓東北角（5.5 帖），從樓梯口直接進，不經過客廳。電腦桌靠北窗，工作台靠東牆，3D 列印機在窗邊方便換氣，入口那一段做工具收納。</span></li>
+      <li><b>4</b><span>三樓更衣間一扇門通主臥、一扇通洗衣更衣間。</span></li>
+      <li><b>5</b><span>三樓洗衣更衣間的門開在走廊、有西窗，4.5 帖。要改成小孩房時封掉通更衣間那扇門（圖上虛線）；洗衣機本來就放在洗面室，不用搬。</span></li>
+      <li><b>6</b><span>照參考圖：沙發背後是一道半高牆，牆的另一面是你一人用的書桌，深 45 × 長 120 cm，放得下筆電或螢幕，坐著隔著沙發看得到電視。</span></li>
+      <li><b>7</b><span>樓梯頂開天窗、樓梯用透空踏板，光一路照到一樓玄關廳。客廳主要靠南面出窗和西窗採光；電視牆（東牆）不開窗，螢幕不會逆光。</span></li>
+      <li><b>8</b><span>車庫內寬約 2.88 × 5.38 m，Tesla Model 3（185 × 472）倒車入庫，駕駛座側留 75 cm 可以開門下車，副駕側 28 cm，前後還有 66 cm。</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>一樓：現況 vs 新案</h2>
+    <div class="plans">
+      <figure><figcaption><b>現況 1F</b><span>走廊 6.6 m² · 直線 4.2 m</span></figcaption><svg id="cur1" role="img" aria-label="現況一樓平面圖"></svg>
+        <ul class="notes"><li>南側玄關進來後，要沿著車庫牆走 4.2 m 才到鏡子房。</li><li>儲藏室只能穿過鏡子房進去。</li></ul></figure>
+      <figure><figcaption><b>新案 1F</b><span>玄關廳 4.7 m² · 最長約 2 m</span></figcaption><svg id="new1" role="img" aria-label="新案一樓平面圖"></svg>
+        <ul class="notes">
+          <li>鏡子房在東北角（7.2 帖），入口那一段做服裝衣櫃。北面開高窗，光線穩定不反光；鏡牆是南牆整面 3.0 m。</li>
+          <li>鏡子房不臨馬路，跳舞不用拉簾。</li>
+          <li>鏡子房東牆開落地拉門，出去是 90 cm 深的杉木緣側；緣側前是庭院（主樹）和 BBQ 木平台，平台和室內地板同高。</li>
+          <li>納戶在南側，門開在玄關廳，將來當小孩房南向採光最好。</li>
+          <li>玄關廳的光來自樓梯井頂的天窗，加上土間門的玻璃。</li>
+        </ul></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>二樓：沙發後書桌＋對面式廚房＋男友書房</h2>
+    <p>參考的設計：沙發背後一道半高牆，牆的另一面接書桌；坐在書桌前可以隔著沙發看到電視，牆尾端做圓弧收邊。</p>
+    <div class="plans">
+      <figure><figcaption><b>新案 2F</b><span>樓梯口 2.5 m² · 85 吋 THX 40° · 書房＋淋浴＋出窗</span></figcaption><svg id="new2" role="img" aria-label="新案二樓平面圖，含家具"></svg></figure>
+      <div class="side">
+        <h3>客廳的排法</h3>
+        <ul class="notes">
+          <li>85 吋電視掛在東牆（不開窗，螢幕不會逆光），沙發面向東。眼睛到螢幕 2.58 m，視角 40°；換成 75 吋是 36°。</li>
+          <li>電動沙發躺平時椅背往後凸 15 cm，剛好碰到半高牆前停住。腳靠前端到升降茶几 5 cm，茶几到電視櫃 48 cm。</li>
+          <li>按摩椅排在沙發北側，背面貼著對面式流理台。從廚房到客廳走按摩椅東側：直立時 126 cm、躺平時 61 cm。</li>
+          <li>書桌：半高牆（約 110 cm 高）背面接深 45 × 長 120 cm 的書桌，一人用，放電腦剛好。照參考圖，牆的尾端做圓弧收邊。</li>
+          <li>沙發列整體往北靠，南側留 80 cm 通道：從電視和出窗前往西走，進到書桌區。書桌區只從這條通道進。</li>
+          <li>書桌後面留椅子的空間，西窗下放貓用品。白天從西窗和南窗採光。</li>
+          <li>出窗：客廳南牆中段往外推 95 cm，寬 2.4 m，做成離地 40 cm 的ごろ寝平台，下面是抽屜。三面都是窗（正面固定窗、兩側可開），南面其他的窗開在出窗兩側。出窗 2.3 m² 不計入 LDK 面積。</li>
+        </ul>
+        <h3>其他</h3>
+        <ul class="notes">
+          <li>廚房是對面式：冰箱和背面收納靠北，流理台朝南，水槽和 IH 爐都在流理台上，做菜時面對客廳和電視。</li>
+          <li>上樓先到樓梯口：北邊是書房，南邊是廁所，東邊直接接廚房和 LDK，中間不設門。洗面脫衣間的門開在北牆，用拉門從樓梯口進（樓梯口和 LDK 直接相通），淋浴再從洗面脫衣進。</li>
+          <li>用水區整體 2.8 × 1.57 m：淋浴間是 0.9 × 1.57 m 的簡單型，洗面脫衣 1.0 × 1.57 m，廁所門通洗面脫衣。三個都在一樓廁所正上方，排水直通。</li>
+          <li>貓用品：貓跳台在書桌區的西窗旁，旁邊放自動餵食器和飲水機；貓砂機放在西南角，附地墊。</li>
+          <li>男友的書房 9.0 m²：入口那段 1.0 × 1.8 m 放工具收納，主空間 3.0 × 2.4 m 放電腦桌、工作台、3D 列印機。北窗和東側高窗可以換氣。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>三樓：更衣間兩邊進、可切小孩房</h2>
+    <div class="plans">
+      <figure><figcaption><b>新案 3F</b><span>走廊 3.5 m²</span></figcaption><svg id="new3" role="img" aria-label="新案三樓平面圖"></svg></figure>
+      <div class="side">
+        <ul class="notes">
+          <li>洗面室放洗衣機，浴室和廁所都直接連著洗面室。三溫暖的門開在浴室裡，蒸完直接沖澡。</li>
+          <li>洗衣更衣間在走廊旁：衣服在這裡摺好，穿過更衣間就收進主臥那一側。</li>
+          <li>將來改小孩房時，封掉洗衣更衣間通更衣間的門就好，房門和西窗本來就有。</li>
+          <li>主臥 7.7 帖，雙人床頭靠東牆，南側落地窗出陽台。</li>
+          <li>樓梯頂的天窗是整棟房子的採光井，夏天也能從上面排熱。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>面積比較</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>項目</th><th style="text-align:right">現況 m²</th><th style="text-align:right">新案 m²</th><th>備註</th></tr></thead>
+      <tbody>
+        <tr class="key"><td>1F 玄關廳・走廊</td><td class="n">6.6</td><td class="n new">4.7</td><td>長條變方形</td></tr>
+        <tr class="key"><td>2F 樓梯口</td><td class="n">1.1</td><td class="n new">2.5</td><td>書房、廁所的門都在這</td></tr>
+        <tr class="key"><td>3F 走廊</td><td class="n">6.0</td><td class="n new">3.5</td><td></td></tr>
+        <tr class="key"><td>走廊合計</td><td class="n">13.7</td><td class="n new">10.7</td><td>少 3.0 m²（約 1.9 帖）</td></tr>
+        <tr><td>鏡子房</td><td class="n">9.3</td><td class="n">11.7</td><td>含入口衣櫃</td></tr>
+        <tr><td>儲藏室 → 納戶</td><td class="n">7.8</td><td class="n">8.1</td><td>門開在玄關廳</td></tr>
+        <tr><td>車庫</td><td class="n">17.3</td><td class="n">16.5</td><td>3.0 × 5.5 m</td></tr>
+        <tr><td>LDK（含廚房、書桌區）</td><td class="n">29.5</td><td class="n">27.5</td><td>17.0 帖，不放餐桌，不含出窗</td></tr>
+        <tr><td>2F 淋浴 ＋ 洗面脫衣 ＋ 廁所</td><td class="n">—</td><td class="n">4.4</td><td>2.8 × 1.57 m</td></tr>
+        <tr><td>出窗</td><td class="n">—</td><td class="n">2.3</td><td>2.3 m²（不計入）</td></tr>
+        <tr><td>書房（男友）</td><td class="n">7.1</td><td class="n">9.0</td><td>含入口工具收納</td></tr>
+        <tr><td>主臥</td><td class="n">13.1</td><td class="n">12.5</td><td></td></tr>
+        <tr><td>洗衣更衣間</td><td class="n">9.2</td><td class="n">7.3</td><td>洗衣機移到洗面室</td></tr>
+        <tr><td>更衣間</td><td class="n">3.9</td><td class="n">5.2</td><td></td></tr>
+        <tr><td>洗面室 ＋ 浴室 ＋ 三溫暖</td><td class="n">10.6</td><td class="n">10.3</td><td>浴室為 1624 內徑</td></tr>
+        <tr><td>陽台</td><td class="n">3.2</td><td class="n">2.9</td><td></td></tr>
+      </tbody>
+    </table></div>
+    <p>現況數字取自網站的帖數計算（壁芯）；新案是 5 cm 精度的草圖，牆厚沒有扣，當作比例參考。</p>
+  </section>
+
+  <section>
+    <h2>代價</h2>
+    <div class="two">
+      <div><h3>會變差的地方</h3><ul>
+        <li>玄關在西側，從南邊道路要沿步道走約 5 m 才到玄關。</li>
+        
+        <li>二樓的淋浴和洗面脫衣是精簡尺寸，洗面脫衣間只有 1.0 × 1.57 m。</li>
+        <li>一樓廁所在西側，跟二、三樓的廁所沒有上下對齊，排水另走一條。</li>
+      </ul></div>
+      <div><h3>會變好的地方</h3><ul>
+        <li>一樓沒有長走廊，兩間將來可當房間的空間都從玄關廳進。</li>
+        <li>二樓只有樓梯口一小塊，三樓走廊少一半。</li>
+        <li>二、三樓的廁所、洗面、浴室都在北側上下疊，配管最短。</li>
+        <li>天窗加透空樓梯，北側和一樓中間也有自然光。</li>
+        <li>玄關步道在西側，庭院在東側，互不干擾；鏡子房直接出緣側。</li>
+      </ul></div>
+    </div>
+  </section>
+</div>
+
+<script>
+const PLANS = {
+  cur1: {
+    rooms: [
+      {n:"鏡子房", x:0,y:0,w:310,h:300, t:"room"},
+      {n:"儲藏室", x:310,y:0,w:270,h:300, t:"room", ly:220},
+      {n:"廁所", x:0,y:300,w:115,h:170, t:"wet", small:true, ly:340},
+      {n:"樓梯", x:0,y:470,w:115,h:230, t:"stair", stair:"I", small:true},
+      {n:"玄關廳", x:115,y:300,w:155,h:420, t:"circ", a:6.6, ly:560, small:true},
+      {n:"玄關", x:0,y:720,w:270,h:70, t:"garage", noArea:true},
+      {n:"門廊", x:0,y:790,w:270,h:60, t:"out", noArea:true, lx:238},
+      {n:"車庫", x:270,y:300,w:310,h:550, t:"garage"}
+    ],
+    walls: [[0,0,580,0],[0,0,0,790],[580,0,580,850],[270,850,580,850],[0,300,580,300],[310,0,310,300],[115,300,115,700],[0,470,115,470],[270,300,270,850],[0,790,270,790]],
+    steps: [[0,720,270,720]],
+    eaves: [[0,790,0,850],[0,850,270,850]],
+    doors: [
+      {k:"dbl", v:0, at:790, a:60, b:200, d:1},
+      {k:"sw", v:1, at:115, a:350, b:420, h:"a", d:1},
+      {k:"sw", v:0, at:300, a:150, b:250, h:"a", d:-1},
+      {k:"sw", v:1, at:310, a:100, b:200, h:"a", d:1},
+      {k:"sh", v:0, at:850, a:290, b:560}
+    ],
+    fx: [{k:"wc", x:57, y:465, dir:"n"}],
+    texts: [[130,905,"入口","tag"]],
+    vb: [-190,1200], north:995,
+    dims: {x:[0,310,580], y:[0,300,720,850], ySide:"l"}
+  },
+  new1: {
+    rooms: [
+      {n:"樓梯", x:0,y:0,w:182,h:273, t:"stair", stair:"U", small:true},
+      {n:"鏡子房", poly:[[182,0],[580,0],[580,300],[280,300],[280,273],[182,273]], t:"room", a:11.68, lx:430, ly:140},
+      {n:"衣櫃", x:182,y:0,w:98,h:150, t:"svc", small:true, noArea:true},
+      {n:"廁所", x:0,y:273,w:91,h:160, t:"wet", small:true, ly:330},
+      {n:"玄關廳", poly:[[91,273],[280,273],[280,560],[150,560],[150,433],[91,433]], t:"circ", a:4.67, lx:215, ly:478, small:true},
+      {n:"土間", x:0,y:433,w:150,h:92, t:"garage", small:true, noArea:true, lx:70},
+      {n:"", x:0,y:525,w:150,h:35, t:"svc", noArea:true},
+      {n:"納戶", x:0,y:560,w:280,h:290, t:"room", sub:"將來可當房間"},
+      {n:"車庫", x:280,y:300,w:300,h:550, t:"garage", small:true, noArea:true, lx:453, ly:820}
+    ],
+    walls: [[0,0,580,0],[0,850,580,850],[0,0,0,850],[580,0,580,850],[182,0,182,273],[280,0,280,150],[182,273,280,273],[280,273,280,850],[280,300,580,300],[0,273,91,273],[91,273,91,433],[0,433,91,433],[0,560,280,560]],
+    steps: [[91,433,150,433],[150,433,150,525],[182,150,280,150]],
+    doors: [
+      {k:"sw", v:1, at:0, a:450, b:525, h:"a", d:-1},
+      {k:"sw", v:1, at:91, a:300, b:365, h:"a", d:1},
+      {k:"sl", v:0, at:273, a:195, b:265},
+      {k:"sw", v:1, at:280, a:320, b:400, h:"a", d:-1, tag:[212,416,"防火門"]},
+      {k:"sw", v:0, at:560, a:170, b:260, h:"b", d:1},
+      {k:"sh", v:0, at:850, a:300, b:560}
+    ],
+    windows: [[300,0,560,0,"high"],[580,40,580,260,"floor"],[30,850,250,850,"waist"],[0,610,0,800,"waist"],[0,300,0,360,"frost"]],
+    mirror:[290,290,570,290],
+    fx: [{k:"wc", x:45, y:428, dir:"n"}, {k:"hand", x:10, y:279, w:36, h:22}],
+    furn: [
+      {x:291,y:450,w:70,h:110,ghost:true},
+      {x:361,y:330,w:185,h:472,car:true},
+      {x:540,y:306,w:30,h:14}
+    ],
+    texts: [[-42,438,"入口","tag"],[323,620,"駕駛側","anno"],[323,640,"75 cm","anno"],[453,470,"Tesla Model 3","anno-b"],[453,495,"長 472 × 寬 185","anno"],[453,515,"（含後照鏡 209）","anno"],[453,540,"高 144","anno"],[453,580,"倒車入庫","anno"],[453,620,"車庫內寬","anno"],[453,640,"288 × 538","anno"],[520,345,"充電座","anno"]],
+    site: {walk:[-95,455,-10,940], garden:[670,-60,970,850], engawa:[588,0,670,300], stone:[712,150], tree:[835,135,52], deck:[690,340,880,560]},
+    vb: [-190,1200], north:995,
+    dims: {x:[0,182,280,580], y:[0,273,433,560,850], ySide:"l", yAt:-122, totAt:-160}
+  },
+  new2: {
+    bay: {x1:290, x2:530, y:850, d:95},
+    rooms: [
+      {n:"樓梯", x:0,y:0,w:182,h:273, t:"stair", stair:"U", small:true},
+      {n:"PS", x:182,y:0,w:98,h:93, t:"svc", small:true, noArea:true},
+      {n:"書房", poly:[[182,93],[280,93],[280,0],[580,0],[580,240],[280,240],[280,273],[182,273]], t:"room", a:8.96, lx:433, ly:165, sub:"男友用", numS:true},
+      {n:"樓梯口", x:0,y:273,w:280,h:90, t:"circ", small:true, lx:90, ly:322},
+      {n:"淋浴", x:0,y:363,w:90,h:157, t:"wet", small:true, lx:38, ly:438},
+      {n:"洗面脫衣", x:90,y:363,w:100,h:157, t:"wet", small:true, noArea:true, ly:424},
+      {n:"廁所", x:190,y:363,w:90,h:157, t:"wet", small:true, ly:404},
+      {n:"LDK", poly:[[280,240],[580,240],[580,850],[0,850],[0,520],[280,520]], t:"room", hideLabel:true}
+    ],
+    walls: [[0,0,580,0],[0,0,0,850],[580,0,580,850],[0,850,290,850],[530,850,580,850],[290,850,290,945],[530,850,530,945],[290,945,530,945],[182,0,182,273],[182,93,280,93],[280,0,280,93],[182,273,280,273],[280,240,580,240],[280,240,280,273],[280,363,280,520],[0,363,280,363],[90,363,90,520],[190,363,190,520],[0,520,280,520]],
+    doors: [
+      {k:"sw", v:0, at:273, a:195, b:265, h:"b", d:-1, tag:[251,165,"隔音門"]},
+      {k:"fo", v:1, at:90, a:400, b:480, d:-1},
+      {k:"sl", v:0, at:363, a:100, b:180},
+      {k:"sw", v:0, at:363, a:200, b:270, h:"a", d:-1},
+      {k:"sl", v:1, at:190, a:400, b:470}
+    ],
+    windows: [[0,385,0,480,"frost"],[0,540,0,790,"waist"],[30,850,270,850,"floor"],[540,850,566,850,"fix"],[300,0,560,0,"waist"],[580,60,580,200,"high"],[580,300,580,380,"high"],[290,862,290,933,"waist"],[530,862,530,933,"waist"],[302,945,518,945,"fix"]],
+    fx: [
+      {k:"shower", x:7,y:368,w:78,h:147, drain:[45,496], head:[45,380,45,368]},
+      {k:"vanity", x:104,y:469,w:72,h:46},
+      {k:"wc", x:235, y:515, dir:"n"},
+      {k:"counter", x:360,y:395,w:220,h:85, sink:[378,402,62,44], ih:[488,400,72,52], n:"對面式流理台"},
+      {k:"fridge", x:515,y:240,w:65,h:70}
+    ],
+    furn: [
+      {x:300,y:5,w:180,h:70,n:"電腦桌",tiny:true},
+      {x:370,y:85,w:55,h:55,round:true},
+      {x:505,y:70,w:70,h:160,n:"工作台",vert:true},
+      {x:300,y:170,w:60,h:60,n:"3D列印",tiny:true},
+      {x:186,y:100,w:40,h:95,n:"工具收納",vert:true},
+      {x:269,y:560,w:163,h:210,ghost:true},
+      {x:284,y:480,w:190,h:75,ghost:true},
+      {x:535,y:560,w:45,h:210,n:"電視櫃",vert:true},
+      {x:565,y:571,w:6,h:188,tv:true},
+      {x:284,y:560,w:97,h:210,n:"電動沙發"},
+      {x:284,y:480,w:125,h:75,n:"按摩椅",tiny:true},
+      {x:437,y:615,w:50,h:100,n:"升降",tiny:true},
+      {x:254,y:560,w:15,h:210,wall:true},
+      {x:209,y:600,w:45,h:120,n:"書桌",vert:true},
+      {x:145,y:633,w:55,h:55,round:true},
+      {x:360,y:240,w:155,h:65,n:"背面收納",tiny:true},
+      {x:70,y:778,w:48,h:56,ghost:true},
+      {x:20,y:530,w:60,h:60,n:"貓跳台",tiny:true},
+      {x:90,y:530,w:45,h:35},
+      {x:5,y:765,w:65,h:75,n:"貓砂機",vert:true}
+    ],
+    texts: [[470,360,"廚房","zone"],[90,672,"書桌區","zone"],[250,790,"半高牆 H110","anno","end"],[350,790,"躺平 163・椅背後凸 15","anno"],[486,586,"85 吋","anno"],[486,606,"（寬 188）","anno"],[175,745,"書桌 深45×長120","anno"],[500,752,"客廳","zone"],[504,498,"從廚房到客廳走東側","dtag"],[504,517,"直立時 126 cm","dtag"],[504,536,"躺平時 61 cm","dtag"],[140,552,"餵食器＋飲水機","furntag furntag-s fxtag","start"],[94,812,"地墊","furntag furntag-s fxtag"],[300,822,"通道 80 cm","anno-b"],[140,890,"LDK 27.5 m² · 17.0 帖","num"],[410,982,"出窗（ごろ寝平台・離地 40 cm）2.4 × 0.95 m","anno"]],
+    arrows: [[505,836,150,836]],
+    dims: {x:[0,280,580], y:[0,273,363,520,850], ySide:"l"}
+  },
+  new3: {
+    rooms: [
+      {n:"樓梯", x:0,y:0,w:182,h:273, t:"stair", stair:"U", small:true, skylight:true},
+      {n:"PS", x:182,y:0,w:98,h:93, t:"svc", small:true, noArea:true},
+      {n:"廁所", x:182,y:93,w:98,h:180, t:"wet", small:true, ly:200},
+      {n:"洗面室", poly:[[280,0],[420,0],[420,370],[360,370],[360,273],[280,273]], t:"wet", a:4.4, lx:350, ly:132, small:true},
+      {n:"浴室", x:420,y:0,w:160,h:240, t:"wet", small:true, ly:126},
+      {n:"三溫暖", x:420,y:240,w:160,h:130, t:"wet", small:true, ly:315},
+      {n:"走廊", x:0,y:273,w:360,h:97, t:"circ", small:true, lx:110},
+      {n:"洗衣更衣間", x:0,y:370,w:260,h:280, t:"room", ly:490, sub:"將來小孩房"},
+      {n:"更衣間", x:0,y:650,w:260,h:200, t:"room", small:true, ly:715},
+      {n:"主臥", x:260,y:370,w:320,h:390, t:"room", lx:320, ly:690, start:true},
+      {n:"陽台", x:260,y:760,w:320,h:90, t:"out", small:true, ly:812}
+    ],
+    walls: [[0,0,580,0],[0,0,0,850],[580,0,580,850],[0,850,260,850],[182,0,182,273],[182,93,280,93],[280,0,280,273],[182,273,360,273],[360,273,360,370],[420,0,420,370],[420,240,580,240],[0,370,580,370],[260,370,260,850],[0,650,260,650],[260,760,580,760]],
+    doors: [
+      {k:"sl", v:1, at:360, a:285, b:360},
+      {k:"sw", v:0, at:273, a:200, b:270, h:"a", d:1},
+      {k:"sl", v:1, at:280, a:150, b:225},
+      {k:"fo", v:1, at:420, a:80, b:160, d:1},
+      {k:"gsw", v:0, at:240, a:450, b:530, h:"b", d:-1},
+      {k:"sw", v:0, at:370, a:30, b:110, h:"a", d:1},
+      {k:"sw", v:0, at:370, a:270, b:350, h:"a", d:1},
+      {k:"sl", v:0, at:650, a:90, b:170, future:true},
+      {k:"sl", v:1, at:260, a:675, b:755}
+    ],
+    windows: [[300,0,400,0,"frost"],[440,0,560,0,"frost"],[0,400,0,620,"waist"],[0,700,0,800,"high"],[580,410,580,700,"high"],[300,760,560,760,"floor",1]],
+    railing:[260,850,580,850],
+    fx: [
+      {k:"wc", x:231, y:98, dir:"s"},
+      {k:"vanity", x:290,y:15,w:120,h:55},
+      {k:"washer", x:290,y:195,w:65,h:65},
+      {k:"tub", x:427,y:7,w:146,h:80},
+      {k:"shower", drain:[443,220], head:[562,160,573,160]}
+    ],
+    furn: [
+      {x:380,y:470,w:200,h:160,n:"雙人床"},
+      {x:540,y:428,w:40,h:40},{x:540,y:632,w:40,h:40},
+      {x:20,y:770,w:220,h:60,n:"吊桿・層架",tiny:true},
+      {x:20,y:570,w:130,h:65,n:"摺衣檯",tiny:true}
+    ],
+    texts: [[350,92,"洗面台","furntag furntag-s"],[322,186,"洗衣機","furntag furntag-s"]],
+    dims: {x:[0,280,420,580], y:[0,273,370,650,850], ySide:"l"}
+  }
+};
+
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent && parent.appendChild(e); return e; };
+const txt = (parent, x, y, s, cls, anchor = "middle") => { const t = el("text", {x, y, class:cls, "text-anchor":anchor}, parent); t.textContent = s; return t; };
+const line = (g, p, q, cls) => el("line", {x1:p[0], y1:p[1], x2:q[0], y2:q[1], class:cls}, g);
+const FILL = {room:"var(--room)", wet:"var(--wet)", stair:"var(--stair)", garage:"var(--garage)", out:"var(--out)", svc:"var(--svc)"};
+const polyArea = pts => Math.abs(pts.reduce((s, p, i) => { const q = pts[(i + 1) % pts.length]; return s + p[0] * q[1] - q[0] * p[1]; }, 0)) / 2e4;
+const fmt = n => n.toLocaleString("en-US");
+
+// 壁芯基準：外牆 15 cm、內牆 10 cm；出窗的三面也算外牆
+function wallT(P, v, at, p){
+  if (v ? (at === 0 || at === 580) : (at === 0 || at === 850)) return 15;
+  const B = P.bay;
+  if (B && (v ? (at === B.x1 || at === B.x2) && p > B.y : at === B.y + B.d)) return 15;
+  return 10;
+}
+function outDir(P, v, at){
+  const B = P.bay;
+  if (v) return at === 0 || (B && at === B.x1) ? -1 : 1;
+  return at === 0 ? -1 : 1;
+}
+const axisPt = (v, at) => (along, off) => v ? [at + off, along] : [along, at + off];
+const winSpan = w => { const v = w[0] === w[2]; return {v, at:v ? w[0] : w[1], a:Math.min(v ? w[1] : w[0], v ? w[3] : w[2]), b:Math.max(v ? w[1] : w[0], v ? w[3] : w[2])}; };
+
+function drawWalls(g, P){
+  const cuts = [...(P.doors || []), ...(P.windows || []).map(winSpan)];
+  for (const [x1, y1, x2, y2, tt] of P.walls) {
+    const v = x1 === x2, at = v ? x1 : y1, s = Math.min(v ? y1 : x1, v ? y2 : x2), e = Math.max(v ? y1 : x1, v ? y2 : x2);
+    const t = tt || wallT(P, v, at, (s + e) / 2);
+    const piece = (p, q, extP, extQ) => {
+      const a = p - (extP ? t / 2 : 0), b = q + (extQ ? t / 2 : 0);
+      el("rect", v ? {x:at - t/2, y:a, width:t, height:b - a} : {x:a, y:at - t/2, width:b - a, height:t}, g).setAttribute("class", "wallbody");
+    };
+    let cur = s, curOrig = true;
+    for (const c of cuts.filter(o => !!o.v === v && o.at === at && o.b > s && o.a < e).sort((p, q) => p.a - q.a)) {
+      if (c.a > cur) piece(cur, c.a, curOrig, false);
+      cur = Math.max(cur, c.b); curOrig = false;
+    }
+    if (e > cur) piece(cur, e, curOrig, true);
+  }
+}
+
+function drawDoor(g, P, d){
+  const t = wallT(P, !!d.v, d.at, (d.a + d.b) / 2), L = d.b - d.a, pt = axisPt(d.v, d.at);
+  const swing = (hp, op, len, glass) => {
+    const f = d.d * t / 2, H = pt(hp, f), T = pt(hp, f + d.d * len), E = pt(op, f);
+    const cross = (T[0] - H[0]) * (E[1] - H[1]) - (T[1] - H[1]) * (E[0] - H[0]);
+    el("path", {d:`M${T[0]},${T[1]} A${len},${len} 0 0 ${cross > 0 ? 1 : 0} ${E[0]},${E[1]}`, class:"swing"}, g);
+    line(g, H, T, glass ? "leaf leaf-glass" : "leaf");
+  };
+  if (d.k === "sw" || d.k === "gsw") swing(d.h === "a" ? d.a : d.b, d.h === "a" ? d.b : d.a, L, d.k === "gsw");
+  if (d.k === "dbl") { swing(d.a, (d.a + d.b) / 2, L / 2); swing(d.b, (d.a + d.b) / 2, L / 2); }
+  if (d.k === "sl" || d.k === "gsl") {
+    const k = 0.56 * L, cls = (d.k === "gsl" ? "panel panel-glass" : "panel") + (d.future ? " panel-future" : "");
+    line(g, pt(d.a, -2.6), pt(d.a + k, -2.6), cls);
+    line(g, pt(d.b - k, 2.6), pt(d.b, 2.6), cls);
+  }
+  if (d.k === "fo") {
+    const f = d.d * t / 2, amp = d.d * L / 4;
+    el("polyline", {points:[0, 1, 2, 3, 4].map(i => pt(d.a + i * L / 4, f + (i % 2 ? amp : 0)).join(",")).join(" "), class:"fold"}, g);
+  }
+  if (d.k === "sh") line(g, pt(d.a, 0), pt(d.b, 0), "shutter");
+  if (d.tag) txt(g, d.tag[0], d.tag[1], d.tag[2], "dtag");
+}
+
+function drawWindow(g, P, w){
+  const {v, at, a, b} = winSpan(w), type = w[4], t = wallT(P, v, at, (a + b) / 2), pt = axisPt(v, at), L = b - a;
+  line(g, pt(a, -t/2), pt(b, -t/2), "wface");
+  line(g, pt(a, t/2), pt(b, t/2), "wface");
+  if (type === "floor" || type === "waist") {
+    const k = 0.56 * L;
+    line(g, pt(a, -2.4), pt(a + k, -2.4), "sash");
+    line(g, pt(b - k, 2.4), pt(b, 2.4), "sash");
+  }
+  if (type === "floor") {
+    const o = w[5] ?? outDir(P, v, at), m = (a + b) / 2;
+    el("polygon", {points:[pt(m - 7, o * (t/2 + 3)), pt(m + 7, o * (t/2 + 3)), pt(m, o * (t/2 + 13))].map(p => p.join(",")).join(" "), class:"floormark"}, g);
+  }
+  if (type === "high") line(g, pt(a + 3, 0), pt(b - 3, 0), "sash sash-high");
+  if (type === "fix") line(g, pt(a, 0), pt(b, 0), "sash sash-fix");
+  if (type === "frost") line(g, pt(a + 3, 0), pt(b - 3, 0), "sash sash-frost");
+}
+
+function drawFixture(g, f){
+  if (f.k === "wc") {
+    const rot = {s:0, n:180, e:-90, w:90}[f.dir], w = el("g", {transform:`translate(${f.x} ${f.y}) rotate(${rot})`}, g);
+    el("rect", {x:-19, y:0, width:38, height:17, rx:3, class:"fx"}, w);
+    el("ellipse", {cx:0, cy:40, rx:17, ry:24, class:"fx"}, w);
+    el("ellipse", {cx:0, cy:43, rx:10, ry:15, class:"fx-in"}, w);
+  }
+  if (f.k === "hand") {
+    el("rect", {x:f.x, y:f.y, width:f.w, height:f.h, rx:3, class:"fx"}, g);
+    el("ellipse", {cx:f.x + f.w/2, cy:f.y + f.h/2 + 1, rx:f.w * 0.3, ry:f.h * 0.3, class:"fx-in"}, g);
+  }
+  if (f.k === "vanity") {
+    el("rect", {x:f.x, y:f.y, width:f.w, height:f.h, rx:2, class:"fx"}, g);
+    el("ellipse", {cx:f.x + f.w/2, cy:f.y + f.h/2 + 2, rx:Math.min(f.w * 0.32, 24), ry:f.h * 0.3, class:"fx-in"}, g);
+  }
+  if (f.k === "shower") {
+    if (f.w) el("rect", {x:f.x, y:f.y, width:f.w, height:f.h, class:"fx-floor"}, g);
+    const [dx, dy] = f.drain;
+    el("rect", {x:dx - 7, y:dy - 7, width:14, height:14, class:"fx"}, g);
+    line(g, [dx - 7, dy], [dx + 7, dy], "fx-thin"); line(g, [dx, dy - 7], [dx, dy + 7], "fx-thin");
+    const [hx, hy, wx, wy] = f.head;
+    line(g, [wx, wy], [hx, hy], "fx-thin");
+    el("circle", {cx:hx, cy:hy, r:6, class:"fx"}, g);
+  }
+  if (f.k === "tub") {
+    el("rect", {x:f.x, y:f.y, width:f.w, height:f.h, rx:4, class:"fx"}, g);
+    el("rect", {x:f.x + 7, y:f.y + 7, width:f.w - 14, height:f.h - 14, rx:14, class:"fx-in"}, g);
+    el("circle", {cx:f.x + 20, cy:f.y + f.h/2, r:3.5, class:"fx-in"}, g);
+  }
+  if (f.k === "washer") {
+    el("rect", {x:f.x, y:f.y, width:f.w, height:f.h, rx:4, class:"fx"}, g);
+    el("circle", {cx:f.x + f.w/2, cy:f.y + f.h/2, r:Math.min(f.w, f.h) * 0.34, class:"fx-in"}, g);
+  }
+  if (f.k === "counter") {
+    el("rect", {x:f.x, y:f.y, width:f.w, height:f.h, class:"fx"}, g);
+    const [sx, sy, sw, sh] = f.sink;
+    el("rect", {x:sx, y:sy, width:sw, height:sh, rx:5, class:"fx-in"}, g);
+    el("circle", {cx:sx + sw/2, cy:sy + sh - 6, r:3, class:"fx-in"}, g);
+    const [ix, iy, iw, ih] = f.ih;
+    el("rect", {x:ix, y:iy, width:iw, height:ih, rx:2, class:"fx-in"}, g);
+    [[0.27, 0.32, 11], [0.73, 0.32, 11], [0.5, 0.74, 8]].forEach(([u, w, r]) => el("circle", {cx:ix + iw * u, cy:iy + ih * w, r, class:"fx-in"}, g));
+    txt(g, f.x + f.w/2, f.y + f.h - 9, f.n, "furntag furntag-s");
+  }
+  if (f.k === "fridge") {
+    el("rect", {x:f.x, y:f.y, width:f.w, height:f.h, class:"fx"}, g);
+    line(g, [f.x, f.y + f.h - 8], [f.x + f.w, f.y + f.h - 8], "fx-thin");
+    txt(g, f.x + f.w/2 - 4, f.y + f.h/2, "冰箱", "furntag furntag-s fxtag");
+  }
+}
+
+function drawStair(g, r, arrow){
+  if (r.stair === "I") {
+    for (let y = r.y + 23; y < r.y + r.h; y += 23) el("line", {x1:r.x, y1:y, x2:r.x + r.w, y2:y, class:"tread"}, g);
+    el("polyline", {points:`${r.x + r.w/2},${r.y + r.h - 12} ${r.x + r.w/2},${r.y + 18}`, class:"arrow", "marker-end":arrow}, g);
+    el("circle", {cx:r.x + r.w/2, cy:r.y + r.h - 12, r:4, class:"arrow-dot"}, g);
+    txt(g, r.x + r.w/2 + 20, r.y + r.h - 18, "上", "uptag");
+    return;
+  }
+  const lane = r.w / 2, land = 91;
+  el("line", {x1:r.x + lane, y1:r.y + land, x2:r.x + lane, y2:r.y + r.h, class:"wall-thin"}, g);
+  for (let y = r.y + land; y < r.y + r.h; y += 23) el("line", {x1:r.x, y1:y, x2:r.x + r.w, y2:y, class:"tread"}, g);
+  el("polyline", {points:`${r.x + lane*1.5},${r.y + r.h - 12} ${r.x + lane*1.5},${r.y + 46} ${r.x + lane*0.5},${r.y + 46} ${r.x + lane*0.5},${r.y + r.h - 30}`, class:"arrow", "marker-end":arrow}, g);
+  el("circle", {cx:r.x + lane*1.5, cy:r.y + r.h - 12, r:4, class:"arrow-dot"}, g);
+  txt(g, r.x + lane*1.5 - 22, r.y + r.h - 18, "上", "uptag");
+  if (r.skylight) el("rect", {x:r.x + 12, y:r.y + 12, width:r.w - 24, height:r.h - 24, class:"sky"}, g);
+}
+
+function drawDims(g, P){
+  const D = P.dims, tick = (x, y) => line(g, [x - 5, y + 5], [x + 5, y - 5], "dimtick");
+  const run = (pts, v, at, txtOff) => {
+    line(g, v ? [at, pts[0]] : [pts[0], at], v ? [at, pts.at(-1)] : [pts.at(-1), at], "dimline");
+    pts.forEach(p => v ? tick(at, p) : tick(p, at));
+    pts.slice(1).forEach((q, i) => {
+      const p = pts[i], m = (p + q) / 2, s = fmt((q - p) * 10);
+      if (v) txt(g, at + txtOff, m, s, "dim dim-s").setAttribute("transform", `rotate(-90 ${at + txtOff} ${m})`);
+      else txt(g, m, at + txtOff, s, "dim dim-s");
+    });
+  };
+  run(D.x, false, -42, -8);
+  run([0, 580], false, -84, -8);
+  if (D.ySide === "l") run(D.y, true, D.yAt ?? -58, -8); else run(D.y, true, 640, 20);
+  run([0, 850], true, D.totAt ?? -108, -8);
+}
+
+// 方位與鄰地為假想：東側庭院＋緣側、西側玄關步道
+function drawSite(g, S){
+  const [wx1, wy1, wx2, wy2] = S.walk;
+  el("rect", {x:wx1, y:wy1, width:wx2 - wx1, height:wy2 - wy1, class:"walk"}, g);
+  line(g, [wx1, wy1], [wx1, wy2], "walkedge"); line(g, [wx2, wy1], [wx2, wy2], "walkedge");
+  txt(g, (wx1 + wx2) / 2 + 6, 760, "步道", "sitetag").setAttribute("transform", `rotate(-90 ${(wx1 + wx2) / 2 + 6} 760)`);
+  const [gx1, gy1, gx2, gy2] = S.garden;
+  el("rect", {x:gx1, y:gy1, width:gx2 - gx1, height:gy2 - gy1, class:"lawn"}, g);
+  const [ex1, ey1, ex2, ey2] = S.engawa;
+  el("rect", {x:ex1, y:ey1, width:ex2 - ex1, height:ey2 - ey1, class:"deck"}, g);
+  for (let x = ex1 + 16; x < ex2; x += 16) line(g, [x, ey1], [x, ey2], "plank");
+  el("rect", {x:580, y:ey1 - 20, width:ex2 - 580 + 15, height:ey2 - ey1 + 40, class:"eave"}, g);
+  el("ellipse", {cx:S.stone[0], cy:S.stone[1], rx:22, ry:16, class:"stone"}, g);
+  const [dx1, dy1, dx2, dy2] = S.deck;
+  el("rect", {x:dx1, y:dy1, width:dx2 - dx1, height:dy2 - dy1, class:"deck"}, g);
+  for (let y = dy1 + 16; y < dy2; y += 16) line(g, [dx1, y], [dx2, y], "plank");
+  const [tx, ty, tr] = S.tree;
+  el("circle", {cx:tx, cy:ty, r:tr, class:"tree"}, g);
+  el("circle", {cx:tx, cy:ty, r:7, class:"trunk"}, g);
+  const cx = (ex1 + ex2) / 2 + 4;
+  txt(g, cx, 150, "緣側（杉木・深 90 cm）", "sitetag").setAttribute("transform", `rotate(-90 ${cx} 150)`);
+  txt(g, 835, 222, "主樹", "furntag furntag-s fxtag");
+  txt(g, (dx1 + dx2) / 2, (dy1 + dy2) / 2 - 6, "BBQ 木平台", "sitetag");
+  txt(g, (dx1 + dx2) / 2, (dy1 + dy2) / 2 + 16, "1.9 × 2.2 m", "num num-s");
+  txt(g, 820, 700, "庭院", "zone");
+  txt(g, 820, 905, "方位與鄰地為假想", "tag muted small");
+}
+
+function render(id){
+  const P = PLANS[id], svg = document.getElementById(id), bottom = P.bay ? 1040 : 960;
+  const [vx, vw] = P.vb || [-150, 865];
+  svg.setAttribute("viewBox", `${vx} -125 ${vw} ${bottom + 125}`);
+  const defs = el("defs", {}, svg);
+  const pat = el("pattern", {id:`hatch-${id}`, width:14, height:14, patternUnits:"userSpaceOnUse", patternTransform:"rotate(45)"}, defs);
+  el("rect", {width:14, height:14, fill:"var(--circ-soft)"}, pat);
+  el("line", {x1:0, y1:0, x2:0, y2:14, stroke:"var(--circ)", "stroke-width":2, opacity:.45}, pat);
+  const mk = el("marker", {id:`ah-${id}`, viewBox:"0 0 10 10", refX:5, refY:5, markerWidth:5, markerHeight:5, orient:"auto-start-reverse"}, defs);
+  el("path", {d:"M0,0 L10,5 L0,10 z", fill:"var(--ink)"}, mk);
+  const arrow = `url(#ah-${id})`;
+  const g = el("g", {}, svg);
+
+  if (P.site) drawSite(g, P.site);
+  for (const r of P.rooms) {
+    const attrs = {fill:r.t === "circ" ? `url(#hatch-${id})` : FILL[r.t], class:"rfill"};
+    if (r.poly) el("polygon", Object.assign({points:r.poly.map(p => p.join(",")).join(" ")}, attrs), g);
+    else el("rect", Object.assign({x:r.x, y:r.y, width:r.w, height:r.h}, attrs), g);
+  }
+  if (P.bay) {
+    const B = P.bay;
+    el("rect", {x:B.x1, y:B.y, width:B.x2 - B.x1, height:B.d, class:"bay"}, g);
+    [[B.x1 + 8, 70], [B.x1 + 84, 72], [B.x1 + 162, 70]].forEach(([x, w]) => el("rect", {x, y:B.y + 10, width:w, height:42, class:"drawer"}, g));
+    txt(g, (B.x1 + B.x2) / 2, B.y + 78, "ごろ寝平台", "furntag");
+  }
+  for (const r of P.rooms) if (r.stair) drawStair(g, r, arrow);
+  for (const s of (P.steps || [])) line(g, [s[0], s[1]], [s[2], s[3]], "step");
+  for (const s of (P.eaves || [])) line(g, [s[0], s[1]], [s[2], s[3]], "eave");
+  if (P.mirror) el("line", {x1:P.mirror[0], y1:P.mirror[1], x2:P.mirror[2], y2:P.mirror[3], class:"mirror"}, g);
+
+  for (const f of (P.furn || [])) {
+    if (f.ghost) { el("rect", {x:f.x, y:f.y, width:f.w, height:f.h, class:"ghost"}, g); continue; }
+    if (f.round) { el("ellipse", {cx:f.x + f.w/2, cy:f.y + f.h/2, rx:f.w/2, ry:f.h/2, class:"furn"}, g); continue; }
+    if (f.wall) { el("rect", {x:f.x, y:f.y, width:f.w, height:f.h, rx:7, class:"halfwall"}, g); continue; }
+    if (f.tv) { el("rect", {x:f.x, y:f.y, width:f.w, height:f.h, class:"tv"}, g); continue; }
+    el("rect", {x:f.x, y:f.y, width:f.w, height:f.h, rx:f.car ? 40 : 4, class:f.car ? "car" : "furn"}, g);
+    if (!f.n) continue;
+    const cx = f.x + f.w/2, cy = f.y + f.h/2;
+    if (f.vert) txt(g, cx + 6, cy, f.n, "furntag").setAttribute("transform", `rotate(-90 ${cx + 6} ${cy})`);
+    else txt(g, cx, cy + 6, f.n, f.tiny ? "furntag furntag-s" : "furntag");
+  }
+  for (const f of (P.fx || [])) drawFixture(g, f);
+
+  drawWalls(g, P);
+  for (const w of (P.windows || [])) drawWindow(g, P, w);
+  if (P.railing) { const [x1, y1, x2, y2] = P.railing; el("line", {x1, y1, x2, y2, class:"rail"}, g); }
+  for (const d of (P.doors || [])) drawDoor(g, P, d);
+
+  for (const r of P.rooms) {
+    if (!r.n || r.hideLabel) continue;
+    const a = r.a ?? (r.poly ? polyArea(r.poly) : r.w * r.h / 1e4);
+    const cx = r.lx ?? r.x + r.w / 2, cy = r.ly ?? r.y + r.h / 2, anchor = r.start ? "start" : "middle";
+    txt(g, cx, cy - (r.noArea ? -6 : 4), r.n, r.small ? "lbl lbl-s" : "lbl", anchor);
+    if (!r.noArea) txt(g, cx, cy + (r.small ? 20 : 26), r.small ? a.toFixed(1) : `${a.toFixed(1)} m² · ${(a / 1.62).toFixed(1)} 帖`, r.numS ? "num num-s" : "num", anchor);
+    if (r.sub) txt(g, cx, cy + 50, r.sub, "subtag", anchor);
+  }
+  for (const [x1, y1, x2, y2] of (P.arrows || [])) el("line", {x1, y1, x2, y2, class:"flow", "marker-end":arrow}, g);
+  for (const [x, y, s, cls, anchor] of (P.texts || [])) txt(g, x, y, s, cls, anchor || "middle");
+  if (P.rooms.some(r => r.skylight)) txt(g, 91, 36, "天窗", "skytag");
+
+  drawDims(g, P);
+  const nx = P.north ?? 690;
+  txt(g, nx, -98, "N", "tag");
+  el("polyline", {points:`${nx},-22 ${nx},-80`, class:"arrow-c", "marker-end":arrow}, g);
+  txt(g, 290, bottom - 22, "南（道路）", "tag muted");
+}
+Object.keys(PLANS).forEach(render);
+
+// 圖例：用同一套畫法畫在一小段牆上
+(function legend(){
+  const box = document.getElementById("legend-sym"), P = {walls:[], doors:[], windows:[]};
+  const items = [
+    ["牆（外 15・內 10 cm）", 80, 80, () => {}],
+    ["開門", 26, 58, g => drawDoor(g, P, {k:"sw", v:0, at:32, a:26, b:58, h:"a", d:-1})],
+    ["玻璃開門", 26, 58, g => drawDoor(g, P, {k:"gsw", v:0, at:32, a:26, b:58, h:"a", d:-1})],
+    ["拉門", 14, 66, g => drawDoor(g, P, {k:"sl", v:0, at:32, a:14, b:66})],
+    ["折疊門", 14, 66, g => drawDoor(g, P, {k:"fo", v:0, at:32, a:14, b:66, d:-1})],
+    ["鐵捲門", 8, 72, g => drawDoor(g, P, {k:"sh", v:0, at:32, a:8, b:72})],
+    ["落地窗（掃き出し窓）", 14, 66, g => drawWindow(g, P, [14,32,66,32,"floor",-1])],
+    ["腰窗", 14, 66, g => drawWindow(g, P, [14,32,66,32,"waist"])],
+    ["高窗", 14, 66, g => drawWindow(g, P, [14,32,66,32,"high"])],
+    ["固定窗", 14, 66, g => drawWindow(g, P, [14,32,66,32,"fix"])],
+    ["霧面窗（用水區）", 14, 66, g => drawWindow(g, P, [14,32,66,32,"frost"])],
+    ["天窗（樓梯頂）", 0, 80, g => el("rect", {x:10, y:12, width:60, height:26, class:"sky"}, g)]
+  ];
+  for (const [label, a, b, draw] of items) {
+    const span = document.createElement("span"), svg = el("svg", {viewBox:"0 -8 80 50", class:"lg"}, span), g = el("g", {}, svg);
+    if (a > 0) el("rect", {x:0, y:27, width:a, height:10, class:"wallbody"}, g);
+    if (b < 80) el("rect", {x:b, y:27, width:80 - b, height:10, class:"wallbody"}, g);
+    draw(g);
+    span.append(label);
+    box.appendChild(span);
+  }
+})();
+</script>
+<style>
+.rfill{fill-opacity:.55}
+.wallbody{fill:var(--ink)}
+.wall-thin{stroke:var(--ink);stroke-width:2}
+.step{stroke:var(--ink);stroke-width:1.5}
+.eave{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:10 6}
+.tread{stroke:var(--muted);stroke-width:1.5}
+.arrow,.arrow-c{fill:none;stroke:var(--ink);stroke-width:2.5}
+.arrow-dot{fill:var(--ink)}
+.furn{fill:var(--furn);stroke:var(--ink);stroke-width:1.5}
+.fx{fill:var(--sheet);stroke:var(--ink);stroke-width:1.6}
+.fx-in{fill:none;stroke:var(--ink);stroke-width:1.3}
+.fx-thin{stroke:var(--ink);stroke-width:1.1}
+.fx-floor{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:3 4}
+.tv{fill:var(--ink)}
+.car{fill:none;stroke:var(--ink);stroke-width:3}
+.anno{font-family:var(--f-body);font-size:14px;fill:var(--circ);font-weight:500}
+.anno-b{font-family:var(--f-body);font-size:16px;fill:var(--circ);font-weight:700}
+.halfwall{fill:var(--muted);stroke:var(--ink);stroke-width:1.5}
+.ghost{fill:none;stroke:var(--muted);stroke-width:2;stroke-dasharray:6 5}
+.sky{fill:none;stroke:var(--sun);stroke-width:4;stroke-dasharray:10 6}
+.mirror{stroke:var(--glass);stroke-width:8;opacity:.55}
+.bay{fill:var(--bay);stroke:none}
+.drawer{fill:none;stroke:var(--muted);stroke-width:1.2;stroke-dasharray:5 4}
+.wface{stroke:var(--ink);stroke-width:1.2}
+.sash{stroke:var(--glass);stroke-width:2.6}
+.sash-high{stroke-dasharray:7 5}
+.sash-fix{stroke-width:4}
+.sash-frost{stroke-width:4;stroke-dasharray:.1 6;stroke-linecap:round}
+.floormark{fill:var(--glass)}
+.rail{stroke:var(--ink);stroke-width:3;stroke-dasharray:4 5}
+.leaf{stroke:var(--ink);stroke-width:3;stroke-linecap:round}
+.leaf-glass{stroke:var(--glass);stroke-width:4}
+.swing{fill:none;stroke:var(--ink);stroke-width:1.1}
+.panel{stroke:var(--ink);stroke-width:2.6}
+.panel-glass{stroke:var(--glass)}
+.panel-future{stroke-dasharray:5 4;stroke:var(--circ)}
+.fold{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round}
+.lawn{fill:var(--lawn)}
+.walk{fill:var(--garage);opacity:.8}
+.walkedge{stroke:var(--muted);stroke-width:1.2;stroke-dasharray:6 5}
+.stone{fill:var(--svc);stroke:var(--muted);stroke-width:1.2}
+.deck{fill:var(--bay)}
+.plank{stroke:var(--muted);stroke-width:.8;opacity:.5}
+.eave{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:10 6}
+.tree{fill:var(--out);fill-opacity:.7;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:3 3}
+.trunk{fill:var(--muted)}
+.sitetag{font-family:var(--f-body);font-size:15px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:var(--sheet);stroke-width:4px;stroke-linejoin:round}
+.tag.small{font-size:15px}
+.flow{stroke:var(--circ);stroke-width:2.5;stroke-dasharray:8 6}
+.shutter{stroke:var(--ink);stroke-width:3;stroke-dasharray:10 8}
+.lbl,.num,.subtag,.anno,.anno-b,.zone,.tag,.skytag,.uptag,.dtag,.dim,.fxtag{paint-order:stroke;stroke:var(--sheet);stroke-width:4px;stroke-linejoin:round}
+.fxtag{stroke-width:3px}
+.lbl{font-family:var(--f-display);font-size:27px;fill:var(--ink);font-weight:700}
+.lbl-s{font-size:20px}
+.zone{font-family:var(--f-display);font-size:24px;fill:var(--muted);font-weight:700}
+.num{font-family:var(--f-mono);font-size:17px;fill:var(--muted)}
+.num-s{font-size:14px}
+.subtag{font-family:var(--f-body);font-size:16px;fill:var(--circ);font-weight:700}
+.furntag{font-family:var(--f-body);font-size:15px;fill:var(--ink)}
+.furntag-s{font-size:12.5px}
+.skytag{font-family:var(--f-body);font-size:16px;fill:var(--sun);font-weight:700}
+.uptag{font-family:var(--f-body);font-size:17px;font-weight:700;fill:var(--ink)}
+.dtag{font-family:var(--f-body);font-size:12.5px;font-weight:700;fill:var(--circ)}
+.dim{font-family:var(--f-mono);font-size:19px;fill:var(--muted)}
+.dim-s{font-size:15px}
+.dimline{stroke:var(--muted);stroke-width:1.2}
+.dimtick{stroke:var(--muted);stroke-width:2}
+.tag{font-family:var(--f-body);font-size:21px;font-weight:700;fill:var(--ink)}
+.tag.muted{fill:var(--muted);font-weight:500}
+.legend svg.lg{width:42px;height:26px;vertical-align:-7px;margin-right:6px;display:inline-block}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
