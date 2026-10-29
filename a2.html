@@ -76,7 +76,7 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261029p';
+import * as EXT from './a2-exterior.js?v=20261029q';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
@@ -379,7 +379,7 @@ lighting:function(E){
     const rc=r.rects[0], c=ctr(rc); light(q[1],c[0],c[1],0xffe2b8,0.55,r.area_m2>12?9:6); }); });
 },
 modes:function(E){
-  E.player.yaw=Math.PI/2; window.__a2E=E;
+  E.player.yaw=Math.PI/2; window.__a2E=E; EXT.frameFinish(THREE,E);
   /* the engine only draws the storeys above when the stairwell is in view; the LDK void needs its 2F walls (and the roof side) from below */
   /* ---- sun path: Walk.Sun drives the engine's sun; the engine's hour slider is replaced by the date / time panel ---- */
   const SUN=E.sun, DIST=60, TGT=E.CEN.clone();
