@@ -13,7 +13,7 @@ export function ceilingLights(THREE,E,C){
     const ring=new THREE.Mesh(new THREE.TorusGeometry(0.06,0.006,8,24),M.trim); ring.rotation.x=Math.PI/2; ring.position.y=-0.004; g.add(ring);
     const dm=new THREE.Mesh(new THREE.SphereGeometry(0.055,20,8,0,Math.PI*2,Math.PI/2,Math.PI/2),lampMat); dm.scale.y=0.35; dm.position.y=-0.004; g.add(dm); },0xffe2b8,int,dist); };
   const pendant=function(n,e,drop){
-    const yc=C.ceilY(n), g=new THREE.Group(); g.position.set(n/100,yc,e/100); g.rotation.z=SLOPE; LG[0].add(g); lightFixtures.push(g);
+    const yc=C.ceilY(n), g=new THREE.Group(); g.position.set(n/100,yc,e/100); g.rotation.z=SLOPE; g.userData.a2Pendant=true; LG[0].add(g); lightFixtures.push(g);
     const rod=new THREE.Mesh(new THREE.CylinderGeometry(0.004,0.004,drop,6),M.dark); rod.position.y=-drop/2; g.add(rod);
     const sh=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.2,0.24,24,1,true),M.shade); sh.position.y=-drop-0.05; g.add(sh);
     const d=new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.11,0.01,20),lampMat); d.position.y=-drop-0.16; g.add(d);
