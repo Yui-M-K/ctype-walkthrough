@@ -95,7 +95,7 @@ const NORTH={
 };
 window.A2={PLAN:PLAN,NORTH:NORTH};
 const SH_M=2.85, CH_M=2.55, FL1=0.30;     // storey height, 1F clear height, 1F floor above ground (m)
-const LOT=PLAN.lot, NWALL=LOT.south_north-LOT.buildingOffsetFromNorthEdge;   // n of the building's north wall centre line (cm)
+const LOT=PLAN.lot, SEXT=LOT.southExtension||0, DEPTH=LOT.south_north+SEXT, MIDX=(LOT.south_north-SEXT)/200, NWALL=LOT.south_north-LOT.buildingOffsetFromNorthEdge;   // n of the building's north wall centre line (cm)
 const ROOF_HIGH=PLAN.roof.highEaveHeightAboveGL/100-FL1, SLOPE=PLAN.roof.slope, ROOF_T=0.25;
 const roofTop=function(px){ return ROOF_HIGH-SLOPE*(NWALL-px)/100; };   // top of the roof (m above the 1F floor) at engine px (= n, cm)
 const ceilY=function(px){ return roofTop(px)-ROOF_T; };                    // the sloped ceiling under it
@@ -117,17 +117,17 @@ storageKey:"a2Furn.v1",
 SX:0.01, SZ:0.01, SH:SH_M, CH:CH_M,
 LV:[{ox:0,oy:0},{ox:0,oy:0},{ox:0,oy:0}],
 sunBox:11,
-center:[LOT.south_north/200,3,LOT.east_west/200],
+center:[MIDX,3,LOT.east_west/200],
 TE:0.15, TI:0.10,
 autoArea:false,
-land:LOT.south_north*LOT.east_west/1e4,
+land:DEPTH*LOT.east_west/1e4,
 groundY:-FL1,
 start:[LOT.south_north-20,707],
-orb:{yaw:0.5,pitch:1.0,dist:28,tx:LOT.south_north/200,tz:LOT.east_west/200},
+orb:{yaw:0.5,pitch:1.0,dist:28,tx:MIDX,tz:LOT.east_west/200},
 mini:[21,-0.3,-0.3],
 stairZone:[0.6,1.2,1.2],
 liftIds:{1:'lift',2:'lift'},
-editOrbit:{yaw:0,pitch:1.42,dist:24,tx:LOT.south_north/200,tz:LOT.east_west/200},
+editOrbit:{yaw:0,pitch:1.42,dist:24,tx:MIDX,tz:LOT.east_west/200},
 northDeg:NORTH.arrowDeg,
 rooms:(function(){
   const out=[];
@@ -293,11 +293,11 @@ stairExtras:function(E){
   handrail(0,WX(0,297.5),-1,WZ(0,430),WZ(0,685));
 },
 site:function(E){
-  const {FL,M,WX,WZ,bx,floorRects,ground,Catalog}=E, cx=LOT.south_north/200, cz=LOT.east_west/200;
+  const {FL,M,WX,WZ,bx,floorRects,ground,Catalog}=E, cx=MIDX, cz=LOT.east_west/200;
   const plane=function(w,h,mat,x,y,z){ const g=new THREE.Mesh(new THREE.PlaneGeometry(w,h),mat); g.rotation.x=-Math.PI/2; g.position.set(x,y,z); g.receiveShadow=true; ground.add(g); return g; };
   plane(260,260,M.grass,cx,-0.3,cz);
   plane(6,260,M.asphalt,LOT.south_north/100+3,-0.29,cz);                                   // the 6 m road on the north side
-  [[-8,-0.6,1,12,6.8],[1,9,-8,-0.6,6.2],[1,9,14.5,22,6.4],[16.5,23,0,13,6.0]].forEach(function(n){ const m=bx(ground,n[0],n[1],n[2],n[3],-0.3,n[4],EXT.mats().nbr); m.userData.keep=true; m.userData.neighbor=true; });
+  [[-8-SEXT/100,-0.6-SEXT/100,1,12,6.8],[1,9,-8,-0.6,6.2],[1,9,14.5,22,6.4],[16.5,23,0,13,6.0]].forEach(function(n){ const m=bx(ground,n[0],n[1],n[2],n[3],-0.3,n[4],EXT.mats().nbr); m.userData.keep=true; m.userData.neighbor=true; });
   const apron=[65,NWALL,430,LOT.south_north], porch=[667,NWALL,765,LOT.south_north-30];
   bx(ground,apron[1]/100,apron[3]/100,apron[0]/100,apron[2]/100,-0.3,-0.12,EXT.mats().conc); floorRects.push({l:0,x0:apron[1]/100,x1:apron[3]/100,z0:apron[0]/100,z1:apron[2]/100,y:-0.12});
   bx(ground,porch[1]/100,porch[3]/100,porch[0]/100,porch[2]/100,-0.3,-0.1,FL.stone); floorRects.push({l:0,x0:porch[1]/100,x1:porch[3]/100,z0:porch[0]/100,z1:porch[2]/100,y:-0.1});

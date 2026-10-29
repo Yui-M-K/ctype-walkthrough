@@ -5,7 +5,7 @@
   "source": "a2-plan.html",
   "generator": "tools/extract_a2.js",
   "unit": "cm",
-  "frame": "site frame: e = cm east of the lot west edge, n = cm north of the lot south edge; north is +n (up in the plan), the road is on the north side",
+  "frame": "site frame: e = cm east of the lot west edge, n = cm north of the datum line (the south edge of the lot before the southward extension; the lot reaches lot.southExtension cm south of it, n<0); north is +n (up in the plan), the road is on the north side",
   "sourceFrame": "plan drawn in an old frame (x west, y south, origin at the building NE corner), displayed rotated 180 degrees; converted here",
   "levelHeights": {
    "floorToFloor": 285,
@@ -17,6 +17,7 @@
  "lot": {
   "east_west": 1387,
   "south_north": 970,
+  "southExtension": 29,
   "buildingOffsetFromEastEdge": 220,
   "buildingOffsetFromNorthEdge": 120,
   "road": {
@@ -2079,7 +2080,7 @@
     "cls": "r-room",
     "rect": [
      0,
-     0,
+     -29,
      1387,
      970
     ],
@@ -2089,7 +2090,7 @@
     "cls": "landb",
     "rect": [
      0,
-     0,
+     -29,
      1387,
      970
     ],
@@ -2099,7 +2100,7 @@
     "cls": "",
     "rect": [
      1167,
-     0,
+     -29,
      1387,
      970
     ],
@@ -2241,7 +2242,7 @@
    {
     "at": [
      701,
-     -40
+     -69
     ],
     "t": "南側鄰地"
    },
@@ -2447,7 +2448,7 @@
   "sideYard": {
    "rect": [
     1167,
-    0,
+    -29,
     1387,
     970
    ],

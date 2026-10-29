@@ -12,10 +12,11 @@ const m=html.match(/<script>([\s\S]*?)<\/script>/g).map(s=>s.replace(/^<script>|
 if(!m) throw new Error('plan script not found');
 const siteM=m.match(/function drawSiteA2\(\)\{[\s\S]*?const ox=(\d+), oy=(\d+), LW=(\d+), LD=(\d+)/);
 const OX=+siteM[1], OY=+siteM[2], LW=+siteM[3], LD=+siteM[4];
+const LD0=970;   // n=0 datum: the south edge of the lot before the 2026-10 southward extension; the lot now reaches LD-LD0 cm south of it (n<0)
 const secM=m.match(/function drawSectionA2\(\)\{[\s\S]*?const F1=(\d+),F2=(\d+),RN=(\d+),SL=([\d.]+)/);
 const SEC={fl1AboveGL:+secM[1],fl2AboveGL:+secM[2],roofHighEaveGL:+secM[3],roofSlope:+secM[4]};
-const bl=(x,y)=>[+(LW-OX-x).toFixed(2),+(LD-OY-y).toFixed(2)];          // building-local (old frame) -> site frame [e,n]
-const st=(X,Y)=>[+(LW-X).toFixed(2),+(LD-Y).toFixed(2)];                // site drawing (old frame) -> site frame
+const bl=(x,y)=>[+(LW-OX-x).toFixed(2),+(LD0-OY-y).toFixed(2)];          // building-local (old frame) -> site frame [e,n]
+const st=(X,Y)=>[+(LW-X).toFixed(2),+(LD0-Y).toFixed(2)];                // site drawing (old frame) -> site frame
 const dv=(dx,dy)=>[+(-dx).toFixed(4),+(-dy).toFixed(4)];                // direction vector
 
 const rec={fig:null,figs:{},warn:[]};
@@ -80,7 +81,7 @@ function features(){
   return {
     bayWindow:{rect:bayRoom&&r2(bayRoom.rect),platformRect:platform&&r2(platform.r),platformHeight:40,glazedFaces:L1.freeWindows.map(w=>({a:w.a,b:w.b,code:w.code})),note:'ごろ寝 platform with drawers, three glazed faces, open to the LDK through the east wall'},
     engawa:{rect:engawa&&r2(engawa.rect),depth:90,material:'cedar',steppingStone:step&&r2(step.rect)},
-    sideYard:{rect:[1167,0,LW,LD],width:220},
+    sideYard:{rect:[1167,LD0-LD,LW,LD0],width:220},
     trees,
     balcony:{rect:balcony&&r2(balcony),level:2,depth:70,note:'cantilevered off the master bedroom north wall'},
     garage:{room:L1.rooms.find(r=>r.name.startsWith('車庫')).rects[0],car:car&&r2(car),open:'N'},
@@ -124,10 +125,10 @@ function stairOf(fig){ const ln=fig.st.filter(l=>Math.abs(l.a[0]-l.b[0])<0.1&&Ma
 
 const out={
   meta:{name:'A2',family:'注文住宅',source:path.basename(SRC),generator:'tools/extract_a2.js',unit:'cm',
-    frame:'site frame: e = cm east of the lot west edge, n = cm north of the lot south edge; north is +n (up in the plan), the road is on the north side',
+    frame:'site frame: e = cm east of the lot west edge, n = cm north of the datum line (the south edge of the lot before the southward extension; the lot reaches lot.southExtension cm south of it, n<0); north is +n (up in the plan), the road is on the north side',
     sourceFrame:'plan drawn in an old frame (x west, y south, origin at the building NE corner), displayed rotated 180 degrees; converted here',
     levelHeights:{floorToFloor:285,clear1F:255,fl1AboveGL:SEC.fl1AboveGL,fl2AboveGL:SEC.fl2AboveGL}},
-  lot:{east_west:LW,south_north:LD,buildingOffsetFromEastEdge:OX,buildingOffsetFromNorthEdge:OY,road:{side:'N',width:600},
+  lot:{east_west:LW,south_north:LD0,southExtension:LD-LD0,buildingOffsetFromEastEdge:OX,buildingOffsetFromNorthEdge:OY,road:{side:'N',width:600},
     sideYard:{side:'E',width:220}},
   roof:{type:'shed',highSide:'N',slope:SEC.roofSlope,highEaveHeightAboveGL:SEC.roofHighEaveGL,note:'height drops 0.13 per unit of distance southward from the north wall; ceiling follows the roof (no flat ceiling on 2F or over the void)'},
   levels:[
