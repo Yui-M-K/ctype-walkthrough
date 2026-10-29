@@ -76,13 +76,14 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261029r';
-import * as KIT from './a2-kitchen.js?v=20261029r';
-import * as LIT from './a2-lights.js?v=20261029r';
+import * as EXT from './a2-exterior.js?v=20261029s';
+import * as KIT from './a2-kitchen.js?v=20261029s';
+import * as LIT from './a2-lights.js?v=20261029s';
+import * as INT from './a2-interior.js?v=20261029s';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261029r')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261029s')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -141,8 +142,8 @@ rooms:(function(){
   const sb=box([STAIR2.rect[0]-2.5,202.5,STAIR2.rect[2],302.5]); out.push({l:1,x0:sb[0],y0:sb[1],x1:sb[2],y1:sb[3],n:'階梯',j:'',w:'hall'});
   return out.sort(function(a,b){ return (a.l-b.l)||((a.n==='LDK')-(b.n==='LDK')); });   // the LDK plan box contains the entry and the shower room: smaller rooms must come first
 })(),
-accents:[],
-curtains:[],
+accents:INT.ACCENTS,
+curtains:INT.curtains(),
 spots:(function(){
   /* [name, plan e, plan n (cm), storey, look-at e, look-at n]: the position is turned into engine coordinates and the yaw points at the target */
   const S=function(nm,e,n,l,le,ln,pitch){ return [nm,n,e,l,l,Math.atan2(-(ln-n),-(le-e)),(pitch||0)*Math.PI/180]; };
@@ -153,7 +154,7 @@ spots:(function(){
     S('外觀：道路側全景（白天）',700,2290,0,560,850,4),S('外觀：道路側（黃昏）',1800,1800,0,650,700,5),S('外觀：車庫與玄關特寫',560,1420,0,560,850,8),S('外觀：庭院側（黃昏）',2100,450,1,1100,450,-3)];
 })(),
 lay1:{},
-materials:function(E){ E.FL.bath.color.setHex(0xffffff); EXT.materials(THREE,E); },
+materials:function(E){ E.FL.bath.color.setHex(0xffffff); EXT.materials(THREE,E); INT.materials(E); },
 build:function(E){
   const {CH,FL,LG,M,WM,WX,WZ,base,bx,flr,slab,ceilingOf,wall,addCol,winFrame,wallRoleAt,floorRects,glassGuard}=E;
   const EEDGE=LOT.east_west-LOT.buildingOffsetFromEastEdge;
@@ -377,12 +378,13 @@ fixtures:function(E){
   blk(1,byRect(L2,[747,55,831,90]).rect,1.8,M.cab);
   (function(){ const r=byName(L2,'浴缸').rect, p=at(1,(r[0]+r[2])/2,(r[1]+r[3])/2); fixture(1,Catalog.bathtub((r[2]-r[0])/100),p[0],p[1],0); })();
   (function(){ const r=byName(L2,'洗手台').rect, p=at(1,(r[0]+r[2])/2,(r[1]+r[3])/2); fixture(1,Catalog.vanity(),p[0],p[1],0); })();
+  window.__a2X=INT.create(THREE,E,{ceilY:ceilY,NWALL:NWALL,PLAN:PLAN,L1:L1,L2:L2,VOIDS:VOIDS,NORTH:NORTH});
 },
 lighting:function(E){
   LIT.ceilingLights(THREE,E,{ceilY:ceilY,rooms:L2.rooms});
 },
 modes:function(E){
-  E.player.yaw=Math.PI/2; window.__a2E=E; EXT.frameFinish(THREE,E);
+  E.player.yaw=Math.PI/2; window.__a2E=E; EXT.frameFinish(THREE,E); INT.menu(THREE,E,window.__a2X);
   /* the engine only draws the storeys above when the stairwell is in view; the LDK void needs its 2F walls (and the roof side) from below */
   /* ---- sun path: Walk.Sun drives the engine's sun; the engine's hour slider is replaced by the date / time panel ---- */
   const SUN=E.sun, DIST=60, TGT=E.CEN.clone();
@@ -463,5 +465,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261029r"></script>
+<script src="a2-sunmap.js?v=20261029s"></script>
 </body></html>
