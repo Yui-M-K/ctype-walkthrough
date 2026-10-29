@@ -115,7 +115,8 @@ function floating(ctx, scan, opt) {
   const CH = E.CH || 2.5, parent = new Int32Array(n).map((_, i) => i), anchored = new Uint8Array(n);
   const find = i => { while (parent[i] !== i) { parent[i] = parent[parent[i]]; i = parent[i]; } return i; };
   const union = (a, b) => { a = find(a); b = find(b); if (a !== b) parent[a] = b; };
-  const grid = makeGrid(0.5), recs = scan.meshes;
+  const recs = scan.meshes.filter(r => !(r.geo === 'PlaneGeometry' && minDim(r.size) < 0.003) && r.owner.kind !== 'curtain');
+  const grid = makeGrid(0.5);
   recs.forEach(r => grid.add(r.idx, r.box, tol));
   const wallBoxes = walls.map(c => new THREE.Box3(new THREE.Vector3(c.x0, c.y0, c.z0), new THREE.Vector3(c.x1, c.y1, c.z1)));
   recs.forEach(r => {
@@ -129,7 +130,7 @@ function floating(ctx, scan, opt) {
     if (!anchored[r.idx]) for (const wb of wallBoxes) { if (boxDist(B, wb) <= tol) { anchored[r.idx] = 1; break; } }
   });
   recs.forEach(r => {
-    grid.query(r.box, tol).forEach(j => { if (j <= r.idx) return; if (boxDist(r.box, recs[j].box) <= tol) union(r.idx, j); });
+    grid.query(r.box, tol).forEach(j => { if (j <= r.idx) return; if (boxDist(r.box, scan.meshes[j].box) <= tol) union(r.idx, j); });
   });
   const anchoredRoot = new Set(); recs.forEach(r => { if (anchored[r.idx]) anchoredRoot.add(find(r.idx)); });
   const comps = new Map();
@@ -140,7 +141,7 @@ function floating(ctx, scan, opt) {
     const B = ctx.unionBox(list), s = B.getSize(new THREE.Vector3()), maxd = Math.max(s.x, s.y, s.z);
     if (maxd < 0.02) return;
     const ow = Array.from(new Set(list.map(r => r.owner.name)));
-    const sev = maxd >= 0.25 ? 'high' : maxd >= 0.08 ? 'mid' : 'low';
+    const dd = [s.x, s.y, s.z].sort((a, b) => b - a), sev = maxd >= 0.25 && dd[1] >= 0.08 ? 'high' : maxd >= 0.08 && dd[1] >= 0.03 ? 'mid' : 'low';
     // 底面から最も近い支持面までの距離を報告
     out.push(issue('float', sev, { obj: ow.join(' / '), ownerKey: list[0].owner.key, part: list.slice(0, 3).map(r => ctx.partName(r)).join('; ') + (list.length > 3 ? ' 他' + (list.length - 3) : ''),
       pos: ctx.fmtPos(B), room: ctx.roomOf(...ctx.fmtPos(B)),
