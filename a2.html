@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>注文住宅 A2 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261029o">
+<link rel="stylesheet" href="lib/storeys.css?v=20261029p">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -48,15 +48,15 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261029o"></script>
-<script src="lib/furniture.js?v=20261029o"></script>
-<script src="lib/catalog.js?v=20261029o"></script>
-<script src="lib/look.js?v=20261029o"></script>
-<script src="lib/houses.js?v=20261029o"></script>
-<script src="lib/perf.js?v=20261029o"></script>
-<script src="lib/finish.js?v=20261029o"></script>
-<script src="lib/storeys.js?v=20261029o"></script>
-<script src="lib/sun.js?v=20261029o"></script>
+<script src="lib/people.js?v=20261029p"></script>
+<script src="lib/furniture.js?v=20261029p"></script>
+<script src="lib/catalog.js?v=20261029p"></script>
+<script src="lib/look.js?v=20261029p"></script>
+<script src="lib/houses.js?v=20261029p"></script>
+<script src="lib/perf.js?v=20261029p"></script>
+<script src="lib/finish.js?v=20261029p"></script>
+<script src="lib/storeys.js?v=20261029p"></script>
+<script src="lib/sun.js?v=20261029p"></script>
 <style>
 #compass{position:absolute;right:124px;top:calc(12px + env(safe-area-inset-top,0px));width:44px;height:44px;pointer-events:none}
 #lv button[data-v="3"]{display:none}
@@ -76,11 +76,11 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261029o';
+import * as EXT from './a2-exterior.js?v=20261029p';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261029o')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261029p')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -453,5 +453,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261029o"></script>
+<script src="a2-sunmap.js?v=20261029p"></script>
 </body></html>
