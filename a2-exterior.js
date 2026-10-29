@@ -71,14 +71,16 @@ export function materials(THREE,E){
     wood:mk(0xffffff,{map:wt,roughness:0.55,envMapIntensity:0.7}),
     char:mk(0x34373b,{roughness:0.62,metalness:0.1,envMapIntensity:0.6}),
     black:mk(0x121316,{roughness:0.4,metalness:0.55,envMapIntensity:0.9}),
+    alu:mk(0xa9aeb2,{roughness:0.4,metalness:0.65,envMapIntensity:0.9}),
     conc:mk(0xffffff,{map:jt,roughness:0.88}),
     gravel:mk(0xffffff,{map:gt,roughness:1}),
     step:mk(0xa9a8a3,{roughness:0.9}),
     nbr:mk(0xa8a49c,{roughness:0.95}),
     stone:mk(0x7a7873,{roughness:0.85})
   };
-  M.frame.color.setHex(0x16181b); M.frame.roughness=0.42; M.frame.metalness=0.55; M.frame.envMapIntensity=0.9;
-  M.entry.color.setHex(0x23262a); M.entry.roughness=0.4; M.entry.metalness=0.55;
+  M.frame.color.setHex(0xf7f3ec); M.frame.roughness=0.5;
+  M.alu=MX.alu;
+  M.entry.color.setHex(0x5d6268); M.entry.roughness=0.5; M.entry.metalness=0.35;
   M.roof.color.setHex(0x2b2d31); M.roof.roughness=0.55;
   M.slab.color.setHex(0x4a4d51);
   M.grass.color.setHex(0x86a06c);
@@ -86,6 +88,22 @@ export function materials(THREE,E){
   return MX;
 }
 export function mats(){ return MX; }
+
+/* M.frame is white indoors; the faces of frame pieces that look outdoors (probed with wallRoleAt) are switched to aluminium. */
+export function frameFinish(THREE,E){
+  const ax=[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]], v=new THREE.Vector3(), q=new THREE.Quaternion(), p=new THREE.Vector3(), nrm=new THREE.Vector3();
+  E.RAIL.black.color.setHex(0xb4b9bd); E.RAIL.black.metalness=0.6;
+  E.scene.updateMatrixWorld(true);
+  E.LG.concat([E.ground]).forEach(function(g,l){ if(l>1) return;
+    g.traverse(function(o){
+      if(!o.isMesh||o.material!==E.M.frame||!o.geometry.parameters||o.geometry.parameters.width===undefined) return;
+      const P=o.geometry.parameters, half=[P.width/2,P.width/2,P.height/2,P.height/2,P.depth/2,P.depth/2];
+      o.getWorldPosition(p); o.getWorldQuaternion(q);
+      const out=ax.map(function(a,i){ if(i===2||i===3) return false; nrm.set(a[0],a[1],a[2]).applyQuaternion(q); if(Math.abs(nrm.y)>0.5) return false;
+        v.copy(p).addScaledVector(nrm,half[i]*(o.scale.x||1)+0.12); return E.wallRoleAt(l,v.x,v.z)==='outside'; });
+      if(out.some(Boolean)) o.material=out.map(function(f){ return f?MX.alu:E.M.frame; });
+    }); });
+}
 
 /* Cladding accents on the real walls: charcoal garage volume, timber at the entry and inside the 2F balcony frame, charcoal ring round the high window. */
 export function accents(THREE,E,C){
@@ -102,9 +120,9 @@ export function accents(THREE,E,C){
   /* entry: timber wall around the door (door opening 6.67-7.47 m, head 2.1 m) and a charcoal canopy */
   B(NX,NX+0.03,6.2,6.67,-0.3,F2+0.03,MXc.wood); B(NX,NX+0.03,7.47,8.0,-0.3,F2+0.03,MXc.wood); B(NX,NX+0.03,6.67,7.47,2.1,F2+0.03,MXc.wood);
   B(NX,9.6,6.2,8.0,2.42,2.52,MXc.char);
-  /* 2F: charcoal ring round the high north window, balcony frame with timber inside and underneath */
+  /* 2F: aluminium surround on the high north window, balcony frame with timber inside and underneath */
   (function(){ const hd=C.ceilY(C.NWALL)-0.35, sl=hd-0.6, z0=8.57, z1=11.47, m=0.12, d=NX+0.075;
-    B(NX,d,z0-m,z1+m,hd,hd+m,MXc.char); B(NX,d,z0-m,z1+m,sl-m,sl,MXc.char); B(NX,d,z0-m,z0,sl-m,hd+m,MXc.char); B(NX,d,z1,z1+m,sl-m,hd+m,MXc.char); })();
+    B(NX,d,z0-m,z1+m,hd,hd+m,MXc.alu); B(NX,d,z0-m,z1+m,sl-m,sl,MXc.alu); B(NX,d,z0-m,z0,sl-m,hd+m,MXc.alu); B(NX,d,z1,z1+m,sl-m,hd+m,MXc.alu); })();
   (function(){ const bb=C.FT.balcony.rect, z0=bb[0]/100-0.07, z1=bb[2]/100+0.07, xe=NX+0.93, roofY=function(x){ return C.ceilY(x*100); }, top=roofY(xe);
     B(NX,xe,z0-0.07,z0,2.55,top,MXc.char); B(NX,xe,z1,z1+0.07,2.55,top,MXc.char);                 // side fins
     B(NX,xe,z0,z1,2.55,2.84,MXc.char);                                                           // bottom lip
