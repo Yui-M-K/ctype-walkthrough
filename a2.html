@@ -230,7 +230,14 @@ build:function(E){
   /* ---- slabs, floors, ceilings ---- */
   const FLOOR1={'LDK':FL.wood,'玄關':FL.stone,'淋浴＋脫衣':FL.tile,'鏡子房':FL.wood,'走廊':FL.woodD,'廁所':FL.wc,'樓梯':FL.woodD,'車庫（開放式）':FL.conc};
   const FLOOR2={'小孩房':FL.wood,'書房':FL.wood,'走廊':FL.woodD,'納戶':FL.woodD,'三溫暖':FL.wood,'浴室 1624':FL.bath,'排水管PS':FL.conc,'更衣間':FL.wood,'主臥':FL.wood,'洗面脫衣室':FL.tile,'洗衣間':FL.tile,'廁所':FL.wc};
-  L1.rooms.forEach(function(r){ r.rects.forEach(function(q){ const b=box(q); slab(0,b[0],b[1],b[2],b[3]); flr(0,b[0],b[1],b[2],b[3],FLOOR1[r.name]||FL.wood); }); });
+  function carve(q,cuts){ let out=[q.slice()]; cuts.forEach(function(c){ const nx=[]; out.forEach(function(a){
+      const x0=Math.max(a[0],c[0]), y0=Math.max(a[1],c[1]), x1=Math.min(a[2],c[2]), y1=Math.min(a[3],c[3]);
+      if(x0>=x1||y0>=y1){ nx.push(a); return; }
+      if(a[1]<y0) nx.push([a[0],a[1],a[2],y0]); if(y1<a[3]) nx.push([a[0],y1,a[2],a[3]]);
+      if(a[0]<x0) nx.push([a[0],y0,x0,y1]); if(x1<a[2]) nx.push([x1,y0,a[2],y1]); }); out=nx; }); return out; }
+  L1.rooms.forEach(function(r){ r.rects.forEach(function(q){ const b=box(q); slab(0,b[0],b[1],b[2],b[3]);
+    const cuts=[]; L1.rooms.forEach(function(o){ if(o!==r) o.rects.forEach(function(oq){ const ow=(oq[2]-oq[0])*(oq[3]-oq[1]), qw=(q[2]-q[0])*(q[3]-q[1]); if(ow<qw) cuts.push(oq); }); });
+    carve(q,cuts).forEach(function(c){ const cb=box(c); flr(0,cb[0],cb[1],cb[2],cb[3],FLOOR1[r.name]||FL.wood); }); }); });
   L2.rooms.forEach(function(r){ if(r.kind==='void') return; r.rects.forEach(function(q){ const b=box(q); slab(1,b[0],b[1],b[2],b[3]); flr(1,b[0],b[1],b[2],b[3],FLOOR2[r.name]||FL.wood); }); });
   const flat=function(l,b){ ceilingOf(l,b[0],b[1],b[2],b[3]); };
   L1.rooms.forEach(function(r){ r.rects.forEach(function(q){
