@@ -292,9 +292,10 @@
         if(legend) legend.hidden=!(on&&!walk&&v>=1&&v<=2);
       }
       var tShow=q('[data-a=show]');
-      function setShow(v){ showOn=v; tShow.setAttribute('aria-pressed',String(v)); refreshVis(); }
+      var ticking=false;
+      function tick(){ if(!showOn){ ticking=false; return; } refreshVis(); requestAnimationFrame(tick); }
+      function setShow(v){ showOn=v; tShow.setAttribute('aria-pressed',String(v)); refreshVis(); if(v&&!ticking){ ticking=true; requestAnimationFrame(tick); } }
       tShow.addEventListener('click',function(){ setShow(!showOn); });
-      (function tick(){ if(showOn) refreshVis(); requestAnimationFrame(tick); })();
       document.addEventListener('click',function(e){ if(showOn&&e.target.closest&&e.target.closest('#lv,#bView')) setTimeout(refreshVis,0); },true);
 
       q('[data-a=calc]').addEventListener('click',function(){
