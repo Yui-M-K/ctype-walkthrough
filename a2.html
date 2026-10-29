@@ -78,6 +78,7 @@ import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
 import * as EXT from './a2-exterior.js?v=20261029q';
 import * as KIT from './a2-kitchen.js?v=20261029q';
+import * as LIT from './a2-lights.js?v=20261029q';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
@@ -350,6 +351,7 @@ fixtures:function(E){
   const blk=function(l,r,h,mat,top){ const b=base(l), x0=r[1]/100,x1=r[3]/100,z0=r[0]/100,z1=r[2]/100; bx(E.LG[l],x0,x1,z0,z1,b,b+h-(top?0.03:0),mat); if(top) bx(E.LG[l],x0-0.01,x1+0.01,z0-0.01,z1+0.01,b+h-0.03,b+h,top); addCol(l,x0,x1,z0,z1,b,b+h,'x'); };
   const at=function(l,e,n){ return [WX(l,n),WZ(l,e)]; };
   KIT.kitchen(THREE,E,{L1:L1});
+  fixture(0,Catalog.plant(0.9),8.1,8.22,0); fixture(0,Catalog.plant(0.75),5.3,11.35,0);   // floor pots: beside the TV, and on the wall pier between the sliding door and the bay
   (function(){ const q=PLAN.f1Misc.polygons.find(function(g){ return /28%/.test(g.style); }).pts, es=q.map(function(a){ return a[0]; }), ns=q.map(function(a){ return a[1]; });
     blk(0,[Math.min.apply(null,es),Math.min.apply(null,ns),Math.max.apply(null,es),Math.max.apply(null,ns)],2.4,M.cabF); })();   // floor-to-ceiling shoe cabinet that screens the entry
   blk(0,byId(L1,'f9').rect,0.38,M.oak);
@@ -372,9 +374,7 @@ fixtures:function(E){
   (function(){ const r=byName(L2,'洗手台').rect, p=at(1,(r[0]+r[2])/2,(r[1]+r[3])/2); fixture(1,Catalog.vanity(),p[0],p[1],0); })();
 },
 lighting:function(E){
-  const {light}=E;
-  [[L1,0],[L2,1]].forEach(function(q){ q[0].rooms.forEach(function(r){ if(r.kind==='void'||r.name==='車庫（開放式）'||r.name==='排水管PS') return;
-    const rc=r.rects[0], c=ctr(rc); light(q[1],c[0],c[1],0xffe2b8,0.55,r.area_m2>12?9:6); }); });
+  LIT.ceilingLights(THREE,E,{ceilY:ceilY});
 },
 modes:function(E){
   E.player.yaw=Math.PI/2; window.__a2E=E; EXT.frameFinish(THREE,E);
