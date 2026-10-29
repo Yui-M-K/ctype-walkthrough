@@ -21,6 +21,7 @@
     <div class="row"><label for="rHour">日照時間</label><input id="rHour" type="range" min="7" max="21" step="0.25" value="14"><output id="oHour">14:00</output></div>
     <div class="seg" style="margin-top:12px">
       <button id="tShadow" class="tog" type="button" aria-pressed="true">日照陰影</button>
+      <button id="tNbr" class="tog" type="button" aria-pressed="false">鄰棟的影子（預設關）</button>
       <button id="tAO" class="tog" style="grid-column:1/-1" type="button" aria-pressed="false">環境光遮蔽（角落與接縫的陰影，較耗效能）</button>
       <button id="tPerf" class="tog" style="grid-column:1/-1" type="button" aria-pressed="false">顯示效能資訊（FPS・繪製次數）</button>
       <button id="tFurn" class="tog" type="button" aria-pressed="true">參考家具</button>
@@ -34,6 +35,7 @@
     <div id="houseBtns" class="seg" hidden></div>
     <h3>所有門</h3>
     <div class="seg"><button type="button" class="tog" id="dOpen">全部打開</button><button type="button" class="tog" id="dClose">全部關上</button></div>
+    <details id="sunNote"><summary>日照分析（直射面積百分比，7:00–17:00 每 30 分）</summary><p class="help">測量方法：從各面上 14×8 個取樣點朝太陽射線，只有牆、天花、屋頂與屋簷、家具會擋（玻璃不擋，庭院樹葉不算）。東京（北緯 35.57°），門為預設狀態。「背向」表示該面背對太陽，「—」為太陽在地平線下，沒列出的時段表示全部為 0%。</p><p class="help"><b>只有本棟（無鄰棟遮蔽）</b></p><p class="help"><b>冬至 12/22</b></p><div class="tw"><table><tr><th>時刻</th><th>高度</th><th>電視螢幕</th><th>沙發座面</th><th>書桌螢幕</th><th>流理台</th><th>出窗平台</th></tr><tr><td>7:00</td><td>1.8°</td><td>25%</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr><tr><td>7:30</td><td>6.7°</td><td>69%</td><td>0%</td><td>46%</td><td>0%</td><td>0%</td></tr><tr><td>8:00</td><td>11.5°</td><td>67%</td><td>0%</td><td>25%</td><td>0%</td><td>0%</td></tr><tr><td>8:30</td><td>16°</td><td>29%</td><td>0%</td><td>7%</td><td>0%</td><td>0%</td></tr><tr><td>9:00</td><td>20°</td><td>13%</td><td>1%</td><td>0%</td><td>0%</td><td>26%</td></tr><tr><td>9:30</td><td>23.5°</td><td>4%</td><td>2%</td><td>0%</td><td>0%</td><td>77%</td></tr><tr><td>10:00</td><td>26.5°</td><td>0%</td><td>1%</td><td>0%</td><td>0%</td><td>68%</td></tr><tr><td>10:30</td><td>28.8°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>68%</td></tr><tr><td>11:00</td><td>30.3°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>75%</td></tr><tr><td>11:30</td><td>31°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>96%</td></tr><tr><td>12:00</td><td>30.8°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>22%</td></tr></table></div><p class="help"><b>春分 3/20</b></p><div class="tw"><table><tr><th>時刻</th><th>高度</th><th>電視螢幕</th><th>沙發座面</th><th>書桌螢幕</th><th>流理台</th><th>出窗平台</th></tr><tr><td>7:00</td><td>14.3°</td><td>36%</td><td>0%</td><td>56%</td><td>0%</td><td>0%</td></tr><tr><td>7:30</td><td>20.2°</td><td>31%</td><td>1%</td><td>63%</td><td>0%</td><td>0%</td></tr><tr><td>8:00</td><td>26°</td><td>10%</td><td>0%</td><td>35%</td><td>0%</td><td>7%</td></tr><tr><td>8:30</td><td>31.6°</td><td>1%</td><td>4%</td><td>7%</td><td>0%</td><td>64%</td></tr><tr><td>9:00</td><td>36.9°</td><td>0%</td><td>4%</td><td>0%</td><td>0%</td><td>99%</td></tr><tr><td>9:30</td><td>41.8°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>98%</td></tr><tr><td>10:00</td><td>46.2°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>97%</td></tr><tr><td>10:30</td><td>49.8°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>88%</td></tr><tr><td>11:00</td><td>52.5°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>71%</td></tr><tr><td>11:30</td><td>54°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>32%</td></tr></table></div><p class="help"><b>夏至 6/21</b></p><div class="tw"><table><tr><th>時刻</th><th>高度</th><th>電視螢幕</th><th>沙發座面</th><th>書桌螢幕</th><th>流理台</th><th>出窗平台</th></tr><tr><td>7:00</td><td>28.6°</td><td>背向</td><td>28%</td><td>背向</td><td>0%</td><td>21%</td></tr><tr><td>7:30</td><td>34.6°</td><td>背向</td><td>2%</td><td>背向</td><td>0%</td><td>64%</td></tr><tr><td>8:00</td><td>40.7°</td><td>背向</td><td>0%</td><td>背向</td><td>4%</td><td>93%</td></tr><tr><td>8:30</td><td>46.8°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>92%</td></tr><tr><td>9:00</td><td>52.8°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>96%</td></tr><tr><td>9:30</td><td>58.8°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>96%</td></tr><tr><td>10:00</td><td>64.7°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>79%</td></tr><tr><td>10:30</td><td>70.1°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>55%</td></tr><tr><td>11:00</td><td>74.7°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>31%</td></tr><tr><td>11:30</td><td>77.6°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>4%</td></tr></table></div><p class="help"><b>含鄰棟遮蔽</b>（場景裡的鄰棟方塊：東側 6.4 m 距離 2.8 m、南側 6.8 m 距離約 1.1 m 等，選單「鄰棟的影子」開啟時同樣的條件）</p><p class="help"><b>冬至 12/22</b></p><div class="tw"><table><tr><th>時刻</th><th>高度</th><th>電視螢幕</th><th>沙發座面</th><th>書桌螢幕</th><th>流理台</th><th>出窗平台</th></tr><tr><td>8:00</td><td>11.5°</td><td>0%</td><td>0%</td><td>7%</td><td>0%</td><td>0%</td></tr><tr><td>8:30</td><td>16°</td><td>0%</td><td>0%</td><td>7%</td><td>0%</td><td>0%</td></tr><tr><td>9:00</td><td>20°</td><td>0%</td><td>1%</td><td>0%</td><td>0%</td><td>0%</td></tr><tr><td>9:30</td><td>23.5°</td><td>0%</td><td>2%</td><td>0%</td><td>0%</td><td>0%</td></tr><tr><td>10:00</td><td>26.5°</td><td>0%</td><td>1%</td><td>0%</td><td>0%</td><td>13%</td></tr><tr><td>10:30</td><td>28.8°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>63%</td></tr><tr><td>11:00</td><td>30.3°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>75%</td></tr><tr><td>11:30</td><td>31°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>96%</td></tr></table></div><p class="help"><b>春分 3/20</b></p><div class="tw"><table><tr><th>時刻</th><th>高度</th><th>電視螢幕</th><th>沙發座面</th><th>書桌螢幕</th><th>流理台</th><th>出窗平台</th></tr><tr><td>10:30</td><td>49.8°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>7%</td></tr><tr><td>11:00</td><td>52.5°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>71%</td></tr><tr><td>11:30</td><td>54°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>32%</td></tr></table></div><p class="help"><b>夏至 6/21</b></p><div class="tw"><table><tr><th>時刻</th><th>高度</th><th>電視螢幕</th><th>沙發座面</th><th>書桌螢幕</th><th>流理台</th><th>出窗平台</th></tr><tr><td>8:00</td><td>40.7°</td><td>背向</td><td>0%</td><td>背向</td><td>4%</td><td>0%</td></tr><tr><td>10:00</td><td>64.7°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>2%</td></tr><tr><td>10:30</td><td>70.1°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>55%</td></tr><tr><td>11:00</td><td>74.7°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>31%</td></tr><tr><td>11:30</td><td>77.6°</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>4%</td></tr></table></div><p class="help"><b>面的定義：</b>電視螢幕 1.89×1.05 m（北牆，朝南）；沙發座面 0.65×1.40 m 高 0.46 m；書桌螢幕為桌上 1.3×0.35 m 的範圍（高 0.95 m，朝南，位置為假設）；流理台為半島檯面 0.95×2.0 m 高 0.90 m；出窗平台 0.85×2.3 m 高 0.40 m。</p><p class="help"><b>結論（實測，只有本棟時）：</b>電視螢幕會被東向低角度陽光直射：冬至 7:00 25%、7:30 69%、8:00 67%、8:30 29%、9:00 13%、9:30 4%；春分 7:00 36%、7:30 31%、8:00 10%、8:30 1%；10:00 以後與下午全年 0%，夏至全天 0%（清晨太陽方位在正東偏北，螢幕背向）。書桌螢幕（位置為假設）冬至 7:30 46%、8:00 25%、8:30 7%，春分 7:00 56%、7:30 63%、8:00 35%、8:30 7%。沙發座面只有夏至 7:00 28%（7:30 2%）與冬至・春分最多 4%，流理台最多 4%（夏至 8:00）。出窗平台上午幾乎整面直射：春分 9:00–10:00 為 97–99%、夏至 8:00–9:30 為 92–96%、冬至 9:30–11:30 為 68–96%，下午為 0%。</p><p class="help"><b>屋簷（東側 95 cm，實測）：</b>1F 室內幾乎不受影響；屋簷蓋在緣側上方，只在夏至 11:30 讓緣側地板的直射由 99% 降到 24%、12:00 由 50% 降到 0%。2F 東向房間上午的直射被屋簷擋掉：男友書房夏至 8:30 由 7% 降到 1%、9:00 由 4% 降到 0%，春分 9:30 由 7% 降到 0%；小孩房夏至 9:00 由 2% 降到 0%。夏至中午太陽高度 77° 時，所有東向開口都沒有直射進室內。</p><p class="help"><b>鄰棟的影響（實測，取決於場景假設的鄰棟）：</b>東側鄰棟 6.4 m 高、距離外牆約 2.8 m，把上午東向低角度陽光幾乎全部擋掉，電視螢幕全年 0%；出窗平台在春分・夏至也降到 71%・55% 以下。鄰棟為假設值，請依實際敷地確認；若實際鄰地較低或較遠，電視會比「含鄰棟」更早被照到，介於兩張表之間。</p></details>
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
     <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿，兩指一起拖曳可轉向與抬頭低頭；電腦：滑鼠拖曳轉向，WASD／方向鍵移動，Shift 加速，Ctrl 蹲下（再按一次站起來）。走近門或家具並面向它，畫面下方會列出操作按鈕；電腦上也可以把滑鼠移到東西上（會亮框並顯示動作）直接點擊，或按 E 互動（沒指著東西時 E 操作列表第一個，1–3 鍵選列表）。方向鍵左右可原地轉向。階梯直接走上去就會換樓層。「俯瞰」可選擇看哪一層（屋頂與上層會被拿掉）。</p>
@@ -54,9 +56,16 @@
 <script src="lib/perf.js?v=20261029o"></script>
 <script src="lib/finish.js?v=20261029o"></script>
 <script src="lib/storeys.js?v=20261029o"></script>
+<script src="lib/sun.js?v=20261029o"></script>
 <style>
 #compass{position:absolute;right:124px;top:calc(12px + env(safe-area-inset-top,0px));width:44px;height:44px;pointer-events:none}
 #lv button[data-v="3"]{display:none}
+#sheet .wsun{position:static;width:auto;margin:10px 0 4px;box-shadow:none;z-index:auto}
+#sheet .wsun h4{color:#f3ece2}
+#sunNote summary{cursor:pointer;font-weight:600;margin:8px 0 4px}
+#sunNote table{border-collapse:collapse;font-size:11px;margin:4px 0;width:100%}
+#sunNote th,#sunNote td{border:1px solid #cfc7bb;padding:2px 4px;text-align:center}
+#sunNote .tw{overflow-x:auto}
 </style>
 <script type="module">
 import * as THREE from 'three';
@@ -234,6 +243,7 @@ build:function(E){
   L2.rooms.forEach(function(r){ if(r.kind==='void') return; r.rects.forEach(function(q){ slopeCeil(1,box(q)); }); });
   slopeCeil(1,box([STAIR2.rect[0]-2.5,202.5,STAIR2.rect[2]+0,302.5]));
   slopeCeil(0,box(VOID));
+  LG.forEach(function(g){ g.traverse(function(o){ if(o.isMesh&&o.material===ceilMat) o.castShadow=true; }); });   // sunlight cannot come through the ceilings while the roof is hidden
   /* ---- balcony (2F, off the master bedroom) ---- */
   (function(){ const b=FT.balcony.rect;
     slab(1,b[0],b[1],b[2],b[3]); flr(1,b[0],b[1],b[2],b[3],FL.balc);
@@ -253,6 +263,7 @@ build:function(E){
     for(let i=0;i<P.count;i++){ const x=P.getX(i), y=P.getY(i), z=P.getZ(i); P.setXYZ(i,x,ceilY(x*100)+z,-y); }
     g.computeVertexNormals();
     const m=new THREE.Mesh(g,M.roof); m.castShadow=m.receiveShadow=true; LG[2].add(m);
+    const sp=new THREE.Mesh(g,new THREE.MeshBasicMaterial({colorWrite:false,depthWrite:false})); sp.castShadow=true; sp.userData.keep=true; sp.userData.roofShadow=true; E.scene.add(sp);   // the roof and eaves shade the 2F windows even while the engine hides the roof
   })();
   /* ---- bay window (出窗) and engawa on the east side ---- */
   (function(){
@@ -284,7 +295,7 @@ site:function(E){
   const plane=function(w,h,mat,x,y,z){ const g=new THREE.Mesh(new THREE.PlaneGeometry(w,h),mat); g.rotation.x=-Math.PI/2; g.position.set(x,y,z); g.receiveShadow=true; ground.add(g); return g; };
   plane(260,260,M.grass,cx,-0.3,cz);
   plane(6,260,M.asphalt,LOT.south_north/100+3,-0.29,cz);                                   // the 6 m road on the north side
-  [[-8,-0.6,1,12,6.8],[1,9,-8,-0.6,6.2],[1,9,14.5,22,6.4],[16.5,23,0,13,6.0]].forEach(function(n){ bx(ground,n[0],n[1],n[2],n[3],-0.3,n[4],M.ext); });
+  [[-8,-0.6,1,12,6.8],[1,9,-8,-0.6,6.2],[1,9,14.5,22,6.4],[16.5,23,0,13,6.0]].forEach(function(n){ const m=bx(ground,n[0],n[1],n[2],n[3],-0.3,n[4],M.ext); m.userData.keep=true; m.userData.neighbor=true; });
   const apron=[65,NWALL,430,LOT.south_north], porch=[667,NWALL,765,LOT.south_north];
   bx(ground,apron[1]/100,apron[3]/100,apron[0]/100,apron[2]/100,-0.3,-0.12,FL.conc); floorRects.push({l:0,x0:apron[1]/100,x1:apron[3]/100,z0:apron[0]/100,z1:apron[2]/100,y:-0.12});
   bx(ground,porch[1]/100,porch[3]/100,porch[0]/100,porch[2]/100,-0.3,-0.1,FL.stone); floorRects.push({l:0,x0:porch[1]/100,x1:porch[3]/100,z0:porch[0]/100,z1:porch[2]/100,y:-0.1});
@@ -359,7 +370,35 @@ lighting:function(E){
 modes:function(E){
   E.player.yaw=Math.PI/2; window.__a2E=E;
   /* the engine only draws the storeys above when the stairwell is in view; the LDK void needs its 2F walls (and the roof side) from below */
-  E.scene.onBeforeRender=function(){ if(E.mode==='walk'&&E.levelOf(E.player.py)===0){ const px=E.player.x, pz=E.player.z; if(px>3.0&&px<8.6&&pz>4.2&&pz<11.8) E.LG[1].visible=true; } };
+  /* ---- sun path: Walk.Sun drives the engine's sun; the engine's hour slider is replaced by the date / time panel ---- */
+  const SUN=E.sun, DIST=60, TGT=E.CEN.clone();
+  const ctrl=Walk.Sun.attach({THREE:THREE,light:SUN,north:NORTH.arrowDeg,target:TGT,distance:DIST,peak:1.1*Math.PI,
+    shadow:{half:12,mapSize:2048,near:1,far:DIST*2.3,bias:-0.0005,normalBias:0.03},date:Walk.Sun.jstDate(2026,3,20,12,0)});
+  const want=new THREE.Vector3();
+  const enforce=function(){
+    const st=ctrl.state; if(!st) return;
+    const k=E.sleepOn?0:(E.shadowOn?1:0.5), on=st.altitude>0, cs=on&&E.shadowOn&&!E.sleepOn;
+    want.copy(TGT).addScaledVector(st.direction,DIST);
+    let ch=false;
+    if(!SUN.position.equals(want)){ SUN.position.copy(want); ch=true; }
+    if(Math.abs(SUN.intensity-st.intensity*k)>1e-6){ SUN.intensity=st.intensity*k; ch=true; }
+    if(SUN.castShadow!==cs){ SUN.castShadow=cs; ch=true; }
+    if(ch) E.renderer.shadowMap.needsUpdate=true;
+  };
+  ctrl.onChange=function(st){ const a=st.altitude; E.setSun(a>=6?14:17+Math.min(2,(6-a)/12*2)); enforce(); };
+  ctrl.update();
+  const hrRow=document.getElementById('rHour').closest('.row'); hrRow.hidden=true;
+  const sunHost=document.createElement('div'); hrRow.after(sunHost); Walk.Sun.initUI(sunHost,ctrl);
+  window.__a2Sun=ctrl;
+  const nbr=[]; E.ground.traverse(function(o){ if(o.userData&&o.userData.neighbor) nbr.push(o); });
+  const tN=document.getElementById('tNbr');
+  nbr.forEach(function(o){ o.castShadow=false; });
+  tN.addEventListener('click',function(){ const on=tN.getAttribute('aria-pressed')!=='true'; tN.setAttribute('aria-pressed',String(on)); nbr.forEach(function(o){ o.castShadow=on; }); E.renderer.shadowMap.needsUpdate=true; });
+  /* the engine only draws the storeys above when the stairwell is in view; the LDK void needs its 2F walls (and the roof side) from below */
+  E.scene.onBeforeRender=function(){
+    if(E.mode==='walk'&&E.levelOf(E.player.py)===0){ const px=E.player.x, pz=E.player.z; if(px>3.0&&px<8.6&&pz>4.2&&pz<11.8) E.LG[1].visible=true; }
+    enforce();
+  };
   /* true-north compass next to the minimap: the arrow points to NORTH.toEngine's +x direction as seen from the camera */
   const el=document.createElement('div'); el.id='compass'; el.setAttribute('aria-label','指北針');
   el.innerHTML='<svg viewBox="-22 -22 44 44" width="44" height="44"><circle r="21" fill="rgba(255,255,255,.88)" stroke="#9aa5ad"/><g id="compassArrow"><path d="M0-17L6 6 0 2-6 6Z" fill="#c0392b"/><text y="16" text-anchor="middle" font-size="10" font-weight="700" fill="#2e3842">N</text></g></svg>';
