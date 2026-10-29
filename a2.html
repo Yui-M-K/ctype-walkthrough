@@ -146,7 +146,8 @@ spots:(function(){
   return [S('玄關',700,830,0,760,450),S('LDK（看電視）',780,560,0,970,835,3),S('長書桌',967,451,0,970,840,6),S('廚房',545,480,0,950,600),
     S('鏡子房',1000,100,0,917,297),S('車庫',385,835,0,250,500),S('緣側',1205,335,0,1390,600,3),
     S('主臥',160,790,1,160,500),S('小孩房',870,470,1,1070,360),S('男友書房',880,250,1,1100,170),S('浴室群',582,625,1,582,800,-12),
-    S('二樓走廊',700,350,1,300,350),S('陽台',170,885,1,170,1100)];
+    S('二樓走廊',700,350,1,300,350),S('陽台',170,885,1,170,1100),
+    S('外觀：道路側全景（白天）',700,2290,0,560,850,4),S('外觀：道路側（黃昏）',1800,1800,0,650,700,5),S('外觀：車庫與玄關特寫',560,1420,0,560,850,8),S('外觀：庭院側（黃昏）',2100,450,1,1100,450,-3)];
 })(),
 lay1:{},
 materials:function(E){ E.FL.bath.color.setHex(0xffffff); EXT.materials(THREE,E); },
@@ -297,8 +298,8 @@ site:function(E){
   plane(260,260,M.grass,cx,-0.3,cz);
   plane(6,260,M.asphalt,LOT.south_north/100+3,-0.29,cz);                                   // the 6 m road on the north side
   [[-8,-0.6,1,12,6.8],[1,9,-8,-0.6,6.2],[1,9,14.5,22,6.4],[16.5,23,0,13,6.0]].forEach(function(n){ const m=bx(ground,n[0],n[1],n[2],n[3],-0.3,n[4],EXT.mats().nbr); m.userData.keep=true; m.userData.neighbor=true; });
-  const apron=[65,NWALL,430,LOT.south_north], porch=[667,NWALL,765,LOT.south_north];
-  bx(ground,apron[1]/100,apron[3]/100,apron[0]/100,apron[2]/100,-0.3,-0.12,FL.conc); floorRects.push({l:0,x0:apron[1]/100,x1:apron[3]/100,z0:apron[0]/100,z1:apron[2]/100,y:-0.12});
+  const apron=[65,NWALL,430,LOT.south_north], porch=[667,NWALL,765,LOT.south_north-30];
+  bx(ground,apron[1]/100,apron[3]/100,apron[0]/100,apron[2]/100,-0.3,-0.12,EXT.mats().conc); floorRects.push({l:0,x0:apron[1]/100,x1:apron[3]/100,z0:apron[0]/100,z1:apron[2]/100,y:-0.12});
   bx(ground,porch[1]/100,porch[3]/100,porch[0]/100,porch[2]/100,-0.3,-0.1,FL.stone); floorRects.push({l:0,x0:porch[1]/100,x1:porch[3]/100,z0:porch[0]/100,z1:porch[2]/100,y:-0.1});
   bx(ground,0.9,1.0,0.5,5.9,-0.3,-0.2,FL.conc);
   bx(ground,LOT.south_north/100-0.12,LOT.south_north/100,7.67,LOT.east_west/100,-0.3,0.3,EXT.mats().stone);               // low wall along the road
@@ -310,7 +311,7 @@ site:function(E){
   const lw=PLAN.site.misc.find(function(m){ return m.cls==='r-out'&&m.rect[0]>250; });
   if(lw) bx(ground,lw.rect[1]/100,lw.rect[3]/100,lw.rect[0]/100,lw.rect[2]/100,-0.3,-0.28,FL.conc);
   const XC={NWALL:NWALL,ceilY:ceilY,FT:FT};
-  EXT.accents(THREE,E,XC); EXT.screen(THREE,E);
+  EXT.accents(THREE,E,XC); EXT.screen(THREE,E); EXT.landscape(THREE,E,{NWALL:NWALL,LOT:LOT});
 },
 layout:function(E){
   const {Catalog}=E, F=NORTH.face, out=[];
@@ -388,11 +389,43 @@ modes:function(E){
     if(SUN.castShadow!==cs){ SUN.castShadow=cs; ch=true; }
     if(ch) E.renderer.shadowMap.needsUpdate=true;
   };
-  ctrl.onChange=function(st){ const a=st.altitude; E.setSun(a>=6?14:17+Math.min(2,(6-a)/12*2)); enforce(); };
+  const scn=E.scene, bg0=scn.background, fog0=scn.fog.color.clone(), envI0=scn.environmentIntensity, NIGHT=EXT.night(THREE,E,{PLAN:PLAN,NWALL:NWALL,ceilY:ceilY,FT:FT});
+  let hemi=null, env0=null; scn.traverse(function(o){ if(o.isHemisphereLight) hemi=o; });
+  const hc0=hemi.color.clone(), hg0=hemi.groundColor.clone(), SK=EXT.sky(THREE), duskTint=new THREE.Color(0x7b93d6), duskGround=new THREE.Color(0x3a3f5c);
+  const ENVS=[[1,0.6],[-6,0.9],[-14,0.4]].map(function(q){ return {alt:q[0],i:q[1],tex:null}; });
+  const envAt=function(a){ const q=a>0.5?ENVS[0]:a>-8?ENVS[1]:ENVS[2];
+    if(!q.tex){ const s=EXT.sky(THREE), pm=new THREE.PMREMGenerator(E.renderer); q.tex=pm.fromEquirectangular(s.draw(q.alt,1,0)).texture; pm.dispose(); }
+    return q; };
+  ctrl.onChange=function(st){
+    const a=st.altitude;
+    scn.background=bg0; scn.fog.color.copy(fog0); scn.environmentIntensity=envI0; hemi.color.copy(hc0); hemi.groundColor.copy(hg0);
+    if(scn.environment&&!ENVS.some(function(q){ return q.tex===scn.environment; })) env0=scn.environment; if(env0) scn.environment=env0;
+    E.setSun(a>=6?14:17+Math.min(2,(6-a)/12*2));
+    NIGHT.apply(a);
+    if(a<6){
+      const e=envAt(a), w=Math.min(1,(6-a)/8);
+      scn.background=SK.draw(a,st.direction.x,st.direction.z); scn.fog.color.set(SK.fog(a)).multiplyScalar(a<-4?0.55:0.8);
+      scn.environment=e.tex; scn.environmentIntensity=e.i;
+      hemi.color.lerp(duskTint,w); hemi.groundColor.lerp(duskGround,w);
+    }
+    enforce();
+  };
   ctrl.update();
   const hrRow=document.getElementById('rHour').closest('.row'); hrRow.hidden=true;
   const sunHost=document.createElement('div'); hrRow.after(sunHost); Walk.Sun.initUI(sunHost,ctrl);
   window.__a2Sun=ctrl;
+  const setTime=function(w){ const l=new Date(ctrl.date.getTime()+ctrl.tz*3600000), Y=l.getUTCFullYear(), Mo=l.getUTCMonth()+1, D=l.getUTCDate();
+    if(w==='day') ctrl.setDateTime(Walk.Sun.jstDate(Y,Mo,D,13,0)); else { const ss=ctrl.times().sunset; if(ss) ctrl.setDateTime(new Date(ss.getTime()+(w==='night'?80:20)*60000)); } };
+  const VIEWS={'外觀：道路側全景（白天）':{fov:82,t:'day'},'外觀：道路側（黃昏）':{fov:70,t:'dusk'},'外觀：車庫與玄關特寫':{fov:80,t:'night'},'外觀：庭院側（黃昏）':{fov:74,t:'dusk'}};
+  document.querySelectorAll('#spots button').forEach(function(b){ const v=VIEWS[b.textContent];
+    b.addEventListener('click',function(){ E.fovH=v?v.fov:+document.getElementById('rFov').value; E.resize(); if(v) setTime(v.t); }); });
+  (function(){ const row=sunHost.querySelector('.b'), el=sunHost.querySelector('.wsun');
+    [['黃昏','日落後 20 分（藍調時刻）',20],['夜','日落後 110 分',110]].forEach(function(q){
+      const b=document.createElement('button'); b.type='button'; b.textContent=q[0]; b.title=q[1];
+      b.addEventListener('click',function(){ const pb=el.querySelector('[data-p=play]'); if(pb&&/停止/.test(pb.textContent)) pb.click();
+        const ss=ctrl.times().sunset; if(ss) ctrl.setDateTime(new Date(ss.getTime()+q[2]*60000)); });
+      row.appendChild(b); });
+  })();
   const nbr=[]; E.ground.traverse(function(o){ if(o.userData&&o.userData.neighbor) nbr.push(o); });
   const tN=document.getElementById('tNbr');
   nbr.forEach(function(o){ o.castShadow=false; });
