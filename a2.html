@@ -260,7 +260,7 @@ build:function(E){
   VOIDS.forEach(function(q){ slopeCeil(0,box(q)); });
   LG.forEach(function(g){ g.traverse(function(o){ if(o.isMesh&&o.material===ceilMat) o.castShadow=true; }); });   // sunlight cannot come through the ceilings while the roof is hidden
   /* ---- balcony (2F, off the master bedroom) ---- */
-  (function(){ const b=FT.balcony.rect;
+  (function(){ const b=box(FT.balcony.rect);
     slab(1,b[0],b[1],b[2],b[3]); flr(1,b[0],b[1],b[2],b[3],FL.balc);
   })();
   /* ---- roof: one plane, high on the north side, the outline of 2F pushed out by the eaves ---- */
