@@ -25,12 +25,15 @@ export function ceilingLights(THREE,E,C){
   pendant(700,970,3.95);                     // over the lift table, shade at 2.25 m under the 6 m ceiling
   round(0,775,694,0.55,6); round(0,775,514,0.55,6); round(0,176,966,0.55,9); round(0,176,725,0.55,6);
   round(0,126,630,0.55,6); round(0,252,652,0.55,6);   // stair foot: the middle of the room is the stairwell opening
-  /* 2F (小孩房 and 書房 are left to the plan rework) */
-  round(1,575,170,0.55,9);                   // main bedroom
-  round(1,349,420,0.55,9); round(1,349,690,0.55,9); round(1,252,322,0.4,6); round(1,252,792,0.4,6);   // corridor
-  round(1,252,684,0.4,6); round(1,126,706,0.55,6);   // 納戶
-  round(1,725,351,0.55,9);                   // dressing room
-  round(1,498,464,0.55,6);                   // laundry
-  down(1,498,664,0.4,5); down(1,498,792,0.3,4);   // wash room, toilet
-  down(1,725,582,0.4,5); down(1,725,752,0.4,5);   // bath, sauna
+  /* 2F: one fixture per room rect (the main rect only for rooms and wet rooms), placed at the rect centre on the real sloped ceiling; long corridors get one per ~2.8 m */
+  const SKIP={'挑高（下方客廳）':1,'排水管PS':1}, WET={'洗面脫衣室':1,'廁所':1,'浴室 1624':1,'三溫暖':1};
+  (C.rooms||[]).forEach(function(r){
+    if(SKIP[r.name]) return;
+    const area=function(q){ return (q[2]-q[0])*(q[3]-q[1])/1e4; };
+    const rects=r.kind==='store'?r.rects.filter(function(q){ return area(q)>=0.9; }):[r.rects.slice().sort(function(a,b){ return area(b)-area(a); })[0]];
+    rects.forEach(function(q){
+      const w=q[2]-q[0], d=q[3]-q[1], big=area(q)>=5, ew=w>=d, len=ew?w:d, k=r.kind==='store'&&len>=500?Math.round(len/280):1;
+      for(let i=0;i<k;i++){ const t=(i+0.5)/k, e=q[0]+w*(ew?t:0.5), n=q[1]+d*(ew?0.5:t);
+        if(WET[r.name]) down(1,n,e,big?0.4:0.35,5); else round(1,n,e,big?0.55:0.4,big?9:6); } });
+  });
 }
