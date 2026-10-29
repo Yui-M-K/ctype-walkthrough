@@ -76,6 +76,7 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
+import * as EXT from './a2-exterior.js?v=20261029o';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
@@ -148,7 +149,7 @@ spots:(function(){
     S('二樓走廊',700,350,1,300,350),S('陽台',170,885,1,170,1100)];
 })(),
 lay1:{},
-materials:function(E){ E.FL.bath.color.setHex(0xffffff); },
+materials:function(E){ E.FL.bath.color.setHex(0xffffff); EXT.materials(THREE,E); },
 build:function(E){
   const {CH,FL,LG,M,WM,WX,WZ,base,bx,flr,slab,ceilingOf,wall,addCol,winFrame,wallRoleAt,floorRects,glassGuard}=E;
   const EEDGE=LOT.east_west-LOT.buildingOffsetFromEastEdge;
@@ -273,7 +274,7 @@ build:function(E){
     floorRects.push({l:0,x0:pf[1]/100,x1:pf[3]/100,z0:pf[0]/100,z1:pf[2]/100,y:0.40});
     winFrame(LG[0],true,z1,x0,x1,0.40,2.1,0.06); bx(LG[0],x0+0.04,x1-0.04,z1-0.01,z1+0.01,0.44,2.06,M.glass,{cast:false}); addCol(0,x0,x1,z1-0.03,z1+0.03,0.4,2.1,'w');
     [x0,x1].forEach(function(x){ winFrame(LG[0],false,x,z0,z1,0.40,2.1,0.06); bx(LG[0],x-0.01,x+0.01,z0+0.04,z1-0.04,0.44,2.06,M.glass,{cast:false}); addCol(0,x-0.03,x+0.03,z0,z1,0.4,2.1,'w'); });
-    bx(LG[0],x0-0.05,x1+0.05,z0,z1+0.05,2.1,2.3,M.ext);
+    bx(LG[0],x0-0.05,x1+0.05,z0,z1+0.05,2.1,2.3,EXT.mats().char);
     const en=FT.engawa.rect, st=FT.engawa.steppingStone;
     bx(LG[0],en[1]/100,en[3]/100,en[0]/100,en[2]/100,-0.28,-0.04,M.oak); floorRects.push({l:0,x0:en[1]/100,x1:en[3]/100,z0:en[0]/100,z1:en[2]/100,y:-0.04});
     bx(LG[0],st[1]/100,st[3]/100,st[0]/100,st[2]/100,-0.3,-0.15,FL.stone); floorRects.push({l:0,x0:st[1]/100,x1:st[3]/100,z0:st[0]/100,z1:st[2]/100,y:-0.15});
@@ -295,19 +296,21 @@ site:function(E){
   const plane=function(w,h,mat,x,y,z){ const g=new THREE.Mesh(new THREE.PlaneGeometry(w,h),mat); g.rotation.x=-Math.PI/2; g.position.set(x,y,z); g.receiveShadow=true; ground.add(g); return g; };
   plane(260,260,M.grass,cx,-0.3,cz);
   plane(6,260,M.asphalt,LOT.south_north/100+3,-0.29,cz);                                   // the 6 m road on the north side
-  [[-8,-0.6,1,12,6.8],[1,9,-8,-0.6,6.2],[1,9,14.5,22,6.4],[16.5,23,0,13,6.0]].forEach(function(n){ const m=bx(ground,n[0],n[1],n[2],n[3],-0.3,n[4],M.ext); m.userData.keep=true; m.userData.neighbor=true; });
+  [[-8,-0.6,1,12,6.8],[1,9,-8,-0.6,6.2],[1,9,14.5,22,6.4],[16.5,23,0,13,6.0]].forEach(function(n){ const m=bx(ground,n[0],n[1],n[2],n[3],-0.3,n[4],EXT.mats().nbr); m.userData.keep=true; m.userData.neighbor=true; });
   const apron=[65,NWALL,430,LOT.south_north], porch=[667,NWALL,765,LOT.south_north];
   bx(ground,apron[1]/100,apron[3]/100,apron[0]/100,apron[2]/100,-0.3,-0.12,FL.conc); floorRects.push({l:0,x0:apron[1]/100,x1:apron[3]/100,z0:apron[0]/100,z1:apron[2]/100,y:-0.12});
   bx(ground,porch[1]/100,porch[3]/100,porch[0]/100,porch[2]/100,-0.3,-0.1,FL.stone); floorRects.push({l:0,x0:porch[1]/100,x1:porch[3]/100,z0:porch[0]/100,z1:porch[2]/100,y:-0.1});
   bx(ground,0.9,1.0,0.5,5.9,-0.3,-0.2,FL.conc);
-  bx(ground,LOT.south_north/100-0.12,LOT.south_north/100,7.67,LOT.east_west/100,-0.3,0.3,M.ext);               // low wall along the road
+  bx(ground,LOT.south_north/100-0.12,LOT.south_north/100,7.67,LOT.east_west/100,-0.3,0.3,EXT.mats().stone);               // low wall along the road
   for(let z=8.0;z<13.8;z+=0.9){ const P=Catalog.shrub(0.3); P.group.position.set(LOT.south_north/100-0.55,-0.3,z); ground.add(P.group); }
-  bx(ground,0.7,8.7,LOT.east_west/100-0.04,LOT.east_west/100,-0.3,1.5,M.oak);                                   // slatted fence on the east boundary
+  bx(ground,0.7,8.7,LOT.east_west/100-0.04,LOT.east_west/100,-0.3,1.5,EXT.mats().char);                                   // slatted fence on the east boundary
   FT.trees.forEach(function(c,i){
     const P=Catalog.gardenTree(c.r*0.085,i===1?'maple':'ash'); P.group.position.set(c.c[1]/100,-0.3,c.c[0]/100); P.group.userData.keep=true; ground.add(P.group); });
   PLAN.site.furniture.slice(0,4).forEach(function(f,i){ const r=f.rect, h=[1.8,0.9,0.7,0.7][i]; bx(ground,r[1]/100,r[3]/100,r[0]/100,r[2]/100,-0.3,h-0.3,i===0?M.cabF:M.steel); });   // outdoor units
   const lw=PLAN.site.misc.find(function(m){ return m.cls==='r-out'&&m.rect[0]>250; });
   if(lw) bx(ground,lw.rect[1]/100,lw.rect[3]/100,lw.rect[0]/100,lw.rect[2]/100,-0.3,-0.28,FL.conc);
+  const XC={NWALL:NWALL,ceilY:ceilY,FT:FT};
+  EXT.accents(THREE,E,XC); EXT.screen(THREE,E);
 },
 layout:function(E){
   const {Catalog}=E, F=NORTH.face, out=[];
