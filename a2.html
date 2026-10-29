@@ -396,6 +396,7 @@ modes:function(E){
   const envAt=function(a){ const q=a>0.5?ENVS[0]:a>-8?ENVS[1]:ENVS[2];
     if(!q.tex){ const s=EXT.sky(THREE), pm=new THREE.PMREMGenerator(E.renderer); q.tex=pm.fromEquirectangular(s.draw(q.alt,1,0)).texture; pm.dispose(); }
     return q; };
+  setTimeout(function(){ ENVS.forEach(function(q){ envAt(q.alt-(q.alt>0?0:0)); }); },4000);
   ctrl.onChange=function(st){
     const a=st.altitude;
     scn.background=bg0; scn.fog.color.copy(fog0); scn.environmentIntensity=envI0; hemi.color.copy(hc0); hemi.groundColor.copy(hg0);
