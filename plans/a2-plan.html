@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>提案A2：書桌靠牆</title>
+<style>
+:root{
+  --bg:#f7f5f1; --card:#ffffff; --ink:#23211e; --sub:#6b665e; --line:#d9d4ca;
+  --wall:#2b2926; --room:#fbfaf7; --void:#e3eef7; --garage:#eceae5; --wet:#e6f2f0; --store:#f1ece2;
+  --furn:#8a7f70; --furnfill:rgba(160,140,110,.12); --recline:#c0602a; --door:#3a6ea5; --win:#2a9bd1; --win2:#7a4fb5;
+  --dim:#7d776d; --land:#4c8c4a; --road:#d8d6d0; --ok:#2e7d32; --ng:#c62828; --warn:#b26a00; --accent:#8a5a2b;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1b1a18; --card:#25231f; --ink:#ece8e1; --sub:#a9a298; --line:#3d3a35;
+    --wall:#e8e3da; --room:#2b2925; --void:#1f3140; --garage:#302e2a; --wet:#1f3533; --store:#36302a;
+    --furn:#c9bca8; --furnfill:rgba(200,180,150,.10); --recline:#f08a4b; --door:#7fb2ea; --win:#5cc6f2; --win2:#b996ec;
+    --dim:#aaa397; --land:#7cc47a; --road:#3a3833; --ok:#7bd17f; --ng:#ff7b7b; --warn:#f0b34a; --accent:#d9a46b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1b1a18; --card:#25231f; --ink:#ece8e1; --sub:#a9a298; --line:#3d3a35;
+  --wall:#e8e3da; --room:#2b2925; --void:#1f3140; --garage:#302e2a; --wet:#1f3533; --store:#36302a;
+  --furn:#c9bca8; --furnfill:rgba(200,180,150,.10); --recline:#f08a4b; --door:#7fb2ea; --win:#5cc6f2; --win2:#b996ec;
+  --dim:#aaa397; --land:#7cc47a; --road:#3a3833; --ok:#7bd17f; --ng:#ff7b7b; --warn:#f0b34a; --accent:#d9a46b;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 -apple-system,"Hiragino Sans","PingFang TC","Noto Sans TC",sans-serif}
+main{max-width:1100px;margin:0 auto;padding-inline:16px;padding-block:20px 60px}
+h1{font-size:1.6rem;margin:.2em 0 .3em}
+h2{font-size:1.2rem;margin:2.2em 0 .6em;padding-bottom:.3em;border-bottom:2px solid var(--line)}
+h3{font-size:1.02rem;margin:1.4em 0 .4em}
+.badge{display:inline-block;font-size:.75rem;padding:.1em .6em;border-radius:99px;background:var(--accent);color:var(--bg);vertical-align:middle}
+.summary{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+.summary p{margin:.25em 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;margin:12px 0}
+.figwrap{overflow-x:auto}
+.figwrap svg{display:block;width:100%;height:auto;min-width:640px}
+.cap{color:var(--sub);font-size:.85rem;margin:.4em 0 0}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem;background:var(--card)}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:color-mix(in srgb,var(--line) 45%,transparent)}
+td.n{text-align:right;white-space:nowrap}
+.ok{color:var(--ok);font-weight:700}.ng{color:var(--ng);font-weight:700}.warn{color:var(--warn);font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.82rem;color:var(--sub);margin:6px 0}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.sw{display:inline-block;width:16px;height:10px;border:1px solid var(--dim)}
+ul.tight{margin:.3em 0;padding-left:1.3em}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+/* svg */
+svg text{fill:var(--ink);font-family:inherit}
+.wl{stroke:var(--wall);stroke-linecap:square;fill:none}
+.r-room{fill:var(--room)}.r-void{fill:var(--void)}.r-garage{fill:var(--garage)}.r-wet{fill:var(--wet)}.r-store{fill:var(--store)}.r-out{fill:none;stroke:var(--dim);stroke-dasharray:6 4}
+.gap{fill:var(--room)}
+.fu{fill:var(--furnfill);stroke:var(--furn);stroke-width:1.6}
+.rc{fill:none;stroke:var(--recline);stroke-width:1.6;stroke-dasharray:6 4}
+.dr{fill:none;stroke:var(--door);stroke-width:1.6}
+.drl{stroke:var(--door);stroke-width:2.4}
+.wn{stroke:var(--win);stroke-width:1.6;fill:none}
+.wnH{stroke:var(--win2);stroke-width:1.6;fill:none}
+.dim{stroke:var(--dim);stroke-width:1;fill:none}
+.dimt{fill:var(--dim)!important;font-size:15px}
+.lbl{font-size:17px;font-weight:700}
+.lbl2{font-size:13.5px;fill:var(--sub)!important}
+.ft{font-size:12px;fill:var(--furn)!important}
+.wt{font-size:11px;fill:var(--win)!important;font-weight:700}
+.wtH{font-size:11px;fill:var(--win2)!important;font-weight:700}
+.st{stroke:var(--furn);stroke-width:1}
+.arrow{stroke:var(--accent);stroke-width:1.6;fill:none}
+.landb{fill:none;stroke:var(--land);stroke-width:3;stroke-dasharray:14 6}
+.road{fill:var(--road)}
+.lim{stroke:var(--ng);stroke-width:1.8;stroke-dasharray:10 5;fill:none}
+.roof{stroke:var(--accent);stroke-width:3;fill:none}
+.sec{fill:var(--room);stroke:var(--wall);stroke-width:2}
+</style>
+</head>
+<body>
+<main>
+<p style="margin:0 0 .6em;font-size:.9rem"><a href="../a2.html">← 3D 看房（注文住宅 A2）</a></p>
+<h1>提案 A2：書桌靠牆＋流理台在電視旁 <span class="badge" id="status">道路在北</span></h1>
+<div class="summary">
+<p><b>方位</b>：道路（6 m）在<b>北側</b>，庭院・出窗・緣側朝<b>東</b>，設備放在車庫南側的空地（西南角），南側與西側是鄰地。</p>
+<p><b>土地</b>：東西 13.87 × 南北 9.70 ＝ <b>134.54 m²</b>（北側 1.2 m、東側庭院 2.2 m、西 0.65 m、南 0.5 m）。方位轉向前 136.48 m²、更早 137.93 m²。</p>
+<p><b>建物</b>：兩層、1F 外框 11.02 × 8.00 m（西北角內縮），建築面積 80.62 m²（含出窗）、建蔽率 <b>59.9%</b>；延床 145.57 m²、容積率 <b>93.3%</b>（車庫 20.07 m² 不計入）；樓高 2.85 m（一樓淨高 2.55 m），屋頂北高南低，北牆簷高 6.95 m。</p>
+<p><b>特色</b>：一樓 LDK 在東側，電視在北牆（畫面朝南）、出窗與緣側朝東；客廳上方挑高 10.9 m²；鏡子房也在一樓。高度地區的斜線改從北側道路的反對側算起，不再限制樓高。</p>
+</div>
+<section id="sec-a2"><h2>0. A2 摘要</h2>
+<div class="card">
+<p class="cap">北側道路 6 m、東側庭院 2.2 m、西側 0.65 m、南側 0.5 m（北側與設備通道已經不需要）。</p>
+<ul class="tight">
+<li><b>一樓</b>：電視在北牆（畫面朝南），沙發正對電視，書桌貼南牆，出窗與緣側朝東；樓梯沿北牆。流理台在西側，煮飯的人面朝東，看得到整個沙發區與電視（77%）；玄關 1.8 帖，南側有頂天鞋櫃屏風（約 34 雙），入口缺口在西端，西北角有穿鞋椅，進門路線轉一個彎；沙發後方直接接長書桌，沙發側只有一圈低緣；半島 200 離上がり框 100 cm。</li>
+<li><b>二樓</b>：浴室群在西側、主臥在西北，洗衣間連更衣間、更衣間連主臥；外氣浴陽台接主臥北牆。</li>
+<li><b>設備</b>：①エコキュート ②熱泵 ③空調室外機×3 ④地暖熱源機 搬到車庫南側原本沒有用途的空地（約 2.1×2.5 m），⑤電表在西外牆。維修空間：①前 50、②前 63、③④前 60，圖上用虛線標出；熱泵離南鄰界 2.7 m，出風口朝向自家一側。冷媒管沿外牆往上到二樓、沿外牆下緣進一樓天花內。空地剩下的部分（約 3.0×1.5 m）做洗濯物干し與ゴミ置場。</li>
+<li><b>北側道路的退縮</b>：北牆離北界 1.2 m（陽台外推 70＋離界 50 的最小值）；車庫前倒車縱深 道路 6.0 m＋1.2 m ＝ 7.2 m ≥ 5.2 m ✓。西側離界 0.65 m：建蔽率 80.62 ÷ 134.54 ＝ 59.9%，已經貼著 60%；西側再縮到 0.5 m 會變成 60.6% 超過，所以只能到 0.65 m。</li>
+<li><b>高度地區</b>：斜線從北側道路的反對側境界線算起，北牆距離 7.2 m，限高 5＋0.6×7.2 ＝ 9.32 m；實際最高 6.95 m ✓，不再限制樓高。樓高回到 2.85 m（一樓淨高 2.55 m、蹴上 19.0 cm）。</li>
+<li><b>屋頂與淨高</b>：採用北高南低的南向片流れ，挑高 6.0～6.5 m，一樓淨高 2.55 m；細節與選項見第 4-1 節。</li>
+<li><b>日照與反光</b>：出窗與緣側朝東，早上有光、下午不曬；電視在北牆，南牆（書桌後方）只開高窗；冬天中午低角度的南向陽光可能照到電視，用外遮陽與霧面電視處理。</li>
+</ul>
+</div>
+</section>
+<section id="sec-site"><h2>1. A2 土地配置圖</h2><div class="card"><div class="figwrap" id="fig-site"></div></div></section>
+<section id="sec-f1"><h2>2. A2 一樓平面圖</h2><div class="card"><div class="figwrap" id="fig-f1"></div></div></section>
+<section id="sec-f2"><h2>3. A2 二樓平面圖</h2><div class="card"><div class="figwrap" id="fig-f2"></div></div></section>
+<section id="sec-legend">
+<div class="legend">
+<span><i class="sw" style="background:var(--wall)"></i>牆（外 15・內 10）</span>
+<span><i class="sw" style="border-color:var(--win);border-width:2px"></i>W1 一般窗（Low-E＋外遮陽）</span>
+<span><i class="sw" style="border-color:var(--win2);border-width:2px"></i>H 高窗（可開）</span>
+<span><b style="color:var(--win)">F</b> 固定窗／室內窗</span><span><b style="color:var(--win)">O</b> 霧面窗</span><span><b style="color:var(--win)">B</b> 出窗</span><span><b style="color:var(--win)">S</b> 落地拉門</span>
+<span><i class="sw" style="border:2px dashed var(--recline)"></i>躺平・椅子後拉・跳舞淨空</span>
+<span><i class="sw" style="border:2px dashed var(--ok)"></i>流理台的視野</span>
+<span><i class="sw" style="border:2px dashed var(--ng)"></i>大門的限界視線（淡紅＝大門看得到的範圍）</span>
+<span><i class="sw" style="border:2px dashed #d4488f"></i>進門路線</span>
+<span><i class="sw" style="border:2px dashed var(--accent)"></i>二樓動線①（浴室）</span>
+<span><i class="sw" style="border:2px dashed var(--win2)"></i>二樓動線②（三溫暖）</span>
+<span><i class="sw" style="border:2px dashed var(--ok)"></i>動線③（三溫暖 → 主臥陽台）</span>
+<span><i class="sw" style="background:var(--void)"></i>挑高</span><span><i class="sw" style="background:var(--wet)"></i>用水</span>
+</div>
+<p class="cap">面積皆為壁芯。房間以帖為主（1 帖＝1.62 m²）。</p>
+<h3>一樓：玄關屏風、書桌與流理台的視野</h3>
+<p class="cap">視線數字是用腳本算的（平面圖座標、立體遮蔽物：牆與屏風 2.55 m、半島與背面收納 0.90 m、冰箱 1.80 m、沙發與按摩椅 1.0 m；站姿眼高 1.50 m），前後用同一支腳本重算，所以和舊版文字的數字略有不同。</p>
+<h4>A. 玄關屏風與穿鞋椅（南側屏風、入口開在西端、穿鞋椅在西北角）</h4>
+<ul class="tight">
+<li><b>玄關尺寸</b>：東西 168 → <b>193</b>、南北 150，<b>1.6 → 1.8 帖</b>（2.52 → 2.90 m²）。只往東加寬 25（東牆中心 397 → 372）；北側是外牆、西側是淋浴間、南側再縮會擠到半島，只有東側能動。LDK 因此 21.8 → <b>21.6 帖</b>（35.33 → 34.95 m²），減少 0.23 帖，在 0.5 帖以內。</li>
+<li><b>屏風（頂天鞋櫃）</b>：玄關南側，南面對齊上がり框，北面寬 88、最深 40；東端因斜切深度只有約 28～40。入口缺口在西端，淨寬 <b>100</b>（原 80），缺口東側加一道 30 cm 的袖壁。</li>
+<li><b>穿鞋椅</b>：靠西牆（淋浴間的東牆）、北半部，<b>30（深）×60（長）、座高 38</b>，椅下開放層板放每天穿的鞋。坐下穿好鞋，往南走就到缺口，不跨過進門路線。</li>
+<li><b>東牆</b>：原本 205 的東側屏風牆，端部改成斜切（約 25×21），斜切面沿著流理台看電視的視線，所以電視不被東牆多擋。</li>
+<li><b>進門路線</b>：大門（門洞 80，朝外開）→ 往南 → 轉西 → 從缺口往南出到上がり框 → 前室（淋浴門、脫鞋處、廚房走道）。進門正面是屏風。</li>
+<li><b>通道</b>：屏風南面到半島北端 100（≥90）；缺口 100（≥80）；轉彎區：穿鞋椅角到鞋櫃角 80.6（≥80）；穿鞋椅與大門（朝外開）、淋浴間的門都沒有干涉（淋浴間門在南牆 y＝150 一側）。</li>
+<li><b>鞋櫃門</b>：用拉門，不佔進門通道；穿鞋椅不在鞋櫃正前方，櫃面完全不被擋住。</li>
+<li><b>其他收納</b>：傘、掃具等小物不為了填空間而放。</li>
+<li><b>土間可用面積</b>：玄關 2.90 − 鞋櫃約 0.34 − 穿鞋椅 0.18 ＝ 約 2.4 m²（前一版約 2.0 m²）。</li>
+</ul>
+<h4>鞋櫃容量（前 → 後）</h4>
+<div class="tw"><table>
+<tr><th></th><th>前一版</th><th>現在</th></tr>
+<tr><td>鞋櫃正面寬</td><td class="n">83</td><td class="n">88</td></tr>
+<tr><td>層板</td><td>9 層（每層約 26.7）</td><td>10 層（最下層高 36 放長靴，其上 9 層各約 22）</td></tr>
+<tr><td>每層雙數（每雙約 26 cm）</td><td class="n">3</td><td class="n">3～4（88 ÷ 26 ＝ 3.4）</td></tr>
+<tr><td>估計雙數</td><td class="n">約 27（25～30）</td><td class="n"><b>約 34（30～40）</b></td></tr>
+<tr><td>椅下開放層板</td><td>—</td><td>另計約 4～6 雙（每天穿的鞋）</td></tr>
+</table></div>
+<p class="cap">雙數是估計：每雙約 26 cm 寬，日本下駄箱資料的「80～90 cm 層板放 3～4 雙」；兩人份、一般鞋量約 30 雙。實際需求以使用者的鞋量為準。</p>
+<h4>加寬 25 的判斷</h4>
+<ul class="tight">
+<li>不加寬：缺口為了穿鞋椅要開 100，鞋櫃只剩 63 寬，約 24 雙，不到 30。</li>
+<li>加寬 25：鞋櫃 88 寬、約 34 雙；LDK 少 0.23 帖。</li>
+<li>加寬 35：斜切處深度不足 28，鞋櫃不會更長（還是 88）；斜切變大，電視可見度略降（綠點 77% → 75%）；LDK 少 0.32 帖，沒有好處。</li>
+<li>東牆若維持直角：加寬 11 時綠點看電視 69%、加寬 20 時 63%、加寬 35 時 50%，都不到 70%，所以端部做斜切（加寬 25：77%）。</li>
+</ul>
+<h4>穿鞋椅的位置比較</h4>
+<div class="tw"><table>
+<tr><th>項目</th><th>西北角（採用）</th><th>屏風北面（備案）</th></tr>
+<tr><td>尺寸</td><td>30×60、座高 38，靠西牆</td><td>30×100、座高 38，貼屏風北面</td></tr>
+<tr><td>進門通道</td><td>轉彎區 80.6、缺口 100</td><td>110 − 30 ＝ 80，剛好用完</td></tr>
+<tr><td>鞋櫃門</td><td>拉門，櫃面不被擋</td><td>必須拉門；椅子擋住最下 2 層</td></tr>
+<tr><td>鞋櫃容量</td><td>10 層、約 34 雙</td><td>7～8 層、約 24～27 雙（椅下開放層另計）</td></tr>
+<tr><td>動線</td><td>坐下穿好鞋，往南到缺口，順</td><td>椅子在進門正面，轉彎要繞過椅子</td></tr>
+<tr><td>LDK 帖數</td><td class="n">−0.23 帖</td><td class="n">−0.23 帖（同）</td></tr>
+</table></div>
+<p class="cap">缺口 100 是為了穿鞋椅（椅角到鞋櫃角 ≥ 80）：缺口放寬，從門洞看到的 LDK 比例也比缺口 80 時多（見下面 E）。東牆不放椅子：大門貼著東牆，椅子會擋進門路線。</p>
+<h4>B. 入口放西端或東端的比較</h4>
+<div class="tw"><table>
+<tr><th>項目（站姿眼高 1.5 m）</th><th>西端（採用）</th><th>東端（備案）</th></tr>
+<tr><td>屏風・缺口</td><td>屏風在玄關東側 88、缺口在西側 100；東牆端部斜切（加寬 25）</td><td>（加寬前試算）屏風在玄關西側 88，缺口在東側 80；東牆必須維持 205</td></tr>
+<tr><td>門洞看沙發／書桌／電視</td><td class="n">0%／0%／0%</td><td class="n">0%／0%／0%</td></tr>
+<tr><td>土間內最差位置看沙發座面</td><td class="n">0%（缺口東側加袖壁；沒有袖壁最多 27%）</td><td class="n">0%</td></tr>
+<tr><td>門洞看到的 LDK 比例（全體／廚房側／客廳側）</td><td class="n">31%／81%／13%</td><td class="n">35%／26%／38%</td></tr>
+<tr><td>門洞看到半島天板</td><td class="n">100%</td><td class="n">83%</td></tr>
+<tr><td>流理台（綠點）看電視</td><td class="n">77%</td><td class="n">15%（東牆縮短則門洞看到沙發 21%、土間內 100%）</td></tr>
+<tr><td>動線</td><td>缺口直接通前室：淋浴門、脫鞋（車庫來）、廚房走道、背面收納，離車庫與流理台近</td><td>缺口對著樓梯與廁所的走廊、電視側；去脫鞋或廚房要橫越半島前的通道約 3 m</td></tr>
+</table></div>
+<p class="cap"><b>採用西端的理由</b>：①車庫來的脫鞋動線、淋浴與廚房都在西側，西端缺口就接在這條動線上，不用橫越 LDK；②東牆可以縮短，流理台看電視 15% → 77%，書桌與沙發仍完全不被大門看到；③門洞看到客廳側 13%（東端 38%，走廊底與廁所門也會被看到）。代價：缺口正對半島的北端與廚房走道，從門洞看到廚房側 81%（東端 26%）；廚房側的視線比例沒有改善（前一版也是 81%）。<b>備案（東端）</b>：廚房側看得少，但東牆要留 205，流理台看電視維持 15%，而且缺口通往的是客廳側。</p>
+<h4>C. 書桌與沙發（沙發後方不再有隔牆）</h4>
+<ul class="tight">
+<li><b>低緣</b>：長書桌 220×80 的沙發側做一圈低緣，高 15、厚 12（含插座條），像參考圖 2；桌面可用深度 68。</li>
+<li><b>沙發背到低緣</b>：20 cm，躺平時椅背凸出 15 → 淨空 <b>5 cm</b>，低緣碰不到。</li>
+<li><b>原本隔牆的 15 cm 厚度</b>：全部給書桌後方：書桌整體往沙發側移 15，沙發背到桌緣 115 → 100；椅子後拉空間 116 → 131 cm，坐位後方到南側內牆 61 → <b>76 cm</b>（後拉 50～60 後還剩約 15～25）。</li>
+</ul>
+<h4>D. 流理台的視野（站姿眼高 1.5 m，前 → 後）</h4>
+<div class="tw"><table>
+<tr><th>站的位置</th><th>沙發座面</th><th>按摩椅上半身</th><th>升降茶几</th><th>電視</th></tr>
+<tr><td>綠點（爐具北緣前）</td><td class="n">84% → <b>98%</b></td><td class="n">55% → 55%</td><td class="n">92% → 92%</td><td class="n">15% → <b>77%</b></td></tr>
+<tr><td>爐具正前方</td><td class="n">57% → <b>89%</b></td><td class="n">48% → 55%</td><td class="n">80% → 80%</td><td class="n">38% → <b>83%</b></td></tr>
+<tr><td>水槽前</td><td class="n">100% → 100%</td><td class="n">55% → 55%</td><td class="n">52% → <b>100%</b></td><td class="n">0% → <b>38%</b></td></tr>
+</table></div>
+<ul class="tight">
+<li>沙發座面從 84% 到 98% 是取消沙發後方隔牆的效果（原本隔牆擋住座面後排的一部分）；電視 15% → 77% 是東側屏風牆縮短（端部斜切）的效果。圖上綠色粗線是綠點看得到的電視範圍（約 77%）。</li>
+<li>沙發頭部以上（高 1.0 m）本來就 100%；按摩椅座面被沙發擋住（0%），上半身 55%，位置在沙發東側沒有改變。</li>
+<li>躺在出窗平台：從平台中央到北半都看得到整個電視（100%），視線不經過沙發與按摩椅；平台最南端會被按摩椅擋到（距南 35 cm 處 63%、最南 9%），前後相同。</li>
+</ul>
+<h4>E. 大門的視線（前 → 後，圖上紅色虛線與淡紅範圍）</h4>
+<ul class="tight">
+<li>門洞、轉彎前、土間內所有位置（含坐在穿鞋椅上、走到缺口口）：沙發 0%、書桌 0%、電視 0%、按摩椅 0%、茶几 0%。缺口東側的袖壁（30 cm）就是為了這一點：沒有袖壁，走到缺口口時會看到沙發座面一角（最多 27%）。</li>
+<li>門洞看到的 LDK：全體 44%（第一輪前）→ 24%（上一版）→ <b>31%</b>；客廳側 30% → 5% → <b>13%</b>；廚房側 81% → 81% → 81%；半島天板 100%。缺口由 80 放寬到 100，看到的範圍變大。</li>
+<li>圖上紅色虛線是限界視線：從門洞西緣穿過缺口東側（袖壁端）與從門洞東緣穿過缺口西側（斜向西南）兩條，兩線之間的淡紅範圍是大門看得到的 LDK。</li>
+</ul>
+<h3>二樓動線：走廊 → 洗面脫衣室 → 浴室／三溫暖</h3>
+<ul class="tight">
+<li><b>①浴室</b>：樓梯口 → 走廊 → 洗面脫衣室（拉門）→ 浴室（拉門）。約 4 m。</li>
+<li><b>②三溫暖</b>：洗面脫衣室 → 三溫暖（拉門，門開在洗面脫衣室）。蒸完走回洗面脫衣室，再進浴室沖澡，約 1.5 m。</li>
+<li><b>③外氣浴</b>：三溫暖 → 洗面脫衣室 → 洗衣間 → 更衣間 → 主臥北端 → 陽台，約 10 m，全程在私人房間內，不經過走廊。陽台接在主臥北牆，外推 70、離界 50，朝北（道路側），外圍加木紋鋁格柵擋視線，上方簷出 70。</li>
+<li><b>濕身走這條路的安排</b>：洗面脫衣室放浴巾櫃，更衣間掛浴袍，洗衣間地板與更衣間都是防水地板；主臥北端在陽台門前鋪踏墊。</li>
+<li><b>洗衣</b>：洗面脫衣室北側有拉門直接通洗衣間，洗完澡的衣服可以直接丟進洗脫烘；洗衣間西側有拉門通更衣間。</li>
+<li><b>廁所</b>：兩扇門，一扇開向走廊、一扇開向洗面脫衣室。</li>
+<li><b>更衣間</b>：一扇通洗衣間，一扇通主臥。主臥另有自己通走廊的門（走廊北端）。</li>
+</ul>
+<h3>採光、日照、反光</h3>
+<ul class="tight">
+<li><b>東側</b>：
+  <ul class="tight">
+  <li>一樓的出窗與緣側落地拉門、挑高東高窗 H1、小孩房與書房的窗都朝東，東簷深 95。</li>
+  <li>夏至正午 78° 的陽光擋在外面；冬至 31° 的陽光從高窗照進約 7 m 深。</li>
+  </ul>
+</li>
+<li><b>北側</b>（臨路）：挑高北高窗 H2、浴室（霧面窗）、更衣間、主臥（含通陽台的落地拉門）。</li>
+<li><b>西側與南側</b>：主臥的西窗（寬 350）與南側防火固定窗，光線穩定、不熱。</li>
+<li><b>沒有外窗的房間</b>：二樓的洗面脫衣室、洗衣間、廁所、三溫暖。浴室有北窗。</li>
+<li><b>三溫暖的換氣</b>：家用三溫暖沒有帶窗的型號，所以北牆是實牆，不靠窗採光；用牆上的進氣口（圖上標示）＋專用排氣管（接到屋外）＋室內照明。其他沒有窗的房間靠 24 小時換氣。</li>
+<li><b>反光</b>：
+  <ul class="tight">
+  <li>沙發與書桌的正後方都是內牆，沒有窗。</li>
+  <li>電視在北牆，出窗與緣側在它的東側（側面）。冬天低角度陽光可能映到畫面。</li>
+  <li>對策：
+    <ul class="tight">
+    <li>出窗與落地拉門加外遮陽捲簾或室內百葉。</li>
+    <li>用 Low-E 玻璃。</li>
+    <li>電視選霧面（抗反射）面板，必要時往西轉 5～10°。南牆（書桌後方）只開高窗，冬天中午低角度的南向陽光可能照到北牆電視，用外遮陽處理。</li>
+    </ul>
+  </li>
+  </ul>
+</li>
+</ul>
+<h3>排水與隔音</h3>
+<ul class="tight">
+<li>二樓的浴室、三溫暖在一樓玄關、淋浴與廚房上方，洗衣間、洗面脫衣室在一樓廚房上方；排水管 PS（0.3 帖，70×70）放在浴室北側、洗衣間西側的角落，往下穿過一樓脫鞋處的角落，貼著一樓淋浴＋脫衣的西牆接到排水，位置上下對齊，不經過客廳與書桌。</li>
+<li>二樓廁所在一樓廚房南側的上方，離一樓書桌端約 18 cm（不在正上方）；排水管用遮音管或包遮音材。</li>
+<li>鏡子房上方是男友書房，不是浴室；天花板內放吸音材即可，鏡子房天花板維持 2.40 m。</li>
+</ul>
+</section>
+<section id="sec-section"><h2>4. A2 剖面示意（南北向，通過客廳挑高）</h2><div class="card"><div class="figwrap" id="fig-sec"></div></div></section>
+<section id="sec-roof"><h2>4-1. 屋頂形狀與淨高</h2>
+<div class="tw"><table>
+<tr><th>方案</th><th>做法</th><th>淨高與舒適</th><th>土地・造價</th></tr>
+<tr><td><b>① 南向片流れ（北高南低 0.13，採用）</b></td><td>單斜屋頂，北牆簷高 6.95 m（電視牆與挑高在北側最高）、南牆 5.91 m；南向屋面放太陽能 3 kW。</td><td>挑高 6.4 → 6.0 m；二樓書房 3.1 → 2.8 m、浴室 2.8 → 2.5 m；一樓淨高 2.55 m。最高處在北側，南牆低，南側日射少。</td><td>土地 134.54 m²；造價基準；簷高 6.95 m ≤ 7 m，日影不用檢討。</td></tr>
+<tr><td>② 平屋頂</td><td>屋頂高 6.35 m 一樣高，女兒牆內排水。</td><td>二樓 2.9 m 一樣高；挑高 5.75 m，比①低 0.3～0.65 m；外觀平整、好清潔。</td><td>土地相同；防水與排水較貴（約 +3～5%）；太陽能要用傾斜架。</td></tr>
+<tr><td>③ 切妻（棟東西走向）</td><td>棟高 6.95 m 在中央，向南北降到 6.2 m。</td><td>挑高在北側，北牆處只有 2.8 m 左右，比①低。</td><td>土地相同；造價 +1～2%。</td></tr>
+</table></div>
+<p class="cap">採用①：A2 的挑高放在北側，北牆最高，電視牆與挑高最舒服；屋面朝南，太陽能最有效率。</p>
+<h3>北側高度地區（斜線從道路反對側算起）</h3>
+<ul class="tight">
+<li>大田區第一種高度地區：高度 ≤ 5 m ＋ 0.6 ×（到北側道路反對側境界線的距離）。</li>
+<li>北牆離北界 1.2 m，道路寬 6.0 m：距離 7.2 m → 限高 5＋0.6×7.2 ＝ <b>9.32 m</b>；實際最高 6.95 m ✓，絕對高度 10 m ✓。剖面圖的紅虛線是這條斜線。道路斜線另待確認。</li>
+</ul>
+<h3>各房間淨高與計算依據</h3>
+<div class="tw"><table>
+<tr><th>位置</th><th>淨高</th><th>算法</th></tr>
+<tr><td>地盤面 → 一樓地板</td><td class="n">＋0.30 m</td><td>GL 到一樓地板。</td></tr>
+<tr><td>一樓各室（LDK、鏡子房、廚房、車庫）</td><td class="n">2.55 m</td><td>樓高 2.85 m − 二樓樓板與梁 0.20 m − 天花內設備 0.10 m。</td></tr>
+<tr><td>挑高（客廳上方，北側）</td><td class="n">6.4 → 6.0 m</td><td>屋頂高 6.95～6.52 m − 一樓地板 0.30 m − 屋頂構造 0.25 m。</td></tr>
+<tr><td>二樓北側（主臥・洗衣・更衣）</td><td class="n">3.55～3.1 m</td><td>屋頂高 6.95 m 往南降；− 二樓地板 3.15 m − 0.25 m。</td></tr>
+<tr><td>二樓書房（y＝3.3～5.5 m）</td><td class="n">3.1 → 2.84 m</td><td>屋頂高 6.52～6.24 m。</td></tr>
+<tr><td>二樓浴室・三溫暖・小孩房（y＝5.5～8.0 m）</td><td class="n">2.84 → 2.51 m</td><td>屋頂高 6.24～5.91 m。南牆處 2.51 m，床頭與書桌放北側較高處。</td></tr>
+</table></div>
+<h3>樓高的選項</h3>
+<div class="tw"><table>
+<tr><th>樓高</th><th>一樓淨高</th><th>蹴上</th><th>說明</th></tr>
+<tr><td>2.80 m</td><td class="n">2.50 m</td><td class="n">18.7 cm</td><td>下限。</td></tr>
+<tr><td>2.85 m（採用）</td><td class="n">2.55 m</td><td class="n">19.0 cm</td><td>蹴上剛好 ≤19，一樓淨高 ≥2.5。</td></tr>
+<tr><td>2.90 m</td><td class="n">2.60 m</td><td class="n">19.3 cm（16 段才 ≤19）</td><td>樓梯要多一段；簷高接近 7 m 的上限。</td></tr>
+</table></div>
+</section>
+<section id="sec-area"><h2>5. 面積表與法規檢查</h2>
+<div class="cols">
+<div class="tw"><table>
+<tr><th colspan="4">一樓</th></tr>
+<tr><th>空間</th><th>帖</th><th>m²</th><th>前一版（帖）</th></tr>
+<tr><td>LDK</td><td class="n">21.6</td><td class="n">34.95</td><td>21.8</td></tr>
+<tr><td>出窗ごろ寝平台</td><td class="n">1.4</td><td class="n">2.28</td><td>1.4</td></tr>
+<tr><td>玄關</td><td class="n">1.8</td><td class="n">2.90</td><td>1.6</td></tr>
+<tr><td>樓梯</td><td class="n">2.5</td><td class="n">4.10</td><td>2.5</td></tr>
+<tr><td>鏡子房</td><td class="n">6.3</td><td class="n">10.15</td><td>6.3</td></tr>
+<tr><td>走廊</td><td class="n">1.2</td><td class="n">2.02</td><td>1.2</td></tr>
+<tr><td>廁所</td><td class="n">1.0</td><td class="n">1.68</td><td>1.0</td></tr>
+<tr><td>淋浴＋脫衣</td><td class="n">1.5</td><td class="n">2.51</td><td>1.5</td></tr>
+<tr><td>車庫（開放式）</td><td class="n">12.4</td><td class="n">20.07</td><td>12.4</td></tr>
+<tr><th>一樓合計（含出窗）</th><th class="n">49.8</th><th class="n">80.62</th><th></th></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th colspan="4">二樓</th></tr>
+<tr><th>空間</th><th>帖</th><th>m²</th><th>前一版（帖）</th></tr>
+<tr><td>主臥（含壁櫃凹處）</td><td class="n">8.0</td><td class="n">13.03</td><td>7.1</td></tr>
+<tr><td>更衣間（衣櫃・燙衣板）</td><td class="n">3.1</td><td class="n">5.06</td><td>2.3</td></tr>
+<tr><td>洗衣間</td><td class="n">3.0</td><td class="n">4.82</td><td>5.1（洗衣更衣合併）</td></tr>
+<tr><td>洗面脫衣室</td><td class="n">2.1</td><td class="n">3.38</td><td>3.4</td></tr>
+<tr><td>浴室 1624</td><td class="n">2.6</td><td class="n">4.25</td><td>2.6</td></tr>
+<tr><td>三溫暖</td><td class="n">2.6</td><td class="n">4.25</td><td>1.5</td></tr>
+<tr><td>廁所（兩扇門）</td><td class="n">1.1</td><td class="n">1.84</td><td>0.8</td></tr>
+<tr><td>排水管 PS（浴室・三溫暖立管）</td><td class="n">0.3</td><td class="n">0.49</td><td>1.1</td></tr>
+<tr><td>小孩房</td><td class="n">4.4</td><td class="n">7.18</td><td>4.4</td></tr>
+<tr><td>男友書房</td><td class="n">5.1</td><td class="n">8.33</td><td>5.1</td></tr>
+<tr><td>納戶（樓梯旁，放分電盤）</td><td class="n">3.3</td><td class="n">5.27</td><td>3.3＋0.9（洗衣間旁併入主臥）</td></tr>
+<tr><td>走廊・樓梯口</td><td class="n">4.4</td><td class="n">7.05</td><td>4.4</td></tr>
+<tr><td>（挑高・不計）</td><td class="n">6.7</td><td class="n">10.89</td><td>6.7</td></tr>
+<tr><th>二樓樓地板合計</th><th class="n">40.1</th><th class="n">64.95</th><th></th></tr>
+</table></div>
+</div>
+<p class="cap">玄關 1.8 帖（2.90 m²）含頂天鞋櫃約 0.34 m² 與穿鞋椅 0.18 m²，土間可用約 2.4 m²；玄關加寬 0.38 m²（0.23 帖）由 LDK 讓出，一樓合計不變，建築外框與土地面積沒有變。</p>
+<h3>法規檢查</h3>
+<div class="tw"><table>
+<tr><th>項目</th><th>計算</th><th>上限</th><th>判定</th></tr>
+<tr><td>土地</td><td>南北 9.70 × 東西 13.87 ＝ <b>134.54 m²</b>（北側道路 6 m；北 1.2 m、東庭 2.2 m、西 0.65 m、南 0.5 m）</td><td>參考 ≈155</td><td class="ok">✓（轉向前 136.48 m²、更早 137.93 m²）</td></tr>
+<tr><td>建築面積</td><td>一樓外框 78.34 ＋ 出窗 2.28 ＝ 80.62 m²（北側陽台外推 70、緣側不計）</td><td>—</td><td></td></tr>
+<tr><td>建蔽率</td><td>80.62 ÷ 134.54 ＝ <b>59.9%</b></td><td>60%</td><td class="ok">✓（只剩 0.1 個百分點；西側離界 0.65 m 是最小值）</td></tr>
+<tr><td>延床面積</td><td>一樓 80.62 ＋ 二樓 64.95 ＝ <b>145.57 m²</b></td><td></td><td></td></tr>
+<tr><td>車庫不計入</td><td>20.07 ≤ 145.57 ÷ 5 ＝ 29.11</td><td>1/5</td><td class="ok">✓（開放式車庫算不算床面積：待確認）</td></tr>
+<tr><td>容積率</td><td>(145.57 − 20.07) ÷ 134.54 ＝ <b>93.3%</b></td><td>100%</td><td class="ok">✓</td></tr>
+<tr><td>第一種高度地區（北）</td><td>北牆離北側道路反對側境界 1.2＋6.0 ＝ 7.2 m：限高 5＋0.6×7.2＝9.32 m；實際最高 6.95 m</td><td>5 m＋0.6d</td><td class="ok">✓</td></tr>
+<tr><td>簷高・絕對高度</td><td>北牆簷高 6.95 m；最高約 7.0 m</td><td>7 m／10 m</td><td class="ok">✓（日影不用檢討）</td></tr>
+<tr><td>離界</td><td>北 120（陽台外緣離界 50）、東 220（出窗外緣離界 125）、西 65、南 50</td><td>≥50</td><td class="ok">✓</td></tr>
+<tr><td>倒車入庫</td><td>道路 600 ＋ 車庫前 120 ＝ 720</td><td>需約 520</td><td class="ok">✓</td></tr>
+<tr><td>樓梯</td><td>樓高 2.85 m ÷ 15 段 ＝ 蹴上 19.0；踏面 22.5</td><td>≥22／≤20</td><td class="ok">✓</td></tr>
+</table></div>
+<p class="cap">土地能不能縮：二樓房間已經排到沒有空隙（走廊與洗面脫衣室比前一版大），房子外框由一樓決定，所以土地沒有縮小的空間。</p>
+</section>
+<section id="sec-check"><h2>6. 條件逐條檢查（A2）</h2>
+<div class="tw"><table>
+<tr><th>條件</th><th>判定</th><th>說明</th></tr>
+<tr><td>書桌在沙發後方、椅背貼牆</td><td class="ok">✓</td><td>長書桌 220×80 直接接在沙發後方，沙發側一圈低緣（高 15、厚 12、含插座條），面朝北；沙發躺平凸出 15，離低緣淨空 5 cm；椅子後方到南側內牆 76 cm。</td></tr>
+<tr><td>流理台正前方是沙發區，看得到整個沙發區</td><td class="ok">✓</td><td>綠點看沙發座面 98%、茶几 92%、按摩椅上半身 55%、電視 77%；爐具正前方電視 83%、水槽前 38%（前一版 15%／38%／0%）。</td></tr>
+<tr><td>躺在出窗看得到電視</td><td class="ok">✓</td><td>平台中央到北半都看得到整個電視（100%），視線不經過沙發；按摩椅在沙發東側、離視線 35 cm 以上；平台最南端會被按摩椅擋到（63%～9%），前後相同。</td></tr>
+<tr><td>東側庭 2.2 m＋緣側</td><td class="ok">✓</td><td>緣側深 90，在書桌旁的落地拉門外，有一階踏石。</td></tr>
+<tr><td>從大門看不到沙發和書桌</td><td class="ok">✓</td><td>屏風擋在進門正面。門洞、土間內各位置（含穿鞋椅上、缺口口）沙發、書桌、電視、按摩椅都是 0%（用視線計算確認）。門洞看到 LDK 全體 31%（第一輪前 44%），其中廚房側 81%、客廳側 13%。</td></tr>
+<tr><td>玄關屏風在進門正面（南側）</td><td class="ok">✓</td><td>頂天鞋櫃屏風寬 88、最深 40，入口缺口在西端淨寬 100（缺口東側有袖壁）；進門路線：門洞 → 南 → 轉西 → 缺口 → 前室。東端案與穿鞋椅放屏風北面的案是備案，比較見圖後 B 與穿鞋椅的比較表。</td></tr>
+<tr><td>玄關放穿鞋椅、鞋櫃 ≥30 雙</td><td class="ok">✓</td><td>穿鞋椅在西北角，30×60、座高 38，椅下開放層板；鞋櫃 10 層、約 34 雙（30～40）；鞋櫃門是拉門。</td></tr>
+<tr><td>通道：半島與屏風 ≥90、其他 ≥80</td><td class="ok">✓</td><td>屏風南面到半島北端 100；缺口淨寬 100；轉彎區（穿鞋椅角到鞋櫃角）80.6；其他通道沿用原值（廚房走道 90、半島南端 97.5）。</td></tr>
+<tr><td>車庫進室內的脫鞋處、土間可用、門位置</td><td class="ok">✓</td><td>脫鞋處、大門位置與開法都沒有動；土間可用約 2.4 m²（前一版約 2.0 m²）；LDK 21.8 → 21.6 帖（−0.23 帖）、玄關 1.6 → 1.8 帖。</td></tr>
+<tr><td>樓梯踏面 ≥22、蹴上 ≤19</td><td class="ok">✓</td><td>22.5／19.0。</td></tr>
+<tr><td>走廊 → 洗面脫衣室 → 浴室／三溫暖</td><td class="ok">✓</td><td>圖上有動線①②③，路線寫在第 3 節說明。</td></tr>
+<tr><td>三溫暖的門開在洗面脫衣室</td><td class="ok">✓</td><td>門只開在洗面脫衣室；北牆是實牆，換氣靠進氣口＋專用排氣管；放大到 2.6 帖（4.25 m²）。</td></tr>
+<tr><td>洗面脫衣室與洗衣間相連</td><td class="ok">✓</td><td>洗面脫衣室 2.1 帖，北側拉門直接通洗衣間（3.0 帖），衣服直接丟進洗脫烘。</td></tr>
+<tr><td>納戶 ≥ 2.5、分電盤盤前淨空 80</td><td class="ok">✓</td><td>納戶只剩樓梯旁 3.3 帖（5.27 m²），從走廊旁的小通道進出，不放在臥室內。分電盤・PCS・蓄電池預留在北牆（x＝592 側），盤前淨空約 160 cm（≥80）。洗衣間旁的納戶 0.9 帖併進主臥當壁櫃，所以納戶只有一處。</td></tr>
+<tr><td>分電盤的配線路線</td><td class="ok">✓</td><td>電表（西外牆）→ 走廊上方天花內往東 → 二樓納戶的分電盤；往一樓的幹線沿納戶南側下到一樓廁所（上下對齊）的牆內，再進一樓天花內分配到廚房、LDK、鏡子房。PCS 往屋頂太陽能板的配管走同一個管道。</td></tr>
+<tr><td>主臥自己的門</td><td class="ok">✓</td><td>主臥 8.0 帖（含壁櫃凹處），門在走廊北端，開向走廊；壁櫃凹處在洗衣間西側，沒有開口。</td></tr>
+<tr><td>更衣間兩邊進</td><td class="ok">✓</td><td>一扇拉門通洗衣間，一扇拉門通主臥。</td></tr>
+<tr><td>二樓廁所兩扇門</td><td class="ok">✓</td><td>一扇開向走廊，一扇開向洗面脫衣室。</td></tr>
+<tr><td>外氣浴陽台</td><td class="warn">△</td><td>接主臥北牆，外推 70、離界 50，朝道路側，靠格柵擋視線。北側離界 1.2 m 就是由它決定的；外推縮到 50 則北側可到 1.0 m（土地 −2.7 m²）。路線約 10 m，全程私人房間。</td></tr>
+<tr><td>小孩房與主臥同層</td><td class="ok">✓</td><td>4.4 帖，在二樓東側，有東窗、通挑高的室內窗。</td></tr>
+<tr><td>書房離主臥遠</td><td class="ok">✓</td><td>書房在二樓南東，主臥在北西。</td></tr>
+<tr><td>走廊越短越好</td><td class="warn">△</td><td>二樓走廊・樓梯口 4.4 帖，與前一版相同。小孩房、書房、廁所、洗面脫衣室、主臥、納戶的門都開在這條走廊上，要縮短就得搬門，這版沒有改善。</td></tr>
+<tr><td>用水不在客廳・書桌・臥室正上方</td><td class="ok">✓</td><td>浴室、三溫暖、洗衣間、洗面脫衣室在一樓廚房、玄關上方；二樓廁所離一樓書桌端約 18 cm（不在正上方）。鏡子房上方是書房。</td></tr>
+<tr><td>挑高 9～11 m²、高窗可開</td><td class="ok">✓</td><td>6.7 帖（10.89 m²），有東高窗 H1、北高窗 H2、吊扇、木樑。</td></tr>
+<tr><td>北側高度地區</td><td class="ok">✓</td><td>距離從道路反對側算起 7.2 m，限高 9.32 m；實際最高 6.95 m（剖面紅虛線）。</td></tr>
+<tr><td>反光</td><td class="ok">✓</td><td>沙發與書桌正後方是內牆；電視側面的東向開口靠外遮陽與 Low-E 處理。</td></tr>
+</table></div>
+</section>
+<section id="sec-eval"><h2>7. 優點、缺點、待決定事項</h2>
+<div class="cols">
+<div class="card"><h3>這一版相較前一版</h3><ul class="tight">
+<li>三溫暖放大到 2.6 帖，門只開在洗面脫衣室。</li>
+<li>浴室有北窗；二樓沒有外窗的房間是洗面脫衣室、洗衣間、廁所、三溫暖，換氣靠 24 小時換氣與三溫暖專用排氣管。</li>
+<li>主臥長方形 8.0 帖（併入洗衣間旁的納戶 0.9 帖，做成 60 cm 深的壁櫃凹處），有北、西、南三個方向的窗。</li>
+<li>洗面脫衣室縮到 2.1 帖，洗衣間縮到 3.0 帖，更衣間放大到 3.1 帖（衣櫃與燙衣板），吸收了原本 PS 多出的 0.8 帖。</li>
+<li>浴室與三溫暖從洗面脫衣室進出，洗衣間相連。</li>
+<li>玄關屏風移到南側（進門正面），入口缺口在西端，進門路線轉一個彎；門洞看到的 LDK 全體 44% → 31%，客廳側 30% → 13%，沙發、書桌、電視 0%。</li>
+<li>玄關放大到 1.8 帖並放穿鞋椅（西北角）；鞋櫃約 27 → 34 雙；LDK 少 0.23 帖。</li>
+<li>沙發後方改成直接接長書桌（沙發側只有 15 cm 低緣）；椅子後方 61 → 76 cm；流理台看沙發座面 84% → 98%、電視 15% → 77%。</li>
+<li>道路在北：出窗與緣側朝東，早上有光、下午不曬；高度地區不再限制樓高，樓高 2.85 m、一樓淨高 2.55 m。</li>
+</ul></div>
+<div class="card"><h3>缺點</h3><ul class="tight">
+<li>外氣浴陽台朝道路側，外推 70，要靠格柵擋視線；從三溫暖走過去約 10 m，要穿過洗衣間、更衣間與主臥。</li>
+<li>走廊 4.4 帖沒有改善。</li>
+<li>主臥長 5.5 m、寬 2.1 m，形狀偏細長；壁櫃凹處寬 0.72 m、長 2.05 m，從側面凸出一塊。</li>
+<li>洗面脫衣室寬只有 1.65 m，周圍有 5 個開口，牆面不多。</li>
+<li>二樓廁所靠近一樓書桌端（離 18 cm）。</li>
+<li>缺口正對半島北端與廚房走道，門洞看到廚房側 81%（沒有改善）；缺口 100（為了穿鞋椅），門洞看到的 LDK 比缺口 80 時多（24% → 31%）；東牆端部斜切，施工比直角複雜。</li>
+<li>建蔽率 59.9%，只差 0.1 個百分點；南牆在書桌與沙發後方，冬天中午的南向光可能照到電視。</li>
+</ul></div>
+</div>
+<div class="card"><h3>待決定</h3><ul class="tight">
+<li>玄關入口採西端（採用）還是東端（備案，廚房側看得少但流理台看電視維持 15%）；穿鞋椅採西北角（採用）還是屏風北面（備案）；廚房側 81% 若在意，可考慮在缺口對面加矮櫃或移動半島，需另外討論。</li>
+<li>外氣浴陽台接受朝北（道路側，外推 70、北側離界 1.2 m），還是縮到外推 50（北側 1.0 m）。</li>
+<li>主臥的細長形：能否接受，或把更衣間併入主臥改成較寬的形狀。</li>
+<li>開放式車庫是否算床面積；車庫門是否需要防火門。</li>
+<li>爐具 IH／瓦斯、太陽能是否增設、蓄電池、車庫上方主臥的大跨距樑。</li>
+<li>出窗與緣側、北側陽台的外遮陽與格柵方式。</li>
+</ul></div>
+</section>
+</main>
+<script>
+/* PLAN-DATA */
+const NS='http://www.w3.org/2000/svg';
+const JO=1.62;
+function el(p,tag,a,txt){const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;p.appendChild(e);return e;}
+let ROT=false;
+function mk(id,x0,y0,x1,y1,label){
+  if(!ROT){const s=el(document.getElementById(id),'svg',{viewBox:`${x0} ${-y1} ${x1-x0} ${y1-y0}`,role:'img','aria-label':label});return s;}
+  const svg=el(document.getElementById(id),'svg',{viewBox:`${-x1} ${y0} ${x1-x0} ${y1-y0}`,role:'img','aria-label':label});
+  const g=el(svg,'g',{transform:'rotate(-180)'}); g._svg=svg; g._box=[-x1,y0,x1-x0,y1-y0]; return g;
+}
+/* A2 は旧座標（旧南＝庭）で描き、表示時に反時計回り 90° 回転：旧南→東、旧東→北 */
+function finishRot(g){
+  for(const t of g.querySelectorAll('text')){
+    const x=t.getAttribute('x'), y=t.getAttribute('y'), tr=t.getAttribute('transform')||'';
+    t.setAttribute('transform',`rotate(180 ${x} ${y})`);
+    if(t.classList.contains('ft')&&!tr&&t.textContent.length>5){
+      const parts=t.textContent.split(/(?=（)|\s+/).filter(Boolean);
+      if(parts.length>1){t.textContent='';parts.forEach((s,i)=>{const sp=document.createElementNS(NS,'tspan');sp.setAttribute('x',x);sp.setAttribute('dy',i?'1.15em':`${-0.575*(parts.length-1)}em`);sp.textContent=s;t.appendChild(sp);});}
+    }
+  }
+  const [bx,by,bw]=g._box, svg=g._svg, nx=bx+bw-60, ny=by+70;
+  el(svg,'polyline',{points:`${nx-12},${ny+20} ${nx},${ny-22} ${nx+12},${ny+20} ${nx},${ny+8} ${nx-12},${ny+20}`,class:'arrow'});
+  el(svg,'text',{x:nx,y:ny-38,class:'lbl','text-anchor':'middle','dominant-baseline':'middle'},'N');
+}
+const Y=y=>-y;
+function rect(s,x1,y1,x2,y2,cls,extra){return el(s,'rect',Object.assign({x:Math.min(x1,x2),y:Y(Math.max(y1,y2)),width:Math.abs(x2-x1),height:Math.abs(y2-y1),class:cls},extra||{}));}
+function line(s,x1,y1,x2,y2,cls,sw){const a={x1,y1:Y(y1),x2,y2:Y(y2),class:cls};if(sw)a['stroke-width']=sw;return el(s,'line',a);}
+function text(s,x,y,t,cls,anchor){return el(s,'text',{x,y:Y(y),class:cls||'',
+  'text-anchor':anchor||'middle','dominant-baseline':'middle'},t);}
+function poly(s,pts,cls){return el(s,'polyline',{points:pts.map(p=>p[0]+','+Y(p[1])).join(' '),class:cls});}
+/* walls: [x1,y1,x2,y2,t]; openings: {x1,y1,x2,y2} lying on wall lines */
+function walls(s,ws,ops){
+  for(const w of ws){
+    const [x1,y1,x2,y2,t]=w; const hz=Math.abs(y1-y2)<0.1;
+    const a=hz?Math.min(x1,x2):Math.min(y1,y2), b=hz?Math.max(x1,x2):Math.max(y1,y2), c=hz?y1:x1;
+    let cuts=[];
+    for(const o of ops){
+      const ohz=Math.abs(o.y1-o.y2)<0.1; if(ohz!==hz)continue;
+      const oc=hz?o.y1:o.x1; if(Math.abs(oc-c)>1)continue;
+      const oa=hz?Math.min(o.x1,o.x2):Math.min(o.y1,o.y2), ob=hz?Math.max(o.x1,o.x2):Math.max(o.y1,o.y2);
+      if(ob<=a||oa>=b)continue; cuts.push([Math.max(a,oa),Math.min(b,ob)]);
+    }
+    cuts.sort((p,q)=>p[0]-q[0]); let cur=a;
+    const seg=(p,q)=>{if(q-p<0.5)return; const e=t/2;
+      if(hz) rect(s,p,c-e,q,c+e,'',{style:'fill:var(--wall)'}); else rect(s,c-e,p,c+e,q,'',{style:'fill:var(--wall)'});};
+    for(const [p,q] of cuts){seg(cur,p);cur=Math.max(cur,q);} seg(cur,b);
+  }
+}
+/* swing door: hinge (hx,hy), w width, a0 = angle toward closed jamb, a1 = angle of open leaf (deg, plan coords) */
+function door(s,hx,hy,w,a0,a1){
+  const r=d=>d*Math.PI/180; const jx=hx+w*Math.cos(r(a0)), jy=hy+w*Math.sin(r(a0));
+  const lx=hx+w*Math.cos(r(a1)), ly=hy+w*Math.sin(r(a1));
+  line(s,hx,hy,lx,ly,'drl');
+  const sweep=((a1-a0+360)%360)<180?0:1;
+  el(s,'path',{d:`M ${jx} ${Y(jy)} A ${w} ${w} 0 0 ${sweep} ${lx} ${Y(ly)}`,class:'dr','stroke-dasharray':'4 3'});
+}
+function slide(s,x1,y1,x2,y2){
+  const hz=Math.abs(y1-y2)<0.1; const L=hz?x2-x1:y2-y1; const m=L*0.55;
+  if(hz){line(s,x1,y1+3,x1+m,y1+3,'drl');line(s,x2-m,y1-3,x2,y1-3,'drl');}
+  else{line(s,x1-3,y1,x1-3,y1+m,'drl');line(s,x1+3,y2-m,x1+3,y2,'drl');}
+}
+/* window on wall line. type: W 一般窗 / S 掃出窗 / H 高窗 / F 固定窗 / O 霧面窗 */
+function win(s,x1,y1,x2,y2,t,code,lx,ly){
+  const hz=Math.abs(y1-y2)<0.1; const e=t/2; const cls=code[0]==='H'?'wnH':'wn';
+  if(hz){for(const d of [-e,0,e])line(s,x1,y1+d,x2,y1+d,cls);}
+  else{for(const d of [-e,0,e])line(s,x1+d,y1,x1+d,y2,cls);}
+  if(lx!=null)text(s,lx,ly,code,code[0]==='H'?'wtH':'wt');
+}
+function room(s,r){
+  for(const q of r.rects)rect(s,q[0],q[1],q[2],q[3],'r-'+(r.kind||'room'));
+}
+function area(r){return r.rects.reduce((a,q)=>a+Math.abs((q[2]-q[0])*(q[3]-q[1]))/1e4,0)-(r.minus||0);}
+function rlabel(s,r){
+  const [x,y]=r.at; const a=r.area!=null?r.area:area(r);
+  if(r.sm){const d=ROT?[[0,-9],[0,7],[0,21]]:[[0,9],[0,-7],[0,-21]];text(s,x+d[0][0],y+d[0][1],r.name,'lbl',null).setAttribute('style','font-size:13px');
+    if(!r.noArea){text(s,x+d[1][0],y+d[1][1],`${(a/JO).toFixed(1)} 帖`,'lbl2').setAttribute('style','font-size:11px');text(s,x+d[2][0],y+d[2][1],`(${a.toFixed(2)} m²)`,'lbl2').setAttribute('style','font-size:11px');}return;}
+  if(ROT){text(s,x,y-11,r.name,'lbl'); if(!r.noArea)text(s,x,y+10,`${(a/JO).toFixed(1)} 帖（${a.toFixed(2)} m²）`,'lbl2'); return;}
+  text(s,x,y+11,r.name,'lbl');
+  if(!r.noArea)text(s,x,y-10,`${(a/JO).toFixed(1)} 帖（${a.toFixed(2)} m²）`,'lbl2');
+}
+function fu(s,x1,y1,x2,y2,t,tx,ty){rect(s,x1,y1,x2,y2,'fu');if(t)text(s,tx!=null?tx:(x1+x2)/2,ty!=null?ty:(y1+y2)/2,t,'ft');}
+function rc(s,x1,y1,x2,y2){rect(s,x1,y1,x2,y2,'rc');}
+function dimH(s,x1,x2,y,lab,off){
+  line(s,x1,y,x2,y,'dim');line(s,x1,y-8,x1,y+8,'dim');line(s,x2,y-8,x2,y+8,'dim');
+  text(s,(x1+x2)/2,y+(off||11),lab!=null?lab:String(Math.round(x2-x1)),'dimt');
+}
+function dimV(s,x,y1,y2,lab,off){
+  line(s,x,y1,x,y2,'dim');line(s,x-8,y1,x+8,y1,'dim');line(s,x-8,y2,x+8,y2,'dim');
+  const tx=x+(off||-12), ty=(y1+y2)/2;
+  el(s,'text',{x:tx,y:Y(ty),class:'dimt','text-anchor':'middle','dominant-baseline':'middle',transform:`rotate(-90 ${tx} ${Y(ty)})`},lab!=null?lab:String(Math.round(y2-y1)));
+}
+function north(s,x,y){poly(s,[[x-12,y-20],[x,y+22],[x+12,y-20],[x,y-8],[x-12,y-20]],'arrow');text(s,x,y+38,'N','lbl');}
+function stairs(s,x1,x2,y1,n,tr,lab){
+  for(let i=0;i<=n;i++)line(s,x1,y1+i*tr,x2,y1+i*tr,'st');
+  const xm=(x1+x2)/2; poly(s,[[xm,y1+10],[xm,y1+n*tr-12]],'arrow');poly(s,[[xm-9,y1+n*tr-26],[xm,y1+n*tr-12],[xm+9,y1+n*tr-26]],'arrow');
+  if(lab)text(s,xm,y1+n*tr/2,'',''),el(s,'text',{x:xm+30,y:Y(y1+n*tr/2),class:'ft','text-anchor':'middle','dominant-baseline':'middle',transform:`rotate(-90 ${xm+30} ${Y(y1+n*tr/2)})`},lab);
+}
+function drawF1(){
+  const s=mk('fig-f1',-330,-200,1230,1010,'A2 一樓平面圖');
+  /* garden */
+  rect(s,-220,-120,0,900,'',{style:'fill:color-mix(in srgb,var(--land) 14%,transparent)'});
+  line(s,-220,-120,-220,900,'landb'); text(s,-160,880,'東側鄰地界','ft');
+  text(s,-150,150,'側庭 2.2 m','lbl2');
+  for(const [x,y,r] of [[-150,40,38],[-160,440,30],[-140,700,42],[-170,610,22]]){el(s,'circle',{cx:x,cy:Y(y),r,class:'fu',style:'fill:color-mix(in srgb,var(--land) 30%,transparent);stroke:var(--land)'});}
+  text(s,-150,40,'樹','ft'); text(s,-140,700,'樹','ft');
+  const R=[
+    {name:'LDK',rects:[[0,0,737,547.5]],at:[560,505],area:34.95},
+    {name:'玄關',kind:'store',rects:[[377,0,570,150]],at:[415,45],sm:true,area:2.90},
+    {name:'淋浴＋脫衣',kind:'wet',rects:[[570,0,737,150]],at:[653,100],sm:true},
+    {name:'鏡子房',rects:[[0,547.5,402,800]],at:[200,690]},
+    {name:'走廊',kind:'store',rects:[[402,547.5,482,800]],at:[442,760],sm:true},
+    {name:'廁所',kind:'wet',rects:[[482,647.5,592,800]],at:[537,740],sm:true},
+    {name:'樓梯',kind:'store',rects:[[482,547.5,892,647.5]],at:[830,622],noArea:true},
+    {name:'車庫（開放式）',kind:'garage',rects:[[737,0,1102,550]],at:[920,420]},
+  ];
+  R.forEach(r=>room(s,r));
+  el(s,'polygon',{points:[[465,150],[565,150],[737,322],[737,547.5],[379.8,547.5]].map(q=>q[0]+','+Y(q[1])).join(' '),style:'fill:color-mix(in srgb,var(--ng) 9%,transparent)'});
+  rect(s,-95,60,0,300,'r-room'); rect(s,-90,330,0,540,'',{style:'fill:color-mix(in srgb,var(--accent) 22%,transparent);stroke:var(--accent)'});
+  for(let y=345;y<540;y+=15)line(s,-90,y,0,y,'st');
+  text(s,-45,425,'緣側（杉木）','ft'); text(s,-45,445,'深90','ft');
+  rect(s,-130,390,-90,480,'fu'); text(s,-110,375,'踏石','ft');
+  /* living */
+  fu(s,82.5,7.5,312.5,52.5,'電視櫃 85吋',197.5,40); line(s,103.5,14,291.5,14,'drl'); 
+  fu(s,147.5,108.5,247.5,158.5,'升降茶几');
+  fu(s,92.5,214.5,302.5,311.5,'電動躺椅沙發 210×97'); rc(s,92.5,163.5,302.5,326.5); text(s,197.5,188,'躺平 163','ft');
+  fu(s,8,177.5,82.5,321.5,''); rc(s,8,154.5,82.5,321.5);
+  el(s,'text',{x:45,y:Y(250),class:'ft','text-anchor':'middle','dominant-baseline':'middle',transform:`rotate(-90 45 ${Y(250)})`},'按摩椅');
+  fu(s,92.5,331.5,312.5,411.5,'長書桌 220×80（面朝北）',202.5,378);
+  rect(s,92.5,331.5,312.5,343.5,'',{style:'fill:var(--dim)'}); text(s,395,337,'←低緣 H15＋插座條','ft');
+  el(s,'circle',{cx:200,cy:Y(445),r:26,class:'fu'}); text(s,200,445,'椅','ft');
+  rect(s,145,411.5,255,542.5,'rc'); text(s,280,490,'後拉→牆 76','ft','start');
+  fu(s,-90,65,-5,295,''); text(s,-48,163,'出窗ごろ寝平台','ft'); text(s,-48,197,'240×95','ft');
+  line(s,-45,180,197.5,14,'lim'); text(s,40,95,'躺著的視線','ft');
+  /* kitchen */
+  fu(s,482,250,577,450,''); el(s,'circle',{cx:530,cy:Y(290),r:15,class:'fu'}); rect(s,500,370,560,435,'fu');
+  el(s,'text',{x:528,y:Y(340),class:'ft','text-anchor':'middle','dominant-baseline':'middle',transform:`rotate(-90 528 ${Y(270)})`},'半島 200');
+  fu(s,667,240,732,470,''); el(s,'text',{x:700,y:Y(355),class:'ft','text-anchor':'middle','dominant-baseline':'middle',transform:`rotate(-90 700 ${Y(355)})`},'背面收納');
+  fu(s,662,472.5,732,542.5,'冰箱',697,507);
+  el(s,'text',{x:622,y:Y(400),class:'ft','text-anchor':'middle','dominant-baseline':'middle',transform:`rotate(-90 622 ${Y(330)})`},'廚房走道 90');
+  poly(s,[[610,350],[590,350]],'arrow'); poly(s,[[600,358],[588,350],[600,342]],'arrow'); 
+  el(s,'polygon',{points:[[620,370],[247.5,108.5],[8,177.5],[8,321.5]].map(q=>q[0]+','+Y(q[1])).join(' '),style:'fill:color-mix(in srgb,var(--ok) 14%,transparent);stroke:var(--ok);stroke-width:1.6;stroke-dasharray:8 4'});
+  el(s,'circle',{cx:620,cy:Y(370),r:9,style:'fill:var(--ok)'});
+  for(const [x1,y1,x2,y2,w,d] of [[620,370,392,150,1.4,'5 4'],[392,150,247.5,14,1.4,'5 4'],[103.5,14,247.5,14,5,'']])el(s,'line',{x1,y1:Y(y1),x2,y2:Y(y2),style:`stroke:var(--ok);stroke-width:${w};stroke-dasharray:${d||'none'}`});
+  /* entry */
+  line(s,465,150,565,150,'dr'); text(s,535,135,'上がり框','ft'); dimH(s,465,565,168,'100');
+  el(s,'polygon',{points:[[377,110],[465,110],[465,150],[392,150],[377,137.5]].map(q=>q[0]+','+Y(q[1])).join(' '),style:'fill:color-mix(in srgb,var(--wall) 28%,transparent);stroke:var(--wall);stroke-width:3'}); text(s,428,128,'頂天鞋櫃 約34雙','ft');
+  dimH(s,377,465,192,'鞋櫃 88');
+  fu(s,535,10,565,70,''); text(s,514,26,'穿鞋椅','ft'); text(s,514,42,'30×60','ft'); text(s,514,58,'高38','ft');
+  route(s,[[460,14],[460,88],[500,88],[500,195],[590,215]],'#d4488f'); text(s,545,232,'進門路線','ft');
+  rect(s,667,150,737,240,'',{style:'fill:color-mix(in srgb,var(--furn) 18%,transparent)'}); text(s,702,195,'脫鞋','ft');
+  line(s,495,10,379.8,547.5,'lim'); line(s,425,10,737,322,'lim'); text(s,640,445,'大門可見 範圍','ft');
+  rect(s,590,10,690,100,'fu'); text(s,640,55,'淋浴','ft');
+  /* north */
+  line(s,105,553,395,553,'wnH',5); text(s,150,640,'整面鏡牆290','ft');
+  rect(s,60,555,330,795,'rc'); text(s,100,735,'跳舞淨空270×240','ft');
+  el(s,'ellipse',{cx:565,cy:Y(770),rx:26,ry:18,class:'fu'}); fu(s,487,655,520,690,'');
+  for(let i=0;i<=14;i++)line(s,482+i*22.5,552.5,482+i*22.5,642.5,'st');
+  poly(s,[[492,597],[790,597]],'arrow'); poly(s,[[778,605],[792,597],[778,589]],'arrow'); text(s,570,583,'踏22.5','ft'); text(s,630,583,'上15段','ft'); text(s,690,583,'蹴19.0','ft');
+  rect(s,827,30,1012,502,'fu'); text(s,920,300,'Tesla Model 3','ft'); text(s,920,80,'↓車頭朝路','ft');
+  text(s,780,300,'開門 85','ft'); text(s,1058,300,'開門 83','ft');
+  fu(s,904,535,936,548,''); text(s,920,522,'充電座','ft');
+  line(s,737,-6,1102,-6,'drl'); text(s,920,-24,'鋁製伸縮門','ft');
+  /* walls */
+  const ops=[{x1:420,y1:0,x2:500,y2:0},{x1:600,y1:0,x2:710,y2:0},
+    {x1:0,y1:60,x2:0,y2:300},{x1:0,y1:340,x2:0,y2:530},{x1:0,y1:590,x2:0,y2:780},{x1:60,y1:800,x2:340,y2:800},
+    {x1:737,y1:160,x2:737,y2:230},{x1:580,y1:150,x2:660,y2:150},{x1:402,y1:560,x2:402,y2:640},{x1:482,y1:660,x2:482,y2:738},{x1:520,y1:800,x2:580,y2:800}];
+  walls(s,[[0,0,737,0,15],[0,0,0,800,15],[0,800,592,800,15],[592,647.5,592,800,15],[592,647.5,892,647.5,15],[892,550,892,647.5,15],[892,550,1102,550,15],[1102,0,1102,550,15],
+    [737,0,737,550,10],[0,547.5,402,547.5,10],[482,547.5,737,547.5,10],[402,547.5,402,800,10],[482,647.5,482,800,10],
+    [372,0,372,125,10],[570,0,570,150,10],[570,150,737,150,10]],ops);
+  el(s,'polygon',{points:[[367,129.1],[392,150],[399,142],[374,121.1]].map(q=>q[0]+','+Y(q[1])).join(' '),style:'fill:var(--wall)'});
+  rect(s,460,150,465,180,'',{style:'fill:var(--wall)'});
+  door(s,500,0,80,180,270); door(s,737,230,70,270,180); slide(s,580,150,660,150);
+  door(s,402,640,80,270,180); door(s,482,738,78,270,0);
+  win(s,0,60,0,300,15,'',null); win(s,-95,60,-95,300,10,'B',-112,100); win(s,-95,60,0,60,10,'',null); win(s,-95,300,0,300,10,'',null);
+  win(s,0,340,0,530,15,'S',-20,550); win(s,600,0,710,0,15,'O',655,-22); win(s,0,590,0,780,15,'W1',-20,800); win(s,60,800,340,800,15,'W1',200,822); win(s,520,800,580,800,15,'O',550,822);
+  R.forEach(r=>rlabel(s,r));
+  dimH(s,-220,0,-150,'側庭 220'); dimH(s,0,737,-150,'737'); dimH(s,737,1102,-150,'365'); dimH(s,0,1102,-180,'1102');
+  dimV(s,-260,0,800,'800'); dimV(s,1150,0,550,'550（車庫內長542）',14); dimV(s,1150,550,647.5,'97',14);
+  dimV(s,-300,0,547.5,'547'); dimV(s,330,13.5,271.5,'258',14);
+  text(s,-60,-60,'出窗外剩125','ft');
+  finishRot(s);
+}
+ROT=true; drawF1(); ROT=false;
+function drawF2(){
+  const s=mk('fig-f2',-160,-150,1060,1050,'二樓平面圖');
+  const R=[
+    {name:'挑高（下方客廳）',kind:'void',rects:[[0,0,330,330]],at:[165,200]},
+    {name:'小孩房',rects:[[330,0,640,300]],at:[485,170]},
+    {name:'主臥',rects:[[640,0,910,430]],at:[775,380]},
+    {name:'更衣間',kind:'store',rects:[[640,430,910,567]],at:[775,500]},
+    {name:'洗衣更衣間',kind:'wet',rects:[[680,567,910,825],[580,662,640,870],[640,662,680,825]],at:[800,610]},
+    {name:'走廊・樓梯口',kind:'store',rects:[[545,300,640,567],[330,567,680,662]],at:[600,614]},
+    {name:'樓梯',kind:'store',rects:[[450,300,545,567]],at:[497,433],noArea:true},
+    {name:'男友書房',rects:[[0,330,330,567]],at:[190,420]},
+    {name:'工具收納',kind:'store',rects:[[330,300,450,567]],at:[392,360],noArea:true},
+    {name:'洗面室',kind:'wet',rects:[[170,567,330,737]],at:[283,680],sm:true},
+    {name:'毛巾',kind:'store',rects:[[0,567,170,620]],at:[85,594],noArea:true},
+    {name:'浴室 1624',kind:'wet',rects:[[0,620,170,870]],at:[110,800]},
+    {name:'三溫暖',kind:'wet',rects:[[170,737,330,870]],at:[215,810],sm:true},
+    {name:'廁所',kind:'wet',rects:[[330,662,430,802]],at:[380,760],sm:true},
+    {name:'納戶',kind:'store',rects:[[430,662,580,870],[330,802,430,870]],at:[495,700],sm:true},
+  ];
+  R.forEach(r=>room(s,r));
+  rect(s,170,870,330,970,'r-out'); text(s,250,930,'外氣浴陽台','lbl2'); text(s,250,908,'外推100','ft');
+  /* furniture */
+  el(s,'circle',{cx:165,cy:Y(165),r:55,class:'rc'}); text(s,165,120,'吊扇・外露木樑','ft');
+  fu(s,340,10,540,110,'床 100×200'); fu(s,560,200,632,295,'書桌',596,250); fu(s,338,200,400,295,'衣櫃',369,250);
+  fu(s,702.5,120,902.5,280,'床 160×200'); fu(s,860,80,902.5,118,''); fu(s,860,282,902.5,322,'');
+  fu(s,650,437,902.5,482,'吊衣・抽屜 兩側',775,460); fu(s,650,515,902.5,560,'');
+  fu(s,830,750,902.5,817.5,'洗脫烘'); fu(s,755,760,825,817.5,'水槽'); fu(s,688,680,748,817.5,'摺衣檯',718,750);
+  line(s,760,700,900,700,'rc'); text(s,830,712,'室內晾衣桿','ft');
+  fu(s,555,668,572,860,''); el(s,'text',{x:518,y:Y(765),class:'ft','text-anchor':'middle','dominant-baseline':'middle',transform:`rotate(-90 518 ${Y(765)})`},'分電盤・PCS・蓄電池預留（盤前80）'); fu(s,436,668,476,862,''); fu(s,336,808,425,862.5,'防災用品',380,835);
+  fu(s,7.5,345,77.5,545,''); el(s,'text',{x:42,y:Y(445),class:'ft','text-anchor':'middle','dominant-baseline':'middle',transform:`rotate(-90 42 ${Y(445)})`},'電腦桌 200×70');
+  fu(s,110,505,322,562,'工作台 210×57'); fu(s,85,345,145,395,'3D印表機',115,370);
+  fu(s,335,305,375,562,''); el(s,'text',{x:355,y:Y(470),class:'ft','text-anchor':'middle','dominant-baseline':'middle',transform:`rotate(-90 355 ${Y(470)})`},'工具層架 深40');
+  fu(s,7.5,625,82.5,785,'浴缸',45,705); fu(s,176,640,232,730,'洗手台',204,685);
+  fu(s,262,745,322,862.5,'長椅',292,760);
+  el(s,'ellipse',{cx:395,cy:Y(700),rx:26,ry:17,class:'fu'});
+  stairs(s,455,540,300,11,23,null); line(s,545,300,545,567,'wnH',2); text(s,497,580,'↑上到','ft');
+  /* walls */
+  const ops=[{x1:330,y1:400,x2:330,y2:480},{x1:555,y1:300,x2:555,y2:300},{x1:555,y1:300,x2:630,y2:300},{x1:640,y1:330,x2:640,y2:420},{x1:700,y1:430,x2:780,y2:430},
+    {x1:720,y1:567,x2:800,y2:567},{x1:680,y1:575,x2:680,y2:655},{x1:340,y1:567,x2:440,y2:567},{x1:340,y1:662,x2:420,y2:662},{x1:480,y1:662,x2:560,y2:662},{x1:680,y1:672,x2:680,y2:815},
+    {x1:330,y1:577,x2:330,y2:652},{x1:330,y1:672,x2:330,y2:730},{x1:170,y1:575,x2:170,y2:615},{x1:170,y1:632,x2:170,y2:722},{x1:170,y1:752,x2:170,y2:858},{x1:190,y1:870,x2:310,y2:870},
+    {x1:20,y1:0,x2:310,y2:0},{x1:0,y1:30,x2:0,y2:300},{x1:380,y1:0,x2:600,y2:0},{x1:690,y1:0,x2:860,y2:0},{x1:910,y1:150,x2:910,y2:330},{x1:910,y1:470,x2:910,y2:530},
+    {x1:910,y1:620,x2:910,y2:760},{x1:720,y1:825,x2:870,y2:825},{x1:590,y1:870,x2:632,y2:870},{x1:0,y1:680,x2:0,y2:820},{x1:0,y1:365,x2:0,y2:535},{x1:40,y1:330,x2:300,y2:330}];
+  walls(s,[[0,0,910,0,15],[0,0,0,870,15],[0,870,640,870,15],[640,825,640,870,15],[640,825,910,825,15],[910,0,910,825,15],
+    [0,330,330,330,10],[330,0,330,870,10],[330,300,640,300,10],[450,300,450,567,10],[640,0,640,567,10],[640,430,910,430,10],
+    [0,567,450,567,10],[640,567,910,567,10],[680,567,680,825,10],[330,662,680,662,10],[430,662,430,802,10],[580,662,580,870,10],[330,802,430,802,10],
+    [170,567,170,870,10],[0,620,170,620,10],[170,737,330,737,10]],ops);
+  /* doors */
+  door(s,330,480,80,270,180); door(s,630,300,75,180,90); door(s,640,420,80,270,0); slide(s,700,430,780,430);
+  slide(s,720,567,800,567); door(s,680,655,80,270,0); door(s,440,567,100,180,270);
+  door(s,420,662,75,180,90); door(s,560,662,80,180,90); door(s,330,652,75,270,180); door(s,330,730,58,270,180);
+  slide(s,170,575,170,615); slide(s,170,632,170,722); door(s,170,858,70,270,0); slide(s,190,870,310,870);
+  /* windows */
+  win(s,20,0,310,0,15,'H1',165,-22); win(s,0,30,0,300,15,'H2',-28,165); win(s,380,0,600,0,15,'W1',490,-22); win(s,690,0,860,0,15,'W1',775,-22);
+  win(s,910,150,910,330,15,'W1',934,240); win(s,910,470,910,530,15,'W1',934,500); win(s,910,620,910,760,15,'W1',934,690);
+  win(s,720,825,870,825,15,'W1',795,847); win(s,590,870,632,870,15,'W1',611,892); win(s,0,680,0,820,15,'O',-28,750);
+  win(s,0,365,0,535,15,'W1',-28,450); win(s,40,330,300,330,10,'F',170,345);
+  R.forEach(r=>rlabel(s,r));
+  dimH(s,0,910,-70,'910'); dimH(s,0,330,-110,'330'); dimH(s,330,640,-110,'310'); dimH(s,640,910,-110,'270');
+  dimV(s,-70,0,870,'870'); dimV(s,-110,0,330,'330'); dimV(s,-110,330,567,'237'); dimV(s,-110,567,870,'303');
+  dimV(s,980,0,430,'430',14); dimV(s,980,430,567,'137',14); dimV(s,980,567,825,'258',14);
+  north(s,1010,900);
+}
+function route(s,pts,col){
+  el(s,'polyline',{points:pts.map(p=>p[0]+','+Y(p[1])).join(' '),style:`fill:none;stroke:${col};stroke-width:3;stroke-dasharray:9 5`});
+  const [a,b]=[pts[pts.length-2],pts[pts.length-1]];const d=Math.atan2(b[1]-a[1],b[0]-a[0]),L=16;
+  const q=(t)=>[b[0]-L*Math.cos(d+t),b[1]-L*Math.sin(d+t)];
+  el(s,'polygon',{points:[b,q(0.45),q(-0.45)].map(p=>p[0]+','+Y(p[1])).join(' '),style:`fill:${col}`});
+}
+function drawF2A2(){
+  const s=mk('fig-f2',-330,-200,1250,1010,'A2 二樓平面圖');
+  rect(s,-220,-120,0,900,'',{style:'fill:color-mix(in srgb,var(--land) 10%,transparent)'});
+  text(s,-150,150,'（一樓側庭）','lbl2');
+  const R=[
+    {name:'挑高（下方客廳）',kind:'void',rects:[[0,0,330,330]],at:[165,190]},
+    {name:'小孩房',rects:[[0,330,330,547.5]],at:[230,440]},
+    {name:'男友書房',rects:[[0,547.5,330,800]],at:[185,690]},
+    {name:'走廊',kind:'store',rects:[[330,455,892,547.5],[797,547.5,892,647.5],[330,547.5,420,647.5]],at:[385,505],sm:true},
+    {name:'納戶',kind:'store',rects:[[420,547.5,547,647.5],[330,647.5,592,800]],at:[470,735],sm:true},
+    {name:'三溫暖',kind:'wet',rects:[[330,0,500,250]],at:[450,150],sm:true},
+    {name:'浴室 1624',kind:'wet',rects:[[500,0,670,250]],at:[585,165],sm:true},
+    {name:'排水管PS',kind:'store',rects:[[670,180,740,250]],at:[705,215],sm:true,noArea:true},
+    {name:'更衣間',kind:'store',rects:[[670,0,740,180],[740,0,892,250]],at:[775,45],sm:true},
+    {name:'主臥',rects:[[892,0,1102,550],[820,250,892,455]],at:[1000,450]},
+    {name:'廁所',kind:'wet',rects:[[330,250,420,455]],at:[375,330],sm:true},
+    {name:'洗面脫衣室',kind:'wet',rects:[[420,250,585,455]],at:[460,400],sm:true},
+    {name:'洗衣間',kind:'wet',rects:[[585,250,820,455]],at:[700,320]},
+  ];
+  R.forEach(r=>room(s,r));
+  rect(s,910,-70,1080,0,'r-out'); text(s,995,-40,'陽台70','ft'); line(s,910,-70,1080,-70,'wnH',4);
+  /* furniture */
+  el(s,'circle',{cx:165,cy:Y(165),r:55,class:'rc'});
+  fu(s,825,258,885,448,'壁櫃 深60'); fu(s,925,150,1085,350,'床 160×200'); fu(s,925,352,975,392,''); fu(s,1035,352,1085,392,'');
+  fu(s,830,150,886,245,'吊衣'); fu(s,745,170,805,245,'吊衣'); fu(s,675,10,735,170,'吊衣');
+  fu(s,760,390,818,452,'洗脫烘'); fu(s,695,390,758,452,'水槽'); fu(s,590,395,690,452,'摺衣檯');
+  fu(s,8,350,60,425,''); fu(s,8,435,208,535,'床 100×200'); fu(s,235,350,322,420,'書桌');
+  fu(s,8,575,78,775,'電腦桌'); fu(s,110,735,322,792,'工作台'); fu(s,90,570,150,625,'3D機');
+  fu(s,335,40,380,240,''); rect(s,395,2,435,14,'fu'); text(s,415,32,'進氣口','ft'); el(s,'circle',{cx:480,cy:Y(14),r:8,class:'fu'}); text(s,480,40,'排氣管','ft');
+  fu(s,505,8,665,83,'浴缸',585,45);
+  fu(s,538,375,583,445,'洗手台',560,410);
+  el(s,'ellipse',{cx:370,cy:Y(410),rx:20,ry:15,class:'fu'});
+  fu(s,582,690,592,760,''); rc(s,492,672,582,792); text(s,566,732,'分電盤・PCS','ft'); text(s,525,732,'盤前淨空80','ft'); fu(s,336,760,420,795,'');
+  for(let i=0;i<=11;i++)line(s,547+i*22.5,552.5,547+i*22.5,642.5,'st');
+  /* walls */
+  const ops=[
+    {x1:330,y1:470,x2:330,y2:545},{x1:330,y1:560,x2:330,y2:635},{x1:340,y1:647.5,x2:410,y2:647.5},
+    {x1:340,y1:455,x2:410,y2:455},{x1:475,y1:455,x2:555,y2:455},
+    {x1:430,y1:250,x2:495,y2:250},{x1:510,y1:250,x2:580,y2:250},{x1:680,y1:250,x2:740,y2:250},{x1:745,y1:250,x2:815,y2:250},
+    {x1:420,y1:360,x2:420,y2:430},{x1:585,y1:290,x2:585,y2:370},
+    {x1:892,y1:40,x2:892,y2:120},{x1:892,y1:470,x2:892,y2:545},
+    {x1:0,y1:20,x2:0,y2:310},{x1:20,y1:0,x2:310,y2:0},{x1:0,y1:350,x2:0,y2:530},{x1:40,y1:330,x2:300,y2:330},
+    {x1:0,y1:570,x2:0,y2:780},{x1:40,y1:800,x2:300,y2:800},
+    {x1:520,y1:0,x2:650,y2:0},{x1:760,y1:0,x2:870,y2:0},{x1:930,y1:0,x2:1060,y2:0},
+    {x1:1102,y1:100,x2:1102,y2:450},{x1:892,y1:550,x2:1102,y2:550}];
+  walls(s,[[0,0,1102,0,15],[0,0,0,800,15],[0,800,592,800,15],[592,647.5,592,800,15],[592,647.5,892,647.5,15],[892,550,892,647.5,15],[892,550,1102,550,15],[1102,0,1102,550,15],
+    [0,330,330,330,10],[330,0,330,800,10],[0,547.5,330,547.5,10],
+    [330,250,892,250,10],[330,455,892,455,10],[500,0,500,250,10],[670,0,670,250,10],[740,180,740,250,10],[670,180,740,180,10],[892,0,892,250,10],[892,455,892,550,10],
+    [420,250,420,455,10],[585,250,585,455,10],[820,250,820,455,10],
+    [420,547.5,547,547.5,10],[420,547.5,420,647.5,10],[330,647.5,420,647.5,10],[547,547.5,547,647.5,10],[547,547.5,797,547.5,10]],ops);
+  /* doors */
+  door(s,330,545,75,270,180); door(s,330,635,75,270,180); slide(s,340,647.5,410,647.5);
+  slide(s,340,455,410,455); slide(s,475,455,555,455); 
+  slide(s,430,250,495,250); slide(s,510,250,580,250); slide(s,680,250,740,250); slide(s,745,250,815,250);
+  slide(s,420,360,420,430); slide(s,585,290,585,370);
+  slide(s,892,40,892,120); door(s,892,545,75,270,0);
+  /* windows */
+  win(s,20,0,310,0,15,'H2',165,-22); win(s,0,20,0,310,15,'H1',-28,165);
+  win(s,0,350,0,530,15,'W1',-28,440); win(s,40,330,300,330,10,'F',170,345);
+  win(s,0,570,0,780,15,'W1',-28,675); win(s,40,800,300,800,15,'W1',170,822);
+  win(s,520,0,650,0,15,'O',585,-22); win(s,760,0,870,0,15,'W1',815,-22); win(s,930,0,1060,0,15,'',null);
+  win(s,1102,100,1102,450,15,'W1',1128,275); win(s,892,550,1102,550,15,'',null);
+  win(s,930,550,1060,550,10,'F',995,572);
+  /* routes */
+  route(s,[[850,600],[850,500],[515,500],[515,330],[545,330],[545,265]],'var(--accent)');
+  route(s,[[515,330],[462,330],[462,265]],'var(--win2)');
+  route(s,[[440,215],[440,360],[812,360],[812,80],[960,80],[960,-48]],'var(--ok)');
+  text(s,868,625,'階段','ft');
+  R.forEach(r=>rlabel(s,r));
+  dimH(s,0,1102,-160,'1102'); dimV(s,-260,0,800,'800');
+  dimH(s,0,330,-120,'330'); dimH(s,330,670,-120,'340'); dimH(s,670,892,-120,'222'); dimH(s,892,1102,-120,'210');
+  finishRot(s);
+}
+ROT=true; drawF2A2(); ROT=false;
+function drawSite(){
+  const s=mk('fig-site',-230,-640,1290,1400,'土地配置圖');
+  const ox=50, oy=245;
+  rect(s,-230,-600,1290,0,'road'); text(s,530,-470,'前面道路（東）寬 6.0 m','lbl'); line(s,-230,-300,1290,-300,'dim');
+  rect(s,0,0,1060,1265,'r-room',{style:'fill:color-mix(in srgb,var(--land) 7%,transparent)'});
+  rect(s,0,0,1060,1265,'landb');
+  text(s,-120,640,'南側鄰地','lbl2'); text(s,1175,640,'北側鄰地','lbl2'); text(s,530,1320,'西側鄰地','lbl2');
+  rect(s,ox,oy,ox+545,oy+870,'r-room'); rect(s,ox+545,oy,ox+910,oy+555,'r-garage'); rect(s,ox+545,oy+555,ox+910,oy+825,'r-store'); rect(s,ox+450,oy+555,ox+640,oy+870,'r-store');
+  rect(s,ox,oy,ox+330,oy+330,'r-void',{style:'opacity:.6'});
+  el(s,'polygon',{points:[[ox,oy],[ox+910,oy],[ox+910,oy+825],[ox+640,oy+825],[ox+640,oy+870],[ox,oy+870]].map(p=>p[0]+','+Y(p[1])).join(' '),style:'fill:none;stroke:var(--wall);stroke-width:12'});
+  rect(s,ox+210,oy+870,ox+450,oy+965,'r-room',{style:'stroke:var(--wall);stroke-width:5'}); text(s,ox+390,oy+917,'出窗','ft');
+  rect(s,ox+170,oy+870,ox+330,oy+970,'r-out'); text(s,ox+250,oy+935,'2F 陽台','ft');
+  text(s,ox+270,oy+520,'一樓 LDK・鏡子房／二樓 臥室群','lbl'); text(s,ox+270,oy+490,'屋頂：單斜（西低東高）金屬板・太陽能 3 kW','lbl2');
+  text(s,ox+165,oy+165,'挑高','lbl2'); text(s,ox+727,oy+380,'開放式車庫','lbl'); text(s,ox+775,oy+700,'鏡子房','lbl2'); text(s,ox+545,oy+640,'廁所・淋浴','ft');
+  rect(s,ox+633.5,oy+30,ox+818.5,oy+502,'fu'); text(s,ox+726,oy+250,'Model 3','ft');
+  /* turning path */
+  el(s,'path',{d:`M ${ox+726} ${Y(oy+300)} L ${ox+726} ${Y(30)} Q ${ox+726} ${Y(-300)} ${ox+380} ${Y(-330)} L ${-150} ${Y(-330)}`,class:'arrow','stroke-dasharray':'10 6'});
+  text(s,ox+300,-370,'倒車入庫軌跡（車頭朝路）','ft');
+  dimV(s,ox+880,-600,0,'道路 600',16); dimV(s,ox+880,0,oy,'車庫前 245',16);
+  text(s,ox+1000-150,-560,'迴轉縱深 845 ≥ 520 ✓','ft');
+  /* setbacks & dims */
+  dimH(s,0,1060,-40,'1060'); dimV(s,-60,0,1265,'1265');
+  dimH(s,0,ox,oy+700,'50',14); dimH(s,ox+910,1060,oy+250,'100',14); dimV(s,ox+560,oy+870,1265,'150',14); dimV(s,ox+800,oy+825,1265,'195',14); dimV(s,-25,0,oy,'245',-14);
+  dimH(s,ox,ox+910,oy-30,'910'); dimV(s,ox-25,oy,oy+870,'870',-14);
+  /* equipment */
+  const eq=[[975,1090,'エコキュート貯湯'],[1010,1035,'熱泵'],[930,970,'地暖熱源機'],[860,890,'空調室外機'],[800,830,'空調室外機'],[740,770,'空調室外機']];
+  for(const [y1,y2,t] of eq){rect(s,ox+918,y1,ox+995,y2,'fu');}
+  rect(s,ox+918,1010,ox+1000,1040,'fu');
+  text(s,1180,1050,'エコキュート','ft','start'); text(s,1180,950,'地暖熱源機','ft','start'); text(s,1180,800,'空調室外機×3','ft','start');
+  line(s,1065,1050,1175,1050,'dim');line(s,1065,950,1175,950,'dim');line(s,1065,800,1175,800,'dim');
+  fu(s,ox+910,690,ox+918,720,''); text(s,1180,705,'電表（外牆）','ft','start'); line(s,968,705,1175,705,'dim');
+  text(s,ox+955,oy+120,'設備通道 100','ft');
+  /* fences & planting */
+  line(s,0,4,ox+440,4,'drl',6); text(s,ox+180,75,'矮牆H60+植栽','ft');
+  for(let x=30;x<ox+430;x+=60)el(s,'circle',{cx:x,cy:Y(30),r:12,class:'fu'});
+  rect(s,ox+460,0,ox+540,oy,'',{style:'fill:color-mix(in srgb,var(--furn) 18%,transparent)'}); text(s,ox+500,150,'門廊','ft');
+  line(s,1060,0,1060,0,'dim'); line(s,ox+910+2,4,1060,4,'drl',3); text(s,1010,-18,'門扉','ft');
+  line(s,-4,600,-4,1000,'wnH',4); text(s,-110,800,'木紋鋁格柵 H180','ft');
+  line(s,150,1269,500,1269,'wnH',4); text(s,330,1292,'木紋鋁格柵（陽台遮視線）','ft');
+  north(s,1220,1220);
+}
+function drawSiteA2(){
+  const s=mk('fig-site',-230,-560,1680,1180,'A2 土地配置圖');
+  const ox=220, oy=120, LW=1387, LD=970;
+  rect(s,-230,-520,1620,0,'road'); text(s,686,-380,'前面道路（北）寬 6.0 m','lbl'); line(s,-230,-260,1620,-260,'dim');
+  rect(s,0,0,LW,LD,'r-room',{style:'fill:color-mix(in srgb,var(--land) 7%,transparent)'}); rect(s,0,0,LW,LD,'landb');
+  text(s,-120,520,'東側鄰地','lbl2'); text(s,1500,300,'西側鄰地','lbl2'); text(s,686,1010,'南側鄰地','lbl2');
+  rect(s,0,0,ox,LD,'',{style:'fill:color-mix(in srgb,var(--land) 16%,transparent)'}); text(s,110,960,'側庭 2.2 m','lbl2');
+  for(const [x,y,r] of [[70,160,38],[60,560,30],[80,820,42],[50,730,22]])el(s,'circle',{cx:x,cy:Y(y),r,class:'fu',style:'fill:color-mix(in srgb,var(--land) 30%,transparent);stroke:var(--land)'});
+  const P=(x,y)=>[ox+x,oy+y];
+  el(s,'polygon',{points:[[0,0],[1102,0],[1102,550],[892,550],[892,647.5],[592,647.5],[592,800],[0,800]].map(p=>{const q=P(p[0],p[1]);return q[0]+','+Y(q[1]);}).join(' '),style:'fill:var(--room);stroke:var(--wall);stroke-width:12'});
+  rect(s,ox+737,oy,ox+1102,oy+550,'r-garage'); text(s,ox+920,oy+300,'開放式車庫','lbl');
+  rect(s,ox+827,oy+30,ox+1012,oy+502,'fu'); 
+  text(s,ox+330,oy+450,'一樓 LDK','lbl'); text(s,ox+200,oy+690,'鏡子房','lbl2');
+  rect(s,ox-95,oy+60,ox,oy+300,'r-room',{style:'stroke:var(--wall);stroke-width:5'}); text(s,ox-48,oy+180,'出窗','ft');
+  rect(s,ox-90,oy+330,ox,oy+540,'',{style:'fill:color-mix(in srgb,var(--accent) 22%,transparent);stroke:var(--accent)'}); text(s,ox-45,oy+435,'緣側','ft');
+  /* car path */
+  el(s,'path',{d:`M ${ox+920} ${Y(oy+300)} L ${ox+920} ${Y(20)} Q ${ox+920} ${Y(-260)} ${ox+600} ${Y(-290)} L ${-150} ${Y(-290)}`,class:'arrow','stroke-dasharray':'10 6'});
+  text(s,ox+500,-330,'倒車入庫軌跡','ft');
+  dimV(s,ox+1180,-520,0,'道路 600',16); dimV(s,ox+1180,0,oy,'車庫前 120',16); text(s,ox+1000,-480,'迴轉縱深720≥520✓','ft');
+  /* 設備：車庫南側の空地へ */
+  rect(s,ox+892,oy+550,ox+1102,oy+800,'r-out',{style:'fill:color-mix(in srgb,var(--furn) 10%,transparent);stroke:var(--dim);stroke-dasharray:6 4'});
+  fu(s,ox+905,oy+553,ox+1015,oy+598,'①',ox+960,oy+575); rect(s,ox+905,oy+598,ox+1015,oy+648,'rc');
+  fu(s,ox+1020,oy+553,ox+1100,oy+583,'②',ox+1060,oy+568); rect(s,ox+1020,oy+583,ox+1100,oy+646,'rc');
+  fu(s,ox+905,oy+700,ox+985,oy+729,'③',ox+945,oy+715); rect(s,ox+905,oy+729,ox+985,oy+789,'rc');
+  fu(s,ox+1005,oy+700,ox+1085,oy+730,'④',ox+1045,oy+715); rect(s,ox+1005,oy+730,ox+1085,oy+790,'rc');
+  fu(s,ox+1102,oy+150,ox+1110,oy+180,''); text(s,ox+1140,oy+165,'⑤電表','ft');
+  rect(s,ox+592,oy+650,ox+890,oy+800,'r-out'); text(s,ox+740,oy+725,'洗濯物干し・ゴミ置場','ft');
+  /* fences */
+  line(s,0,4,ox+400,4,'drl',6); text(s,ox+180,100,'矮牆H60+植栽','ft');
+  rect(s,ox+402,0,ox+500,oy,'',{style:'fill:color-mix(in srgb,var(--furn) 18%,transparent)'}); text(s,ox+451,60,'門廊','ft');
+  line(s,-4,100,-4,900,'wnH',4); text(s,-110,300,'木紋鋁格柵H180','ft');
+  /* dims */
+  dimH(s,0,LW,-40,String(LW)); dimV(s,-60,0,LD,String(LD));
+  dimH(s,0,ox,oy+620,'220',14); dimH(s,ox+1102,LW,oy+880,'65',14); dimV(s,ox+300,oy+800,LD,'50',14); dimV(s,-25,0,oy,'120',-14);
+  dimH(s,ox,ox+1102,oy-30,'1102'); dimV(s,ox+1230,oy,oy+800,'800',16);
+  finishRot(s);
+}
+ROT=true; drawSiteA2(); ROT=false;
+function drawSection(){
+  const s=mk('fig-sec',-120,-80,1420,1120,'剖面示意');
+  const S=245,N=1115,B=1265;
+  rect(s,-120,-80,1420,0,'',{style:'fill:color-mix(in srgb,var(--land) 15%,transparent)'}); line(s,-120,0,1420,0,'dim');
+  text(s,-60,-30,'GL','lbl2');
+  rect(s,S,0,N,45,'sec'); /* 1F slab */
+  rect(s,S+330,327,N,345,'sec'); /* 2F floor */
+  line(s,S,45,S,683,'wl',15); line(s,N,45,N,570,'wl',15);
+  line(s,S+333,45,S+333,155,'wl',15); /* half wall */
+  poly(s,[[S-95,695],[S,683],[N,570],[N+20,568]],'roof');
+  line(s,S+330,345,S+330,620,'dim'); text(s,S+340,560,'挑高邊','ft','start');
+  win(s,S,400,S,620,15,'H1',S-35,510); win(s,S,140,S,210,15,'F',S-30,175);
+  text(s,S+160,250,'客廳（挑高）','lbl'); text(s,S+160,225,'天花 斜 5.6～6.1 m','ft');
+  el(s,'circle',{cx:S+165,cy:Y(520),r:30,class:'rc'}); text(s,S+165,470,'吊扇','ft');
+  text(s,S+520,210,'書桌・廚房','lbl'); text(s,S+520,185,'天花 2.40','ft');
+  text(s,S+620,450,'二樓 書房・洗面浴室','lbl'); text(s,S+620,425,'天花 2.40～2.20','ft');
+  /* heights */
+  dimV(s,1210,0,45,'45',16); dimV(s,1210,45,335,'樓高 290',16); dimV(s,1210,335,570,'235',16);
+  dimV(s,60,0,683,'東側簷高 683 ≤ 700 ✓',-16); dimV(s,1290,0,570,'西側簷高 570',16);
+  /* north height limit */
+  const yl=B-(1000-500)/0.6;
+  poly(s,[[B,500],[yl,1000],[-100,1000]],'lim'); text(s,yl-260,1020,'絕對高度 10 m','ft');
+  text(s,B+10,500,'5 m','ft','start'); text(s,1000,820,'第一種高度地區斜線 5 m＋0.6×(到西界距離)','ft');
+  line(s,B,0,B,1050,'dim'); text(s,B,1080,'西側鄰地界','ft'); line(s,0,0,0,1050,'dim'); text(s,0,1080,'道路境界（東）','ft');
+  text(s,N+75,620,'西牆處限高 590','ft'); text(s,N+75,595,'實際 570 ✓','ft');
+  dimH(s,N,B,-40,'150'); dimH(s,S,N,-40,'870'); dimH(s,0,S,-40,'245');
+  /* sun */
+  const t78=Math.tan(78*Math.PI/180), t31=Math.tan(31*Math.PI/180);
+  line(s,S-95-260/t78,695+260,S,695-95*t78,'arrow');
+  line(s,S-420,510+420*t31,S+(510-45)/t31,45,'arrow');
+  text(s,S-60,940,'夏至正午 78°：深簷 95 擋住高窗','ft','start'); text(s,-110,760,'冬至正午 31°：從高窗射入約 7 m','ft','start');
+  text(s,700,1050,'屋頂斜度 約 1.3／10（單斜，西低東高）','ft');
+}
+function drawSectionA2(){
+  const s=mk('fig-sec',-780,-90,920,1120,'A2 剖面示意（南北向，x=1.65 m）');
+  const F1=30,F2=315,RN=695,SL=0.13;
+  const roof=h=>RN-SL*h;
+  rect(s,-780,-90,920,0,'',{style:'fill:color-mix(in srgb,var(--land) 15%,transparent)'}); line(s,-780,0,920,0,'dim'); text(s,-740,-30,'GL','lbl2');
+  rect(s,-720,0,-120,6,'road'); text(s,-420,40,'前面道路 6.0 m','lbl2');
+  line(s,-720,0,-720,1050,'dim'); text(s,-720,1080,'道路反對側境界','ft'); line(s,-120,0,-120,1050,'dim'); text(s,-120,1080,'北側境界','ft'); line(s,850,0,850,1050,'dim'); text(s,850,1080,'南側境界','ft');
+  rect(s,0,0,800,F1,'sec'); rect(s,330,F2-18,800,F2,'sec');
+  line(s,0,F1,0,RN,'wl',15); line(s,800,F1,800,roof(800),'wl',15);
+  poly(s,[[-60,RN+8],[0,RN],[800,roof(800)],[860,roof(860)]],'roof');
+  line(s,330,F2,330,roof(330)-60,'dim'); text(s,340,F2+330,'挑高邊','ft','start');
+  win(s,0,F2+250,0,RN-60,15,'H',-30,F2+330);
+  text(s,165,F2+250,'客廳（挑高）','lbl'); text(s,165,F2+225,'天花 6.4 → 6.0 m（一樓地板起算）','ft');
+  el(s,'circle',{cx:165,cy:Y(roof(165)-60),r:28,class:'rc'}); text(s,165,roof(165)-120,'吊扇・木樑','ft');
+  text(s,165,130,'一樓 LDK（淨高 2.55 m）','lbl2'); text(s,675,130,'鏡子房','lbl2');
+  text(s,440,F2+110,'書房','lbl2'); text(s,440,F2+85,'天花 3.1 → 2.8 m','ft'); text(s,675,F2+110,'浴室','lbl2'); text(s,675,F2+85,'天花 2.8 → 2.5 m','ft');
+  dimV(s,-40,0,F1,'30',-14); dimV(s,-40,F1,F2,'樓高 285',-14); dimV(s,-90,0,RN,'北牆簷高 695 ≤ 700 ✓',-16);
+  dimV(s,850,0,roof(800),'南牆高 591',16);
+  const xr=-720+(1000-500)/0.6;
+  poly(s,[[-720,500],[xr,1000],[880,1000]],'lim');
+  text(s,-250,860,'北側斜線 5 m＋0.6×（道路反對側から）','ft'); text(s,xr+40,1020,'絕對高度 10 m','ft','start');
+  text(s,-40,1030,'北牆處限高 932（距離 7.2 m）','ft','start'); text(s,-720,520,'5 m','ft','start');
+  dimH(s,-720,-120,-45,'道路 600'); dimH(s,-120,0,-45,'120'); dimH(s,0,800,-45,'800'); dimH(s,800,850,-45,'50');
+  text(s,300,1100,'屋頂：南向片流れ（北高南低 0.13），南向屋面放太陽能','ft');
+}
+drawSectionA2();
+/* PLAN-RENDER4 */
+</script>
+</body>
+</html>
