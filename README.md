@@ -37,3 +37,6 @@
 ## 3D モデル（`models/`）
 
 - `GlamVelvetSofa.glb`: © 2021 Wayfair, LLC — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[KhronosGroup/glTF-Sample-Assets](https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/GlamVelvetSofa) より。長さ 1.8 m に縮小し、布の色を青に変更して使用。
+- `assets/models/cats/sleeping_cats.glb`: 「Sleeping Cat」by psucdeviantart — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[Sketchfab](https://sketchfab.com/3d-models/3f7608e2b6b248bf83db09fb21125c2b)（UID 3f7608e2b6b248bf83db09fb21125c2b）より。理想之家（家事動線版）2F ごろ寝區の上で寝ている猫として使用。大きさを約 40 cm に合わせ、無光源（unlit）の材質をライティング対応の材質に置き換えて使用（モデルのファイル内の作者情報は残してある）。
+- `assets/models/plants/stylized_bush.glb`: 「Stylized Bush」by danielpetrov — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[Sketchfab](https://sketchfab.com/3d-models/9d9ce79d3ae040619e96d5b22c7de1a6)（UID 9d9ce79d3ae040619e96d5b22c7de1a6）より。理想之家（家事動線版）の庭の丸い低木として使用。大きさを調整し、葉の半透明をくり抜き表示（alphaTest）に変更して使用。
+- `assets/models/plants/fern_plant.glb`: 「Plant Bush」by Batuhan13 — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[Sketchfab](https://sketchfab.com/3d-models/42cb7fad10ba44ecbc9ae9cf5fdd63b6)（UID 42cb7fad10ba44ecbc9ae9cf5fdd63b6）より。理想之家（家事動線版）の庭のフェンス際と屋内の鉢植えとして使用。大きさを調整し、貼り付け画像を 2K から縮小（色 800 px・法線 1K の JPEG）して圧縮（4.4 MB → 約 0.7 MB）して使用。網址に `?plants=old` を付けると、庭の植栽を元のプログラム生成版に戻せる。
