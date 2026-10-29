@@ -129,7 +129,8 @@ async function runHouse(house, o, shared) {
   fs.mkdirSync(path.join(o.out, 'reports'), { recursive: true });
   fs.writeFileSync(path.join(o.out, 'reports', house + '.json'), JSON.stringify({ house, generated: new Date().toISOString(), root: o.root, checks: res.checks, secs: res.secs, counts: res.counts, notes, issues: fresh, knownCount: cls.known.length, whitelistedCount: cls.wl.length }, null, 1));
   fs.writeFileSync(path.join(o.out, 'reports', house + '.txt'), R.summaryText(res));
-  if (o.update) { const f = R.writeBaseline(QA, house, issues, base); notes.push('已更新基準檔：' + path.relative(ROOT, f)); }
+  if (o.update) { const ranChecks = new Set(); want.forEach(n => { if (n === 'door') { ranChecks.add('door-sweep'); ranChecks.add('door-gap'); } else ranChecks.add(n); });
+    const f = R.writeBaseline(QA, house, issues, base, ranChecks); notes.push('已更新基準檔：' + path.relative(ROOT, f)); }
   return res;
 }
 
