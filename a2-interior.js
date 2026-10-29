@@ -9,7 +9,7 @@ export const ACCENTS=[
 ];
 /* wall palette while the proposal is on (design plan section 1) */
 const SLAB_ON=0xe6dfd2;
-const WALL_ON={oat:0xe7ddcb,hall:0xe5dbc9,utility:0xe6ddcd,genkan:0xddd2c0,peach:0xe8d4c2,wc:0xe0ded6,dress:0xe6dfd3,mist:0xd4d0c6,sage:0xa3b39d,a2kid:0xe2c0a8};
+const WALL_ON={oat:0xe1d4bd,hall:0xdfd2bb,utility:0xe2d7c4,genkan:0xd6c9b2,peach:0xe6cfba,wc:0xdddad2,dress:0xe2d9ca,mist:0xd2cdc2,sage:0xa3b39d,a2kid:0xe2c0a8};
 
 /* curtains in the engine's format: [storey, wall side, a, b, wall line, auto, {color}, {off, top, bottom}] (plan x = n, y = e) */
 export function curtains(){
@@ -57,6 +57,18 @@ function cvWash(THREE){
   const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t;
 }
 
+
+/* flat woven rugs as one small canvas each (the catalogue's long-pile rugs cost 15 meshes and a 1024 texture per rug) */
+function cvRug(THREE,kind){
+  return canvasTex(THREE,256,256,function(g,w,h){
+    if(kind==='round'){ g.fillStyle='#eee5d5'; g.fillRect(0,0,w,h); const c=w/2;
+      [[0.9,0.935,'#c9ab88'],[0.78,0.8,'#a9b8a2'],[0.6,0.615,'#d6c3a6']].forEach(function(q){ g.strokeStyle=q[2]; g.lineWidth=(q[1]-q[0])*c; g.beginPath(); g.arc(c,c,(q[0]+q[1])/2*c,0,Math.PI*2); g.stroke(); });
+      g.fillStyle='rgba(120,100,80,0.05)'; for(let i=0;i<900;i++) g.fillRect(Math.random()*w,Math.random()*h,2,2); }
+    else { g.fillStyle='#ece3d3'; g.fillRect(0,0,w,h); g.fillStyle='#d9c8ac'; for(let y=18;y<h;y+=36) g.fillRect(0,y,w,10); g.fillStyle='#b9c6b4'; g.fillRect(0,0,w,6); g.fillRect(0,h-6,w,6); g.fillRect(0,0,6,h); g.fillRect(w-6,0,6,h);
+      g.fillStyle='rgba(120,100,80,0.05)'; for(let i=0;i<900;i++) g.fillRect(Math.random()*w,Math.random()*h,2,2); }
+  });
+}
+
 /* runs before the house is built: accent roles must exist when the walls pick their materials */
 const ORIG={};
 export function materials(E){
@@ -81,7 +93,7 @@ export function create(THREE,E,C){
   const swap=function(nw,old){ X.mats.push([nw,old]); return nw; };
   const oakFloor=function(old,key){
     const m=old.clone(); m.color.setHex(0xffffff); m.userData=Object.assign({},old.userData);
-    FIN.pbrMaps(m,'oak_planks',1.2/1.818,1.2/0.909,{roughness:1.1,normalScale:0.7,color:0xf3e6d0});
+    FIN.pbrMaps(m,'oak_planks',1.2/1.818,1.2/0.909,{rough:false,normalScale:0.7,color:0xf3e6d0}); m.roughness=0.62;
     FL[key]=m; return swap(m,old); };
   const FLOORS=new Map([[FL.wood,oakFloor(FL.wood,'a2oak')],[FL.woodD,oakFloor(FL.woodD,'a2oakD')]]);
   const replaceMat=function(root,map){
@@ -93,9 +105,9 @@ export function create(THREE,E,C){
   /* ---- per-storey group for everything the proposal adds ---- */
   const G=[new THREE.Group(),new THREE.Group()];
   G.forEach(function(g,l){ g.name='a2interior'+l; LG[l].add(g); });
-  /* zones: merged meshes stay a few metres wide, so the engine can still skip what is out of view */
+  /* zones: the living area is one group (it is seen as a whole); the rooms around it share another */
   const ZG=new Map();
-  const Z=function(l,x,z){ const k=l+':'+Math.floor(x/2.5)+':'+Math.floor(z/3); let g=ZG.get(k); if(!g){ g=new THREE.Group(); G[l].add(g); ZG.set(k,g); } return g; };
+  const Z=function(l,x,z){ const k=l+':'+(l===0&&(x<3||z<4.3||x>8.8)?'s':'m'); let g=ZG.get(k); if(!g){ g=new THREE.Group(); G[l].add(g); ZG.set(k,g); } return g; };
   const B=function(l,mat,x0,x1,z0,z1,y0,y1,o){ return bx(Z(l,(x0+x1)/2,(z0+z1)/2),x0,x1,z0,z1,base(l)+y0,base(l)+y1,mat,o); };
   const col=function(l,x0,x1,z0,z1,y0,y1){ const c=E.addCol(l,x0,x1,z0,z1,base(l)+y0,base(l)+y1,'x'); X.cols.push(c); return c; };
   /* a catalogue piece at plan (e, n) facing a compass side of the engine (N = -z, S = +z, E = +x, W = -x) */
@@ -169,16 +181,93 @@ export function create(THREE,E,C){
     [-0.6,0.6].forEach(function(d){ B(0,M.dark,px-0.003,px+0.003,pz+d-0.003,pz+d+0.003,y+0.07,yc); });
   })();
 
+  /* ---- long desk behind the sofa (reference photo 2): one white marble piece with a rounded west end and a low back rim ---- */
+  (function(){
+    const X0=4.385, X1=5.185, Z0=8.545, Z1=10.745, R=0.25, TY=0.70, TT=0.04;
+    const whiteM=mk('a2marble',0xe9e5de,{roughness:0.2,envMapIntensity:1.1}); FIN.pbrMaps(whiteM,'marble_white',1.4,1.4,{normal:false,rough:false,color:0xe9e5de});
+    const frontM=mk('a2drawer',0xf3f1ec,{roughness:0.45});
+    const arc=function(cx,cz,a0,a1,n){ const o=[]; for(let i=0;i<=n;i++){ const a=a0+(a1-a0)*i/n; o.push([cx+R*Math.cos(a),cz+R*Math.sin(a)]); } return o; };
+    /* outline of the top, counter-clockwise in (x, -z): north edge, rounded north-west corner, west edge, rounded south-west corner, south edge */
+    const pts=[[X0,Z1],[X1,Z1],[X1,Z0+R]];
+    arc(X1-R,Z0+R,0,-Math.PI/2,10).forEach(function(q){ pts.push(q); });          // north-west corner: from (X1, Z0+R) round to (X1-R, Z0)
+    pts.push([X0+R,Z0]);
+    arc(X0+R,Z0+R,-Math.PI/2,-Math.PI,10).forEach(function(q){ pts.push(q); });   // south-west corner: from (X0+R, Z0) round to (X0, Z0+R)
+    const shape=new THREE.Shape(pts.map(function(q){ return new THREE.Vector2(q[0],-q[1]); }));
+    const top=new THREE.Mesh(new THREE.ExtrudeGeometry(shape,{depth:TT,bevelEnabled:false}),whiteM);
+    top.rotation.x=-Math.PI/2; top.position.y=base(0)+TY; top.castShadow=top.receiveShadow=true; Z(0,(X0+X1)/2,(Z0+Z1)/2).add(top);
+    /* a strip following a polyline (half width hw, from y0 up h) */
+    const strip=function(path,hw,y0,h,mat){
+      const L=[],Rr=[]; for(let i=0;i<path.length;i++){ const a=path[Math.max(0,i-1)], b=path[Math.min(path.length-1,i+1)], dx=b[0]-a[0], dz=b[1]-a[1], d=Math.hypot(dx,dz)||1, nx=-dz/d, nz=dx/d;
+        L.push([path[i][0]+nx*hw,path[i][1]+nz*hw]); Rr.push([path[i][0]-nx*hw,path[i][1]-nz*hw]); }
+      const poly=L.concat(Rr.reverse()), sh=new THREE.Shape(poly.map(function(q){ return new THREE.Vector2(q[0],-q[1]); }));
+      const m=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:h,bevelEnabled:false}),mat); m.rotation.x=-Math.PI/2; m.position.y=base(0)+y0; m.castShadow=m.receiveShadow=true; Z(0,(X0+X1)/2,(Z0+Z1)/2).add(m); };
+    const rim=[[X1-0.02,Z1-0.02],[X1-0.02,Z0+R]]; arc(X1-R,Z0+R,0,-Math.PI/2,10).forEach(function(q){ rim.push([q[0]-0.02*Math.cos(Math.atan2(q[1]-(Z0+R),q[0]-(X1-R))),q[1]-0.02*Math.sin(Math.atan2(q[1]-(Z0+R),q[0]-(X1-R)))]); });
+    rim.push([X0+R,Z0+0.02]); arc(X0+R,Z0+R,-Math.PI/2,-Math.PI,10).forEach(function(q){ const a=Math.atan2(q[1]-(Z0+R),q[0]-(X0+R)); rim.push([q[0]-0.02*Math.cos(a),q[1]-0.02*Math.sin(a)]); });
+    strip(rim,0.02,TY+TT,0.15,whiteM);                    // low back rim, wrapped round the west end
+    const skirt=[]; arc(X1-R,Z0+R,0,-Math.PI/2,10).forEach(function(q){ skirt.push([q[0],q[1]]); }); skirt.push([X0+R,Z0]); arc(X0+R,Z0+R,-Math.PI/2,-Math.PI,10).forEach(function(q){ skirt.push(q); });
+    strip(skirt,0.02,0,TY,whiteM);                         // the curved end comes down to the floor in one piece
+    /* three drawers hung under the east end */
+    B(0,gapM,4.50,5.14,10.16,10.69,0.30,0.70);
+    [0.31,0.44,0.57].forEach(function(y){ B(0,frontM,4.488,4.50,10.162,10.688,y,y+0.12); });
+    B(0,frontM,4.50,5.14,10.69,10.73,0.0,0.70);            // end panel
+    /* outlet strip on the rim */
+    B(0,frontM,5.123,5.145,9.15,10.0,0.78,0.83); for(let z=9.25;z<9.95;z+=0.17) B(0,M.black,5.1215,5.123,z,z+0.04,0.795,0.815,{cast:false});
+    /* things on the desk: ultrawide monitor, keyboard, mouse, books, pen cup, a small lamp at the curved end */
+    B(0,M.tv,4.99,5.02,9.26,10.08,1.00,1.46); B(0,M.black,4.998,5.0,9.275,10.065,1.01,1.45,{cast:false});
+    B(0,M.dark,5.0,5.015,9.65,9.69,0.745,1.0); B(0,M.dark,4.93,5.07,9.57,9.77,0.74,0.75);
+    B(0,frontM,4.60,4.82,9.45,9.89,0.74,0.752); B(0,M.black,4.605,4.815,9.455,9.885,0.752,0.754,{cast:false});
+    B(0,frontM,4.66,4.74,10.0,10.04,0.74,0.756);
+    B(0,M.cabF,4.80,5.05,10.40,10.62,0.74,0.77); B(0,M.pot,4.84,5.0,10.42,10.6,0.77,0.795); B(0,M.entry,4.88,5.06,10.44,10.58,0.795,0.82);
+    E.cylm(Z(0,4.55,10.6),4.55,10.62,0.035,0.035,0.74,0.82,M.black,14);
+    const lampG=Z(0,5.0,8.8); E.cylm(lampG,5.0,8.82,0.045,0.05,0.74,0.76,M.black,14); E.cylm(lampG,5.0,8.82,0.012,0.012,0.76,0.9,M.black,8);
+    const dome=new THREE.Mesh(new THREE.SphereGeometry(0.075,20,10,0,Math.PI*2,0,Math.PI/2),E.lampMat); dome.position.set(5.0,0.9,8.82); dome.scale.y=0.7; lampG.add(dome);
+    col(0,X0,X1,Z0,Z1,0,0.8);
+    /* the lift desk in the plan is hidden while the proposal is on */
+    const mv=E.FS.movers.find(function(q){ return q.id==='deskL'; });
+    if(mv){ const own=E.furnCols.filter(function(c){ return c.x0>=X0-0.05&&c.x1<=X1+0.05&&c.z0>=Z0-0.05&&c.z1<=Z1+0.05&&c.l===0; });
+      X.hidden.push(function(on){ mv.piece.group.visible=!on; own.forEach(function(c){ const i=E.furnCols.indexOf(c); if(on&&i>=0) E.furnCols.splice(i,1); if(!on&&i<0) E.furnCols.push(c); }); }); }
+  })();
+
+  /* sheer vertical blind between sofa and desk, hung from a plaster bulkhead (2.4 m at the north edge of the desk zone) */
+  (function(){
+    const x=5.27, z0=8.64, z1=10.74, yTop=2.4, yBot=0.12, n=Math.round((z1-z0)/0.115), pos=[], idx=[], nor=[];
+    for(let i=0;i<n;i++){ const zc=z0+(i+0.5)*(z1-z0)/n, a=(i%2?1:-1)*0.5, hw=0.04, dz=Math.cos(a)*hw, dx=Math.sin(a)*hw, b=pos.length/3;
+      pos.push(x-dx,yBot,zc-dz, x+dx,yBot,zc+dz, x+dx,yTop,zc+dz, x-dx,yTop,zc-dz); nor.push(1,0,0,1,0,0,1,0,0,1,0,0); idx.push(b,b+1,b+2,b,b+2,b+3); }
+    const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3)); g.setIndex(idx);
+    const sheer=mk('a2sheer',0xf7f4ee,{roughness:0.9,transparent:true,opacity:0.4,side:THREE.DoubleSide,depthWrite:false}); const m=new THREE.Mesh(g,sheer); m.renderOrder=1; Z(0,x,(z0+z1)/2).add(m);
+    B(0,M.cabF,x-0.09,x+0.09,z0-0.02,z1+0.02,yTop,yTop+0.16);
+  })();
+  /* long pendant over the desk (hung from the ceiling over the east half; the west end overhangs) */
+  (function(){
+    const px=4.85, z0=8.8, z1=10.7, y=2.02;
+    B(0,metalM,px-0.03,px+0.03,z0,z1,y,y+0.06); B(0,E.lampMat,px-0.024,px+0.024,z0+0.03,z1-0.03,y-0.012,y);
+    [10.0,10.55].forEach(function(z){ B(0,M.dark,px-0.003,px+0.003,z-0.003,z+0.003,y+0.06,2.55); });
+  })();
+  /* living-room furnishing around the TV wall */
+  put(0,'wallSpeaker',855,846,'W',null,{y:1.1}); put(0,'wallSpeaker',1085,846,'W',null,{y:1.1});
+
+  /* ---- entry: dark batten screen on the shoe cabinet facing the door (the first thing seen), a bench by the east wall ---- */
+  (function(){
+    B(0,backM,7.40,7.415,7.02,7.90,0.05,2.4);
+    for(let z=7.035;z<7.88;z+=0.05) B(0,woodD,7.415,7.445,z,z+0.03,0.05,2.4);
+    B(0,M.oak,7.75,8.35,7.58,7.90,0.34,0.38); [[7.80,7.62],[7.80,7.86],[8.28,7.62],[8.28,7.86]].forEach(function(q){ B(0,M.dark,q[0]-0.015,q[0]+0.015,q[1]-0.015,q[1]+0.015,0,0.34); });
+    col(0,7.75,8.35,7.58,7.90,0,0.4);
+  })();
+
+  /* ---- rugs ---- */
+  const rugRound=function(l,e,n,r){ const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,0.012,48),E.lam(0xffffff,{roughness:1,map:cvRug(THREE,'round')})); m.position.set(n/100,base(l)+0.008,e/100); m.receiveShadow=true; Z(l,n/100,e/100).add(m); };
+  const rugRect=function(l,e,n,w,d){ const m=new THREE.Mesh(new THREE.BoxGeometry(d,0.012,w),E.lam(0xffffff,{roughness:1,map:cvRug(THREE,'rect')})); m.position.set(n/100,base(l)+0.008,e/100); m.receiveShadow=true; Z(l,n/100,e/100).add(m); };
+
   /* ---- 1F ---- */
-  put(0,'doormat',707,815,'N'); put(0,'umbrellaStand',772,838,'N');
-  put(0,'rugRound',969,665,'E',Catalog.roundRug(1.25,'plain',24,0,false));
+  
+  rugRound(0,969,665,1.25);
   put(0,'floorLamp',1105,700,'E');
-  put(0,'artLand',915,308,'E',null,{}); put(0,'artLand',1045,308,'E',null,{}); put(0,'wallClock',980,308,'E');
-  put(0,'rugBed',960,170,'E',null,{}); put(0,'plant',1135,272,'E',Catalog.plant(0.75));
+  put(0,'artLand',915,308,'E',null,{}); put(0,'artLand',1045,308,'E',null,{});
+  rugRect(0,960,170,2.0,2.4); put(0,'plant',1135,272,'E',Catalog.plant(0.75));
   /* ---- 2F ---- */
-  put(1,'rugBed',162,610,'E',null,{scale:0.9}); put(1,'plantS',92,808,'E');
-  put(1,'rugRound',1010,420,'E',Catalog.roundRug(0.9,'plain',24,0,false)); put(1,'plantS',1135,262,'E');
-  put(1,'rugRoundSun',990,175,'E'); put(1,'plantS',870,230,'E');
+  rugRect(1,162,610,1.9,2.3); put(1,'plantS',92,808,'E');
+  rugRound(1,1010,420,0.9); put(1,'plantS',1135,262,'E');
+  rugRound(1,990,175,0.7); put(1,'plantS',870,230,'E');
 
   /* static pieces lose their own groups so the engine merges the whole proposal per material (a few draw calls instead of one set per piece) */
   X.finish=function(){
