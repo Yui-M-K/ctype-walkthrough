@@ -597,6 +597,12 @@ site:function(E){
 },
 layout:function(E){
   const {Catalog}=E;
+  const makeCar=function(){ const P=Catalog.car(); if(/[?&]car=old\b/.test(location.search)||!E.glb) return P;   // ?car=old keeps the procedural car; a failed GLB load leaves it in place
+    let swapped=false; (P.actions||[]).forEach(function(a){ const o=a.on; a.on=function(){ return !swapped&&(o?o():true); }; });   // the GLB is one solid body: no doors, hood or boot to work
+    E.glb('cars/tesla_model3_darkgray.glb').then(function(sc){ const g=sc.clone(true); g.traverse(function(o){ if(!o.isMesh) return; o.castShadow=!(o.material&&o.material.transparent); o.receiveShadow=true;
+        const m=o.material; if(m&&!m.userData.tuned){ m.userData.tuned=true; if(m.name==='CAR_PAINT'){ m.metalness=0.75; m.roughness=0.3; m.envMapIntensity=1.0; } else if(m.transparent){ m.depthWrite=false; } m.needsUpdate=true; } });
+      g.updateMatrixWorld(true); const bb=new THREE.Box3().setFromObject(g); g.position.y=-bb.min.y; P.group.children.slice().forEach(function(c){ c.visible=false; }); P.group.add(g); swapped=true; if(E.renderer) E.renderer.shadowMap.needsUpdate=true; }).catch(function(e){ console.warn('tesla_model3_darkgray.glb',e); });
+    return P; };
 /* default furnishing: [id, type, storey, plan x, plan y, facing N/E/S/W, (make)] — everything here is movable in edit mode */
 return [
   /* 2F living: corridor along the stair wall from the stair top to flight B; TV and clock on the east wall, cat walkway on the south wall beside the lounging bay */
@@ -629,7 +635,7 @@ return [
   /* 1F genkan, mirror room, garage */
   ['keys','keyRack',0,265.5,725,'W',null,{off:true}],['lampR','floorLamp',1,255,540,'E',null,{off:true}],['shoesW','shoesHer',0,240,739,'W'],['shoesM','shoesHim',0,240,766,'W'],
   ['artHall1','artLand',0,265.5,505,'W',function(){ return Catalog.picture(1.0,0.5,1.7); }],['plantH','plant',0,240,385,'W'],
-  ['car','car',0,424,565,'S'],
+  ['car','car',0,424,565,'S',makeCar],
   /* 3F bedroom */
   ['bed','bed',2,446,670,'W'],['rugBed','rugBed',2,430,670,'N'],
   ['artBed','artPortrait',2,249.5,795,'E'],
