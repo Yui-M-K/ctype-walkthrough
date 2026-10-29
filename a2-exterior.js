@@ -18,11 +18,11 @@ function panelTextures(THREE){
       const x=i*PW, y=j*PH, L=53+r()*7;
       g.fillStyle='hsl('+(195+r()*40)+','+(2+r()*2.5)+'%,'+L+'%)'; g.fillRect(x,y,PW,PH);
       for(let k=0;k<34;k++){ const bx=x+r()*PW, by=y+r()*PH, br=50+r()*230, dark=r()<0.5, gr=g.createRadialGradient(bx,by,0,bx,by,br);
-        gr.addColorStop(0,dark?'rgba(40,40,40,0.045)':'rgba(255,255,255,0.05)'); gr.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=gr; g.fillRect(x,y,PW,PH); }
+        gr.addColorStop(0,dark?'rgba(40,40,40,0.075)':'rgba(255,255,255,0.075)'); gr.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=gr; g.fillRect(x,y,PW,PH); }
       g.save(); g.beginPath(); g.rect(x,y,PW,PH); g.clip();
       for(let k=0;k<4;k++){ g.strokeStyle='rgba('+(r()<0.5?'255,255,255':'40,42,48')+','+(0.03+r()*0.04)+')'; g.lineWidth=0.8+r()*2.2; g.beginPath();
         const sx=x+r()*PW, sy=y+r()*PH; g.moveTo(sx,sy); g.bezierCurveTo(sx+r()*300-100,sy+r()*200-100,sx+r()*400-100,sy+r()*200-100,sx+r()*600-150,sy+r()*300-150); g.stroke(); }
-      for(let k=0;k<5200;k++){ g.fillStyle=r()<0.5?'rgba(20,22,26,0.07)':'rgba(255,255,255,0.07)'; const s=1+r()*2; g.fillRect(x+r()*PW,y+r()*PH,s,s); }
+      for(let k=0;k<9000;k++){ g.fillStyle=r()<0.5?'rgba(20,22,26,0.1)':'rgba(255,255,255,0.1)'; const s=1+r()*3; g.fillRect(x+r()*PW,y+r()*PH,s,s); }
       g.restore();
     }
     g.fillStyle='#5f6164'; for(let i=0;i<=2;i++){ g.fillRect(i*PW-3,0,6,H); g.fillRect(0,i*PH-3,W,6); }
@@ -38,8 +38,8 @@ function panelTextures(THREE){
 
 function woodTexture(THREE){
   const t=canvasTex(THREE,512,512,function(g,w,h){
-    g.fillStyle='#8f5429'; g.fillRect(0,0,w,h); const r=rng(23);
-    for(let k=0;k<340;k++){ const x=r()*w, lw=1+r()*3.2; g.strokeStyle=r()<0.62?'rgba(92,46,18,'+(0.12+r()*0.25)+')':'rgba(222,150,88,'+(0.1+r()*0.2)+')'; g.lineWidth=lw;
+    g.fillStyle='#82471d'; g.fillRect(0,0,w,h); const r=rng(23);
+    for(let k=0;k<340;k++){ const x=r()*w, lw=1+r()*3.2; g.strokeStyle=r()<0.62?'rgba(88,50,22,'+(0.12+r()*0.25)+')':'rgba(226,170,110,'+(0.1+r()*0.2)+')'; g.lineWidth=lw;
       g.beginPath(); g.moveTo(x,0); g.bezierCurveTo(x+(r()-0.5)*8,h*0.3,x+(r()-0.5)*8,h*0.65,x+(r()-0.5)*4,h); g.stroke(); }
   });
   t.repeat.set(2,2); return t;
@@ -82,7 +82,7 @@ export function materials(THREE,E){
   M.roof.color.setHex(0x2b2d31); M.roof.roughness=0.55;
   M.slab.color.setHex(0x4a4d51);
   M.grass.color.setHex(0x86a06c);
-  M.glass.color.setHex(0xa9c4d2); M.glass.opacity=0.28; M.glass.envMapIntensity=1.5;
+  M.glass.color.setHex(0x86a3b4); M.glass.opacity=0.4; M.glass.envMapIntensity=2;
   return MX;
 }
 export function mats(){ return MX; }
