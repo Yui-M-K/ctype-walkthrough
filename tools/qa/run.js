@@ -29,6 +29,7 @@ function parseArgs(argv) {
     else if (a === '--port') o.port = +argv[++i];
     else if (a === '--min-sev') o.minSev = argv[++i];
     else if (a === '--all-issues') o.allIssues = true;
+    else if (a === '--browser-check') o.browserCheck = true;
     else if (a === '-h' || a === '--help') o.help = true;
     else if (!a.startsWith('-')) o.houses.push(a);
   }
@@ -75,6 +76,27 @@ async function runHouse(house, o, shared) {
     secs.data = sec(now() - t);
     if (want.has('interact')) { t = now(); run('interact', () => I.interact(ctx, scan, {})); secs.scene = sec(now() - t); if (ctx.interactStats) notes.push('互動：共 ' + ctx.interactStats.total + ' 個可互動項目已測試'); }
     if (want.has('visual')) { t = now(); run('visual', () => V.viewBlocked(ctx)); secs.visual += sec(now() - t); }
+  }
+  // 實機クロスチェック：同じ静的検査を Playwright の Chrome 内（実ページ・mergeStatic 無効）で実行し、Node の結果と突き合わせる
+  if (o.browserCheck && engineOk) {
+    t = now();
+    try {
+      const Bw = require('./lib/browser'), { bundleSource } = require('./lib/bundle');
+      if (!shared.browser) shared.browser = await Bw.launch();
+      if (!shared.server) shared.server = await Bw.serve({ root: o.root, port: o.port });
+      const { page, ctx: bctx, errors } = await Bw.openHouse(shared.browser, shared.server.url, house, { viewport: { width: 480, height: 300 } });
+      await page.evaluate(bundleSource());
+      const names = Array.from(want).filter(n => ['wall-pen', 'mount', 'float', 'overlap', 'continuity', 'door', 'reach', 'opening', 'level'].includes(n));
+      const br = await page.evaluate(({ house, names }) => window.__qa.run(house, names), { house, names });
+      await bctx.close();
+      const nodeKeys = issues.filter(i => i.via !== 'interact' && i.layer !== 'visual');
+      const same = (a, b) => a.check === b.check && String(a.obj) === String(b.obj) && Math.hypot(a.pos[0] - b.pos[0], a.pos[1] - b.pos[1], a.pos[2] - b.pos[2]) < 0.25;
+      const only = br.issues.filter(b => !nodeKeys.some(n => same(n, b))), missing = nodeKeys.filter(n => !br.issues.some(b => same(n, b)));
+      notes.push('實機クロスチェック（Chrome）：頁面 ' + br.meshes + ' mesh，問題 ' + br.issues.length + ' 件 vs Node ' + nodeKeys.length + ' 件；僅實機 ' + only.length + ' 件、僅 Node ' + missing.length + ' 件' + (br.errors.length ? '；例外 ' + br.errors.join(' / ') : ''));
+      only.forEach(i => { i.via = 'browser'; i.layer = 'scene'; i.desc = '【僅實機 Chrome 偵測到】' + i.desc; issues.push(i); });
+      if (errors.length) notes.push('頁面 console error：' + errors[0].slice(0, 100));
+    } catch (e) { notes.push('實機クロスチェック失敗：' + (e && e.message)); }
+    secs.scene += sec(now() - t);
   }
   // 截圖（Playwright）
   if (o.shots && (want.has('visual'))) {
