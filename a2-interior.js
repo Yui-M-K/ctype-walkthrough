@@ -230,11 +230,11 @@ export function create(THREE,E,C){
 
   /* sheer vertical blind between sofa and desk, hung from a plaster bulkhead (2.4 m at the north edge of the desk zone) */
   (function(){
-    const x=5.27, z0=8.64, z1=10.74, yTop=2.4, yBot=0.12, n=Math.round((z1-z0)/0.115), pos=[], idx=[], nor=[];
-    for(let i=0;i<n;i++){ const zc=z0+(i+0.5)*(z1-z0)/n, a=(i%2?1:-1)*0.5, hw=0.04, dz=Math.cos(a)*hw, dx=Math.sin(a)*hw, b=pos.length/3;
+    const x=5.27, z0=8.64, z1=10.74, yTop=2.4, yBot=0.5, n=Math.round((z1-z0)/0.115), pos=[], idx=[], nor=[];
+    for(let i=0;i<n;i++){ const zc=z0+(i+0.5)*(z1-z0)/n, a=(i%2?1:-1)*0.5, hw=0.032, dz=Math.cos(a)*hw, dx=Math.sin(a)*hw, b=pos.length/3;
       pos.push(x-dx,yBot,zc-dz, x+dx,yBot,zc+dz, x+dx,yTop,zc+dz, x-dx,yTop,zc-dz); nor.push(1,0,0,1,0,0,1,0,0,1,0,0); idx.push(b,b+1,b+2,b,b+2,b+3); }
     const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3)); g.setIndex(idx);
-    const sheer=mk('a2sheer',0xf7f4ee,{roughness:0.9,transparent:true,opacity:0.4,side:THREE.DoubleSide,depthWrite:false}); const m=new THREE.Mesh(g,sheer); m.renderOrder=1; Z(0,x,(z0+z1)/2).add(m);
+    const sheer=mk('a2sheer',0xf7f4ee,{roughness:0.9,transparent:true,opacity:0.5,side:THREE.DoubleSide,depthWrite:false}); const m=new THREE.Mesh(g,sheer); m.renderOrder=1; Z(0,x,(z0+z1)/2).add(m);
     B(0,M.cabF,x-0.09,x+0.09,z0-0.02,z1+0.02,yTop,yTop+0.16);
   })();
   /* long pendant over the desk (hung from the ceiling over the east half; the west end overhangs) */
