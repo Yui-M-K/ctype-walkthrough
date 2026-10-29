@@ -23,7 +23,7 @@ function viewBlocked(ctx) {
 
 // ブラウザ側：截圖と画素統計・基準比較
 async function screenshots(B, baseUrl, house, o) {
-  const { page, errors } = await B.openHouse(o.browser, baseUrl, house, { viewport: { width: 560, height: 350 } });
+  const { page, errors } = await B.openHouse(o.browser, baseUrl, house, { viewport: { width: 480, height: 300 } });
   const out = [], shots = [], outDir = path.join(o.outDir, 'shots', house), baseDir = path.join(o.baselineShotsDir, house);
   fs.mkdirSync(outDir, { recursive: true }); if (o.updateBaseline) fs.mkdirSync(baseDir, { recursive: true });
   try { await page.waitForFunction(() => window.__walk.perf && window.__walk.perf.ready, null, { timeout: 150000, polling: 500 }); } catch (_) { out.push(issue('visual', 'low', { obj: '頁面', ownerKey: 'perf-ready', layer: 'visual', desc: '150 秒內著色器預編譯未完成，截圖可能是未渲染的畫面' })); }
@@ -32,7 +32,8 @@ async function screenshots(B, baseUrl, house, o) {
     await page.evaluate(i => { const w = window.__walk; w.teleport(w.SPOTS[i]); w.updateCamera(); }, i);
     await page.waitForTimeout(500);
     const safe = String(i).padStart(2, '0') + '_' + spots[i].replace(/[^\w぀-ヿ一-鿿]+/g, '_');
-    const file = path.join(outDir, safe + '.png'); const buf = await page.screenshot({ path: file, type: 'png' });
+    const file = path.join(outDir, safe + '.png'); let buf;
+    try { buf = await page.screenshot({ path: file, type: 'png', timeout: 150000 }); } catch (e) { out.push(issue('visual', 'low', { obj: '傳送點「' + spots[i] + '」', ownerKey: 'shot-fail:' + spots[i], layer: 'visual', desc: '截圖失敗（頁面渲染過慢）：' + String(e.message).split('\n')[0] })); continue; }
     const baseFile = path.join(baseDir, safe + '.png');
     const baseB64 = fs.existsSync(baseFile) ? fs.readFileSync(baseFile).toString('base64') : null;
     const st = await page.evaluate(async ({ b64, base }) => {

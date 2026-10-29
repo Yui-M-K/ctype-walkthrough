@@ -35,9 +35,10 @@ function classify(issues, baseline) {
   });
   return { fresh, known, wl };
 }
-function writeBaseline(qaDir, house, issues, prev) {
+function writeBaseline(qaDir, house, issues, prev, ran) {
   const f = path.join(qaDir, 'baseline', house + '.json'); fs.mkdirSync(path.dirname(f), { recursive: true });
-  const known = issues.filter(i => !(prev.whitelist || []).some(w => wlMatch(w, i))).map(i => ({ check: i.check, sev: i.sev, obj: i.obj, state: i.state || '', pos: i.pos, room: i.room, desc: i.desc.slice(0, 200), note: ((prev.known || []).find(k => same(k, i)) || {}).note || '' }));
+  const kept = ran ? (prev.known || []).filter(k => !ran.has(k.check)) : [];     // 今回走らせなかった検査の既知問題は残す
+  const known = kept.concat(issues.filter(i => !(prev.whitelist || []).some(w => wlMatch(w, i))).map(i => ({ check: i.check, sev: i.sev, obj: i.obj, state: i.state || '', pos: i.pos, room: i.room, desc: i.desc.slice(0, 200), note: ((prev.known || []).find(k => same(k, i)) || {}).note || '' })));
   const out = {
     _readme: 'tools/qa が回帰検出のために保存した「既知の問題」。known=現時点で出ている問題（--update-baseline で上書き）、whitelist=人手で確認した誤報（上書きされない。{check, match(正規表現), room(正規表現,任意), note}）。note には判断理由を書く。',
     house, updated: new Date().toISOString().slice(0, 10), known, whitelist: prev.whitelist || [],

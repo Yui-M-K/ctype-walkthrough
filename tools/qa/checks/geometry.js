@@ -26,10 +26,10 @@ function penetration(ctx, scan, opt) {
     }
   });
   per.forEach(e => {
-    const cm = ctx.cm(e.depth), sev = e.depth >= 0.06 && e.ratio >= 0.3 ? 'high' : e.depth >= 0.04 ? 'mid' : 'low';
+    const cm = ctx.cm(e.depth), buried = e.ratio >= 0.95, sev = e.depth >= 0.06 && e.ratio >= 0.3 && !buried ? 'high' : e.depth >= 0.04 ? 'mid' : 'low';
     out.push(issue('wall-pen', sev, { obj: e.owner.name, part: ctx.partName(e.rec), pos: ctx.fmtPos(e.rec.box), room: ctx.roomOf(...ctx.fmtPos(e.rec.box)), ownerKey: e.owner.key,
       desc: '「' + e.owner.name + '」的零件穿進牆體約 ' + cm + ' cm（體積佔零件 ' + Math.round(e.ratio * 100) + '%，共 ' + e.n + ' 個零件）',
-      hint: '把物件往房內移開牆面至少 ' + cm + ' cm，或縮小該零件。', extra: { depthCm: cm, ratio: +e.ratio.toFixed(2) } }));
+      hint: buried ? '零件完全埋在牆體內：若是壁龕／牆內收納（牆以實心碰撞箱表示）可加白名單；否則把物件移出牆面。' : '把物件往房內移開牆面至少 ' + cm + ' cm，或縮小該零件。', extra: { depthCm: cm, ratio: +e.ratio.toFixed(2) } }));
   });
   return out;
 }
