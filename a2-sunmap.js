@@ -109,7 +109,7 @@
 
     /* opts: {mo,d,h:取樣高度(地板上 m),furn:bool,step:分鐘,size:深度圖解析度,onProgress}。回傳 Promise<result> */
     function compute(opts){
-      opts=opts||{}; var step=opts.step||STEP_MIN, hAbove=opts.h==null?H_FLOOR:opts.h, size=opts.size||2048;
+      opts=opts||{}; var step=opts.step||STEP_MIN, hAbove=opts.h==null?H_FLOOR:opts.h, size=opts.size||Math.min(4096,E.renderer.capabilities.maxTextureSize);
       var t0=performance.now(), g=gpuInit(), R=E.renderer, scene=E.scene;
       var casters=gatherCasters(opts), nbrOn=casters.some(function(m){ return m.userData&&m.userData.neighbor; });
       /* 暫時讓所有擋光者可繪製 */
@@ -160,7 +160,8 @@
               R.setRenderTarget(drt); R.setClearColor(0xffffff,1); R.clear(); R.render(scene,lc);
               g.quadMat.uniforms.tDepth.value=drt.depthTexture;
               g.quadMat.uniforms.uVP.value.multiplyMatrices(lc.projectionMatrix,lc.matrixWorldInverse);
-              g.quadMat.uniforms.uW.value=jb.w; g.quadMat.uniforms.uBias.value=0.012/(lc.far-lc.near);
+              var texel=Math.max(lc.right-lc.left,lc.top-lc.bottom)/size, slope=Math.min(12,1/Math.tan(Math.max(p.altitude,1)*Math.PI/180));   // 斜率偏移：低角度時一個深度圖格內的深度差變大
+              g.quadMat.uniforms.uW.value=jb.w; g.quadMat.uniforms.uBias.value=(0.008+texel*slope*0.5)/(lc.far-lc.near);
               for(var lv=0;lv<NS;lv++){
                 g.quadMat.uniforms.uY.value=SURF[lv].dy()+hAbove; g.quadMat.uniforms.tPrev.value=g.acc[lv][cur[lv]].texture;
                 var nx=1-cur[lv]; R.setRenderTarget(g.acc[lv][nx]); R.render(g.quadScene,g.quadCam); cur[lv]=nx;
@@ -215,7 +216,8 @@
         +'#smBox .go{display:flex;gap:8px;align-items:center;margin:8px 0}#smBox .go .tog{min-height:40px}#smBox .st{font-size:12px;color:var(--muted)}'
         +'#smBox table{border-collapse:collapse;font-size:12px;width:100%;margin:6px 0}#smBox th,#smBox td{border:1px solid #cfc7bb;padding:3px 5px;text-align:center}#smBox td:first-child{text-align:left}'
         +'#smBox .hot{background:#f6c9c2;font-weight:600}#smBox .dim{background:#cfd9ee;font-weight:600}#smBox .tw{overflow-x:auto}'
-        +'#smLegend{position:fixed;left:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:12;background:rgba(255,255,255,.92);color:#2e3842;border-radius:10px;padding:6px 10px 4px;font-size:11.5px;line-height:1.4;box-shadow:0 2px 10px rgba(0,0,0,.25);pointer-events:none;max-width:60vw}'
+        +'#smLegend{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:12;background:rgba(255,255,255,.92);color:#2e3842;border-radius:10px;padding:6px 10px 4px;font-size:11.5px;line-height:1.4;box-shadow:0 2px 10px rgba(0,0,0,.25);pointer-events:none;max-width:60vw}'
+        +'@media (max-width:760px){#smLegend{bottom:calc(150px + env(safe-area-inset-bottom,0px))}}'
         +'#smLegend canvas{display:block;width:210px;max-width:100%;height:12px;border-radius:3px;border:1px solid #9aa5ad}#smLegend .tk{display:flex;justify-content:space-between;width:210px;max-width:100%;font-variant-numeric:tabular-nums}';
       document.head.appendChild(css);
       var box=document.createElement('div'); box.id='smBox';
@@ -245,7 +247,7 @@
         var data=new Uint8Array(GW*GH*4);
         for(var j=0;j<GH;j++) for(var i=0;i<GW;i++){ var c=ramp(cells[j*GW+i]), o=(j*GW+i)*4; data[o]=c[0]; data[o+1]=c[1]; data[o+2]=c[2]; data[o+3]=isNaN(cells[j*GW+i])?0:c[3]; }
         if(!tex[l]){
-          tex[l]=new THREE.DataTexture(data,GW,GH,THREE.RGBAFormat); tex[l].colorSpace=THREE.SRGBColorSpace; tex[l].magFilter=tex[l].minFilter=THREE.NearestFilter; tex[l].generateMipmaps=false;
+          tex[l]=new THREE.DataTexture(data,GW,GH,THREE.RGBAFormat); tex[l].colorSpace=THREE.SRGBColorSpace; tex[l].magFilter=tex[l].minFilter=THREE.NearestFilter; tex[l].generateMipmaps=false; tex[l].needsUpdate=true;
           var y=SURF[l].dy()+0.03, x0=GX0, x1=GX0+GW*CELL, z0=GZ0, z1=GZ0+GH*CELL, geo=new THREE.BufferGeometry();
           geo.setAttribute('position',new THREE.Float32BufferAttribute([x0,y,z0, x1,y,z0, x1,y,z1, x0,y,z1],3));
           geo.setAttribute('uv',new THREE.Float32BufferAttribute([0,0, 1,0, 1,1, 0,1],2)); geo.setIndex([0,2,1,0,3,2]);
