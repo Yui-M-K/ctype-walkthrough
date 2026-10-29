@@ -19,7 +19,7 @@ function movedClash(ctx, scan, state, scope) {
   if (!ctx.initSig) return out;
   const idxOf = ctx._idxOf || (ctx._idxOf = new Map(ctx._meshList.map((m, i) => [m, i])));
   const moved = new Set();
-  scan.meshes.forEach(r => { if (scope && !r.box.intersectsBox(scope)) return; const i = idxOf.get(r.mesh); if (i === undefined) return; const a = r.mesh.matrixWorld.elements, b = ctx.initSig[i]; for (let k = 12; k < 15; k++) if (Math.abs(a[k] - b[k]) > 0.01) { moved.add(r.idx); return; } for (let k = 0; k < 12; k++) if (Math.abs(a[k] - b[k]) > 0.02) { moved.add(r.idx); return; } });
+  scan.meshes.forEach(r => { if (scope && !r.box.intersectsBox(scope)) return; if (ctx.ambient && ctx.ambient.has(r.mesh)) return; const i = idxOf.get(r.mesh); if (i === undefined) return; const a = r.mesh.matrixWorld.elements, b = ctx.initSig[i]; for (let k = 12; k < 15; k++) if (Math.abs(a[k] - b[k]) > 0.01) { moved.add(r.idx); return; } for (let k = 0; k < 12; k++) if (Math.abs(a[k] - b[k]) > 0.02) { moved.add(r.idx); return; } });
   if (!moved.size || moved.size > 600) return out;
   const grid = makeGrid(0.5); scan.meshes.forEach(r => { if (!moved.has(r.idx)) grid.add(r.idx, r.box, 0); });
   const per = new Map();
@@ -41,12 +41,20 @@ function movedClash(ctx, scan, state, scope) {
 }
 const fp = r => r.check + '|' + (r.pos || []).map(v => Math.round(v * 10)).join(',') + '|' + String(r.obj).split('@')[0];
 // 影響範囲の mesh だけを見て「動きが止まった」を判定する（持続アニメの猫などに引きずられない）
+// 何もしなくても動いている mesh（猫の徘徊、掃除ロボなど）を洗い出し、互動の判定から外す
+function detectAmbient(ctx) {
+  if (!ctx._meshList) sig(ctx);
+  const amb = new Set(), L = ctx._meshList;
+  for (let round = 0; round < 3; round++) { const a = sig(ctx); ctx.advance(2); const b = sig(ctx); for (let i = 0; i < L.length; i++) { let d = 0; for (let k = 0; k < 15; k++) d = Math.max(d, Math.abs(a[i][k] - b[i][k])); if (d > 1e-3) amb.add(L[i]); } }
+  ctx.ambient = amb; return amb;
+}
 function scopeMeshes(ctx, t) {
   if (!ctx._meshList) sig(ctx);
-  if (t.obj && t.obj.isObject3D) { const L = []; t.obj.traverse(o => { if (o.isMesh && !o.isInstancedMesh) L.push(o); }); if (L.length) return L; }
+  if (!ctx.ambient) detectAmbient(ctx);
+  if (t.obj && t.obj.isObject3D) { let L = []; t.obj.traverse(o => { if (o.isMesh && !o.isInstancedMesh) L.push(o); }); L = L.filter(o => !ctx.ambient.has(o)); if (L.length) return L; }
   const THREE = ctx.THREE, c = new THREE.Vector3(), y0 = ctx.w.base(t.l || 0) - 0.2, y1 = y0 + 3.2, L = [];
   ctx.scene.updateMatrixWorld(true);
-  ctx._meshList.forEach(o => { if (!o.geometry.boundingSphere) o.geometry.computeBoundingSphere(); c.copy(o.geometry.boundingSphere.center).applyMatrix4(o.matrixWorld); if (c.y >= y0 && c.y <= y1 && Math.hypot(c.x - t.pt[0], c.z - t.pt[1]) < 1.8) L.push(o); });
+  ctx._meshList.forEach(o => { if (!o.geometry.boundingSphere) o.geometry.computeBoundingSphere(); c.copy(o.geometry.boundingSphere.center).applyMatrix4(o.matrixWorld); if (!ctx.ambient.has(o) && c.y >= y0 && c.y <= y1 && Math.hypot(c.x - t.pt[0], c.z - t.pt[1]) < 1.8) L.push(o); });
   return L;
 }
 function settleScope(ctx, list, maxSec) {
