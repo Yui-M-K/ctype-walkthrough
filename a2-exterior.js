@@ -134,12 +134,14 @@ export function accents(THREE,E,C){
   return grp;
 }
 
-/* timber fin screen between the garage and the entry (3D mock-up) */
+/* timber fin screen in front of the entry door; the 0.9 m gap is on the garage side, so the way in turns an L (3D mock-up) */
+export const SCREEN={x0:9.45,x1:9.57,z0:6.52,z1:7.67,y1:2.1};
 export function screen(THREE,E){
   const grp=new THREE.Group(); grp.name='外構（3D 示意）木格柵屏風'; E.ground.add(grp);
-  const x0=9.42, x1=9.55, z0=4.45, z1=6.6, y0=-0.3, y1=2.1, bx=E.bx;
+  const x0=SCREEN.x0, x1=SCREEN.x1, z0=SCREEN.z0, z1=SCREEN.z1, y0=-0.1, y1=SCREEN.y1, bx=E.bx;
   for(let z=z0+0.05;z<z1-0.04;z+=0.08) bx(grp,x0+0.02,x1-0.02,z,z+0.04,y0+0.06,y1-0.06,MX.wood);
-  bx(grp,x0,x1,z0,z1,y1-0.06,y1,MX.char); bx(grp,x0,x1,z0,z1,y0,y0+0.06,MX.char); bx(grp,x0,x1,z0-0.05,z0+0.01,y0,y1,MX.char); bx(grp,x0,x1,z1-0.01,z1+0.05,y0,y1,MX.char);
+  bx(grp,x0,x1,z0,z1,y1-0.06,y1,MX.char); bx(grp,x0,x1,z0,z1,y0,y0+0.06,MX.char); bx(grp,x0,x1,z0-0.05,z0+0.01,y0,y1,MX.char); bx(grp,x0,x1,z1-0.01,z1,y0,y1,MX.char);
+  bx(grp,x0-0.07,x1+0.05,z0-0.05,z1,-0.3,y0,MX.step); E.addCol(0,x0,x1,z0-0.05,z1,y0,y1,'w');
   return grp;
 }
 
@@ -151,14 +153,14 @@ export function landscape(THREE,E,C){
   const NX=C.NWALL/100+0.075, RX=C.LOT.south_north/100;
   bx(grp,NX,RX,4.375,6.67,-0.3,-0.2,MX.gravel); fr(NX,RX,4.375,6.67,-0.2);                                    // gravel between garage apron and porch
   bx(grp,NX,RX,4.375,4.425,-0.3,-0.17,MX.char); bx(grp,NX,RX,6.62,6.67,-0.3,-0.17,MX.char);                     // charcoal edging
-  bx(grp,RX-0.3,RX,6.55,7.85,-0.3,-0.2,MX.step); fr(RX-0.3,RX,6.55,7.85,-0.2);                                  // front steps: ground -> step -> porch
-  bx(grp,RX-0.6,RX-0.3,6.58,7.82,-0.3,-0.17,MX.step);
+  bx(grp,RX-0.3,RX,5.8,6.62,-0.3,-0.2,MX.step); fr(RX-0.3,RX,5.8,6.62,-0.2);                                    // approach through the screen gap: road -> slab -> slab -> porch
+  bx(grp,8.95,RX-0.32,5.8,6.62,-0.3,-0.15,MX.step); fr(8.95,RX-0.32,5.8,6.62,-0.15);
   const stones=[[5.7,13.0],[6.35,12.95],[7.0,13.05],[7.65,12.98],[8.3,13.04]];                                // stepping stones across the lawn to the east garden
   stones.forEach(function(q){ bx(grp,q[0]-0.22,q[0]+0.22,q[1]-0.28,q[1]+0.28,-0.3,-0.24,MX.step); fr(q[0]-0.22,q[0]+0.22,q[1]-0.28,q[1]+0.28,-0.24); });
   fr(2.0,7.0,19.5,22.0,3.6);                                                                                  // invisible stand for the garden-side viewpoint (eye above the fence)
   const tree=function(x,z,h,kind,sx){ const P=Cat.gardenTree(h,kind||'ash'); P.group.scale.set(sx||0.7,1,sx||0.7); P.group.position.set(x,-0.3,z); P.group.userData.keep=true; G.add(P.group); LAMPS.push({kind:'tree',x:x,z:z,h:h}); return P; };
   const shrubs=function(x,z,n,r){ for(let i=0;i<n;i++){ const a=i/n*6.28+0.6, P=Cat.shrub(r*(0.8+0.4*((i*37)%5)/5)); P.group.position.set(x+Math.cos(a)*r*1.5,-0.3,z+Math.sin(a)*r*1.5); P.group.userData.keep=true; G.add(P.group); } };
-  tree(9.0,5.3,5.0); shrubs(9.0,5.3,4,0.32);                                                                    // road side, in the gravel bed behind the screen
+  tree(9.0,5.0,5.0); shrubs(9.0,5.0,4,0.3);                                                                    // road side, in the gravel bed beside the approach
   tree(9.35,9.3,5.6,'ash',0.6); shrubs(9.35,9.3,3,0.3);
   tree(9.4,0.3,5.4,'ash',0.55);                                                                                // beside the garage
   tree(5.7,13.2,5.4); shrubs(6.8,13.25,3,0.3);                                                                  // east garden, near the stepping stones
@@ -250,10 +252,10 @@ export function night(THREE,E,C){
   (function(){ [6.55,7.07,7.6].forEach(function(z){ disc(G,9.0,2.415,z,0.05); });
     quad(G,V3(NX+0.034,2.42,6.2),V3(NX+0.034,2.42,8.0),V3(0,-1.9,0),LED);
     pool(G,9.0,-0.088,7.07,2.6,2.2,POOL);
-    [6.6,7.8].forEach(function(z){ const m=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.5,12),E.M.black); m.position.set(9.6,-0.05,z); G.add(m); disc(G,9.6,0.215,z,0.045); pool(G,9.6,-0.19,z,1.2,1.2,POOL); });
+    [5.68,7.8].forEach(function(z){ const m=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.5,12),E.M.black); m.position.set(9.62,-0.05,z); G.add(m); disc(G,9.62,0.215,z,0.045); pool(G,9.62,-0.19,z,1.2,1.2,POOL); });
     plight(G,9.0,2.2,7.07,8,8); })();
-  /* screen: glow in the gaps from behind, pool on the gravel */
-  (function(){ quad(G,V3(9.4,-0.2,4.5),V3(9.4,-0.2,6.55),V3(0,1.9,0),LED); pool(G,9.0,-0.19,5.5,2.6,2.8,POOL); })();
+  /* screen: glow in the gaps from behind, pool on the approach path */
+  (function(){ quad(G,V3(SCREEN.x0-0.01,-0.05,SCREEN.z0+0.04),V3(SCREEN.x0-0.01,-0.05,SCREEN.z1-0.04),V3(0,1.9,0),LED); pool(G,9.1,-0.14,6.2,1.8,1.4,POOL); })();
   /* trees: a lamp at the foot, a pool on the ground and a soft glow up the trunk */
   LAMPS.forEach(function(t,i){
     disc(G,t.x+0.35,-0.28,t.z+0.2,0.07); pool(G,t.x,-0.27,t.z,2.6,2.6,POOL);
