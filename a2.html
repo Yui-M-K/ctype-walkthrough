@@ -130,8 +130,14 @@ rooms:(function(){
 })(),
 accents:[],
 curtains:[],
-spots:[['玄關',835,707,0,0,Math.PI/2],['LDK（看電視）',740,969,0,0,-Math.PI/2],['長書桌',420,967,0,0,-Math.PI/2],['廚房',500,640,0,0,Math.PI],['鏡子房',250,960,0,0,-Math.PI/2],['車庫',600,250,0,0,-Math.PI/2],['緣側',430,1215,0,0,0],
-  ['主臥',600,160,1,1,Math.PI],['小孩房',420,1000,1,1,Math.PI],['男友書房',200,1000,1,1,Math.PI],['浴室群',720,600,1,1,Math.PI/2],['二樓走廊',350,520,1,1,Math.PI/2],['陽台',885,170,1,1,-Math.PI/2]],
+spots:(function(){
+  /* [name, plan e, plan n (cm), storey, look-at e, look-at n]: the position is turned into engine coordinates and the yaw points at the target */
+  const S=function(nm,e,n,l,le,ln,pitch){ return [nm,n,e,l,l,Math.atan2(-(ln-n),-(le-e)),(pitch||0)*Math.PI/180]; };
+  return [S('玄關',700,830,0,760,450),S('LDK（看電視）',780,560,0,970,835,3),S('長書桌',967,451,0,970,840,6),S('廚房',545,480,0,950,600),
+    S('鏡子房',1000,100,0,917,297),S('車庫',385,835,0,250,500),S('緣側',1205,335,0,1390,600,3),
+    S('主臥',160,790,1,160,500),S('小孩房',870,470,1,1070,360),S('男友書房',880,250,1,1100,170),S('浴室群',582,625,1,582,800,-12),
+    S('二樓走廊',700,350,1,300,350),S('陽台',170,885,1,170,1100)];
+})(),
 lay1:{},
 materials:function(E){ E.FL.bath.color.setHex(0xffffff); },
 build:function(E){
@@ -329,6 +335,10 @@ fixtures:function(E){
   blk(0,byId(L1,'f9').rect,0.38,M.oak);
   (function(){ const c=L1.extras.find(function(q){ return q.kind==='ellipse'; }).c, p=at(0,c[0],c[1]+15); fixture(0,Catalog.toilet(),p[0],p[1],0); })();
   (function(){ const r=byId(L1,'f11').rect, p=at(0,(r[0]+r[2])/2,r[1]+5.5); fixture(0,Catalog.evCharger(),p[0],p[1],0); })();
+  /* mirror room: the full-width mirror wall on the north wall of the room (plan: 整面鏡牆 290) */
+  (function(){ const x=WX(0,302.5)-0.05, z0=WZ(0,772), z1=WZ(0,1062);
+    bx(E.LG[0],x-0.012,x,z0-0.03,z1+0.03,0.12,2.18,M.oak,{cast:false});
+    const mw=Walk.planarMirror(THREE,z1-z0,2.0); mw.rotation.y=-Math.PI/2; mw.position.set(x-0.013,1.15,(z0+z1)/2); E.LG[0].add(mw); })();
   /* 2F */
   blk(1,byName(L2,'壁櫃 深60').rect,2.3,M.cabF);
   blk(1,byName(L2,'水槽').rect,0.85,M.cab,M.top);
@@ -348,6 +358,8 @@ lighting:function(E){
 },
 modes:function(E){
   E.player.yaw=Math.PI/2; window.__a2E=E;
+  /* the engine only draws the storeys above when the stairwell is in view; the LDK void needs its 2F walls (and the roof side) from below */
+  E.scene.onBeforeRender=function(){ if(E.mode==='walk'&&E.levelOf(E.player.py)===0){ const px=E.player.x, pz=E.player.z; if(px>3.0&&px<8.6&&pz>4.2&&pz<11.8) E.LG[1].visible=true; } };
   /* true-north compass next to the minimap: the arrow points to NORTH.toEngine's +x direction as seen from the camera */
   const el=document.createElement('div'); el.id='compass'; el.setAttribute('aria-label','指北針');
   el.innerHTML='<svg viewBox="-22 -22 44 44" width="44" height="44"><circle r="21" fill="rgba(255,255,255,.88)" stroke="#9aa5ad"/><g id="compassArrow"><path d="M0-17L6 6 0 2-6 6Z" fill="#c0392b"/><text y="16" text-anchor="middle" font-size="10" font-weight="700" fill="#2e3842">N</text></g></svg>';
