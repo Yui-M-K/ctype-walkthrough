@@ -2242,6 +2242,10 @@ lighting:function(E){
 
 modes:function(E){
   const {$,Catalog,FL,LG,LI,M,PLI,People,S1,TAU,WX,WZ,amb,at,base,btn,clamp,fab,fills,hemi,lam,lampMat,ldkFloors,liftId,modeAnims,modeGroup,mover,pointLights,rebuild,scene,setSun,setTv,syncFold,toast,usable}=E;
+(function(){                                   // the sheers behind the engawa and master-bedroom curtains follow those curtains' master switch, Nest Hub and the smart-home clock
+  const sets=[E.curtainSets[0],E.curtainSets[2]], sh=E.furnThings.filter(function(t){ return t.obj&&/^拉[上開]紗簾$/.test(t.label()); }), prev=sets.map(function(c){ return c.open.closed; });   // curtain 1 (2F bay) has no sheer
+  E.furnAnims.push({live:function(){ return true; },f:function(){ sets.forEach(function(c,i){ const cl=c.open.closed; if(cl===prev[i]) return; prev[i]=cl; const t=sh[i]; if(t&&(t.label()==='拉上紗簾')===cl) t.act(); }); return false; }});   // a sheer reads '拉上紗簾' while it is open
+})();
 (function(){                                   // 美化佈置 (Japandi): accent walls, cat-safe plants, lights, photo wall, terrazzo, cladding; one menu switch puts it all away
   const T=THREE, CH=E.CH||2.5, TE=E.TE||0.13, TI=E.TI||0.09, b=[base(0),base(1),base(2)], parts=[], lights=[];
   const DG=[0,1,2].map(function(l){ const g=new T.Group(); g.userData.keep=true; LG[l].add(g); parts.push(g); return g; });
