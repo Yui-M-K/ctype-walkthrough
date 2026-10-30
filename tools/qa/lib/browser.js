@@ -4,7 +4,11 @@ const fs = require('fs'), path = require('path'), http = require('http');
 const ROOT = path.resolve(__dirname, '..', '..', '..');
 
 function loadPlaywright() {
-  const tries = ['playwright', 'playwright-core', '/Users/yuming_linnuco.co.jp/.npm/_npx/9833c18b2d85bc59/node_modules/playwright-core'];
+  const tries = ['playwright', 'playwright-core'];
+  try {   // npx のキャッシュに入っている playwright-core も探す
+    const base = path.join(require('os').homedir(), '.npm', '_npx');
+    fs.readdirSync(base).forEach(d => tries.push(path.join(base, d, 'node_modules', 'playwright-core')));
+  } catch (_) {}
   for (const t of tries) { try { return require(t); } catch (_) {} }
   throw new Error('Playwright が見つかりません');
 }
