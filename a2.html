@@ -364,6 +364,7 @@ fixtures:function(E){
   (function(){ const q=PLAN.f1Misc.polygons.find(function(g){ return /28%/.test(g.style); }).pts, es=q.map(function(a){ return a[0]; }), ns=q.map(function(a){ return a[1]; });
     blk(0,[Math.min.apply(null,es),Math.min.apply(null,ns),Math.max.apply(null,es),Math.max.apply(null,ns)],2.4,M.cabF); })();   // floor-to-ceiling shoe cabinet that screens the entry
   blk(0,byId(L1,'f9').rect,0.38,M.oak);
+  (function(){ const r=byId(L1,'f9').rect, p=at(0,(r[0]+r[2])/2,(r[1]+r[3])/2); MDL.cat(THREE,E,{l:0,x:p[0],y:base(0)+0.38,z:p[1],w:0.3,ry:0}); })();   // sleeping cat on the entry bench
   (function(){ const c=L1.extras.find(function(q){ return q.kind==='ellipse'; }).c, p=at(0,c[0],c[1]+15); fixture(0,Catalog.toilet(),p[0],p[1],0); })();
   (function(){ const r=byId(L1,'f11').rect, p=at(0,(r[0]+r[2])/2,r[1]+5.5); fixture(0,Catalog.evCharger(),p[0],p[1],0); })();
   /* mirror room: the full-width mirror wall on the north wall of the room (plan: 整面鏡牆 290) */
