@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>注文住宅 A2 屋內漫步</title>
-<link rel="stylesheet" href="lib/storeys.css?v=20261029p">
+<link rel="stylesheet" href="lib/storeys.css?v=20261109a">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
   <div class="chip"><b id="rn">玄關</b><span id="rs"></span></div>
@@ -48,15 +48,15 @@
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <script>setTimeout(function(){ if(window.__walkStarted) return; var l=document.getElementById('load'), m=document.getElementById('msg'); if(l) l.hidden=true; if(m){ m.textContent='3D 引擎載入失敗，請確認網路後重新開啟。'; m.hidden=false; } },25000);</script>
-<script src="lib/people.js?v=20261029p"></script>
-<script src="lib/furniture.js?v=20261029p"></script>
-<script src="lib/catalog.js?v=20261029p"></script>
-<script src="lib/look.js?v=20261029p"></script>
-<script src="lib/houses.js?v=20261029p"></script>
-<script src="lib/perf.js?v=20261029p"></script>
-<script src="lib/finish.js?v=20261029p"></script>
-<script src="lib/storeys.js?v=20261029p"></script>
-<script src="lib/sun.js?v=20261029p"></script>
+<script src="lib/people.js?v=20261109a"></script>
+<script src="lib/furniture.js?v=20261109a"></script>
+<script src="lib/catalog.js?v=20261109a"></script>
+<script src="lib/look.js?v=20261109a"></script>
+<script src="lib/houses.js?v=20261109a"></script>
+<script src="lib/perf.js?v=20261109a"></script>
+<script src="lib/finish.js?v=20261109a"></script>
+<script src="lib/storeys.js?v=20261109a"></script>
+<script src="lib/sun.js?v=20261109a"></script>
 <style>
 #compass{position:absolute;right:124px;top:calc(12px + env(safe-area-inset-top,0px));width:44px;height:44px;pointer-events:none}
 #lv button[data-v="3"]{display:none}
@@ -80,6 +80,7 @@ import * as EXT from './a2-exterior.js?v=20261029s';
 import * as KIT from './a2-kitchen.js?v=20261029s';
 import * as LIT from './a2-lights.js?v=20261029s';
 import * as INT from './a2-interior.js?v=20261029s';
+import * as OPEN from './a2-open.js?v=20261029s';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
@@ -232,8 +233,8 @@ build:function(E){
     }
   }
   /* ---- walls ---- */
-  L1.walls.forEach(function(w){ buildWall(0,w); });
-  L2.walls.forEach(function(w){ buildWall(1,w); });
+  L1.walls.forEach(function(w){ OPEN.treat(E,0,w,buildWall); });
+  L2.walls.forEach(function(w){ OPEN.treat(E,1,w,buildWall); });
   /* ---- slabs, floors, ceilings ---- */
   const FLOOR1={'LDK':FL.wood,'玄關':FL.stone,'淋浴＋脫衣':FL.tile,'鏡子房':FL.wood,'走廊':FL.woodD,'廁所':FL.wc,'樓梯':FL.woodD,'車庫（開放式）':FL.conc};
   const FLOOR2={'迴廊':FL.woodD,'小孩房':FL.wood,'書房':FL.wood,'走廊':FL.woodD,'納戶':FL.woodD,'三溫暖':FL.wood,'浴室 1624':FL.bath,'排水管PS':FL.conc,'更衣間':FL.wood,'主臥':FL.wood,'洗面脫衣室':FL.tile,'洗衣間':FL.tile,'廁所':FL.wc};
@@ -378,7 +379,7 @@ fixtures:function(E){
   blk(1,byRect(L2,[747,55,831,90]).rect,1.8,M.cab);
   (function(){ const r=byName(L2,'浴缸').rect, p=at(1,(r[0]+r[2])/2,(r[1]+r[3])/2); fixture(1,Catalog.bathtub((r[2]-r[0])/100),p[0],p[1],0); })();
   (function(){ const r=byName(L2,'洗手台').rect, p=at(1,(r[0]+r[2])/2,(r[1]+r[3])/2); fixture(1,Catalog.vanity(),p[0],p[1],0); })();
-  window.__a2X=INT.create(THREE,E,{ceilY:ceilY,NWALL:NWALL,PLAN:PLAN,L1:L1,L2:L2,VOIDS:VOIDS,NORTH:NORTH});
+  window.__a2X=INT.create(THREE,E,{OPEN:OPEN,ceilY:ceilY,NWALL:NWALL,PLAN:PLAN,L1:L1,L2:L2,VOIDS:VOIDS,NORTH:NORTH});
 },
 lighting:function(E){
   LIT.ceilingLights(THREE,E,{ceilY:ceilY,rooms:L2.rooms});
