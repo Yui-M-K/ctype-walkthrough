@@ -10,7 +10,7 @@ export function car(THREE,E){
   if(/[?&]car=old\b/.test(location.search)) return P;
   let swapped=false; (P.actions||[]).forEach(function(a){ const o=a.on; a.on=function(){ return !swapped&&(o?o():true); }; });   // the GLB body is solid: no doors, hood or boot to work
   E.glb('cars/tesla_model3_darkgray.glb').then(function(sc){ const g=sc.clone(true); g.traverse(function(o){ if(!o.isMesh) return; o.castShadow=!(o.material&&o.material.transparent); o.receiveShadow=true;
-      const m=o.material; if(m&&!m.userData.tuned){ m.userData.tuned=true; if(m.name==='CAR_PAINT'){ m.metalness=0.75; m.roughness=0.3; m.envMapIntensity=1.0; } else if(m.transparent){ m.depthWrite=false; } m.needsUpdate=true; } });
+      const m=o.material; if(m&&!m.userData.tuned){ m.userData.tuned=true; if(m.name==='CAR_PAINT'){ m.metalness=0.7; m.roughness=0.32; m.envMapIntensity=0.55; } else if(m.transparent){ m.depthWrite=false; } m.needsUpdate=true; } });
     g.updateMatrixWorld(true); const bb=new THREE.Box3().setFromObject(g); g.position.y=-bb.min.y; P.group.children.slice().forEach(function(c){ c.visible=false; }); P.group.add(g); swapped=true; if(E.renderer) E.renderer.shadowMap.needsUpdate=true; }).catch(function(e){ console.warn('tesla_model3_darkgray.glb',e); });
   return P;
 }
