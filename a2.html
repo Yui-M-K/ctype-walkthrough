@@ -76,15 +76,15 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261029s';
-import * as KIT from './a2-kitchen.js?v=20261029s';
-import * as LIT from './a2-lights.js?v=20261029s';
-import * as INT from './a2-interior.js?v=20261029s';
-import * as OPEN from './a2-open.js?v=20261029s';
+import * as EXT from './a2-exterior.js?v=20261109a';
+import * as KIT from './a2-kitchen.js?v=20261109a';
+import * as LIT from './a2-lights.js?v=20261109a';
+import * as INT from './a2-interior.js?v=20261109a';
+import * as OPEN from './a2-open.js?v=20261109a';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261029s')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261109a')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -466,5 +466,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261029s"></script>
+<script src="a2-sunmap.js?v=20261109a"></script>
 </body></html>

@@ -301,15 +301,17 @@ export function create(THREE,E,C){
     curtainRoots.forEach(function(r){ r.visible=on; });
     curtainThings.forEach(function(t){ const i=E.furnThings.indexOf(t); if(on&&i<0) E.furnThings.push(t); if(!on&&i>=0) E.furnThings.splice(i,1); });
     X.cols.forEach(function(c){ const i=E.walls.indexOf(c); if(on&&i<0) E.walls.push(c); if(!on&&i>=0) E.walls.splice(i,1); });
-    X.hidden.forEach(function(h){ h(on); }); if(X.glowTick) X.glowTick();
+    X.hidden.forEach(function(h){ h(on); }); if(X.glowTick) X.glowTick(); X.open.apply();
     E.rebuild(); E.renderer.shadowMap.needsUpdate=true;
   };
   X.G=G; X.B=B; X.col=col; X.put=put; X.swap=swap; X.THREE=THREE; X.E=E;
+  X.openOn=true; X.open=C.OPEN.create(THREE,E,C,X,{mk:mk,glows:glows});
+  X.setOpen=function(on){ X.openOn=on; X.open.apply(); E.rebuild(); E.renderer.shadowMap.needsUpdate=true; };
   X.finish();
   return X;
 }
 
-/* menu switch: 「室內提案」 (URL ?int=0 starts with it off) */
+/* menu switches: 「室內提案」 (URL ?int=0 starts with it off) and 「開放感」 (?open=0) */
 export function menu(THREE,E,X){
   const host=document.getElementById('tCurt'); if(!host) return;
   const b=document.createElement('button'); b.type='button'; b.id='tInt'; b.className='tog'; b.textContent='室內提案'; b.style.gridColumn='1/-1';
@@ -317,6 +319,12 @@ export function menu(THREE,E,X){
   const set=function(on){ b.setAttribute('aria-pressed',String(on)); X.set(on); };
   b.addEventListener('click',function(){ set(b.getAttribute('aria-pressed')!=='true'); });
   let start=true; try{ start=new URLSearchParams(location.search).get('int')!=='0'; }catch(_){}
+  const bo=document.createElement('button'); bo.type='button'; bo.id='tOpen'; bo.className='tog'; bo.textContent='開放感（扶手樓梯・欄間玻璃・玻璃隔間）'; bo.style.gridColumn='1/-1';
+  host.parentNode.appendChild(bo);
+  const setOpen=function(on){ bo.setAttribute('aria-pressed',String(on)); X.setOpen(on); };
+  bo.addEventListener('click',function(){ setOpen(bo.getAttribute('aria-pressed')!=='true'); });
+  let startOpen=true; try{ startOpen=new URLSearchParams(location.search).get('open')!=='0'; }catch(_){}
+  X.openOn=startOpen; bo.setAttribute('aria-pressed',String(startOpen));
   X.collectCurtains(); X.late(); set(start);
-  window.__a2Int={set:set,X:X};
+  window.__a2Int={set:set,setOpen:setOpen,X:X};
 }
