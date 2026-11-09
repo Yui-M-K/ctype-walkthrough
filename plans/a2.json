@@ -244,7 +244,9 @@
        "openDir": [
         1,
         0
-       ]
+       ],
+       "transom": "clear",
+       "leaf": "glass"
       }
      ]
     },
@@ -274,7 +276,14 @@
      ],
      "t": 10,
      "axis": "ew",
-     "openings": []
+     "openings": [],
+     "treat": [
+      {
+       "type": "rail",
+       "from": 430,
+       "to": 685
+      }
+     ]
     },
     {
      "id": "L1W11",
@@ -305,7 +314,15 @@
        "openDir": [
         1,
         0
-       ]
+       ],
+       "leaf": "frost"
+      }
+     ],
+     "treat": [
+      {
+       "type": "fixedglass",
+       "from": 60,
+       "to": 202.5
       }
      ]
     },
@@ -1067,7 +1084,20 @@
      ],
      "t": 10,
      "axis": "ns",
-     "openings": []
+     "openings": [],
+     "treat": [
+      {
+       "type": "glasswall",
+       "from": 600,
+       "to": 850
+      },
+      {
+       "type": "battens",
+       "from": 395,
+       "to": 600,
+       "face": "E"
+      }
+     ]
     },
     {
      "id": "L2W10",
@@ -1085,7 +1115,8 @@
       {
        "kind": "slide",
        "from": 215,
-       "to": 290
+       "to": 290,
+       "transom": "frost"
       },
       {
        "kind": "window",
@@ -1112,7 +1143,8 @@
       {
        "kind": "slide",
        "from": 320,
-       "to": 390
+       "to": 390,
+       "transom": "clear"
       },
       {
        "kind": "window",
@@ -1156,7 +1188,14 @@
      ],
      "t": 10,
      "axis": "ew",
-     "openings": []
+     "openings": [],
+     "treat": [
+      {
+       "type": "lowglass",
+       "from": 837,
+       "to": 957
+      }
+     ]
     },
     {
      "id": "L2W14",
@@ -1174,22 +1213,26 @@
       {
        "kind": "slide",
        "from": 352,
-       "to": 422
+       "to": 422,
+       "transom": "frost"
       },
       {
        "kind": "slide",
        "from": 427,
-       "to": 487
+       "to": 487,
+       "transom": "frost"
       },
       {
        "kind": "slide",
        "from": 587,
-       "to": 657
+       "to": 657,
+       "transom": "frost"
       },
       {
        "kind": "slide",
        "from": 672,
-       "to": 737
+       "to": 737,
+       "transom": "frost"
       }
      ]
     },
@@ -1209,7 +1252,8 @@
       {
        "kind": "slide",
        "from": 612,
-       "to": 692
+       "to": 692,
+       "transom": "frost"
       },
       {
        "kind": "window",
@@ -1221,7 +1265,8 @@
       {
        "kind": "slide",
        "from": 757,
-       "to": 827
+       "to": 827,
+       "transom": "frost"
       },
       {
        "kind": "window",
@@ -1304,7 +1349,8 @@
       {
        "kind": "slide",
        "from": 730,
-       "to": 810
+       "to": 810,
+       "transom": "frost"
       }
      ]
     },
@@ -1324,7 +1370,8 @@
       {
        "kind": "slide",
        "from": 305,
-       "to": 380
+       "to": 380,
+       "transom": "frost"
       },
       {
        "kind": "window",
@@ -1351,7 +1398,8 @@
       {
        "kind": "slide",
        "from": 420,
-       "to": 490
+       "to": 490,
+       "transom": "frost"
       }
      ]
     },
@@ -1371,7 +1419,8 @@
       {
        "kind": "slide",
        "from": 480,
-       "to": 560
+       "to": 560,
+       "transom": "frost"
       }
      ]
     },

@@ -77,6 +77,14 @@ svg text{fill:var(--ink);font-family:inherit}
 .lim{stroke:var(--ng);stroke-width:1.8;stroke-dasharray:10 5;fill:none}
 .roof{stroke:var(--accent);stroke-width:3;fill:none}
 .sec{fill:var(--room);stroke:var(--wall);stroke-width:2}
+.rl{stroke:var(--accent);stroke-width:2.4;fill:none}
+.rlp{fill:var(--accent);stroke:none}
+.gc{stroke:var(--win);stroke-width:3;fill:none}
+.gf{stroke:var(--win);stroke-width:3;fill:none;stroke-dasharray:9 4}
+.drg{stroke:var(--win);stroke-width:2.4}
+.drf{stroke:var(--win);stroke-width:2.4;stroke-dasharray:5 3}
+.trc{stroke:var(--win);stroke-width:2.2;stroke-dasharray:7 4;fill:none}
+.trf{stroke:var(--win);stroke-width:3.4;stroke-dasharray:1 5;stroke-linecap:round;fill:none}
 </style>
 </head>
 <body>
@@ -93,7 +101,7 @@ svg text{fill:var(--ink);font-family:inherit}
 <div class="card">
 <p class="cap">北側道路 6 m、東側庭院 2.2 m、西側 0.65 m、南側 0.79 m（北側與設備通道已經不需要）。</p>
 <ul class="tight">
-<li><b>一樓</b>：電視在北牆（畫面朝南），沙發正對電視，書桌在沙發後方、椅子後方到南側內牆 76 cm（可後拉 50～60），出窗與緣側朝東；樓梯在 LDK 南側（車庫正南）。流理台在西側，煮飯的人面朝東，看得到整個沙發區與電視（77%）；玄關 1.8 帖，南側有頂天鞋櫃屏風（約 34 雙），入口缺口在西端，西北角有穿鞋椅，進門路線轉一個彎；沙發後方直接接長書桌，沙發側只有一圈低緣；半島 200 離上がり框 100 cm。</li>
+<li><b>一樓</b>：電視在北牆（畫面朝南），沙發正對電視，書桌在沙發後方、椅子後方到南側內牆 76 cm（可後拉 50～60），出窗與緣側朝東；樓梯在 LDK 南側（車庫正南），客廳側的牆改成欄杆（開放式踏板）。流理台在西側，煮飯的人面朝東，看得到整個沙發區與電視（77%）；玄關 1.8 帖，南側有頂天鞋櫃屏風（約 34 雙），入口缺口在西端，西北角有穿鞋椅，進門路線轉一個彎；沙發後方直接接長書桌，沙發側只有一圈低緣；半島 200 離上がり框 100 cm。</li>
 <li><b>二樓</b>：浴室與三溫暖在北側中央、主臥在西北（西側是主臥、更衣間、洗衣間），洗衣間連更衣間、更衣間連主臥；外氣浴陽台接主臥北牆。<b>樓梯口、走廊、迴廊連成一個開放的ホール</b>：樓梯開口側的牆改成玻璃欄杆，走廊東端接迴廊（玻璃欄杆、淨寬 93），站在欄杆邊看得到一樓客廳的電視與沙發區；小孩房縮到 3.5 帖、往南挪，從迴廊進出，也能朝挑高開內窗。</li>
 <li><b>設備</b>：①エコキュート ②熱泵 ③空調室外機×3 ④地暖熱源機 搬到車庫南側原本沒有用途的空地（約 2.1×2.5 m），⑤電表在西外牆。維修空間：①前 50、②前 63、③④前 60，圖上用虛線標出；熱泵離南鄰界 3.0 m，出風口朝向自家一側。冷媒管沿外牆往上到二樓、沿外牆下緣進一樓天花內。空地剩下的部分（約 3.0×1.5 m）做洗濯物干し與ゴミ置場。</li>
 <li><b>北側道路的退縮</b>：北牆離北界 1.2 m（陽台外推 70＋離界 50 的最小值）；車庫前倒車縱深 道路 6.0 m＋1.2 m ＝ 7.2 m ≥ 5.2 m ✓。南側離界 0.79 m（外壁面 71.5 cm ≥ 50）。西側離界 0.65 m：建蔽率 80.62 ÷ 138.56 ＝ 58.2%（上限 60% ＝ 83.14 m²，餘裕約 2.5 m²）；西側再縮到 0.5 m（土地 13.72×9.99＝137.06 m²）也是 58.8%，仍在 60% 以內。</li>
@@ -120,6 +128,7 @@ svg text{fill:var(--ink);font-family:inherit}
 <span><i class="sw" style="border:2px dashed var(--win2)"></i>二樓動線②（三溫暖）</span>
 <span><i class="sw" style="border:2px dotted var(--r3)"></i>動線③（三溫暖 → 主臥陽台）</span>
 <span><i class="sw" style="border-color:var(--win);border-width:3px"></i>玻璃欄杆（H110）・玻璃拉門</span><span><i class="sw" style="border:2px dotted var(--ok)"></i>迴廊看一樓的視線</span><span><i class="sw" style="background:var(--void)"></i>挑高</span><span><i class="sw" style="background:var(--wet)"></i>用水</span>
+<span><svg width="34" height="10" viewBox="0 0 34 10" aria-hidden="true"><line x1="1" y1="5" x2="33" y2="5" class="rl"/><rect x="0" y="2" width="5" height="6" class="rlp"/><rect x="29" y="2" width="5" height="6" class="rlp"/></svg>欄杆（橡木扶手＋細桿，開放式踏板）</span><span><svg width="34" height="10" viewBox="0 0 34 10" aria-hidden="true"><rect x="0" y="0" width="34" height="10" style="fill:color-mix(in srgb,var(--wall) 45%,transparent)"/><line x1="0" y1="5" x2="34" y2="5" class="gc"/></svg>矮牆 1.0 m＋清玻璃</span><span><svg width="34" height="10" viewBox="0 0 34 10" aria-hidden="true"><rect x="0" y="0" width="34" height="10" style="fill:color-mix(in srgb,var(--accent) 50%,transparent)"/><line x1="0" y1="5" x2="34" y2="5" class="gf"/></svg>下段木格柵 0.9 m＋霧面玻璃</span><span><svg width="34" height="10" viewBox="0 0 34 10" aria-hidden="true"><rect x="0" y="0" width="34" height="10" style="fill:none;stroke:var(--wall);stroke-width:1.2"/><line x1="0" y1="5" x2="34" y2="5" class="gf"/></svg>霧面固定玻璃（全高）</span><span><svg width="34" height="10" viewBox="0 0 34 10" aria-hidden="true"><path d="M3 9V1M9 9V1M15 9V1M21 9V1M27 9V1" class="rl" style="stroke-width:1.6"/></svg>木格柵飾面</span><span><svg width="34" height="10" viewBox="0 0 34 10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" class="trc"/></svg>欄間玻璃・透明</span><span><svg width="34" height="10" viewBox="0 0 34 10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" class="trf"/></svg>欄間玻璃・霧面</span><span><svg width="34" height="10" viewBox="0 0 34 10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" class="drg"/></svg>玻璃門片（透明）</span><span><svg width="34" height="10" viewBox="0 0 34 10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" class="drf"/></svg>玻璃門片（霧面）</span>
 </div>
 <p class="cap">面積皆為壁芯。房間以帖為主（1 帖＝1.62 m²）。</p>
 <h3>一樓：玄關屏風、書桌與流理台的視野</h3>
@@ -228,6 +237,18 @@ svg text{fill:var(--ink);font-family:inherit}
   </table></div>
   <span class="cap">看得到整個電視與茶几，沙發看得到約一半（座面約 30～55%、椅背上緣約 50%，椅背以外的頭部以上更多）；西側（x 小）的沙發被小孩房牆擋住。若把小孩房朝挑高的那面牆（x＝210）整面做成玻璃，座面升到 53～69%、椅背上緣 73～93%，但小孩房的隱私會變差（選項，待決定）。從走廊中段看不到（被牆擋住）。</span></li>
 </ul>
+<h3>開放感改造：欄杆・玻璃・欄間</h3>
+<p class="cap">牆的位置與門窗座標不變，只改牆的種類與開口的玻璃；3D 看房依 <code>a2.json</code> 的 <code>walls[].treat</code> 與開口的 <code>transom</code>／<code>leaf</code> 建出替代件，選單「開放感」關掉時回到原本的實牆。面積以壁芯計算，不因欄杆與玻璃改變。</p>
+<div class="tw"><table>
+<tr><th>位置</th><th>改造後</th><th>備註</th></tr>
+<tr><td>一樓樓梯客廳側（x＝482～737、y＝547.5）</td><td>欄杆：橡木扶手 H0.9＋細桿，踏板開放（不做立板與底板）</td><td>樓梯面向廚房，不暴露沙發；是否為耐力壁與防火區劃待確認</td></tr>
+<tr><td>二樓迴廊與書房之間（x＝210～330、y＝547.5）</td><td>矮牆 1.0 m＋上方清玻璃（黑框，到天花）</td><td>3D 印表機的噪音與粉塵待確認</td></tr>
+<tr><td>三溫暖挑高側（x＝330、y＝0～250）</td><td>下段 0.9 m 深木直格柵＋上方霧面玻璃到天花</td><td>耐熱與防火、是否屬二樓結構待確認</td></tr>
+<tr><td>二樓廁所東牆（x＝330、y＝250～455）</td><td>貼同款木格柵（只是飾面，牆與開口不變）</td><td>—</td></tr>
+<tr><td>二樓拉門 12 處上方</td><td>欄間玻璃（小孩房對迴廊用透明，其餘霧面），門頭 2.05 m 到天花下 5 cm</td><td>居室與走廊之間的防火與隔音待確認</td></tr>
+<tr><td>車庫與廚房之間的門（x＝737、y＝160～230）</td><td>玻璃門片＋上方透明欄間</td><td>防火設備待確認</td></tr>
+<tr><td>鏡子房（x＝402）</td><td>y＝647.5～790 加霧面固定玻璃；門片換霧面玻璃</td><td>隱私與跳舞的聲音</td></tr>
+</table></div>
 <h3>二樓動線：走廊 → 洗面脫衣室 → 浴室／三溫暖</h3>
 <ul class="tight">
 <li><b>①浴室</b>：樓梯口 → 走廊 → 洗面脫衣室（拉門）→ 浴室（拉門）。圖上路線約 7 m。</li>
@@ -426,6 +447,7 @@ svg text{fill:var(--ink);font-family:inherit}
 <div class="card"><h3>待決定</h3><ul class="tight">
 <li>玄關入口採西端（採用）還是東端（備案，廚房側看得少但流理台看電視維持 15%）；穿鞋椅採西北角（採用）還是屏風北面（備案）；廚房側 81% 若在意，可考慮在缺口對面加矮櫃或移動半島，需另外討論。</li>
 <li>迴廊視野：維持現狀（沙發座面約一半），還是把小孩房朝挑高的牆（x＝210）做成玻璃（座面升到 53～69%，但小孩房隱私差）；挑高 12.3 m² 是否可接受（規格書 9～11 m²）；小孩房 3.5 帖、書房 4.5 帖是否接受。</li>
+<li>開放感改造（樓梯牆改欄杆、玻璃牆、欄間玻璃）的結構與防火：見「與建築師確認事項」。</li>
 <li>外氣浴陽台接受朝北（道路側，外推 70、北側離界 1.2 m）；縮到外推 50（北側 1.0 m）的話土地 135.79 m²、建蔽率 59.4%，仍在 60% 以內，但餘裕只剩約 0.9 m²。</li>
 <li>主臥的細長形：能否接受，或把更衣間併入主臥改成較寬的形狀。</li>
 <li>開放式車庫是否算床面積；車庫門是否需要防火門。</li>
@@ -467,6 +489,7 @@ function text(s,x,y,t,cls,anchor){return el(s,'text',{x,y:Y(y),class:cls||'',
 function poly(s,pts,cls){return el(s,'polyline',{points:pts.map(p=>p[0]+','+Y(p[1])).join(' '),class:cls});}
 /* walls: [x1,y1,x2,y2,t]; openings: {x1,y1,x2,y2} lying on wall lines */
 function walls(s,ws,ops){
+  ops=ops.concat(TCUT.splice(0));
   for(const w of ws){
     const [x1,y1,x2,y2,t]=w; const hz=Math.abs(y1-y2)<0.1;
     const a=hz?Math.min(x1,x2):Math.min(y1,y2), b=hz?Math.max(x1,x2):Math.max(y1,y2), c=hz?y1:x1;
@@ -484,14 +507,18 @@ function walls(s,ws,ops){
   }
 }
 /* swing door: hinge (hx,hy), w width, a0 = angle toward closed jamb, a1 = angle of open leaf (deg, plan coords) */
-function door(s,hx,hy,w,a0,a1){
-  const r=d=>d*Math.PI/180; const jx=hx+w*Math.cos(r(a0)), jy=hy+w*Math.sin(r(a0));
+function door(s,hx,hy,w,a0,a1,o){
+  o=o||{}; const r=d=>d*Math.PI/180; const jx=hx+w*Math.cos(r(a0)), jy=hy+w*Math.sin(r(a0));
   const lx=hx+w*Math.cos(r(a1)), ly=hy+w*Math.sin(r(a1));
-  line(s,hx,hy,lx,ly,'drl');
+  line(s,hx,hy,lx,ly,o.leaf==='glass'?'drg':o.leaf==='frost'?'drf':'drl');
+  if(o.transom)transomLine(s,hx,hy,jx,jy,o.transom);
   const sweep=((a1-a0+360)%360)<180?0:1;
   el(s,'path',{d:`M ${jx} ${Y(jy)} A ${w} ${w} 0 0 ${sweep} ${lx} ${Y(ly)}`,class:'dr','stroke-dasharray':'4 3'});
 }
-function slide(s,x1,y1,x2,y2){
+/* 欄間玻璃（門の上）：clear 透明＝破線、frost 霧面＝点線 */
+function transomLine(s,x1,y1,x2,y2,k){line(s,x1,y1,x2,y2,k==='frost'?'trf':'trc');}
+function slide(s,x1,y1,x2,y2,tr){
+  if(tr)transomLine(s,x1,y1,x2,y2,tr);
   const hz=Math.abs(y1-y2)<0.1; const L=hz?x2-x1:y2-y1; const m=L*0.55;
   if(hz){line(s,x1,y1+3,x1+m,y1+3,'drl');line(s,x2-m,y1-3,x2,y1-3,'drl');}
   else{line(s,x1-3,y1,x1-3,y1+m,'drl');line(s,x1+3,y2-m,x1+3,y2,'drl');}
@@ -502,6 +529,22 @@ function win(s,x1,y1,x2,y2,t,code,lx,ly){
   if(hz){for(const d of [-e,0,e])line(s,x1,y1+d,x2,y1+d,cls);}
   else{for(const d of [-e,0,e])line(s,x1+d,y1,x1+d,y2,cls);}
   if(lx!=null)text(s,lx,ly,code,code[0]==='H'?'wtH':'wt');
+}
+/* 開放感の改造（3D の a2-open.js が a2.json の walls[].treat を読んで建てる）。
+   rail 欄杆／lowglass 矮牆＋清玻璃／glasswall 下段木格柵＋霧面玻璃／fixedglass 霧面固定玻璃／battens 木格柵の飾面（side: 飾面側） */
+const TCUT=[];
+function treat(s,kind,x1,y1,x2,y2,o){
+  o=o||{}; const hz=Math.abs(y1-y2)<0.1, t=o.t||10, e=t/2, a=hz?Math.min(x1,x2):Math.min(y1,y2), b=hz?Math.max(x1,x2):Math.max(y1,y2), c=hz?y1:x1;
+  const R=(u0,w0,u1,w1,cls,extra)=>hz?rect(s,u0,c+w0,u1,c+w1,cls,extra):rect(s,c+w0,u0,c+w1,u1,cls,extra);
+  const L=(u0,w0,u1,w1,cls,sw)=>hz?line(s,u0,c+w0,u1,c+w1,cls,sw):line(s,c+w0,u0,c+w1,u1,cls,sw);
+  if(kind!=='battens')TCUT.push({x1,y1,x2,y2});
+  if(kind==='rail'){
+    L(a,0,b,0,'rl'); const n=Math.max(1,Math.round((b-a)/60));
+    for(let i=0;i<=n;i++){const u=a+(b-a)*i/n; R(u-3,-3,u+3,3,'rlp');}
+  }else if(kind==='lowglass'){R(a,-e,b,e,'',{style:'fill:color-mix(in srgb,var(--wall) 45%,transparent)'}); L(a,0,b,0,'gc');}
+  else if(kind==='glasswall'){R(a,-e,b,e,'',{style:'fill:color-mix(in srgb,var(--accent) 50%,transparent)'}); L(a,0,b,0,'gf');}
+  else if(kind==='fixedglass'){R(a,-e,b,e,'',{style:'fill:none;stroke:var(--wall);stroke-width:1.2'}); L(a,0,b,0,'gf');}
+  else if(kind==='battens'){const sd=o.side||-1; for(let u=a+4;u<b;u+=10)L(u,sd*(e+1),u,sd*(e+7),'rl',1.4);}
 }
 function room(s,r){
   for(const q of r.rects)rect(s,q[0],q[1],q[2],q[3],'r-'+(r.kind||'room'));
@@ -601,13 +644,14 @@ function drawF1(){
   const ops=[{x1:420,y1:0,x2:500,y2:0},{x1:600,y1:0,x2:710,y2:0},
     {x1:0,y1:60,x2:0,y2:300},{x1:0,y1:340,x2:0,y2:530},{x1:0,y1:590,x2:0,y2:780},{x1:60,y1:800,x2:340,y2:800},
     {x1:737,y1:160,x2:737,y2:230},{x1:580,y1:150,x2:660,y2:150},{x1:402,y1:560,x2:402,y2:640},{x1:482,y1:660,x2:482,y2:738},{x1:520,y1:800,x2:580,y2:800}];
+  treat(s,'rail',482,547.5,737,547.5); treat(s,'fixedglass',402,647.5,402,790);
   walls(s,[[0,0,737,0,15],[0,0,0,800,15],[0,800,592,800,15],[592,647.5,592,800,15],[592,647.5,892,647.5,15],[892,550,892,647.5,15],[892,550,1102,550,15],[1102,0,1102,550,15],
     [737,0,737,550,10],[0,547.5,402,547.5,10],[482,547.5,737,547.5,10],[402,547.5,402,800,10],[482,647.5,482,800,10],
     [372,0,372,125,10],[570,0,570,150,10],[570,150,737,150,10],[737,550,892,550,15],[482,647.5,592,647.5,10]],ops);
   el(s,'polygon',{points:[[367,129.1],[392,150],[399,142],[374,121.1]].map(q=>q[0]+','+Y(q[1])).join(' '),style:'fill:var(--wall)'});
   rect(s,460,150,465,180,'',{style:'fill:var(--wall)'});
-  door(s,500,0,80,180,270); door(s,737,230,70,270,180); slide(s,580,150,660,150);
-  door(s,402,640,80,270,180); door(s,482,738,78,270,0);
+  door(s,500,0,80,180,270); door(s,737,230,70,270,180,{transom:'clear',leaf:'glass'}); slide(s,580,150,660,150);
+  door(s,402,640,80,270,180,{leaf:'frost'}); door(s,482,738,78,270,0);
   win(s,0,60,0,300,15,'',null); win(s,-95,60,-95,300,10,'B',-112,100); win(s,-95,60,0,60,10,'',null); win(s,-95,300,0,300,10,'',null);
   win(s,0,340,0,530,15,'S',-20,550); win(s,600,0,710,0,15,'O',655,-22); win(s,0,590,0,780,15,'W1',-20,800); win(s,60,800,340,800,15,'W1',200,822); win(s,520,800,580,800,15,'O',550,822);
   R.forEach(r=>rlabel(s,r));
@@ -670,17 +714,18 @@ function drawF2A2(){
     {x1:0,y1:620,x2:0,y2:780},{x1:40,y1:800,x2:300,y2:800},
     {x1:520,y1:0,x2:650,y2:0},{x1:760,y1:0,x2:870,y2:0},{x1:930,y1:0,x2:1060,y2:0},
     {x1:1102,y1:100,x2:1102,y2:450},{x1:892,y1:550,x2:1102,y2:550}];
+  treat(s,'lowglass',210,547.5,330,547.5); treat(s,'glasswall',330,0,330,250); treat(s,'battens',330,250,330,455,{side:-1});
   walls(s,[[0,0,1102,0,15],[0,0,0,800,15],[0,800,592,800,15],[592,647.5,592,800,15],[592,647.5,892,647.5,15],[892,550,892,647.5,15],[892,550,1102,550,15],[1102,0,1102,550,15],
     [0,330,210,330,10],[330,0,330,455,10],[330,547.5,330,800,10],[210,330,210,600,10],[0,600,210,600,10],[210,547.5,330,547.5,10],
     [330,250,892,250,10],[330,455,892,455,10],[500,0,500,250,10],[670,0,670,250,10],[740,180,740,250,10],[670,180,740,180,10],[892,0,892,250,10],[892,455,892,550,10],
     [420,250,420,455,10],[585,250,585,455,10],[820,250,820,455,10],
     [420,547.5,547,547.5,10],[420,547.5,420,647.5,10],[330,647.5,420,647.5,10],[547,547.5,547,647.5,10],[547,647.5,592,647.5,10]],ops);
   /* doors */
-  slide(s,210,460,210,530); slide(s,330,560,330,635); slide(s,340,647.5,410,647.5);
-  slide(s,340,455,410,455); slide(s,475,455,555,455); 
-  slide(s,430,250,495,250); slide(s,510,250,580,250); slide(s,680,250,740,250); slide(s,745,250,815,250);
-  slide(s,420,360,420,430); slide(s,585,290,585,370);
-  slide(s,892,40,892,120); slide(s,892,470,892,545);
+  slide(s,210,460,210,530,'clear'); slide(s,330,560,330,635,'frost'); slide(s,340,647.5,410,647.5);
+  slide(s,340,455,410,455,'frost'); slide(s,475,455,555,455,'frost');
+  slide(s,430,250,495,250,'frost'); slide(s,510,250,580,250,'frost'); slide(s,680,250,740,250,'frost'); slide(s,745,250,815,250,'frost');
+  slide(s,420,360,420,430,'frost'); slide(s,585,290,585,370,'frost');
+  slide(s,892,40,892,120,'frost'); slide(s,892,470,892,545,'frost');
   /* windows */
   win(s,20,0,310,0,15,'H2',165,-22); win(s,0,20,0,310,15,'H1',-28,165);
   win(s,0,350,0,540,15,'W1',-28,445); win(s,40,330,190,330,10,'F',115,345); win(s,210,345,210,435,10,'F',225,390);
