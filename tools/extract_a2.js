@@ -22,7 +22,7 @@ const dv=(dx,dy)=>[+(-dx).toFixed(4),+(-dy).toFixed(4)];                // direc
 const rec={fig:null,figs:{},warn:[]};
 function F(){ return rec.figs[rec.fig]; }
 const prelude=`
-mk=function(id){ __rec.fig=id; __rec.figs[id]=__rec.figs[id]||{walls:[],ops:[],doors:[],slides:[],wins:[],rooms:[],fu:[],rc:[],st:[],circles:[],texts:[],misc:[],hline:[]}; return {id}; };
+mk=function(id){ __rec.fig=id; __rec.figs[id]=__rec.figs[id]||{walls:[],ops:[],doors:[],slides:[],wins:[],rooms:[],fu:[],rc:[],st:[],circles:[],texts:[],misc:[],hline:[],treats:[]}; return {id}; };
 el=function(p,tag,a,txt){ __el(tag,a,txt); return {setAttribute(){}}; };
 finishRot=function(){}; dimH=function(){}; dimV=function(){}; north=function(){}; route=function(){}; rlabel=function(){};
 rect=function(s,x1,y1,x2,y2,cls,extra){ __rect(x1,y1,x2,y2,cls,extra); };
@@ -30,8 +30,9 @@ line=function(s,x1,y1,x2,y2,cls,sw){ __line(x1,y1,x2,y2,cls); };
 poly=function(){};
 text=function(s,x,y,t,cls){ __text(x,y,t,cls); return {setAttribute(){}}; };
 walls=function(s,ws,ops){ __walls(ws,ops); };
-door=function(s,hx,hy,w,a0,a1){ __door(hx,hy,w,a0,a1); };
-slide=function(s,x1,y1,x2,y2){ __slide(x1,y1,x2,y2); };
+door=function(s,hx,hy,w,a0,a1,o){ __door(hx,hy,w,a0,a1,o); };
+treat=function(s,kind,x1,y1,x2,y2,o){ __treat(kind,x1,y1,x2,y2,o); };
+slide=function(s,x1,y1,x2,y2,tr){ __slide(x1,y1,x2,y2,tr); };
 win=function(s,x1,y1,x2,y2,t,code){ __win(x1,y1,x2,y2,t,code); };
 room=function(s,r){ __room(r); };
 fu=function(s,x1,y1,x2,y2,t,tx,ty){ __fu(x1,y1,x2,y2,t); if(t) __text((tx!=null?tx:(x1+x2)/2),(ty!=null?ty:(y1+y2)/2),t,'ft'); };
@@ -54,8 +55,9 @@ const sandbox={__rec:rec,Math,console,
   __text:(x,y,t,cls)=>{ F().texts.push({at:fig2(x,y),t,cls:cls||'',rot:0}); },
   __walls:(ws,ops)=>{ const f=F(); ws.forEach(w=>f.walls.push({a:fig2(w[0],w[1]),b:fig2(w[2],w[3]),t:w[4]}));
     ops.forEach(o=>{ if(Math.hypot(o.x2-o.x1,o.y2-o.y1)>0.5) f.ops.push({a:fig2(o.x1,o.y1),b:fig2(o.x2,o.y2)}); }); },
-  __door:(hx,hy,w,a0,a1)=>{ const r=d=>d*Math.PI/180; F().doors.push({hinge:fig2(hx,hy),w,closedDir:dv(Math.cos(r(a0)),Math.sin(r(a0))),openDir:dv(Math.cos(r(a1)),Math.sin(r(a1)))}); },
-  __slide:(x1,y1,x2,y2)=>{ F().slides.push({a:fig2(x1,y1),b:fig2(x2,y2)}); },
+  __door:(hx,hy,w,a0,a1,o)=>{ const r=d=>d*Math.PI/180; F().doors.push({hinge:fig2(hx,hy),w,closedDir:dv(Math.cos(r(a0)),Math.sin(r(a0))),openDir:dv(Math.cos(r(a1)),Math.sin(r(a1))),glaze:o||{}}); },
+  __treat:(kind,x1,y1,x2,y2,o)=>{ F().treats.push({kind,a:fig2(x1,y1),b:fig2(x2,y2),o:o||{}}); },
+  __slide:(x1,y1,x2,y2,tr)=>{ F().slides.push({a:fig2(x1,y1),b:fig2(x2,y2),transom:tr||null}); },
   __win:(x1,y1,x2,y2,t,code)=>{ F().wins.push({a:fig2(x1,y1),b:fig2(x2,y2),t,code:code||''}); },
   __room:(r)=>{ const rs=r.rects.map(q=>{const A=fig2(q[0],q[1]),B=fig2(q[2],q[3]);return[Math.min(A[0],B[0]),Math.min(A[1],B[1]),Math.max(A[0],B[0]),Math.max(A[1],B[1])];});
     const a=r.area!=null?r.area:r.rects.reduce((s,q)=>s+Math.abs((q[2]-q[0])*(q[3]-q[1]))/1e4,0)-(r.minus||0);
@@ -99,14 +101,20 @@ function level(fig,id){
   const attach=(op,kind,extra)=>{ for(const w of walls){ if(!(onWall(w,op.a)&&onWall(w,op.b))) continue; const s=span(w,op.a,op.b); if(s.ov<=0.5) continue;
       w.openings.push(Object.assign({kind,from:Math.max(s.lo,s.s),to:Math.min(s.hi,s.e)},extra)); fig.ops.forEach((o,i)=>{ if(onWall(w,o.a)&&onWall(w,o.b)&&Math.abs(span(w,o.a,o.b).s-s.s)<1) matched.add(i); }); return true; }
     rec.warn.push('level '+id+': '+kind+' not on any wall '+JSON.stringify(op)); return false; };
-  fig.doors.forEach(d=>{ const j=[d.hinge[0]+d.w*d.closedDir[0],d.hinge[1]+d.w*d.closedDir[1]]; attach({a:d.hinge,b:j},'door',{hinge:d.hinge,width:d.w,closedDir:d.closedDir,openDir:d.openDir}); });
-  fig.slides.forEach(s=>attach(s,'slide',{}));
+  fig.doors.forEach(d=>{ const j=[d.hinge[0]+d.w*d.closedDir[0],d.hinge[1]+d.w*d.closedDir[1]]; attach({a:d.hinge,b:j},'door',Object.assign({hinge:d.hinge,width:d.w,closedDir:d.closedDir,openDir:d.openDir},d.glaze.transom?{transom:d.glaze.transom}:{},d.glaze.leaf?{leaf:d.glaze.leaf}:{})); });
+  fig.slides.forEach(s=>attach(s,'slide',s.transom?{transom:s.transom}:{}));
   const free=[];
   fig.wins.forEach(w=>{ const code=w.code; const on=walls.some(x=>onWall(x,w.a)&&onWall(x,w.b)&&span(x,w.a,w.b).ov>0.5);
     if(!on){ free.push({kind:'window',code,a:w.a,b:w.b,t:w.t}); return; }
     // a window drawn on top of an opening that is already a door/slide is not a separate opening
     attach(w,'window',{code,t:w.t}); });
   fig.ops.forEach((o,i)=>{ if(!matched.has(i)) rec.warn.push('level '+id+': opening cut without a symbol '+JSON.stringify(o)); });
+  /* 3D の開放感の改造: walls[].treat = [{type,from,to,...}]（from/to は開口と同じ壁沿いの座標）。壁そのものは元のまま残る */
+  fig.treats.forEach(t=>{ const w=walls.find(x=>onWall(x,t.a)&&onWall(x,t.b)&&span(x,t.a,t.b).ov>0.5);
+    if(!w){ rec.warn.push('level '+id+': treat '+t.kind+' not on any wall '+JSON.stringify(t)); return; }
+    const s=span(w,t.a,t.b), e=Object.assign({type:t.kind,from:Math.max(s.lo,s.s),to:Math.min(s.hi,s.e)},t.o);
+    if(t.o.side){ delete e.side; e.face=w.axis==='ns'?(t.o.side<0?'E':'W'):(t.o.side<0?'N':'S'); }
+    (w.treat=w.treat||[]).push(e); });
   walls.forEach(w=>w.openings.sort((p,q)=>p.from-q.from));
   return {level:id,walls,freeWindows:free};
 }
