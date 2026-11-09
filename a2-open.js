@@ -167,3 +167,21 @@ export function create(THREE,E,C,X,H){
   };
   return api;
 }
+
+/* ---- building details (design plan section 3): 9 cm skirting boards and inside sills on the exterior windows; shown with the proposal ---- */
+export function details(THREE,E,C,X){
+  const {LG,M,base,bx}=E, hole=function(o){ return o.code==='H1'||o.code==='H2'; };
+  /* skirting: every 6 cm strip the engine put on a wall face gets a 3 cm strip on top */
+  [0,1].forEach(function(l){
+    const b=base(l), g=X.G[l], strips=[];
+    LG[l].children.forEach(function(o){ if(!o.isMesh||o.material!==M.trim||o.geometry.type!=='BoxGeometry') return; const p=o.geometry.parameters;
+      if(Math.abs(p.height-0.06)<0.002&&Math.abs(o.position.y-(b+0.03))<0.002&&Math.min(p.width,p.depth)<0.02) strips.push(o); });
+    strips.forEach(function(o){ const p=o.geometry.parameters; bx(g,o.position.x-p.width/2,o.position.x+p.width/2,o.position.z-p.depth/2,o.position.z+p.depth/2,b+0.06,b+0.09,M.trim,{cast:false}); });
+  });
+  /* sills: 12 cm deep, 3 cm thick stone boards on the room side of the plain 0.9 m windows in the 15 cm exterior walls */
+  const stone=M.a2stone, cx=4.5, cz=6.16;
+  [[0,C.L1],[1,C.L2]].forEach(function(q){ const l=q[0], g=X.G[l];
+    q[1].walls.forEach(function(w){ if(w.t!==15) return; const ew=w.axis==='ew', c=(ew?w.a[1]:w.a[0])/100, t=w.t/100, sd=Math.sign((ew?cx:cz)-c), f0=c+sd*(t/2+0.01), f1=f0+sd*0.12, y=base(l)+0.9;
+      w.openings.forEach(function(o){ if(o.kind!=='window'||hole(o)||(o.code!=='W1'&&o.code!=='O')) return; const a0=o.from/100-0.02, a1=o.to/100+0.02;
+        if(ew) bx(g,Math.min(f0,f1),Math.max(f0,f1),a0,a1,y,y+0.03,stone); else bx(g,a0,a1,Math.min(f0,f1),Math.max(f0,f1),y,y+0.03,stone); }); }); });
+}
