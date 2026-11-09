@@ -306,7 +306,7 @@ export function create(THREE,E,C){
   };
   X.G=G; X.B=B; X.col=col; X.put=put; X.swap=swap; X.THREE=THREE; X.E=E;
   X.openOn=true; X.open=C.OPEN.create(THREE,E,C,X,{mk:mk,glows:glows});
-  X.setOpen=function(on){ X.openOn=on; X.open.apply(); E.rebuild(); E.renderer.shadowMap.needsUpdate=true; };
+  C.OPEN.details(THREE,E,C,X); X.setOpen=function(on){ X.openOn=on; X.open.apply(); E.rebuild(); E.renderer.shadowMap.needsUpdate=true; };
   X.finish();
   return X;
 }
