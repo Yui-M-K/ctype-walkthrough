@@ -64,6 +64,7 @@ function settleScope(ctx, list, maxSec) {
   for (let t = 0; t < maxSec; t += 1 / 30) { ctx.busy = false; ctx.advance(1 / 30); const k = snap(); if (!moved(k, last)) { still += 1 / 30; if (still >= 0.5 && t > 0.3) return { settled: true, t }; } else still = 0; last = k; }
   return { settled: false, t: maxSec };
 }
+function dver(list) { return list.map(o => { const a = o.geometry && o.geometry.attributes && o.geometry.attributes.position; return a ? a.version : 0; }); }   // 頂點を直接書き換える変形（紗簾など）は姿勢行列に出ないので、頂点バッファの版数も見る
 function thingsOf(ctx) { const E = ctx.E; return E.things.map(t => Object.assign({ kind: 'door' }, t)).concat(E.furnThings.map(t => Object.assign({ kind: 'furn' }, t))); }
 
 function stateChecks(ctx, t, state) {
@@ -95,13 +96,13 @@ function interact(ctx, scan0, opt) {
     const room = ctx.roomAt(t.l || 0, t.pt[0], t.pt[1]) + '(' + ((t.l || 0) + 1) + 'F)', pos = [+t.pt[0].toFixed(2), +(w.base(t.l || 0) + 0.8).toFixed(2), +t.pt[1].toFixed(2)];
     const base = { obj: l0, ownerKey: 'act:' + l0 + '@' + t.pt.map(v => v.toFixed(1)).join(','), pos, room, level: t.l || 0, via: 'interact' };
     // 家具 mover が動く場合に備え、全 mesh の姿勢を記録
-    const sl = scopeMeshes(ctx, t); settleScope(ctx, sl, 2); const s0 = sig(ctx, sl), doorState0 = w.doors.map(d => d.open + '/' + d.t), errs0 = ctx.animErrors.length;
+    const sl = scopeMeshes(ctx, t); settleScope(ctx, sl, 2); const s0 = sig(ctx, sl), dv0 = dver(sl), doorState0 = w.doors.map(d => d.open + '/' + d.t), errs0 = ctx.animErrors.length;
     try { t.act(); } catch (e) { out.push(issue('interact', 'high', Object.assign({}, base, { desc: '「' + l0 + '」觸發時丟出例外：' + (e && e.message), hint: '查看該 act 函式。' }))); return; }
-    const st = settleScope(ctx, sl, maxSec), l1 = lab(t), s1 = sig(ctx, sl), d = sigDiff(s0, s1), doorState1 = w.doors.map(x => x.open + '/' + x.t);
+    const st = settleScope(ctx, sl, maxSec), l1 = lab(t), s1 = sig(ctx, sl), d = sigDiff(s0, s1), dvc = dver(sl).some((v, i) => v !== dv0[i]), doorState1 = w.doors.map(x => x.open + '/' + x.t);
     if (ctx.animErrors.length > errs0) out.push(issue('interact', 'high', Object.assign({}, base, { desc: '「' + l0 + '」觸發後動畫函式丟出例外：' + ctx.animErrors[ctx.animErrors.length - 1], hint: '查看對應的 anims 函式。' })));
     if (!st.settled) out.push(issue('interact', 'low', Object.assign({}, base, { desc: '「' + l0 + '」觸發後 ' + maxSec + ' 秒仍在動畫中（可能卡住或為持續動畫）', hint: '確認動畫的終止條件（回傳 false）。' })));
-    const changed = d.n > 0 || l1 !== l0 || doorState0.join() !== doorState1.join();
-    if (changed && d.n === 0 && doorState0.join() === doorState1.join()) out.push(issue('interact', /簾|門|抽|櫃|蓋|拉|開|關|收|放|升|降|摺|折|掀|扉/.test(l0) ? 'mid' : 'low', Object.assign({}, base, { desc: '「' + l0 + '」觸發後標籤變成「' + l1 + '」，但影響範圍內沒有任何零件移動（動畫沒有作用？）', hint: '確認 act 是否真的更新了該物件的 target／位置。' })));
+    const changed = d.n > 0 || dvc || l1 !== l0 || doorState0.join() !== doorState1.join();
+    if (changed && d.n === 0 && !dvc && doorState0.join() === doorState1.join()) out.push(issue('interact', /簾|門|抽|櫃|蓋|拉|開|關|收|放|升|降|摺|折|掀|扉/.test(l0) ? 'mid' : 'low', Object.assign({}, base, { desc: '「' + l0 + '」觸發後標籤變成「' + l1 + '」，但影響範圍內沒有任何零件移動（動畫沒有作用？）', hint: '確認 act 是否真的更新了該物件的 target／位置。' })));
     else if (changed && d.n > 0 && d.max < 0.02 && d.max > 0) out.push(issue('interact', 'low', Object.assign({}, base, { desc: '「' + l0 + '」觸發後最大位移只有 ' + (d.max * 100).toFixed(1) + ' cm，動畫幅度過小' })));
     if (!changed) out.push(issue('interact', 'mid', Object.assign({}, base, { desc: '「' + l0 + '」觸發後沒有任何零件移動、標籤也沒變（動畫終點與起點相同，或被前置條件擋下）', hint: '確認位移量是否為 0，或是否需要先滿足其他條件。' })));
     else {
