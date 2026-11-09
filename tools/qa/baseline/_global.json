@@ -29,6 +29,11 @@
    "check": "overlap",
    "match": "gardenTree|shrub",
    "note": "植栽同士・植栽と外壁の重なりは樹冠の柔らかい塊で、見た目に問題がない（幹が壁に入る場合は wall-pen で別途確認）。"
+  },
+  {
+   "check": "interact",
+   "match": "開始煮水",
+   "note": "電熱水瓶／熱水器の湯沸かしは LED の色と表示だけが変わる演出で、部品の位置は動かない。"
   }
  ]
 }
