@@ -344,14 +344,14 @@ layout:function(E){
   add('car','car',0,FT.garage.car,'N');
   add('bed','bed',1,g(L2,'床 160×200'),'S');
   add('side1','bedside',1,byId(L2,'f2'),'S'); add('side2','bedside',1,byId(L2,'f3'),'S');
-  add('washer','washer',1,g(L2,'洗脫烘'),'E');
+  add('washer','washer',1,[379.5,431,381.5,433],'N',function(){ const P=Catalog.washer(); P.group.scale.set(0.86,1,0.875); P.cols.forEach(function(c){ c.x0*=0.86; c.x1*=0.86; c.z0*=0.875; c.z1*=0.875; }); return P; });   // faces into the room (the plan row of units is 62 deep and 58 wide, so the catalog 72 x 64 washer is scaled to fit)
   add('rackA','clothesRack',1,byId(L2,'f4'),'E',function(){ return Catalog.clothesRack(0.95); });
   add('rackB','clothesRack',1,byId(L2,'f5'),'E',function(){ return Catalog.clothesRack(0.75); });
   add('rackC','clothesRack',1,byId(L2,'f6'),'E',function(){ return Catalog.clothesRack(1.4); });
   add('bedKid','bed',1,g(L2,'床 100×200'),'S',function(){ const P=Catalog.bed(), k=1.0/1.64; P.group.scale.x=k; P.cols.forEach(function(c){ c.x0*=k; c.x1*=k; }); return P; });   // the catalog bed is 164 wide: squeezed to a 100 cm single
   add('deskKid','liftDesk',1,g(L2,'書桌'),'N',function(){ return Catalog.liftDesk(0.82); });
   add('deskPC','liftDesk',1,g(L2,'電腦桌'),'W',function(){ return Catalog.liftDesk(1.8); });
-  add('printer','printer3d',1,g(L2,'3D機'),'S');
+  add('printer','printerCart',1,g(L2,'3D機'),'S');   // no table in the plan: the printer stands on its own cart
   return out;
 },
 fixtures:function(E){
@@ -359,7 +359,7 @@ fixtures:function(E){
   const blk=function(l,r,h,mat,top){ const b=base(l), x0=r[1]/100,x1=r[3]/100,z0=r[0]/100,z1=r[2]/100; bx(E.LG[l],x0,x1,z0,z1,b,b+h-(top?0.03:0),mat); if(top) bx(E.LG[l],x0-0.01,x1+0.01,z0-0.01,z1+0.01,b+h-0.03,b+h,top); addCol(l,x0,x1,z0,z1,b,b+h,'x'); };
   const at=function(l,e,n){ return [WX(l,n),WZ(l,e)]; };
   KIT.kitchen(THREE,E,{L1:L1});
-  fixture(0,Catalog.plant(0.9),8.1,8.22,0); fixture(0,Catalog.plant(0.75),5.3,11.35,0);   // floor pots: beside the TV, and on the wall pier between the sliding door and the bay
+  fixture(0,Catalog.plant(0.9),8.1,8.22,0); fixture(0,Catalog.plant(0.75),4.78,11.3,0);   // floor pots: beside the TV, and west of the massage chair against the south wall
   (function(){ const q=PLAN.f1Misc.polygons.find(function(g){ return /28%/.test(g.style); }).pts, es=q.map(function(a){ return a[0]; }), ns=q.map(function(a){ return a[1]; });
     blk(0,[Math.min.apply(null,es),Math.min.apply(null,ns),Math.max.apply(null,es),Math.max.apply(null,ns)],2.4,M.cabF); })();   // floor-to-ceiling shoe cabinet that screens the entry
   blk(0,byId(L1,'f9').rect,0.38,M.oak);

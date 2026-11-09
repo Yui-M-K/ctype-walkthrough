@@ -1125,6 +1125,11 @@
    "check": "overlap",
    "match": "gardenTree|shrub",
    "note": "植栽同士・植栽と外壁の重なりは樹冠の柔らかい塊で、見た目に問題がない（幹が壁に入る場合は wall-pen で別途確認）。"
+  },
+  {
+   "check": "reach",
+   "match": "階梯#1",
+   "note": "A2 は 2 階建てで 2F→3F の階段は存在しない。エンジンが必ず作る 2 本目の階段を ST.offset で 400 m 先の敷地外に退避させたもの（a2.html の stair）。歩行範囲には影響しない。"
   }
  ]
 }
