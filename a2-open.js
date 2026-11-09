@@ -1,18 +1,17 @@
-/* A2 open-plan proposal (33_注文住宅格局/室內設計方案.md section 4), 3D appearance only: plan.json walls and openings stay as they are.
-   The stair side wall becomes a balustrade on open treads, 2F doors get transom glass, the sauna and study walls turn into glass, two 1F doors turn into glass.
-   Walls are built by the engine first; the pieces that change are moved into a "closed" group (shown while this is off) and the replacements live in an "open" group. */
+/* A2 open-plan proposal (33_注文住宅格局/室內設計方案.md section 4), 3D appearance only.
+   plans/a2.json keeps every wall as it was; the proposal is read from walls[].treat (rail, lowglass, glasswall, fixedglass, battens) and from openings[].transom / .leaf.
+   Walls are built by the engine first (that is the "off" look); the pieces that change are moved into a "closed" group and the replacements live in an "open" group. */
 
-/* walls whose meshes and doors are captured while the engine builds them */
-const WATCH=new Set(['L1W8','L1W10','L1W11','L2W9','L2W10','L2W11','L2W13','L2W14','L2W15','L2W20','L2W21','L2W22','L2W23']);
-const TRANSOM={L1W8:'clear',L2W10:'frost',L2W11:'clear',L2W14:'frost',L2W15:'frost',L2W20:'frost',L2W21:'frost',L2W22:'frost',L2W23:'frost'};
 const CAP=new Map();
+const wants=function(w){ return (w.treat&&w.treat.length>0)||w.openings.some(function(o){ return o.transom||o.leaf; }); };
+const treatsOf=function(type){ const r=[]; CAP.forEach(function(cp){ (cp.w.treat||[]).forEach(function(t){ if(t.type===type) r.push([cp,t]); }); }); return r; };
 
-/* a2.html builds every wall through this: build(l, w) as before, plus a record of what it added */
+/* a2.html builds every wall through this: build(l, w) as before, plus a record of what it added for the walls the proposal touches */
 export function treat(E,l,w,build){
-  if(!WATCH.has(w.id)){ build(l,w); return; }
+  if(!wants(w)){ build(l,w); return; }
   const g=E.LG[l], n0=g.children.length, c0=E.walls.length, d0=E.doors.length;
   build(l,w);
-  CAP.set(w.id,{l:l,w:w,ns:w.axis==='ns',meshes:g.children.slice(n0).filter(function(o){ return o.isMesh; }),cols:E.walls.slice(c0),doors:E.doors.slice(d0)});
+  CAP.set(w,{l:l,w:w,ns:w.axis==='ns',meshes:g.children.slice(n0).filter(function(o){ return o.isMesh; }),cols:E.walls.slice(c0),doors:E.doors.slice(d0)});
 }
 
 export function create(THREE,E,C,X,H){
@@ -69,9 +68,9 @@ export function create(THREE,E,C,X,H){
     if(o.rail!==undefined) box(a0,a1,o.rail,o.rail+0.03);
   };
 
-  /* ---- 1. stair: open treads under a balustrade instead of the wall on the kitchen side (L1W10) ---- */
+  /* ---- 1. stair: open treads under a balustrade instead of the rail-treated wall  ---- */
   (function(){
-    const cp=CAP.get('L1W10'); if(!cp) return;
+    const rt=treatsOf('rail')[0]; if(!rt) return; const cp=rt[0];
     cp.meshes.forEach(function(m){ toClosed(0,m); });
     state.cols.closed.push.apply(state.cols.closed,cp.cols);
     const ST=E.ST, FZ=E.flightZ(0), b=base(0), k=SH/(FZ.zs-FZ.zn), run=(FZ.zs-FZ.zn)/ST.N, xc=ST.x1-0.0125;
@@ -83,7 +82,7 @@ export function create(THREE,E,C,X,H){
     E.footLights.forEach(function(m){ if(m.parent===LG[0]) toClosed(0,m); });
     state.rail=E.railGroups.find(function(g){ return g.parent===LG[0]&&g.userData.sd===-1; })||null;
     /* balustrade on the stringer line: oak handrail, oak newels at both ends, black rods about 11 cm apart */
-    const zHi=FZ.zs-0.04, zLo=4.33, g=OG[0];
+    const zHi=FZ.zs-0.04, zLo=rt[1].from/100+0.03, g=OG[0];
     const V=function(z){ return new THREE.Vector3(xc,rail(z),z); };
     railBar(g,V(zHi),V(zLo),0.05,0.035,oakR,true);
     [zHi,zLo].forEach(function(z){ bx(g,xc-0.025,xc+0.025,z-0.025,z+0.025,b,rail(z)+0.02,E.M.oak); });
@@ -92,63 +91,63 @@ export function create(THREE,E,C,X,H){
     state.cols.open.push(E.addCol(0,ST.x1-0.045,ST.x1+0.03,zLo-0.02,zHi+0.03,b,b+SH+1.0,'w'));
   })();
 
-  /* ---- 2. transom glass above doors: 2F sliding doors and the kitchen-garage door, from the door head up to the roof line (1F: ceiling) ---- */
-  Object.keys(TRANSOM).forEach(function(id){
-    const cp=CAP.get(id); if(!cp) return;
-    const w=cp.w, l=cp.l, c=(cp.ns?w.a[0]:w.a[1])/100, yb=base(l)+2.05, spans=w.openings.filter(function(o){ return o.kind==='slide'||(l===0&&o.kind==='door'); }).map(function(o){ return [o.from/100,o.to/100]; });
+  /* ---- 2. transom glass above doors: openings with a transom, from the door head up to the roof line (1F: ceiling) ---- */
+  CAP.forEach(function(cp){
+    const w=cp.w, l=cp.l, c=(cp.ns?w.a[0]:w.a[1])/100, yb=base(l)+2.05, ops=w.openings.filter(function(o){ return o.transom; });
+    if(!ops.length) return;
+    const spans=ops.map(function(o){ return [o.from/100,o.to/100]; });
     cp.meshes.forEach(function(m){ const bb=bbox(m); if(bb.min.y<yb-0.006) return; const r=alongOf(cp,bb);
-      if(spans.some(function(s){ return r[1]>s[0]+0.01&&r[0]<s[1]-0.01; })) carve(cp,m,spans); });
+      if(spans.some(function(q){ return r[1]>q[0]+0.01&&r[0]<q[1]-0.01; })) carve(cp,m,spans); });
     const top=l===0?function(){ return base(0)+CH; }:cp.ns?function(a){ return C.ceilY(a*100); }:function(){ return C.ceilY(c*100); };
-    spans.forEach(function(s){ pane(cp,c,s[0],s[1],yb,top,TRANSOM[id]==='clear'?M.glass:frostT); });
+    ops.forEach(function(o,i){ pane(cp,c,spans[i][0],spans[i][1],yb,top,o.transom==='clear'?M.glass:frostT); });
   });
 
-  /* ---- 3. sauna wall (L2W9, n600-850) facing the void: walnut battens up to 0.9 m, frosted glass above; the toilet part beside it gets battens ---- */
-  (function(){
-    const cp=CAP.get('L2W9'); if(!cp) return;
-    const c=cp.w.a[0]/100, t=cp.w.t/100, XS=6.0, XE=8.43, yF=base(1), top=function(x){ return C.ceilY(x*100); };
-    cp.meshes.forEach(function(m){ const bb=bbox(m); if(bb.max.x>XS+0.01) carve(cp,m,[[XS,99]]); });
-    const g=OG[1], z1=c+t/2;
-    bx(g,XS,XE,c-t/2,c+t/2,yF,yF+0.9,gapM);
+  /* ---- 3. glasswall (sauna wall facing the void): walnut battens up to 0.9 m, frosted glass above; battens treat: the neighbouring part gets the same battens ---- */
+  treatsOf('glasswall').forEach(function(q){
+    const cp=q[0], t=q[1], c=cp.w.a[0]/100, th=cp.w.t/100, XS=t.from/100, XE=t.to/100-0.07, yF=base(1), top=function(x){ return C.ceilY(x*100); };   // 7 cm: the exterior wall at the end
+    cp.meshes.forEach(function(m){ const bb=bbox(m); if(bb.max.x>XS+0.01) carve(cp,m,[[XS,t.to/100+1]]); });
+    const g=OG[1], z1=c+th/2, mw=(XE-XS)/3;
+    bx(g,XS,XE,c-th/2,c+th/2,yF,yF+0.9,gapM);
     for(let x=XS+0.02;x<XE-0.04;x+=0.055) bx(g,x,x+0.035,z1,z1+0.03,yF,yF+0.9,woodD);
-    bx(g,XS,XE,c-t/2-0.01,c+t/2+0.02,yF+0.9,yF+0.93,M.oak);
-    pane(cp,c,XS,XE,yF+0.93,top,frostW,{d:t+0.02,hh:0.1,fm:woodD,mull:[XS+0.81,XS+1.62],rail:yF+2.15});
+    bx(g,XS,XE,c-th/2-0.01,c+th/2+0.02,yF+0.9,yF+0.93,M.oak);
+    pane(cp,c,XS,XE,yF+0.93,top,frostW,{d:th+0.02,hh:0.1,fm:woodD,mull:[XS+mw,XS+2*mw],rail:yF+2.15});
     const gm=new THREE.MeshBasicMaterial({color:0xffb866,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}); H.glows.push(gm);
     const gg=new THREE.BufferGeometry(); gg.setAttribute('position',new THREE.Float32BufferAttribute([XS+0.04,yF+0.96,c-0.04, XE-0.04,yF+0.96,c-0.04, XE-0.04,top(XE-0.04)-0.12,c-0.04, XS+0.04,top(XS+0.04)-0.12,c-0.04],3)); gg.setIndex([0,1,2,0,2,3]);
     const glow=new THREE.Mesh(gg,gm); glow.renderOrder=2; g.add(glow);
-    /* toilet-side part: battens on the void face, floor to roof line, over the existing wall */
-    const T0=4.04, T1=5.97;
-    for(let x=T0;x<T1;x+=0.06) bx(g,x,x+0.035,z1,z1+0.03,yF,top(x+0.035)-0.02,woodD);
-    bx(g,T0-0.02,T1+0.02,z1-0.004,z1+0.001,yF,top(T1)-0.02,gapM,{cast:false});
-  })();
+  });
+  treatsOf('battens').forEach(function(q){
+    const cp=q[0], t=q[1], c=cp.w.a[0]/100, th=cp.w.t/100, yF=base(1), top=function(x){ return C.ceilY(x*100); }, sg=t.face==='W'?-1:1, zf=c+sg*th/2, T0=t.from/100+0.09, T1=t.to/100-0.03;
+    const zr=function(d0,d1){ return sg>0?[zf+d0,zf+d1]:[zf-d1,zf-d0]; };
+    for(let x=T0;x<T1;x+=0.06){ const r=zr(0,0.03); bx(OG[1],x,x+0.035,r[0],r[1],yF,top(x+0.035)-0.02,woodD); }
+    const r=zr(-0.004,0.001); bx(OG[1],T0-0.02,T1+0.02,r[0],r[1],yF,top(T1)-0.02,gapM,{cast:false});
+  });
 
-  /* ---- 4. study partition (L2W13): knee wall 1.0 m, clear glass above in black frames ---- */
-  (function(){
-    const cp=CAP.get('L2W13'); if(!cp) return;
-    const c=cp.w.a[1]/100, yF=base(1), x0=c, top=function(){ return C.ceilY(c*100); };
+  /* ---- 4. lowglass: knee wall 1.0 m, clear glass above in black frames ---- */
+  treatsOf('lowglass').forEach(function(q){
+    const cp=q[0], t=q[1], c=cp.w.a[1]/100, yF=base(1), top=function(){ return C.ceilY(c*100); }, wz0=t.from/100, wz1=t.to/100, g=OG[1];
     cp.meshes.forEach(function(m){ const bb=bbox(m); if(bb.max.y>yF+0.5) carve(cp,m,[],yF+1.0); });
-    const wz0=Math.min(cp.w.a[0],cp.w.b[0])/100, wz1=Math.max(cp.w.a[0],cp.w.b[0])/100, g=OG[1];
     bx(g,c-0.065,c+0.065,wz0,wz1,yF+1.0,yF+1.035,M.oak);
     pane(cp,c,wz0+0.04,wz1-0.04,yF+1.035,top,M.glass,{d:0.05,f:0.03,hh:0.05,bb:0.03,fm:rod,mull:[(wz0+wz1)/2-0.015]});
-  })();
+  });
 
-  /* ---- 5. mirror room (L1W11): frosted fixed glass beside the door, door leaf turned into frosted glass ---- */
-  (function(){
-    const cp=CAP.get('L1W11'); if(!cp) return;
-    const c=cp.w.a[0]/100, G0=0.6, G1=2.025;
+  /* ---- 5. fixedglass: frosted fixed pane in the wall, full height ---- */
+  treatsOf('fixedglass').forEach(function(q){
+    const cp=q[0], t=q[1], c=cp.w.a[0]/100, G0=t.from/100, G1=t.to/100;
     cp.meshes.forEach(function(m){ const bb=bbox(m), r=alongOf(cp,bb); if(r[1]>G0+0.01&&r[0]<G1-0.01) carve(cp,m,[[G0,G1]]); });
     pane(cp,c,G0,G1,base(0)+0.0,function(){ return base(0)+CH; },frostW,{d:cp.w.t/100+0.01,f:0.04,hh:0.05,bb:0.06,fm:rod,mull:[(G0+G1)/2]});
-  })();
-  /* ---- 6. glass leaves on the kitchen-garage door and the mirror-room door ---- */
-  [['L1W8',doorG],['L1W11',frostW]].forEach(function(q){
-    const cp=CAP.get(q[0]); if(!cp) return;
-    cp.doors.forEach(function(d){
+  });
+  /* ---- 6. glass leaves on doors with leaf: 'glass' (clear) or 'frost' ---- */
+  CAP.forEach(function(cp){
+    const dops=cp.w.openings.filter(function(o){ return o.kind==='door'; });
+    cp.doors.forEach(function(d,i){
+      const o=dops[i]; if(!o||!o.leaf) return;
       const leaf=d.pv.children[0], lm=leaf.children[0], p=lm.geometry.parameters, horiz=p.width>p.depth, L=horiz?p.width:p.depth, T=Math.max(horiz?p.depth:p.width,0.04)+0.008, fr=new THREE.Group();
       fr.position.copy(lm.position);
       const bar=function(a,h,len,y){ const m=new THREE.Mesh(new THREE.BoxGeometry(horiz?len:T,h,horiz?T:len),rod); m.position.set(horiz?a:0,y,horiz?0:a); m.castShadow=false; fr.add(m); };
       bar(-L/2+0.025,p.height,0.05,0); bar(L/2-0.025,p.height,0.05,0);
       [-1,1].forEach(function(s){ bar(0,0.07,L,s*(p.height/2-0.035)); });
       leaf.add(fr);
-      state.doors.push({lm:lm,fr:fr,orig:lm.material,glass:q[1],cast:lm.castShadow});
+      state.doors.push({lm:lm,fr:fr,orig:lm.material,glass:o.leaf==='frost'?frostW:doorG,cast:lm.castShadow});
     });
   });
 
