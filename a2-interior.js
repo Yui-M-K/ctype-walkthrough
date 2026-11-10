@@ -250,7 +250,7 @@ export function create(THREE,E,C){
   rugRound(0,969,665,1.25);
   put(0,'floorLamp',1105,700,'E');
   put(0,'artLand',915,308,'E',null,{}); put(0,'artLand',1045,308,'E',null,{});
-  rugRect(0,960,170,2.0,2.4); put(0,'plant',1135,272,'E',Catalog.plant(0.75));
+  put(0,'plant',1135,272,'E',Catalog.plant(0.75));
   /* ---- 2F ---- */
   rugRect(1,162,610,1.9,2.3); put(1,'plantS',92,808,'E');
   rugRound(1,1010,420,0.9); put(1,'plantS',1135,262,'E');
