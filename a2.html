@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>注文住宅 A2 屋內漫步</title>
+<!doctype html><html lang="zh-Hant"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>理想之家 挑高版 屋內漫步</title>
 <link rel="stylesheet" href="lib/storeys.css?v=20261110b">
 <canvas id="c" aria-label="3D 室內空間，可用搖桿走動"></canvas>
 <div id="hud">
@@ -46,7 +46,7 @@
     <h3>快速傳送</h3>
     <div id="spots" class="spots"></div>
     <p class="help"><b>操作：</b>手機：單指在畫面上拖曳就等於在操控左下搖桿，兩指一起拖曳可轉向與抬頭低頭；電腦：滑鼠拖曳轉向，WASD／方向鍵移動，Shift 加速，Ctrl 蹲下（再按一次站起來）。走近門或家具並面向它，畫面下方會列出操作按鈕；電腦上也可以把滑鼠移到東西上（會亮框並顯示動作）直接點擊，或按 E 互動（沒指著東西時 E 操作列表第一個，1–3 鍵選列表）。方向鍵左右可原地轉向。階梯直接走上去就會換樓層。「俯瞰」可選擇看哪一層（屋頂與上層會被拿掉）。</p>
-    <p class="help"><b>注意：</b>假想的注文住宅「A2」。尺寸取自平面圖（<a href="plans/a2-plan.html">A2 平面圖</a>，壁芯，單位 cm）；道路在北側，庭院・出窗・緣側朝東。為了讓直跑樓梯能在引擎裡沿著畫面上方前進，畫面的「上」是真正的西側，指北針（小地圖旁與格局圖的箭頭）指向真正的北。外觀的木格柵屏風、植栽、碎石、踏石、前階與夜間照明屬「外構（3D 示意）」，平面圖沒有。另有 <a href="plans/a3-plan.html">A3 平面圖（參考案，未做 3D）</a>，以及 <a href="plans/a2-architect-checklist.html">與建築師確認事項（法規、結構、費用概算與日文問句）</a>。</p>
+    <p class="help"><b>注意：</b>「理想之家-挑高版」（假想）。尺寸取自平面圖（<a href="plans/a2-plan.html">挑高版平面圖</a>，壁芯，單位 cm）；道路在北側，庭院・出窗・緣側朝東。為了讓直跑樓梯能在引擎裡沿著畫面上方前進，畫面的「上」是真正的西側，指北針（小地圖旁與格局圖的箭頭）指向真正的北。外觀的木格柵屏風、植栽、碎石、踏石、前階與夜間照明屬「外構（3D 示意）」，平面圖沒有。另有 <a href="plans/a3-plan.html">A3 平面圖（參考案，未做 3D）</a>，以及 <a href="plans/a2-architect-checklist.html">與建築師確認事項（法規、結構、費用概算與日文問句）</a>。</p>
   </div>
 </div>
 <div id="load">載入 3D 場景…<small>首次開啟需要幾秒鐘</small></div>
@@ -83,19 +83,19 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261110c';
-import * as KIT from './a2-kitchen.js?v=20261110c';
-import * as LIT from './a2-lights.js?v=20261110c';
-import * as INT from './a2-interior.js?v=20261110c';
-import * as OPEN from './a2-open.js?v=20261110c';
-import * as MDL from './a2-models.js?v=20261110c';
-import * as CAT from './a2-cat.js?v=20261110c';
-import * as LIFE from './a2-life.js?v=20261110c';
-import * as GEN from './a2-genkan.js?v=20261110c';
+import * as EXT from './a2-exterior.js?v=20261110d';
+import * as KIT from './a2-kitchen.js?v=20261110d';
+import * as LIT from './a2-lights.js?v=20261110d';
+import * as INT from './a2-interior.js?v=20261110d';
+import * as OPEN from './a2-open.js?v=20261110d';
+import * as MDL from './a2-models.js?v=20261110d';
+import * as CAT from './a2-cat.js?v=20261110d';
+import * as LIFE from './a2-life.js?v=20261110d';
+import * as GEN from './a2-genkan.js?v=20261110d';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261110c')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261110d')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -485,5 +485,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261110c"></script>
+<script src="a2-sunmap.js?v=20261110d"></script>
 </body></html>
