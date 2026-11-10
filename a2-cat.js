@@ -10,12 +10,18 @@ export function create(THREE,E,C){
   const rig=Catalog.bubuRig(1.0,{glb:Catalog.catChoice()!=='old',onGlb:function(g){ skipQa(g.S); }}); G.add(rig.group); skipQa(rig.group);
   const L=rig.loco, B=C.bench, BY=-Math.PI/2, F0=C.nodes.B0;         // on the bench she faces the room (+z)
   const toward=function(v,tg,r,dt){ return v+cl(tg-v,-r*dt,r*dt); }, angTo=function(a){ let d=a-yw; while(d>Math.PI) d-=TAU; while(d<-Math.PI) d+=TAU; return d; };
-  let x=B.x, z=B.z, y=B.y, yw=BY, st='rest', tm=15+Math.random()*10, at='bench', dest=null, path=[], air=null, hidden=false, lastT=null, avoid=function(){ return {}; };
+  let stuck=0, x=B.x, z=B.z, y=B.y, yw=BY, st='rest', tm=15+Math.random()*10, at='bench', dest=null, path=[], air=null, hidden=false, lastT=null, avoid=function(){ return {}; };
+  const furnHit=function(x,z){ const cs=E.furnCols; for(let i=0;i<cs.length;i++){ const c=cs[i]; if(c.l!==0||c.modeOff||c.mvOff||(c.lay&&c.lay!==E.curLayout)) continue;   // furniture moved in the edit mode: keep out of its box
+      const nx=cl(x,c.x0,c.x1), nz=cl(z,c.z0,c.z1); if(Math.hypot(x-nx,z-nz)<0.17) return true; } return false; };
+  const segHit=function(a,b){ const n=Math.max(1,Math.ceil(Math.hypot(a[0]-b[0],a[1]-b[1])/0.06)); for(let i=0;i<=n;i++){ if(furnHit(a[0]+(b[0]-a[0])*i/n,a[1]+(b[1]-a[1])*i/n)) return true; } return false; };
   const nodeOf=function(n){ return n==='bench'?'B0':C.stops[n]; };
   const nodePath=function(a,b){ const q=[[a]], seen={}, no=avoid().nodes||{}; seen[a]=1;                      // breadth-first over the waypoint graph
-    while(q.length){ const p=q.shift(), n=p[p.length-1]; if(n===b) return p; (C.edges[n]||[]).forEach(function(m){ if(!seen[m]&&!no[m]){ seen[m]=1; q.push(p.concat([m])); } }); } return null; };
+    while(q.length){ const p=q.shift(), n=p[p.length-1]; if(n===b) return p; (C.edges[n]||[]).forEach(function(m){ if(!seen[m]&&!no[m]&&!segHit(C.nodes[n],C.nodes[m])){ seen[m]=1; q.push(p.concat([m])); } }); } return null; };
   const pickDest=function(){ const av=avoid().stops||{}, names=Object.keys(C.stops).filter(function(s){ return s!==at&&!av[s]; }); if(at!=='bench') names.push('bench');
     while(names.length){ const d=names.splice(Math.floor(Math.random()*names.length),1)[0]; if(nodePath(nodeOf(at),nodeOf(d))) return d; } return null; };
+  const reroute=function(){ const near=Object.keys(C.nodes).filter(function(n){ return !segHit([x,z],C.nodes[n]); }).sort(function(a,b){ return Math.hypot(C.nodes[a][0]-x,C.nodes[a][1]-z)-Math.hypot(C.nodes[b][0]-x,C.nodes[b][1]-z); })[0]; if(!near) return;
+    const av=avoid().stops||{}, names=Object.keys(C.stops).filter(function(q){ return !av[q]; }).concat(['bench']);
+    while(names.length){ const d=names.splice(Math.floor(Math.random()*names.length),1)[0], p=nodePath(near,nodeOf(d)); if(p){ dest=d; path=p; return; } } };
   const goTo=function(d,from){ dest=d; path=nodePath(from,nodeOf(d))||[]; };
   const jump=function(a,b,dn){ air={t:0,a:a,b:b,dn:dn}; st='air'; };
   const step=function(t){
@@ -28,6 +34,8 @@ export function create(THREE,E,C){
       else if(st==='go'){
         if(dest!=='bench'&&dest!==null&&(avoid().stops||{})[dest]){ const d=pickDest(); if(d&&path.length) goTo(d,path[0]); }                 // the mode took her spot: pick another one from the next waypoint
         const tg=path.length?C.nodes[path[0]]:null;
+        if(tg&&segHit([x,z],tg)){ L.gm=toward(L.gm,0,4,dt); stuck+=dt; if(stuck>3){ stuck=0; reroute(); } return rig.anim(t); }                 // something was put in her way: wait, then find another way
+        stuck=0;
         if(!tg){ L.gm=toward(L.gm,0,4,dt); if(L.gm<0.05){ if(dest==='bench') st='turn'; else { st='rest'; at=dest; tm=12+Math.random()*14; } } }
         else { const dx=tg[0]-x, dz=tg[1]-z, d=Math.hypot(dx,dz), da=angTo(Math.atan2(-dz,dx)); L.gw=toward(L.gw,1,2.2,dt);
           if(d<0.03) path.shift();
