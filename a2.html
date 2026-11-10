@@ -83,21 +83,22 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261110h';
-import * as KIT from './a2-kitchen.js?v=20261110h';
-import * as LIT from './a2-lights.js?v=20261110h';
-import * as INT from './a2-interior.js?v=20261110h';
-import * as OPEN from './a2-open.js?v=20261110h';
-import * as MDL from './a2-models.js?v=20261110h';
-import * as CAT from './a2-cat.js?v=20261110h';
-import * as LIFE from './a2-life.js?v=20261110h';
-import * as GEN from './a2-genkan.js?v=20261110h';
-import * as BAY from './a2-bay.js?v=20261110h';
-import * as WET from './a2-wet.js?v=20261110h';
+import * as EXT from './a2-exterior.js?v=20261110i';
+import * as KIT from './a2-kitchen.js?v=20261110i';
+import * as LIT from './a2-lights.js?v=20261110i';
+import * as INT from './a2-interior.js?v=20261110i';
+import * as OPEN from './a2-open.js?v=20261110i';
+import * as MDL from './a2-models.js?v=20261110i';
+import * as CAT from './a2-cat.js?v=20261110i';
+import * as LIFE from './a2-life.js?v=20261110i';
+import * as GEN from './a2-genkan.js?v=20261110i';
+import * as BAY from './a2-bay.js?v=20261110i';
+import * as WET from './a2-wet.js?v=20261110i';
+import * as MIR from './a2-mirror.js?v=20261110i';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261110h')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261110i')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -381,7 +382,7 @@ fixtures:function(E){
   /* mirror room: the full-width mirror wall on the north wall of the room (plan: 整面鏡牆 290) */
   (function(){ const x=WX(0,302.5)-0.05, z0=WZ(0,772), z1=WZ(0,1062);
     bx(E.LG[0],x-0.012,x,z0-0.03,z1+0.03,0.12,2.18,M.oak,{cast:false});
-    const mw=Walk.planarMirror(THREE,z1-z0,2.0); mw.rotation.y=-Math.PI/2; mw.position.set(x-0.013,1.15,(z0+z1)/2); E.LG[0].add(mw); })();
+    const mw=Walk.planarMirror(THREE,z1-z0,2.0); mw.rotation.y=-Math.PI/2; mw.position.set(x-0.013,1.15,(z0+z1)/2); E.LG[0].add(mw); MIR.rollerScreen(THREE,E,{x:x-0.013,z0:z0,z1:z1}); })();
   /* 2F */
   blk(1,byName(L2,'壁櫃 深60').rect,2.3,M.cabF);
   blk(1,byName(L2,'水槽').rect,0.85,M.cab,M.top);
@@ -488,5 +489,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261110h"></script>
+<script src="a2-sunmap.js?v=20261110i"></script>
 </body></html>
