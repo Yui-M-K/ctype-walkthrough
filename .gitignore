@@ -1,0 +1,19 @@
+# 機密・個人設定
+.env
+.env.*
+!.env.example
+.mcp.json
+.claude/settings.local.json
+.claude/worktrees/
+*.pem
+*.key
+*.p12
+
+# OS・エディタ
+.DS_Store
+.idea/
+.vscode/
+
+# 依存・ログ
+node_modules/
+*.log
