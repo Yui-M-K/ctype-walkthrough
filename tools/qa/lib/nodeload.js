@@ -82,7 +82,7 @@ async function load(house, opts) {
   const sandbox = { console: { log() {}, warn() {}, error(e) { errors.push('console.error: ' + (e && e.stack ? e.stack.split("\n").slice(0, 4).join(' / ') : e)); }, info() {} } };
   const docStub = absorber('document'); sandbox.document = docStub;
   sandbox.window = sandbox; sandbox.self = sandbox; sandbox.globalThis = sandbox;
-  sandbox.location = { hash: '#debug', search: '', href: 'http://localhost/' + house + '.html', origin: 'http://localhost', pathname: '/' + house + '.html' };
+  sandbox.location = { hash: '#debug', search: process.env.QA_SEARCH || '', href: 'http://localhost/' + house + '.html', origin: 'http://localhost', pathname: '/' + house + '.html' };
   sandbox.localStorage = { getItem() { return null; }, setItem() {}, removeItem() {} }; sandbox.sessionStorage = sandbox.localStorage;
   sandbox.navigator = { userAgent: 'node', hardwareConcurrency: 4, maxTouchPoints: 0 };
   // 仮想時計：setTimeout/setInterval は advance(ms) で進める（ctx.advance から呼ばれる）

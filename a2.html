@@ -83,22 +83,23 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261110l';
-import * as KIT from './a2-kitchen.js?v=20261110l';
-import * as LIT from './a2-lights.js?v=20261110l';
-import * as INT from './a2-interior.js?v=20261110l';
-import * as OPEN from './a2-open.js?v=20261110l';
-import * as MDL from './a2-models.js?v=20261110l';
-import * as CAT from './a2-cat.js?v=20261110l';
-import * as LIFE from './a2-life.js?v=20261110l';
-import * as GEN from './a2-genkan.js?v=20261110l';
-import * as BAY from './a2-bay.js?v=20261110l';
-import * as WET from './a2-wet.js?v=20261110l';
-import * as MIR from './a2-mirror.js?v=20261110l';
+import * as EXT from './a2-exterior.js?v=20261110m';
+import * as KIT from './a2-kitchen.js?v=20261110m';
+import * as LIT from './a2-lights.js?v=20261110m';
+import * as INT from './a2-interior.js?v=20261110m';
+import * as OPEN from './a2-open.js?v=20261110m';
+import * as MDL from './a2-models.js?v=20261110m';
+import * as CAT from './a2-cat.js?v=20261110m';
+import * as LIFE from './a2-life.js?v=20261110m';
+import * as GEN from './a2-genkan.js?v=20261110m';
+import * as BAY from './a2-bay.js?v=20261110m';
+import * as WET from './a2-wet.js?v=20261110m';
+import * as MIR from './a2-mirror.js?v=20261110m';
+import * as EW from './a2-eastwall.js?v=20261110m';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261110l')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261110m')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -247,7 +248,9 @@ build:function(E){
     }
   }
   /* ---- walls ---- */
-  L1.walls.forEach(function(w){ OPEN.treat(E,0,w,buildWall); });
+  const EWCAP=window.__a2EWCap={group:new THREE.Group()};   // the entry's east wall, kept apart for the 「玄關東牆」 switch (a2-eastwall.js)
+  L1.walls.forEach(function(w){ if(w.id!=='L1W13'){ OPEN.treat(E,0,w,buildWall); return; }
+    const g=LG[0], n0=g.children.length, c0=E.walls.length; OPEN.treat(E,0,w,buildWall); EWCAP.meshes=g.children.slice(n0).filter(function(o){ return o.isMesh; }); EWCAP.cols=E.walls.slice(c0); LG[0].add(EWCAP.group); });
   L2.walls.forEach(function(w){ OPEN.treat(E,1,w,buildWall); });
   /* ---- slabs, floors, ceilings ---- */
   const FLOOR1={'LDK':FL.wood,'玄關':FL.stone,'淋浴＋脫衣':FL.wc,'鏡子房':FL.wood,'走廊':FL.wood,'廁所':FL.wc,'樓梯':FL.woodD,'車庫（開放式）':FL.conc};   // floors after ideal_c: wc tile for the dressing area, wood elsewhere
@@ -382,7 +385,7 @@ fixtures:function(E){
   fixture(0,Catalog.plant(0.9),8.1,8.22,0); fixture(0,Catalog.plant(0.75),4.78,11.3,0);   // floor pots: beside the TV, and west of the massage chair against the south wall
   BAY.bay(THREE,E,{pf:FT.bayWindow.platformRect,bay:FT.bayWindow.rect});   // bay window deck with drawers, cushion, pillows, sheers (a2-bay.js)
   WET.wet(THREE,E);   // 1F shower cell and changing area (a2-wet.js)
-  GEN.genkan(THREE,E);   // shoe cabinet to the ceiling and the entry bench (a2-genkan.js)
+  window.__a2Gen=GEN.genkan(THREE,E);   // shoe cabinet to the ceiling and the entry bench (a2-genkan.js)
   (function(){ const c=L1.extras.find(function(q){ return q.kind==='ellipse'; }).c, p=at(0,c[0],c[1]+15); fixture(0,Catalog.toilet(),p[0],p[1],0); })();
   (function(){ const r=byId(L1,'f11').rect, p=at(0,(r[0]+r[2])/2,r[1]+5.5); fixture(0,Catalog.evCharger(),p[0],p[1],0); })();
   /* mirror room: the full-width mirror wall on the north wall of the room (plan: 整面鏡牆 290) */
@@ -478,6 +481,7 @@ modes:function(E){
   const Y={E:0,N:Math.PI/2,W:Math.PI,S:-Math.PI/2}, mid=function(f,face){ return ctr(f.rect).concat([Y[NORTH.face[face]]]); };   // [n,e,yaw]: plan centre and default facing (engine +x = 0, -z = pi/2)
   LIFE.create(THREE,E,{ctrl:ctrl,cat:cat,hob:KIT.hob(L1),pos:{lift:mid(byName(L1,'升降茶几'),'S'),tv:mid(byName(L1,'電視櫃 85吋'),'S'),sofa:mid(byName(L1,'電動躺椅沙發 210×97'),'N'),chairPC:[150,1042,Y[NORTH.face.E]],side1:mid(byId(L2,'f2'),'S')}});
   window.__a2Cat=cat;
+  EW.create(THREE,E,{cap:window.__a2EWCap,gen:window.__a2Gen,cat:cat,east:[bench.x,bench.z]});   // 「玄關東牆」 experiment switch
   /* true-north compass next to the minimap: the arrow points to NORTH.toEngine's +x direction as seen from the camera */
   const el=document.createElement('div'); el.id='compass'; el.setAttribute('aria-label','指北針');
   el.innerHTML='<svg viewBox="-22 -22 44 44" width="44" height="44"><circle r="21" fill="rgba(255,255,255,.88)" stroke="#9aa5ad"/><g id="compassArrow"><path d="M0-17L6 6 0 2-6 6Z" fill="#c0392b"/><text y="16" text-anchor="middle" font-size="10" font-weight="700" fill="#2e3842">N</text></g></svg>';
@@ -495,5 +499,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261110l"></script>
+<script src="a2-sunmap.js?v=20261110m"></script>
 </body></html>

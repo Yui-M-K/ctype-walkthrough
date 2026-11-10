@@ -8,9 +8,9 @@ export function create(THREE,E,C){
   const G=new THREE.Group(); G.userData.keep=true; LG[0].add(G);
   const skipQa=function(o){ o.traverse(function(m){ m.userData.qaIgnore=true; }); };       // tools/qa: she moves around by herself, so her parts are not checked as building
   const rig=Catalog.bubuRig(1.0,{glb:Catalog.catChoice()!=='old',onGlb:function(g){ skipQa(g.S); }}); G.add(rig.group); skipQa(rig.group);
-  const L=rig.loco, B=C.bench, F0=C.nodes.B0, BY=F0[1]>B.z?-Math.PI/2:Math.PI/2;         // on the bench she faces the room (towards the floor node in front of it)
+  const L=rig.loco, B=C.bench, F0=C.nodes.B0, face=function(){ return Math.atan2(-(F0[1]-B.z),F0[0]-B.x); };         // on the bench she faces the room (towards the floor node in front of it)
   const toward=function(v,tg,r,dt){ return v+cl(tg-v,-r*dt,r*dt); }, angTo=function(a){ let d=a-yw; while(d>Math.PI) d-=TAU; while(d<-Math.PI) d+=TAU; return d; };
-  let stuck=0, x=B.x, z=B.z, y=B.y, yw=BY, st='rest', tm=15+Math.random()*10, at='bench', dest=null, path=[], air=null, hidden=false, lastT=null, avoid=function(){ return {}; };
+  let stuck=0, x=B.x, z=B.z, y=B.y, yw=face(), st='rest', tm=15+Math.random()*10, at='bench', dest=null, path=[], air=null, hidden=false, lastT=null, avoid=function(){ return {}; };
   const furnHit=function(x,z){ const cs=E.furnCols; for(let i=0;i<cs.length;i++){ const c=cs[i]; if(c.l!==0||c.modeOff||c.mvOff||(c.lay&&c.lay!==E.curLayout)) continue;   // furniture moved in the edit mode: keep out of its box
       const nx=cl(x,c.x0,c.x1), nz=cl(z,c.z0,c.z1); if(Math.hypot(x-nx,z-nz)<0.17) return true; } return false; };
   const segHit=function(a,b){ const n=Math.max(1,Math.ceil(Math.hypot(a[0]-b[0],a[1]-b[1])/0.06)); for(let i=0;i<=n;i++){ if(furnHit(a[0]+(b[0]-a[0])*i/n,a[1]+(b[1]-a[1])*i/n)) return true; } return false; };
@@ -45,7 +45,7 @@ export function create(THREE,E,C){
         L.gw=1; L.air=1; L.wt=air.t; L.u=u; L.dn=air.dn; L.pp=air.t<W0?Math.min(1,w*3)*(1-Math.max(0,(w-0.85)/0.15)):0; L.wig=air.t<W0?0.07*Math.sin(w*Math.PI*4)*Math.sin(w*Math.PI):0; L.lp=Math.sin(Math.PI*u)*(u>0?1:0);
         x=air.a[0]+(air.b[0]-air.a[0])*e; z=air.a[2]+(air.b[2]-air.a[2])*e; y=air.a[1]+(air.b[1]-air.a[1])*e+0.3*Math.sin(Math.PI*u);
         if(u>=1){ L.lp=0; L.air=0; L.wig=0; L.pp=0; y=air.b[1]; if(air.dn){ at=''; st='go'; goTo(dest,'B0'); } else { at='bench'; st='settle'; } } }
-      else if(st==='settle'){ L.gw=toward(L.gw,1,3,dt); yw+=cl(angTo(BY),-2*dt,2*dt); if(Math.abs(angTo(BY))<0.05){ st='rest'; tm=25+Math.random()*25; } }
+      else if(st==='settle'){ L.gw=toward(L.gw,1,3,dt); yw+=cl(angTo(face()),-2*dt,2*dt); if(Math.abs(angTo(face()))<0.05){ st='rest'; tm=25+Math.random()*25; } }
     }
     G.position.set(x,E.base(0)+y,z); G.rotation.y=yw;
     return rig.anim(t);
@@ -62,6 +62,7 @@ export function create(THREE,E,C){
   return {group:G,rig:rig,
     hide:function(v){ hidden=v; G.visible=!v; },                           // on someone's lap: no cat on the floor
     avoid:function(f){ avoid=f; },                                            // f() -> {stops:{name:1}, nodes:{name:1}}: where she keeps away from in the current mode
+    setBench:function(bx,bz,f0){ B.x=bx; B.z=bz; F0[0]=f0[0]; F0[1]=f0[1]; if(at==='bench'&&st!=='air'){ x=bx; z=bz; yw=face(); } },   // the bench moved (east wall taken away): she rests on it where it stands now
     nudge:function(){ tm=0; },                                               // act at once (debug)
     state:function(){ return {st:st,at:at,dest:dest,x:x,y:y,z:z,yw:yw}; }};
 }
