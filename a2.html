@@ -83,18 +83,19 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261110b';
-import * as KIT from './a2-kitchen.js?v=20261110b';
-import * as LIT from './a2-lights.js?v=20261110b';
-import * as INT from './a2-interior.js?v=20261110b';
-import * as OPEN from './a2-open.js?v=20261110b';
-import * as MDL from './a2-models.js?v=20261110b';
-import * as CAT from './a2-cat.js?v=20261110b';
-import * as LIFE from './a2-life.js?v=20261110b';
+import * as EXT from './a2-exterior.js?v=20261110c';
+import * as KIT from './a2-kitchen.js?v=20261110c';
+import * as LIT from './a2-lights.js?v=20261110c';
+import * as INT from './a2-interior.js?v=20261110c';
+import * as OPEN from './a2-open.js?v=20261110c';
+import * as MDL from './a2-models.js?v=20261110c';
+import * as CAT from './a2-cat.js?v=20261110c';
+import * as LIFE from './a2-life.js?v=20261110c';
+import * as GEN from './a2-genkan.js?v=20261110c';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261110b')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261110c')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -371,9 +372,7 @@ fixtures:function(E){
   const at=function(l,e,n){ return [WX(l,n),WZ(l,e)]; };
   KIT.kitchen(THREE,E,{L1:L1});
   fixture(0,Catalog.plant(0.9),8.1,8.22,0); fixture(0,Catalog.plant(0.75),4.78,11.3,0);   // floor pots: beside the TV, and west of the massage chair against the south wall
-  (function(){ const q=PLAN.f1Misc.polygons.find(function(g){ return /28%/.test(g.style); }).pts, es=q.map(function(a){ return a[0]; }), ns=q.map(function(a){ return a[1]; });
-    blk(0,[Math.min.apply(null,es),Math.min.apply(null,ns),Math.max.apply(null,es),Math.max.apply(null,ns)],2.4,M.cabF); })();   // floor-to-ceiling shoe cabinet that screens the entry
-  blk(0,byId(L1,'f9').rect,0.38,M.oak);
+  GEN.genkan(THREE,E);   // shoe cabinet to the ceiling and the entry bench (a2-genkan.js)
   (function(){ const c=L1.extras.find(function(q){ return q.kind==='ellipse'; }).c, p=at(0,c[0],c[1]+15); fixture(0,Catalog.toilet(),p[0],p[1],0); })();
   (function(){ const r=byId(L1,'f11').rect, p=at(0,(r[0]+r[2])/2,r[1]+5.5); fixture(0,Catalog.evCharger(),p[0],p[1],0); })();
   /* mirror room: the full-width mirror wall on the north wall of the room (plan: 整面鏡牆 290) */
@@ -461,7 +460,7 @@ modes:function(E){
     enforce();
   };
   /* 咘咘 and the life modes. Cat route: bench -> genkan -> the gap beside the entry screen -> the free band south of the sofa and the kitchen aisle (engine metres, checked against the collision boxes) */
-  const bn=byId(L1,'f9').rect, bench={x:E.WX(0,(bn[1]+bn[3])/2),z:E.WZ(0,(bn[0]+bn[2])/2),y:0.38};
+  const bn=byId(L1,'f9').rect, bench={x:E.WX(0,(bn[1]+bn[3])/2),z:E.WZ(0,(bn[0]+bn[2])/2),y:GEN.BENCH.seat};
   const nodes={B0:[bench.x,bench.z+0.47],N1:[7.55,6.65],N2:[6.9,6.6],M1:[6.5,7.5],S2:[5.8,7.5],S4:[3.9,7.5],M2:[6.6,8.2],S1:[7.2,8.3],K1:[6.5,5.6],S3:[5.0,5.45]}, edges={};
   [['B0','N1'],['N1','N2'],['N2','M1'],['M1','S2'],['S2','S4'],['M1','M2'],['M2','S1'],['N2','K1'],['K1','S3']].forEach(function(q){ (edges[q[0]]=edges[q[0]]||[]).push(q[1]); (edges[q[1]]=edges[q[1]]||[]).push(q[0]); });
   CAT.versionMenu(E);
@@ -486,5 +485,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261110b"></script>
+<script src="a2-sunmap.js?v=20261110c"></script>
 </body></html>
