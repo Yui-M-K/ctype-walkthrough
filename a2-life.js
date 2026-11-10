@@ -15,9 +15,10 @@ export function create(THREE,E,C){
     if(keep!=='sport'&&E.sportOn){ E.sportOn=false; btn('tSport',false); applySport(); }
     if(keep!=='daily'&&E.dailyOn){ E.dailyOn=false; btn('tDaily',false); applyDaily(); }
     if(keep!=='cook'&&E.cookOn){ E.cookOn=false; btn('tCook',false); applyCook(); }
+    if(keep!=='guest'&&guestOn){ guestOn=false; btn('tGuest',false); applyGuest(); }
     if(keep!=='sleep'&&E.sleepOn){ E.sleepOn=false; btn('tSleep',false); applySleep(); }
   };
-  if(CAT) CAT.avoid(function(){ return E.cookOn?{stops:{S3:1},nodes:{K1:1,S3:1}}:E.sportOn?{stops:{S1:1}}:{}; });
+  if(CAT) CAT.avoid(function(){ return E.cookOn?{stops:{S3:1,S4:1},nodes:{K1:1,S3:1,S4:1}}:guestOn?{stops:{S3:1},nodes:{K1:1,S3:1}}:E.sportOn?{stops:{S1:1}}:{}; });
 
   /* sport: coffee table away, two players 1.2 m in front of the TV */
   const sportG=modeGroup(0), sportF=People.stand(1.63,0xf1c9a5,0xf4f1ec,0x7f8fa8,0x3a2a22,true,0x2ec4ea,0xff5a5f), sportM=People.stand(1.69,0xe2b890,0x3c4a5c,0x2f3a4a,0x1f1a16,false,0x2ec4ea,0xff5a5f);
@@ -79,23 +80,13 @@ export function create(THREE,E,C){
     for(let i=0;i<7;i++) add(cookG,new THREE.CylinderGeometry(0.014,0.014,0.006,14),lam(0xe8873a,{roughness:0.6}),bx+0.05+i*0.022,0.903,bz+0.06+(i%2)*0.01);
     add(cookG,new THREE.CylinderGeometry(0.014,0.012,0.12,14),lam(0xe8873a,{roughness:0.6}),bx+0.24,0.914,bz+0.07).rotation.z=Math.PI/2; add(cookG,new THREE.SphereGeometry(0.06,16,10,0,TAU,0,Math.PI/2),lam(0x9cc47a,{roughness:0.7}),bx+0.26,0.9,bz+0.16);
     add(cookG,new THREE.BoxGeometry(0.16,0.003,0.035),steel,bx+0.1,0.902,bz+0.17); add(cookG,new THREE.BoxGeometry(0.1,0.018,0.022),black,bx,0.909,bz+0.17);
-    /* he: on the sofa, left hand on his knee, the right hand lifts a beer can every few seconds */
-    const man=People.sit(U,0.40,0xe2b890,0x3c4a5c,0x2f3a4a,0x1f1a16,false,{skip:function(sd){ return sd>0; }, e:function(sd,u2){ return [0.05*u2,0.2*u2,sd*0.18*u2]; }, h:function(sd,u2){ return [0.2*u2,0.12,sd*0.1*u2]; }}); cookManG.add(man);
-    const sleeve=fab(0x3c4a5c), skin=lam(0xe2b890,{roughness:0.8});
-    const upper=seg(man,V(0,0,0),V(0,1,0),0.019*U,skin), slv=seg(man,V(0,0,0),V(0,1,0),0.025*U,sleeve), fore=seg(man,V(0,0,0),V(0,1,0),0.016*U,skin);
-    add(man,new THREE.SphereGeometry(0.027*U,16,12),sleeve,-0.01*U,0.396*U,0.132*U); const fist=add(man,new THREE.SphereGeometry(0.021*U,14,10),skin,0,0,0);
+    /* he: stands on the east side of the peninsula facing the sink and her, beer in the right hand, left hand on the counter edge */
+    const man=People.stand(U,0xe2b890,0x3c4a5c,0x2f3a4a,0x1f1a16,false,undefined,undefined,{e:function(sd){ return sd>0?[0.14,1.04,0.2]:[0.1,1.0,-0.2]; }, h:function(sd){ return sd>0?[0.27,1.1,0.1]:[0.3,0.92,-0.12]; }}); cookManG.add(man);
     const canMat=lam(0xd8dde2,{metalness:0.8,roughness:0.3,envMapIntensity:1}), canBand=lam(0xd9a83a,{metalness:0.6,roughness:0.35});
-    const can=new THREE.Group(); man.add(can); add(can,new THREE.CylinderGeometry(0.033,0.033,0.122,20),canMat,0,0,0); add(can,new THREE.CylinderGeometry(0.0335,0.0335,0.05,20),canBand,0,0.005,0); add(can,new THREE.CylinderGeometry(0.027,0.033,0.008,20),canMat,0,0.065,0);
-    const Sh=V(-0.01*U,0.4*U,0.138*U), LU=0.2*U, LF=0.18*U, hint=V(-0.2,-1,0.6).normalize(), H0=V(0.2*U,0.17,0.12*U), H1=V(0.125*U,0.47*U,0.05*U);
-    const elbowOf=function(H){ const d=H.clone().sub(Sh), len=Math.min(d.length(),LU+LF-1e-3); d.normalize();
-      const a=(LU*LU-LF*LF+len*len)/(2*len), h=Math.sqrt(Math.max(0,LU*LU-a*a)), pr=hint.clone().addScaledVector(d,-hint.dot(d)).normalize(); return Sh.clone().addScaledVector(d,a).addScaledVector(pr,h); };
-    const ss=function(x){ x=clamp(x,0,1); return x*x*(3-2*x); };
-    const pose=function(e){ const H=H0.clone().lerp(H1,e), El=elbowOf(H); setSeg(upper,Sh,El); setSeg(slv,Sh,Sh.clone().lerp(El,0.45)); setSeg(fore,El,H); fist.position.copy(H); can.position.set(H.x,H.y,H.z-0.03); can.rotation.z=1.45*e; };
-    pose(0);
+    add(man,new THREE.CylinderGeometry(0.033,0.033,0.122,20),canMat,0.3,1.13,0.1); add(man,new THREE.CylinderGeometry(0.0335,0.0335,0.05,20),canBand,0.3,1.135,0.1);
+    man.position.set(hx-0.3,0,hz+0.9); man.rotation.y=Math.PI/2;
     modeAnims.push(function(t){
       if(!cookG.visible) return;
-      const p=t%9, e=p<5?0:p<6?ss(p-5):p<7.5?1:p<8.5?1-ss(p-7.5):0;
-      if(cookManG.visible) pose(e);
       bits.forEach(function(b,i){ b.position.y=0.016+Math.max(0,Math.sin(t*7+i*1.7))*0.022; });
       steam.forEach(function(m,i){ const q=((t*0.35+i/steam.length)%1); m.position.set(potC.x+Math.sin(t+i)*0.03,potC.y+0.16+q*0.45,potC.z+Math.cos(t*0.8+i)*0.03); m.scale.setScalar(0.6+q*1.6); m.material.opacity=0.28*Math.sin(q*Math.PI); });
     });
@@ -103,14 +94,14 @@ export function create(THREE,E,C){
   })();
   function applyCook(){
     if(E.cookOn) offOthers('cook');
-    cookG.visible=E.cookOn; cookManG.visible=E.cookOn&&usable('sofa');
-    if(E.cookOn){ const q=seatOn('sofa',50); cookMan.position.set(q[0],0.5,q[1]); cookMan.rotation.y=q[2]; toast('料理模式：她在 IH 爐前炒菜，他在沙發喝啤酒'); }
+    cookG.visible=E.cookOn||guestOn; cookManG.visible=E.cookOn;
+    if(E.cookOn) toast('料理模式：她在 IH 爐前炒菜，他站在半島旁喝啤酒');
     renderer.shadowMap.needsUpdate=true;
   }
   $('tCook').addEventListener('click',function(){ E.cookOn=!E.cookOn; btn('tCook',E.cookOn); applyCook(); });
 
   /* sleeping: everything off except a warm night light on the bedside table; two sleepers under a duvet */
-  const sleepG=modeGroup(1), nightMat=new THREE.MeshBasicMaterial({color:0x6a4a30}), nightPt=new THREE.PointLight(0xffa860,0,3.2,2), nightG=new THREE.Group();
+  const sleepG=modeGroup(1), nightMat=new THREE.MeshBasicMaterial({color:0x6a4a30}), nightPt=new THREE.PointLight(0xffa860,0,2.6,2), nightG=new THREE.Group();
   (function(){
     const dome=new THREE.Mesh(new THREE.SphereGeometry(0.035,16,10,0,TAU,0,Math.PI/2),nightMat); nightG.add(dome);
     const b=new THREE.Mesh(new THREE.CylinderGeometry(0.036,0.04,0.012,16),M.ceramic); b.position.y=-0.006; nightG.add(b);
@@ -131,7 +122,7 @@ export function create(THREE,E,C){
     if(on){ keep.ei=scene.environmentIntensity; keep.day=C.ctrl.state.altitude>=6; keep.exp=renderer.toneMappingExposure; keep.lamp=lampMat.color.getHex(); keep.shade=M.shade.emissive.getHex(); pointLights.forEach(function(p){ if(p.userData.a2i0===undefined) p.userData.a2i0=p.intensity; }); }
     pointLights.forEach(function(p){ p.intensity=on?0:p.userData.a2i0===undefined?p.intensity:p.userData.a2i0; });
     lampMat.color.setHex(on?0x1a1712:keep.lamp===undefined?0xffdc96:keep.lamp); M.shade.emissive.setHex(on?0x000000:keep.shade===undefined?0x8a6428:keep.shade);
-    const sd=put('side1',1,0,0); nightG.position.set(sd[0],E.base(1)+0.463,sd[1]); nightG.visible=on; nightMat.color.setHex(on?0xffd9a8:0x6a4a30); nightPt.intensity=on?2.1:0;
+    const sd=put('side1',1,0,0); nightG.position.set(sd[0],E.base(1)+0.463,sd[1]); nightG.visible=on; nightMat.color.setHex(on?0xffd9a8:0x6a4a30); nightPt.intensity=on?0.5:0;
     sleepG.visible=on&&usable('bed');
     if(on) nightLook(); else { if(keep.exp!==undefined) renderer.toneMappingExposure=keep.exp; C.ctrl.update(); if(keep.day&&C.ctrl.state.altitude>=6) scene.environmentIntensity=keep.ei; }      // the sun panel brings back the sky and the daylight levels
     renderer.shadowMap.needsUpdate=true; scene.traverse(function(o){ if(o.material&&!Array.isArray(o.material)) o.material.needsUpdate=true; });
@@ -139,6 +130,29 @@ export function create(THREE,E,C){
   const onSun=C.ctrl.onChange; C.ctrl.onChange=function(s){ if(onSun) onSun(s); if(E.sleepOn) nightLook(); };
   $('tSleep').addEventListener('click',function(){ E.sleepOn=!E.sleepOn; btn('tSleep',E.sleepOn); applySleep(); });
 
-  E.FS_onChange=function(){ if(E.sportOn) applySport(); if(E.dailyOn) applyDaily(); if(E.cookOn) applyCook(); if(E.sleepOn) applySleep(); };
-  return {applySport:applySport,applyDaily:applyDaily,applyCook:applyCook,applySleep:applySleep};
+  /* guests: the lift table is raised to dining height; two guests on the sofa, two on floor cushions on the TV side of the table, she prepares in the kitchen */
+  let guestOn=false;
+  const guestG=modeGroup(0), cushion=fab(0xc9b79c);
+  const lapG={e:function(sd,u){ return [0.06*u,0.22*u,sd*0.17*u]; }, h:function(sd,u){ return [0.2*u,0.12,sd*0.05*u]; }};
+  const tableArms={e:function(sd,u){ return [0.05*u,0.3*u,sd*0.17*u]; }, h:function(sd,u){ return [0.22*u,0.5,sd*0.1*u]; }};
+  const gSofa=[woman(lapG), People.sit(1.72,0.40,0xe2b890,0x6b7f6a,0x3a3f4a,0x2a2220,false,lapG)];
+  const gFloor=[People.sit(1.58,0.2,0xf1c9a5,0xd9a0a0,0x4a5568,0x4a3426,true,tableArms), People.sit(1.72,0.2,0xe2b890,0xe8e4d8,0x2f3a4a,0x1f1a16,false,tableArms)];
+  const gCush=gFloor.map(function(){ const m=new THREE.Mesh(new THREE.CylinderGeometry(0.21,0.21,0.08,24),cushion); m.castShadow=m.receiveShadow=true; return m; });
+  gSofa.concat(gFloor,gCush).forEach(function(g){ guestG.add(g); });
+  function applyGuest(){
+    if(guestOn) offOthers('guest');
+    const lm=mover('lift'), okL=!!lm&&usable('lift'), okS=usable('sofa'); if(okL) lm.piece.lift.up=guestOn;
+    guestG.visible=guestOn; gSofa.forEach(function(g){ g.visible=okS; }); gFloor.concat(gCush).forEach(function(g){ g.visible=okL; });
+    cookG.visible=guestOn||E.cookOn; cookManG.visible=E.cookOn;                // she cooks in the guest mode too
+    if(guestOn){
+      [[-55,0],[55,1]].forEach(function(q){ const v=seatOn('sofa',q[0]); gSofa[q[1]].position.set(v[0],0.5,v[1]); gSofa[q[1]].rotation.y=v[2]; });
+      [-30,30].forEach(function(de,i){ const v=put('lift',0,61,de); gFloor[i].position.set(v[0],0.2,v[1]); gFloor[i].rotation.y=v[2]; gCush[i].position.set(v[0],0.04,v[1]); });
+      toast('來客模式：升降茶几升成餐桌，客人坐沙發和地墊，她在廚房準備');
+    }
+    renderer.shadowMap.needsUpdate=true;
+  }
+  const bG=$('tGuest'); if(bG) bG.addEventListener('click',function(){ guestOn=!guestOn; btn('tGuest',guestOn); applyGuest(); });
+
+  E.FS_onChange=function(){ if(E.sportOn) applySport(); if(E.dailyOn) applyDaily(); if(E.cookOn) applyCook(); if(E.sleepOn) applySleep(); if(guestOn) applyGuest(); };
+  return {applyGuest:applyGuest,applySport:applySport,applyDaily:applyDaily,applyCook:applyCook,applySleep:applySleep};
 }
