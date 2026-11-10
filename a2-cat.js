@@ -10,7 +10,7 @@ export function create(THREE,E,C){
   const rig=Catalog.bubuRig(1.0,{glb:Catalog.catChoice()!=='old',onGlb:function(g){ skipQa(g.S); }}); G.add(rig.group); skipQa(rig.group);
   const L=rig.loco, B=C.bench, F0=C.nodes.B0, face=function(){ return Math.atan2(-(F0[1]-B.z),F0[0]-B.x); };         // on the bench she faces the room (towards the floor node in front of it)
   const toward=function(v,tg,r,dt){ return v+cl(tg-v,-r*dt,r*dt); }, angTo=function(a){ let d=a-yw; while(d>Math.PI) d-=TAU; while(d<-Math.PI) d+=TAU; return d; };
-  let stuck=0, x=B.x, z=B.z, y=B.y, yw=face(), st='rest', tm=15+Math.random()*10, at='bench', dest=null, path=[], air=null, hidden=false, lastT=null, avoid=function(){ return {}; };
+  let yg=E.floorAt(B.x,B.z,0), stuck=0, x=B.x, z=B.z, y=B.y, yw=face(), st='rest', tm=15+Math.random()*10, at='bench', dest=null, path=[], air=null, hidden=false, lastT=null, avoid=function(){ return {}; };
   const furnHit=function(x,z){ const cs=E.furnCols; for(let i=0;i<cs.length;i++){ const c=cs[i]; if(c.l!==0||c.modeOff||c.mvOff||(c.lay&&c.lay!==E.curLayout)) continue;   // furniture moved in the edit mode: keep out of its box
       const nx=cl(x,c.x0,c.x1), nz=cl(z,c.z0,c.z1); if(Math.hypot(x-nx,z-nz)<0.17) return true; } return false; };
   const segHit=function(a,b){ const n=Math.max(1,Math.ceil(Math.hypot(a[0]-b[0],a[1]-b[1])/0.06)); for(let i=0;i<=n;i++){ if(furnHit(a[0]+(b[0]-a[0])*i/n,a[1]+(b[1]-a[1])*i/n)) return true; } return false; };
@@ -47,7 +47,8 @@ export function create(THREE,E,C){
         if(u>=1){ L.lp=0; L.air=0; L.wig=0; L.pp=0; y=air.b[1]; if(air.dn){ at=''; st='go'; goTo(dest,'B0'); } else { at='bench'; st='settle'; } } }
       else if(st==='settle'){ L.gw=toward(L.gw,1,3,dt); yw+=cl(angTo(face()),-2*dt,2*dt); if(Math.abs(angTo(face()))<0.05){ st='rest'; tm=25+Math.random()*25; } }
     }
-    G.position.set(x,E.base(0)+y,z); G.rotation.y=yw;
+    const fy=E.floorAt(x,z,0); yg+=Math.max(-0.9*dt,Math.min(0.9*dt,fy-yg));   // the floor under her: she steps up and down the 15 cm at the genkan edge in a short ramp
+    G.position.set(x,E.base(0)+yg+y,z); G.rotation.y=yw;
     return rig.anim(t);
   };
   const eye=new THREE.Vector3(); rig.lookAt(function(){ return eye.set(E.player.x,G.position.y+1.3,E.player.z); });

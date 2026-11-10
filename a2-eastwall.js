@@ -6,10 +6,10 @@ export function create(THREE,E,C){
   const cap=C.cap, gen=C.gen, ZW=7.95;                         // wall centre line (e 795); the wall is 10 cm thick
   cap.meshes.forEach(function(m){ cap.group.attach(m); });     // the wall's pieces live in their own group so they can be switched
   const stub=new THREE.Group(); G.add(stub);
-  bx(stub,8.2,8.45,ZW-0.05,ZW+0.05,0,CH-0.005,WM.hall||M.cabF);                                  // 30 cm stub against the north wall
-  const stubCol=E.addCol(0,8.2,8.45,ZW-0.05,ZW+0.05,0,CH,'w'); E.walls.splice(E.walls.indexOf(stubCol),1);
+  bx(stub,8.2,8.45,ZW-0.05,ZW+0.05,-0.15,CH-0.005,WM.hall||M.cabF);                                  // 30 cm stub against the north wall
+  const stubCol=E.addCol(0,8.2,8.45,ZW-0.05,ZW+0.05,-0.15,CH,'w'); E.walls.splice(E.walls.indexOf(stubCol),1);
   const thr=new THREE.Group(); G.add(thr);
-  bx(thr,7.25,8.2,ZW-0.065,ZW-0.035,0,0.012,M.oak,{cast:false});                                // 上がり框 strip along the line where the stone floor ends
+  E.rbox(thr,6.94,8.2,ZW-0.05,ZW+0.01,-0.15,0.006,0.008,M.oak);                                      // 上がり框: the oak edge continues round the corner along the opened side (top flush with the wood floor)
   stub.visible=thr.visible=false;
   const keys=E.FS.movers.find(function(q){ return q.id==='keys'; }), keyCols=keys?E.furnCols.filter(function(c){ return c.l===0&&c.z0>7.8&&c.z1<8.1&&c.x0>7.8&&c.x1<8.2; }):[];   // the key rack hangs on the east wall
   const X={removed:false,stub:stub};
