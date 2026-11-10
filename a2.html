@@ -83,22 +83,22 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261110j';
-import * as KIT from './a2-kitchen.js?v=20261110j';
-import * as LIT from './a2-lights.js?v=20261110j';
-import * as INT from './a2-interior.js?v=20261110j';
-import * as OPEN from './a2-open.js?v=20261110j';
-import * as MDL from './a2-models.js?v=20261110j';
-import * as CAT from './a2-cat.js?v=20261110j';
-import * as LIFE from './a2-life.js?v=20261110j';
-import * as GEN from './a2-genkan.js?v=20261110j';
-import * as BAY from './a2-bay.js?v=20261110j';
-import * as WET from './a2-wet.js?v=20261110j';
-import * as MIR from './a2-mirror.js?v=20261110j';
+import * as EXT from './a2-exterior.js?v=20261110k';
+import * as KIT from './a2-kitchen.js?v=20261110k';
+import * as LIT from './a2-lights.js?v=20261110k';
+import * as INT from './a2-interior.js?v=20261110k';
+import * as OPEN from './a2-open.js?v=20261110k';
+import * as MDL from './a2-models.js?v=20261110k';
+import * as CAT from './a2-cat.js?v=20261110k';
+import * as LIFE from './a2-life.js?v=20261110k';
+import * as GEN from './a2-genkan.js?v=20261110k';
+import * as BAY from './a2-bay.js?v=20261110k';
+import * as WET from './a2-wet.js?v=20261110k';
+import * as MIR from './a2-mirror.js?v=20261110k';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261110j')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261110k')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -328,7 +328,7 @@ site:function(E){
   plane(260,260,M.grass,cx,-0.3,cz);
   plane(6,260,M.asphalt,LOT.south_north/100+3,-0.29,cz);                                   // the 6 m road on the north side
   [[-8-SEXT/100,-0.6-SEXT/100,1,12,6.8],[1,9,-8,-0.6,6.2],[1,9,14.5,22,6.4],[16.5,23,0,13,6.0]].forEach(function(n){ const m=bx(ground,n[0],n[1],n[2],n[3],-0.3,n[4],EXT.mats().nbr); m.userData.keep=true; m.userData.neighbor=true; });
-  const apron=[65,NWALL,430,LOT.south_north], porch=[667,NWALL,765,LOT.south_north-30];
+  const apron=[65,NWALL,430,LOT.south_north], porch=[667+EXT.DZ*100,NWALL,765+EXT.DZ*100,LOT.south_north-30];
   bx(ground,apron[1]/100,apron[3]/100,apron[0]/100,apron[2]/100,-0.3,-0.12,EXT.mats().conc); floorRects.push({l:0,x0:apron[1]/100,x1:apron[3]/100,z0:apron[0]/100,z1:apron[2]/100,y:-0.12});
   bx(ground,porch[1]/100,porch[3]/100,porch[0]/100,porch[2]/100,-0.3,-0.1,FL.stone); floorRects.push({l:0,x0:porch[1]/100,x1:porch[3]/100,z0:porch[0]/100,z1:porch[2]/100,y:-0.1});
   bx(ground,0.9,1.0,0.5,5.9,-0.3,-0.2,FL.conc);
@@ -471,8 +471,8 @@ modes:function(E){
   };
   /* 咘咘 and the life modes. Cat route: bench -> genkan -> the gap beside the entry screen -> the free band south of the sofa and the kitchen aisle (engine metres, checked against the collision boxes) */
   const bn=byId(L1,'f9').rect, bench={x:E.WX(0,(bn[1]+bn[3])/2),z:E.WZ(0,(bn[0]+bn[2])/2),y:GEN.BENCH.seat};
-  const nodes={B0:[bench.x,bench.z+0.47],N1:[7.55,6.65],N2:[6.9,6.6],M1:[6.5,7.5],S2:[5.8,7.5],S4:[3.9,7.5],M2:[6.6,8.2],S1:[7.2,8.3],K1:[6.5,5.6],S3:[5.0,5.45]}, edges={};
-  [['B0','N1'],['N1','N2'],['N2','M1'],['M1','S2'],['S2','S4'],['M1','M2'],['M2','S1'],['N2','K1'],['K1','S3']].forEach(function(q){ (edges[q[0]]=edges[q[0]]||[]).push(q[1]); (edges[q[1]]=edges[q[1]]||[]).push(q[0]); });
+  const nodes={B0:[bench.x,bench.z-0.47],N1:[7.55,7.3],N2:[6.9,7.3],M1:[6.5,7.5],S2:[5.8,7.5],S4:[3.9,7.5],M2:[6.6,8.2],S1:[7.2,8.3],K1:[6.5,5.6],S3:[5.0,5.45]}, edges={};
+  [['B0','N1'],['N1','N2'],['N2','M1'],['M1','S2'],['S2','S4'],['M1','M2'],['M2','S1'],['M1','K1'],['K1','S3']].forEach(function(q){ (edges[q[0]]=edges[q[0]]||[]).push(q[1]); (edges[q[1]]=edges[q[1]]||[]).push(q[0]); });
   CAT.versionMenu(E);
   const cat=CAT.create(THREE,E,{bench:bench,nodes:nodes,edges:edges,stops:{S1:'S1',S2:'S2',S3:'S3',S4:'S4'}});
   const Y={E:0,N:Math.PI/2,W:Math.PI,S:-Math.PI/2}, mid=function(f,face){ return ctr(f.rect).concat([Y[NORTH.face[face]]]); };   // [n,e,yaw]: plan centre and default facing (engine +x = 0, -z = pi/2)
@@ -495,5 +495,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261110j"></script>
+<script src="a2-sunmap.js?v=20261110k"></script>
 </body></html>

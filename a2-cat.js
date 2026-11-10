@@ -8,7 +8,7 @@ export function create(THREE,E,C){
   const G=new THREE.Group(); G.userData.keep=true; LG[0].add(G);
   const skipQa=function(o){ o.traverse(function(m){ m.userData.qaIgnore=true; }); };       // tools/qa: she moves around by herself, so her parts are not checked as building
   const rig=Catalog.bubuRig(1.0,{glb:Catalog.catChoice()!=='old',onGlb:function(g){ skipQa(g.S); }}); G.add(rig.group); skipQa(rig.group);
-  const L=rig.loco, B=C.bench, BY=-Math.PI/2, F0=C.nodes.B0;         // on the bench she faces the room (+z)
+  const L=rig.loco, B=C.bench, F0=C.nodes.B0, BY=F0[1]>B.z?-Math.PI/2:Math.PI/2;         // on the bench she faces the room (towards the floor node in front of it)
   const toward=function(v,tg,r,dt){ return v+cl(tg-v,-r*dt,r*dt); }, angTo=function(a){ let d=a-yw; while(d>Math.PI) d-=TAU; while(d<-Math.PI) d+=TAU; return d; };
   let stuck=0, x=B.x, z=B.z, y=B.y, yw=BY, st='rest', tm=15+Math.random()*10, at='bench', dest=null, path=[], air=null, hidden=false, lastT=null, avoid=function(){ return {}; };
   const furnHit=function(x,z){ const cs=E.furnCols; for(let i=0;i<cs.length;i++){ const c=cs[i]; if(c.l!==0||c.modeOff||c.mvOff||(c.lay&&c.lay!==E.curLayout)) continue;   // furniture moved in the edit mode: keep out of its box

@@ -1,11 +1,17 @@
 /* A2 genkan built-ins: a floor-to-ceiling shoe cabinet (floating toe-kick, open umbrella slot, open niche for everyday shoes, doors that open) facing the front door,
    and the entry bench (oak seat board, linen cushion, tapered legs, an open shoe shelf underneath). Engine metres: x = n / 100, z = e / 100.
-   Both keep the footprints of the plan (cabinet 88 x 40 at the south end of the entry, bench 30 x 60 on the west wall). */
-export const CAB={x0:7.00,x1:7.40,z0:7.02,z1:7.88};           // front of the cabinet faces +x (the door side)
+   The footprints follow the plan: cabinet 84 x 40 against the west wall at the south end of the entry, bench 30 x 60 against the east wall. */
+export const MZ=6.96;                                            // the design below is drawn for the east side of the entry; every z is mirrored about this plane (z' = 2 MZ - z)
+export const CAB={x0:7.00,x1:7.40,z0:7.04,z1:7.88};           // as drawn (before mirroring): front of the cabinet faces +x (the door side); it ends up on the west wall
 export const BENCH={x0:7.80,x1:8.40,z0:6.02,z1:6.32,seat:0.445};   // seat top (cushion included); the cat rests on it
 
 export function genkan(THREE,E){
-  const {Catalog,LG,M,bx,rbox,cylm,addCol,furnThings,furnAnims,lam,fab,notchPull}=E, CH=E.CH, G=LG[0], oc={cast:false};
+  const {Catalog,LG,M,furnThings,furnAnims,lam,fab,notchPull}=E, CH=E.CH, G=LG[0], oc={cast:false};
+  const Z=function(z){ return 2*MZ-z; };
+  const bx=function(g,x0,x1,z0,z1,y0,y1,m,o){ return E.bx(g,x0,x1,Z(z1),Z(z0),y0,y1,m,o); };
+  const rbox=function(g,x0,x1,z0,z1,y0,y1,r,m){ return E.rbox(g,x0,x1,Z(z1),Z(z0),y0,y1,r,m); };
+  const cylm=function(g,cx,cz,r0,r1,y0,y1,m,n){ return E.cylm(g,cx,Z(cz),r0,r1,y0,y1,m,n); };
+  const addCol=function(l,x0,x1,z0,z1,y0,y1,k){ return E.addCol(l,x0,x1,Z(z1),Z(z0),y0,y1,k); };
   const top=CH-0.005, t=0.018, KB=0.12, X0=CAB.x0, X1=CAB.x1, Z0=CAB.z0, Z1=CAB.z1;
   const oak=M.oak, W=M.cabF;
   const dark=lam(0x2c2a27,{roughness:0.7});
@@ -32,7 +38,7 @@ export function genkan(THREE,E){
   const LOWS=[KB+0.22,KB+0.44,KB+0.66], UPS=[HI+0.24,HI+0.48,HI+0.72];
   LOWS.concat(UPS).forEach(function(y){ bx(G,X0+t,X1-0.02,zs+t/2,Z1-t,y,y+t,W,oc); });
   bx(G,X0+t,X1-0.02,zs+t/2,Z1-t,KB,KB+t,W,oc);
-  const pair=function(y,x,z,s,rot){ const sc=s[3]||0.88; [-1,1].forEach(function(sd){ const g=Catalog.shoe(s[0],s[1],s[2]); g.scale.setScalar(sc); g.rotation.y=rot||0; g.position.set(x,y+0.001,z+sd*0.052*sc); g.traverse(function(o){ if(o.isMesh) o.castShadow=true; }); G.add(g); }); };
+  const pair=function(y,x,z,s,rot){ const sc=s[3]||0.88; [-1,1].forEach(function(sd){ const g=Catalog.shoe(s[0],s[1],s[2]); g.scale.setScalar(sc); g.rotation.y=rot||0; g.position.set(x,y+0.001,Z(z+sd*0.052*sc)); g.traverse(function(o){ if(o.isMesh) o.castShadow=true; }); G.add(g); }); };
   const SHOES=[['sneaker',0xf2efe8,0xf7f5f0,0.88],['loafer',0x3a2a20,0x6b4a33,1],['sneaker',0x2f3a4a,0xf1efe9,1],['pump',0xd9c3a5,0xb9a184,0.88],['loafer',0x1d1e21,0x1d1e21,1],['sneaker',0x9fb0bf,0xf1efe9,0.88],['sandal',0x8c5a3c,0xcdb89a,0.88],['sneaker',0x5a6b58,0xf1efe9,1]];
   let si=0;
   const cx=X0+t+0.15;                                               // shoe centre: toe to the front (+x), heel to the back
@@ -42,7 +48,7 @@ export function genkan(THREE,E){
   pair(LO+0.03,X1-0.14,zs+0.17,['sneaker',0xf2efe8,0xf7f5f0,0.88],0); pair(LO+0.03,X1-0.14,zs+0.5,['loafer',0x3a2a20,0x6b4a33,1],0);
   bx(G,X0+0.06,X0+0.2,Z1-0.18,Z1-0.04,LO+0.03,LO+0.04,oakF,oc);                                    // a tray at the back with a key bowl
   cylm(G,X0+0.13,Z1-0.11,0.05,0.04,LO+0.04,LO+0.07,lam(0xb9b2a4,{roughness:0.7}),20);
-  const pl=Catalog.plant(0.28); pl.group.position.set(X0+0.15,LO+0.03,zs+0.34); G.add(pl.group);
+  const pl=Catalog.plant(0.28); pl.group.position.set(X0+0.15,LO+0.03,Z(zs+0.34)); G.add(pl.group);
   /* umbrella slot: two folded umbrellas hanging from hooks over a drip tray */
   bx(G,X0+t,X1-0.05,Z0+t,zs-t/2,KB,KB+0.03,dark,oc);
   [Z0+0.055,Z0+0.105].forEach(function(z,i){ const hx=X0+t+0.03, ym=[0.78,0.7][i];
@@ -53,7 +59,7 @@ export function genkan(THREE,E){
 
   /* doors: finger-pull fronts, a pair for the lower cupboard and a pair for the upper one, each pair opens on its own; the umbrella slot stays open */
   const sets={lo:{leaves:[],parts:[]},hi:{leaves:[],parts:[]}}, zm=(zs+Z1)/2;
-  const leaf=function(key,hz,sg,y0,y1,w,py){ const pv=new THREE.Group(); pv.userData.keep=true; pv.position.set(X1,0,hz); G.add(pv);
+  const leaf=function(key,hz,sg,y0,y1,w,py){ sg=-sg; hz=Z(hz); const pv=new THREE.Group(); pv.userData.keep=true; pv.position.set(X1,0,hz); G.add(pv);
     const m=new THREE.Mesh(new THREE.BoxGeometry(t,y1-y0-0.006,w),oakF); m.position.set(-t/2,(y0+y1)/2,sg*w/2); m.castShadow=m.receiveShadow=true; pv.add(m); sets[key].parts.push(m);
     const n=notchPull(0xd2b184,0.16); n.position.set(0,py,sg*w); n.rotation.set(0,Math.PI/2,sg*Math.PI/2); pv.add(n);
     sets[key].leaves.push({pv:pv,sg:sg}); };
@@ -61,7 +67,7 @@ export function genkan(THREE,E){
   leaf('lo',zs+0.001,1,KB,LO,lw,LO-0.12); leaf('lo',Z1-0.001,-1,KB,LO,lw,LO-0.12);
   leaf('hi',zs+0.001,1,HI,top,lw,HI+0.12); leaf('hi',Z1-0.001,-1,HI,top,lw,HI+0.12);
   const opener=function(key,on,off){ const S=sets[key]; let cur=0, tg=0, last=null;
-    furnThings.push({pt:[X1+0.22,zm],l:0,part:S.parts,on:function(){ return true; },label:function(){ return tg?off:on; },act:function(){ tg=tg?0:1; last=null; }});
+    furnThings.push({pt:[X1+0.22,Z(zm)],l:0,part:S.parts,on:function(){ return true; },label:function(){ return tg?off:on; },act:function(){ tg=tg?0:1; last=null; }});
     furnAnims.push({live:function(){ return cur!==tg; },f:function(t2){ if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*2?tg:cur+Math.sign(tg-cur)*dt*2; S.leaves.forEach(function(q){ q.pv.rotation.y=q.sg*cur*1.55; }); E.renderer.shadowMap.needsUpdate=true; return true; }}); };
   opener('lo','打開下層鞋櫃','關上下層鞋櫃'); opener('hi','打開上層鞋櫃','關上上層鞋櫃');
 
@@ -77,10 +83,10 @@ export function genkan(THREE,E){
   const sh=0.16;                                                        // slatted shoe shelf
   for(let z=B.z0+0.05;z<B.z1-0.06;z+=0.052) bx(G,B.x0+0.03,B.x1-0.03,z,z+0.044,sh,sh+0.016,oak,oc);
   bx(G,B.x0+0.03,B.x0+0.045,B.z0+0.03,B.z1-0.03,sh-0.03,sh,oak,oc); bx(G,B.x1-0.045,B.x1-0.03,B.z0+0.03,B.z1-0.03,sh-0.03,sh,oak,oc);   // rails carrying the slats
-  [[0.14,['sneaker',0xf2efe8,0xf7f5f0,0.88]],[0.4,['loafer',0x2a2a2a,0x2a2a2a,1]]].forEach(function(q){ [-1,1].forEach(function(sd){ const g=Catalog.shoe(q[1][0],q[1][1],q[1][2]); g.scale.setScalar(q[1][3]); g.rotation.y=Math.PI/2; g.position.set(B.x0+q[0]+sd*0.052*q[1][3],sh+0.017,(B.z0+B.z1)/2); G.add(g); }); });   // toes to the wall
+  [[0.14,['sneaker',0xf2efe8,0xf7f5f0,0.88]],[0.4,['loafer',0x2a2a2a,0x2a2a2a,1]]].forEach(function(q){ [-1,1].forEach(function(sd){ const g=Catalog.shoe(q[1][0],q[1][1],q[1][2]); g.scale.setScalar(q[1][3]); g.rotation.y=-Math.PI/2; g.position.set(B.x0+q[0]+sd*0.052*q[1][3],sh+0.017,Z((B.z0+B.z1)/2)); G.add(g); }); });   // toes to the wall
   addCol(0,B.x0-0.01,B.x1+0.01,B.z0-0.01,B.z1+0.01,0,B.seat+0.01,'x');
   /* hook rail on the wall above the bench */
   bx(G,B.x0+0.05,B.x1-0.05,B.z0,B.z0+0.016,1.38,1.43,oak,oc);
-  [0.14,0.3,0.46].forEach(function(d){ const p=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.04,8),brass); p.rotation.x=Math.PI/2; p.position.set(B.x0+d,1.405,B.z0+0.036); G.add(p); });
+  [0.14,0.3,0.46].forEach(function(d){ const p=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.04,8),brass); p.rotation.x=Math.PI/2; p.position.set(B.x0+d,1.405,Z(B.z0+0.036)); G.add(p); });
   return {cabinet:CAB,bench:B};
 }
