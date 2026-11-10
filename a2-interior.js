@@ -246,14 +246,6 @@ export function create(THREE,E,C){
   /* living-room furnishing around the TV wall */
   put(0,'wallSpeaker',855,846,'W',null,{y:1.1}); put(0,'wallSpeaker',1085,846,'W',null,{y:1.1});
 
-  /* ---- entry: dark batten screen on the shoe cabinet facing the door (the first thing seen), a bench by the east wall ---- */
-  (function(){
-    B(0,backM,7.40,7.415,7.02,7.90,0.05,2.4);
-    for(let z=7.035;z<7.88;z+=0.05) B(0,woodD,7.415,7.445,z,z+0.03,0.05,2.4);
-    B(0,M.oak,7.75,8.35,7.58,7.90,0.34,0.38); [[7.80,7.62],[7.80,7.86],[8.28,7.62],[8.28,7.86]].forEach(function(q){ B(0,M.dark,q[0]-0.015,q[0]+0.015,q[1]-0.015,q[1]+0.015,0,0.34); });
-    col(0,7.75,8.35,7.58,7.90,0,0.4);
-  })();
-
   /* ---- rugs ---- */
   const rugRound=function(l,e,n,r){ const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,0.012,48),E.lam(0xffffff,{roughness:1,map:cvRug(THREE,'round')})); m.position.set(n/100,base(l)+0.008,e/100); m.receiveShadow=true; Z(l,n/100,e/100).add(m); };
   const rugRect=function(l,e,n,w,d){ const m=new THREE.Mesh(new THREE.BoxGeometry(d,0.012,w),E.lam(0xffffff,{roughness:1,map:cvRug(THREE,'rect')})); m.position.set(n/100,base(l)+0.008,e/100); m.receiveShadow=true; Z(l,n/100,e/100).add(m); };
