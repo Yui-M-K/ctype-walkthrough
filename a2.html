@@ -83,21 +83,21 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261110g';
-import * as KIT from './a2-kitchen.js?v=20261110g';
-import * as LIT from './a2-lights.js?v=20261110g';
-import * as INT from './a2-interior.js?v=20261110g';
-import * as OPEN from './a2-open.js?v=20261110g';
-import * as MDL from './a2-models.js?v=20261110g';
-import * as CAT from './a2-cat.js?v=20261110g';
-import * as LIFE from './a2-life.js?v=20261110g';
-import * as GEN from './a2-genkan.js?v=20261110g';
-import * as BAY from './a2-bay.js?v=20261110g';
-import * as WET from './a2-wet.js?v=20261110g';
+import * as EXT from './a2-exterior.js?v=20261110h';
+import * as KIT from './a2-kitchen.js?v=20261110h';
+import * as LIT from './a2-lights.js?v=20261110h';
+import * as INT from './a2-interior.js?v=20261110h';
+import * as OPEN from './a2-open.js?v=20261110h';
+import * as MDL from './a2-models.js?v=20261110h';
+import * as CAT from './a2-cat.js?v=20261110h';
+import * as LIFE from './a2-life.js?v=20261110h';
+import * as GEN from './a2-genkan.js?v=20261110h';
+import * as BAY from './a2-bay.js?v=20261110h';
+import * as WET from './a2-wet.js?v=20261110h';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261110g')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261110h')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -352,7 +352,7 @@ layout:function(E){
   add('massage','massageChair',0,g(L1,'按摩椅'),'N');
   add('deskL','liftDesk',0,g(L1,'長書桌 220×80（面朝北）'),'S',function(){ return Catalog.liftDesk(2.2); });
   (function(){ const c=L1.extras.find(function(q){ return q.kind==='circle'&&q.r===26; }).c; add('chairL','officeChair',0,[c[0]-26,c[1]-26,c[0]+26,c[1]+26],'N'); })();
-  add('fridge','fridge70',0,g(L1,'冰箱'),'E');
+  add('fridge','fridgeHitachi',0,g(L1,'冰箱'),'E',function(){ const p=Catalog.make('fridgeHitachi'); p.doorMaxL=1.5; p.doorMaxR=1.25; return p; });   // the fridge of ideal_c (Hitachi R-HZC54Y)
   add('car','car',0,FT.garage.car,'N',function(){ return MDL.car(THREE,E); });
   add('bed','bed',1,g(L2,'床 160×200'),'N');   // pillows at the south end, between the two bedside tables
   add('side1','bedside',1,byId(L2,'f2'),'S'); add('side2','bedside',1,byId(L2,'f3'),'S');
@@ -488,5 +488,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261110g"></script>
+<script src="a2-sunmap.js?v=20261110h"></script>
 </body></html>
