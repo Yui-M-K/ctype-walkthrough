@@ -106,7 +106,7 @@ export function frameFinish(THREE,E){
 }
 
 /* The front door sits at e 640-720; everything round it (timber wall, canopy, screen, approach, lights) is drawn for the earlier door at 667-747 and shifted by DZ (m, engine z). */
-export const DZ=-0.27;
+export const DZ=-0.60;
 
 /* Cladding accents on the real walls: charcoal garage volume, timber at the entry and inside the 2F balcony frame, charcoal ring round the high window. */
 export function accents(THREE,E,C){
@@ -120,7 +120,7 @@ export function accents(THREE,E,C){
   B(2.925,NX+0.045,0.555,0.575,-0.3,F2+0.03,MXc.char);
   B(NX,NX+0.045,0.555,4.375,CH,F2+0.03,MXc.char);
   B(NX,NX+0.045,4.25,4.375,-0.3,F2+0.03,MXc.char);
-  /* entry: timber wall around the door (door opening 6.40-7.20 m after the shift, head 2.1 m) and a charcoal canopy */
+  /* entry: timber wall around the door (door opening 6.07-6.87 m after the shift, head 2.1 m) and a charcoal canopy */
   B(NX,NX+0.03,6.2+DZ,6.67+DZ,-0.3,F2+0.03,MXc.wood); B(NX,NX+0.03,7.47+DZ,8.0+DZ,-0.3,F2+0.03,MXc.wood); B(NX,NX+0.03,6.67+DZ,7.47+DZ,2.1,F2+0.03,MXc.wood);
   B(NX,9.6,6.2+DZ,8.0+DZ,2.42,2.52,MXc.char);
   /* 2F: aluminium surround on the high north window, balcony frame with timber inside and underneath */
@@ -163,7 +163,7 @@ export function landscape(THREE,E,C){
   fr(2.0,7.0,19.5,22.0,3.6);                                                                                  // invisible stand for the garden-side viewpoint (eye above the fence)
   const tree=function(x,z,h,kind,sx){ const P=Cat.gardenTree(h,kind||'ash'); P.group.scale.set(sx||0.7,1,sx||0.7); P.group.position.set(x,-0.3,z); P.group.userData.keep=true; G.add(P.group); LAMPS.push({kind:'tree',x:x,z:z,h:h}); return P; };
   const shrubs=function(x,z,n,r){ for(let i=0;i<n;i++){ const a=i/n*6.28+0.6, P=Cat.shrub(r*(0.8+0.4*((i*37)%5)/5)); P.group.position.set(x+Math.cos(a)*r*1.5,-0.3,z+Math.sin(a)*r*1.5); P.group.userData.keep=true; G.add(P.group); } };
-  tree(9.0,4.8,5.0); shrubs(9.0,4.8,4,0.3);                                                                    // road side, in the gravel bed beside the approach
+  tree(9.0,4.6,5.0); shrubs(9.0,4.6,4,0.3);                                                                    // road side, in the gravel bed beside the approach
   tree(9.35,9.3,5.6,'ash',0.6); shrubs(9.35,9.3,3,0.3);
   tree(9.4,0.3,5.4,'ash',0.55);                                                                                // beside the garage
   tree(5.7,13.2,5.4); shrubs(6.8,13.25,3,0.3);                                                                  // east garden, near the stepping stones
