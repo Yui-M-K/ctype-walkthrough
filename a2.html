@@ -83,20 +83,20 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261110e';
-import * as KIT from './a2-kitchen.js?v=20261110e';
-import * as LIT from './a2-lights.js?v=20261110e';
-import * as INT from './a2-interior.js?v=20261110e';
-import * as OPEN from './a2-open.js?v=20261110e';
-import * as MDL from './a2-models.js?v=20261110e';
-import * as CAT from './a2-cat.js?v=20261110e';
-import * as LIFE from './a2-life.js?v=20261110e';
-import * as GEN from './a2-genkan.js?v=20261110e';
-import * as BAY from './a2-bay.js?v=20261110e';
+import * as EXT from './a2-exterior.js?v=20261110f';
+import * as KIT from './a2-kitchen.js?v=20261110f';
+import * as LIT from './a2-lights.js?v=20261110f';
+import * as INT from './a2-interior.js?v=20261110f';
+import * as OPEN from './a2-open.js?v=20261110f';
+import * as MDL from './a2-models.js?v=20261110f';
+import * as CAT from './a2-cat.js?v=20261110f';
+import * as LIFE from './a2-life.js?v=20261110f';
+import * as GEN from './a2-genkan.js?v=20261110f';
+import * as BAY from './a2-bay.js?v=20261110f';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261110e')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261110f')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -121,8 +121,8 @@ const ctr=function(r){ return [(r[1]+r[3])/2,(r[0]+r[2])/2]; };            // ce
 const byName=function(L,n){ return L.furniture.find(function(f){ return f.name===n; }); };
 const byRect=function(L,r){ return L.furniture.find(function(f){ return f.rect.every(function(v,i){ return Math.abs(v-r[i])<0.6; }); }); };   // unnamed pieces: ids shift when the plan changes
 const byId=function(L,i){ return L.furniture.find(function(f){ return f.id===i; }); };
-const ROLE={'LDK':'oat','玄關':'genkan','淋浴＋脫衣':'utility','鏡子房':'peach','走廊':'hall','廁所':'wc','樓梯':'hall','車庫（開放式）':'outside',
-  '挑高（下方客廳）':'oat','迴廊':'hall','小孩房':'oat','書房':'mist','納戶':'utility','三溫暖':'peach','浴室 1624':'bath','排水管PS':'utility','更衣間':'dress','主臥':'oat','洗面脫衣室':'utility','洗衣間':'utility'};
+const ROLE={'LDK':'oat','玄關':'hall','淋浴＋脫衣':'utility','鏡子房':'peach','走廊':'hall','廁所':'wc','樓梯':'hall','車庫（開放式）':'outside',
+  '挑高（下方客廳）':'oat','迴廊':'hall','小孩房':'oat','書房':'mist','納戶':'peach','三溫暖':'utility','浴室 1624':'bath','排水管PS':'utility','更衣間':'dress','主臥':'oat','洗面脫衣室':'utility','洗衣間':'dress'};   // wall colour roles after ideal_c's rooms (genkan -> hall, storeroom -> peach, laundry -> dress, sauna -> utility)
 const voidRoom=L2.rooms.find(function(r){ return r.kind==='void'; }), VOIDS=voidRoom.rects, VOID=VOIDS[0];   // [e0,n0,e1,n1]; VOID = the main part (the 1F exterior walls run along it), VOIDS = the L-shaped opening
 const STAIR=L1.stair, STAIR2=L2.stair;
 const holeKey=function(o){ return o.code==='H1'||o.code==='H2'; };
@@ -248,8 +248,8 @@ build:function(E){
   L1.walls.forEach(function(w){ OPEN.treat(E,0,w,buildWall); });
   L2.walls.forEach(function(w){ OPEN.treat(E,1,w,buildWall); });
   /* ---- slabs, floors, ceilings ---- */
-  const FLOOR1={'LDK':FL.wood,'玄關':FL.stone,'淋浴＋脫衣':FL.tile,'鏡子房':FL.wood,'走廊':FL.woodD,'廁所':FL.wc,'樓梯':FL.woodD,'車庫（開放式）':FL.conc};
-  const FLOOR2={'迴廊':FL.woodD,'小孩房':FL.wood,'書房':FL.wood,'走廊':FL.woodD,'納戶':FL.woodD,'三溫暖':FL.wood,'浴室 1624':FL.bath,'排水管PS':FL.conc,'更衣間':FL.wood,'主臥':FL.wood,'洗面脫衣室':FL.tile,'洗衣間':FL.tile,'廁所':FL.wc};
+  const FLOOR1={'LDK':FL.wood,'玄關':FL.stone,'淋浴＋脫衣':FL.wc,'鏡子房':FL.wood,'走廊':FL.wood,'廁所':FL.wc,'樓梯':FL.woodD,'車庫（開放式）':FL.conc};   // floors after ideal_c: wc tile for the dressing area, wood elsewhere
+  const FLOOR2={'迴廊':FL.woodD,'小孩房':FL.wood,'書房':FL.wood,'走廊':FL.wood,'納戶':FL.wood,'三溫暖':FL.wc,'浴室 1624':FL.bath,'排水管PS':FL.conc,'更衣間':FL.woodD,'主臥':FL.wood,'洗面脫衣室':FL.wc,'洗衣間':FL.wood,'廁所':FL.wc};
   function carve(q,cuts){ let out=[q.slice()]; cuts.forEach(function(c){ const nx=[]; out.forEach(function(a){
       const x0=Math.max(a[0],c[0]), y0=Math.max(a[1],c[1]), x1=Math.min(a[2],c[2]), y1=Math.min(a[3],c[3]);
       if(x0>=x1||y0>=y1){ nx.push(a); return; }
@@ -486,5 +486,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261110e"></script>
+<script src="a2-sunmap.js?v=20261110f"></script>
 </body></html>
