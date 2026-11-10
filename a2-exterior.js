@@ -153,8 +153,8 @@ export function landscape(THREE,E,C){
   const NX=C.NWALL/100+0.075, RX=C.LOT.south_north/100;
   bx(grp,NX,RX,4.375,6.67,-0.3,-0.2,MX.gravel); fr(NX,RX,4.375,6.67,-0.2);                                    // gravel between garage apron and porch
   bx(grp,NX,RX,4.375,4.425,-0.3,-0.17,MX.char); bx(grp,NX,RX,6.62,6.67,-0.3,-0.17,MX.char);                     // charcoal edging
-  bx(grp,RX-0.3,RX,5.8,6.62,-0.3,-0.2,MX.step); fr(RX-0.3,RX,5.8,6.62,-0.2);                                    // approach through the screen gap: road -> slab -> slab -> porch
-  bx(grp,8.95,RX-0.32,5.8,6.62,-0.3,-0.15,MX.step); fr(8.95,RX-0.32,5.8,6.62,-0.15);
+  bx(grp,RX-0.3,RX,5.8,6.4,-0.3,-0.17,MX.step); fr(RX-0.3,RX,5.8,6.4,-0.17);                                    // approach through the screen gap: road -> slab -> slab -> porch
+  bx(grp,8.95,RX-0.32,5.8,6.4,-0.3,-0.15,MX.step); fr(8.95,RX-0.32,5.8,6.4,-0.15);
   const stones=[[5.7,13.0],[6.35,12.95],[7.0,13.05],[7.65,12.98],[8.3,13.04]];                                // stepping stones across the lawn to the east garden
   stones.forEach(function(q){ bx(grp,q[0]-0.22,q[0]+0.22,q[1]-0.28,q[1]+0.28,-0.3,-0.24,MX.step); fr(q[0]-0.22,q[0]+0.22,q[1]-0.28,q[1]+0.28,-0.24); });
   fr(2.0,7.0,19.5,22.0,3.6);                                                                                  // invisible stand for the garden-side viewpoint (eye above the fence)
