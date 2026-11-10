@@ -28,7 +28,13 @@
       <button id="tEdit" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">擺放家具（拖曳移動、旋轉、從型錄拿新的）</button>
       <button id="tTv" class="tog" type="button" aria-pressed="false">電視開機</button>
       <button id="tCurt" class="tog" type="button" aria-pressed="false">窗簾全部拉上</button>
+      <button id="tDaily" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">日常模式（她在沙發看電視、他在 2F 書房工作）</button>
+      <button id="tCook" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">料理模式（她做菜、他喝啤酒）</button>
+      <button id="tSleep" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">睡覺模式（2F 主臥，只開小夜燈）</button>
+      <button id="tSport" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">運動模式（Switch）</button>
     </div>
+    <h3>咘咘的版本</h3>
+    <div id="catVerBtns" class="seg"><p class="help" style="grid-column:1/-1;margin:0">咘咘的 3D 模型版本：按下去會重新載入頁面並記住你的選擇；網址加 ?cat=old 或 ?glb=3 會優先於這裡的選擇；?cat=0 不放咘咘。</p></div>
         <div id="layBtns" class="seg" hidden><button type="button" class="tog" data-l="1" aria-pressed="true">配置一</button></div>
     <div class="seg" id="foldRow" style="margin-top:8px" hidden><button id="tFold" class="tog" type="button" aria-pressed="false" style="grid-column:1/-1">升降桌：茶几模式</button></div>
     <h3 id="houseH" hidden>房子</h3>
@@ -76,16 +82,18 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261109d';
-import * as KIT from './a2-kitchen.js?v=20261109d';
-import * as LIT from './a2-lights.js?v=20261109d';
-import * as INT from './a2-interior.js?v=20261109d';
-import * as OPEN from './a2-open.js?v=20261109d';
-import * as MDL from './a2-models.js?v=20261109d';
+import * as EXT from './a2-exterior.js?v=20261110a';
+import * as KIT from './a2-kitchen.js?v=20261110a';
+import * as LIT from './a2-lights.js?v=20261110a';
+import * as INT from './a2-interior.js?v=20261110a';
+import * as OPEN from './a2-open.js?v=20261110a';
+import * as MDL from './a2-models.js?v=20261110a';
+import * as CAT from './a2-cat.js?v=20261110a';
+import * as LIFE from './a2-life.js?v=20261110a';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261109d')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261110a')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -343,7 +351,7 @@ layout:function(E){
   (function(){ const c=L1.extras.find(function(q){ return q.kind==='circle'&&q.r===26; }).c; add('chairL','officeChair',0,[c[0]-26,c[1]-26,c[0]+26,c[1]+26],'N'); })();
   add('fridge','fridge70',0,g(L1,'冰箱'),'E');
   add('car','car',0,FT.garage.car,'N',function(){ return MDL.car(THREE,E); });
-  add('bed','bed',1,g(L2,'床 160×200'),'S');
+  add('bed','bed',1,g(L2,'床 160×200'),'N');   // pillows at the south end, between the two bedside tables
   add('side1','bedside',1,byId(L2,'f2'),'S'); add('side2','bedside',1,byId(L2,'f3'),'S');
   add('washer','washer',1,[379.5,431,381.5,433],'N',function(){ const P=Catalog.washer(); P.group.scale.set(0.86,1,0.875); P.cols.forEach(function(c){ c.x0*=0.86; c.x1*=0.86; c.z0*=0.875; c.z1*=0.875; }); return P; });   // faces into the room (the plan row of units is 62 deep and 58 wide, so the catalog 72 x 64 washer is scaled to fit)
   add('rackA','clothesRack',1,byId(L2,'f4'),'E',function(){ return Catalog.clothesRack(0.95); });
@@ -352,6 +360,7 @@ layout:function(E){
   add('bedKid','bed',1,g(L2,'床 100×200'),'S',function(){ const P=Catalog.bed(), k=1.0/1.64; P.group.scale.x=k; P.cols.forEach(function(c){ c.x0*=k; c.x1*=k; }); return P; });   // the catalog bed is 164 wide: squeezed to a 100 cm single
   add('deskKid','liftDesk',1,g(L2,'書桌'),'N',function(){ return Catalog.liftDesk(0.82); });
   add('deskPC','liftDesk',1,g(L2,'電腦桌'),'W',function(){ return Catalog.liftDesk(1.8); });
+  add('chairPC','officeChair',1,[1017,125,1067,175],'E');   // the study chair between the workbench and the printer, west of the PC desk (the daily mode seats him on it)
   add('printer','printerCart',1,g(L2,'3D機'),'S');   // no table in the plan: the printer stands on its own cart
   return out;
 },
@@ -364,7 +373,6 @@ fixtures:function(E){
   (function(){ const q=PLAN.f1Misc.polygons.find(function(g){ return /28%/.test(g.style); }).pts, es=q.map(function(a){ return a[0]; }), ns=q.map(function(a){ return a[1]; });
     blk(0,[Math.min.apply(null,es),Math.min.apply(null,ns),Math.max.apply(null,es),Math.max.apply(null,ns)],2.4,M.cabF); })();   // floor-to-ceiling shoe cabinet that screens the entry
   blk(0,byId(L1,'f9').rect,0.38,M.oak);
-  (function(){ const r=byId(L1,'f9').rect, p=at(0,(r[0]+r[2])/2,(r[1]+r[3])/2); MDL.cat(THREE,E,{l:0,x:p[0],y:base(0)+0.38,z:p[1],w:0.3,ry:0}); })();   // sleeping cat on the entry bench
   (function(){ const c=L1.extras.find(function(q){ return q.kind==='ellipse'; }).c, p=at(0,c[0],c[1]+15); fixture(0,Catalog.toilet(),p[0],p[1],0); })();
   (function(){ const r=byId(L1,'f11').rect, p=at(0,(r[0]+r[2])/2,r[1]+5.5); fixture(0,Catalog.evCharger(),p[0],p[1],0); })();
   /* mirror room: the full-width mirror wall on the north wall of the room (plan: 整面鏡牆 290) */
@@ -451,6 +459,15 @@ modes:function(E){
     if(E.mode==='walk'&&E.levelOf(E.player.py)===0){ const px=E.player.x, pz=E.player.z; if(px>3.0&&px<8.6&&pz>4.2&&pz<11.8) E.LG[1].visible=true; }
     enforce();
   };
+  /* 咘咘 and the life modes. Cat route: bench -> genkan -> the gap beside the entry screen -> the free band south of the sofa and the kitchen aisle (engine metres, checked against the collision boxes) */
+  const bn=byId(L1,'f9').rect, bench={x:E.WX(0,(bn[1]+bn[3])/2),z:E.WZ(0,(bn[0]+bn[2])/2),y:0.38};
+  const nodes={B0:[bench.x,bench.z+0.47],N1:[7.55,6.65],N2:[6.9,6.6],M1:[6.5,7.5],S2:[5.8,7.5],S4:[3.9,7.5],M2:[6.6,8.2],S1:[7.2,8.3],K1:[6.5,5.6],S3:[5.0,5.45]}, edges={};
+  [['B0','N1'],['N1','N2'],['N2','M1'],['M1','S2'],['S2','S4'],['M1','M2'],['M2','S1'],['N2','K1'],['K1','S3']].forEach(function(q){ (edges[q[0]]=edges[q[0]]||[]).push(q[1]); (edges[q[1]]=edges[q[1]]||[]).push(q[0]); });
+  CAT.versionMenu(E);
+  const cat=CAT.create(THREE,E,{bench:bench,nodes:nodes,edges:edges,stops:{S1:'S1',S2:'S2',S3:'S3',S4:'S4'}});
+  const Y={E:0,N:Math.PI/2,W:Math.PI,S:-Math.PI/2}, mid=function(f,face){ return ctr(f.rect).concat([Y[NORTH.face[face]]]); };   // [n,e,yaw]: plan centre and default facing (engine +x = 0, -z = pi/2)
+  LIFE.create(THREE,E,{ctrl:ctrl,cat:cat,hob:KIT.hob(L1),pos:{tv:mid(byName(L1,'電視櫃 85吋'),'S'),sofa:mid(byName(L1,'電動躺椅沙發 210×97'),'N'),chairPC:[150,1042,Y[NORTH.face.E]],side1:mid(byId(L2,'f2'),'S')}});
+  window.__a2Cat=cat;
   /* true-north compass next to the minimap: the arrow points to NORTH.toEngine's +x direction as seen from the camera */
   const el=document.createElement('div'); el.id='compass'; el.setAttribute('aria-label','指北針');
   el.innerHTML='<svg viewBox="-22 -22 44 44" width="44" height="44"><circle r="21" fill="rgba(255,255,255,.88)" stroke="#9aa5ad"/><g id="compassArrow"><path d="M0-17L6 6 0 2-6 6Z" fill="#c0392b"/><text y="16" text-anchor="middle" font-size="10" font-weight="700" fill="#2e3842">N</text></g></svg>';
@@ -468,5 +485,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261109d"></script>
+<script src="a2-sunmap.js?v=20261110a"></script>
 </body></html>
