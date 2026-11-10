@@ -83,22 +83,22 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261110i';
-import * as KIT from './a2-kitchen.js?v=20261110i';
-import * as LIT from './a2-lights.js?v=20261110i';
-import * as INT from './a2-interior.js?v=20261110i';
-import * as OPEN from './a2-open.js?v=20261110i';
-import * as MDL from './a2-models.js?v=20261110i';
-import * as CAT from './a2-cat.js?v=20261110i';
-import * as LIFE from './a2-life.js?v=20261110i';
-import * as GEN from './a2-genkan.js?v=20261110i';
-import * as BAY from './a2-bay.js?v=20261110i';
-import * as WET from './a2-wet.js?v=20261110i';
-import * as MIR from './a2-mirror.js?v=20261110i';
+import * as EXT from './a2-exterior.js?v=20261110j';
+import * as KIT from './a2-kitchen.js?v=20261110j';
+import * as LIT from './a2-lights.js?v=20261110j';
+import * as INT from './a2-interior.js?v=20261110j';
+import * as OPEN from './a2-open.js?v=20261110j';
+import * as MDL from './a2-models.js?v=20261110j';
+import * as CAT from './a2-cat.js?v=20261110j';
+import * as LIFE from './a2-life.js?v=20261110j';
+import * as GEN from './a2-genkan.js?v=20261110j';
+import * as BAY from './a2-bay.js?v=20261110j';
+import * as WET from './a2-wet.js?v=20261110j';
+import * as MIR from './a2-mirror.js?v=20261110j';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261110i')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261110j')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -364,8 +364,14 @@ layout:function(E){
   add('bedKid','bed',1,g(L2,'床 100×200'),'S',function(){ const P=Catalog.bed(), k=1.0/1.64; P.group.scale.x=k; P.cols.forEach(function(c){ c.x0*=k; c.x1*=k; }); return P; });   // the catalog bed is 164 wide: squeezed to a 100 cm single
   add('deskKid','liftDesk',1,g(L2,'書桌'),'N',function(){ return Catalog.liftDesk(0.82); });
   add('deskPC','liftDesk',1,g(L2,'電腦桌'),'W',function(){ return Catalog.liftDesk(1.8); });
-  add('chairPC','officeChair',1,[1017,125,1067,175],'E');   // the study chair between the workbench and the printer, west of the PC desk (the daily mode seats him on it)
+  add('chairPC','gamingChair',1,[1017,125,1067,175],'E');   // the study chair between the workbench and the printer, west of the PC desk (the daily mode seats him on it)
+  /* things ideal_c has in the rooms the two houses share (catalogue pieces, same models) */
+  add('keys','keyRack',0,[788,790,794,810],'W');
+  add('suitL','suit30P',1,[603,52,647,98],'N'); add('suitM','suit29B',1,[655,52,699,98],'N'); add('suitS','suit24P',1,[707,52,745,98],'N');
+  add('mirrorW','fullMirror',1,[268,640,272,700],'W');
+  add('pole','laundryPole',1,[420,520,530,540],'E',function(){ return Catalog.laundryPole(CH_M,1.1,true); });
   add('printer','printerCart',1,g(L2,'3D機'),'S');   // no table in the plan: the printer stands on its own cart
+  add('clock','wallClock',0,[979,307,981,309],'N');   // ideal_c's wall clock on the LDK's south wall
   return out;
 },
 fixtures:function(E){
@@ -489,5 +495,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261110i"></script>
+<script src="a2-sunmap.js?v=20261110j"></script>
 </body></html>
