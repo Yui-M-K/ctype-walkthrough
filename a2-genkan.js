@@ -71,22 +71,34 @@ export function genkan(THREE,E){
     furnAnims.push({live:function(){ return cur!==tg; },f:function(t2){ if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*2?tg:cur+Math.sign(tg-cur)*dt*2; S.leaves.forEach(function(q){ q.pv.rotation.y=q.sg*cur*1.55; }); E.renderer.shadowMap.needsUpdate=true; return true; }}); };
   opener('lo','打開下層鞋櫃','關上下層鞋櫃'); opener('hi','打開上層鞋櫃','關上上層鞋櫃');
 
-  /* ---- bench ---- */
-  const B=BENCH, SB=0.03, CU=0.03, sy=B.seat-CU-SB;                    // seat board 3 cm, linen cushion 3 cm
-  const cush=fab?fab(0xd9cfbf):lam(0xd9cfbf,{roughness:0.95});
-  rbox(G,B.x0,B.x1,B.z0,B.z1,sy,sy+SB,0.008,oak);                      // solid oak seat with eased edges
-  rbox(G,B.x0+0.012,B.x1-0.012,B.z0+0.012,B.z1-0.012,sy+SB,B.seat,0.012,cush);   // cushion
-  const aprY=sy-0.07;
-  bx(G,B.x0+0.03,B.x1-0.03,B.z1-0.05,B.z1-0.03,aprY,sy,oak,oc); bx(G,B.x0+0.03,B.x1-0.03,B.z0+0.03,B.z0+0.05,aprY,sy,oak,oc);   // aprons under the seat
-  bx(G,B.x0+0.03,B.x0+0.05,B.z0+0.03,B.z1-0.03,aprY,sy,oak,oc); bx(G,B.x1-0.05,B.x1-0.03,B.z0+0.03,B.z1-0.03,aprY,sy,oak,oc);
-  [[B.x0+0.04,B.z0+0.04],[B.x0+0.04,B.z1-0.04],[B.x1-0.04,B.z0+0.04],[B.x1-0.04,B.z1-0.04]].forEach(function(q){ cylm(G,q[0],q[1],0.021,0.012,0,aprY,oak,12); });   // tapered legs
-  const sh=0.16;                                                        // slatted shoe shelf
-  for(let z=B.z0+0.05;z<B.z1-0.06;z+=0.052) bx(G,B.x0+0.03,B.x1-0.03,z,z+0.044,sh,sh+0.016,oak,oc);
-  bx(G,B.x0+0.03,B.x0+0.045,B.z0+0.03,B.z1-0.03,sh-0.03,sh,oak,oc); bx(G,B.x1-0.045,B.x1-0.03,B.z0+0.03,B.z1-0.03,sh-0.03,sh,oak,oc);   // rails carrying the slats
-  [[0.14,['sneaker',0xf2efe8,0xf7f5f0,0.88]],[0.4,['loafer',0x2a2a2a,0x2a2a2a,1]]].forEach(function(q){ [-1,1].forEach(function(sd){ const g=Catalog.shoe(q[1][0],q[1][1],q[1][2]); g.scale.setScalar(q[1][3]); g.rotation.y=-Math.PI/2; g.position.set(B.x0+q[0]+sd*0.052*q[1][3],sh+0.017,Z((B.z0+B.z1)/2)); G.add(g); }); });   // toes to the wall
-  addCol(0,B.x0-0.01,B.x1+0.01,B.z0-0.01,B.z1+0.01,0,B.seat+0.01,'x');
-  /* hook rail on the wall above the bench */
-  bx(G,B.x0+0.05,B.x1-0.05,B.z0,B.z0+0.016,1.38,1.43,oak,oc);
-  [0.14,0.3,0.46].forEach(function(d){ const p=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.04,8),brass); p.rotation.x=Math.PI/2; p.position.set(B.x0+d,1.405,Z(B.z0+0.036)); G.add(p); });
-  return {cabinet:CAB,bench:B};
+  /* ---- bench: built once into a group in its east-wall position (design coordinates, mirrored by Z); the group is also used rotated onto the north wall ---- */
+  const B=BENCH, EAST_COL=[B.x0-0.01,B.x1+0.01,Z(B.z1)-0.01,Z(B.z0)+0.01];   // x0,x1,z0,z1 of the east variant's collision box
+  const makeBench=function(Gb){
+  const SB=0.03, CU=0.03, sy=B.seat-CU-SB;                    // seat board 3 cm, linen cushion 3 cm
+    const cush=fab?fab(0xd9cfbf):lam(0xd9cfbf,{roughness:0.95});
+    rbox(Gb,B.x0,B.x1,B.z0,B.z1,sy,sy+SB,0.008,oak);                      // solid oak seat with eased edges
+    rbox(Gb,B.x0+0.012,B.x1-0.012,B.z0+0.012,B.z1-0.012,sy+SB,B.seat,0.012,cush);   // cushion
+    const aprY=sy-0.07;
+    bx(Gb,B.x0+0.03,B.x1-0.03,B.z1-0.05,B.z1-0.03,aprY,sy,oak,oc); bx(Gb,B.x0+0.03,B.x1-0.03,B.z0+0.03,B.z0+0.05,aprY,sy,oak,oc);   // aprons under the seat
+    bx(Gb,B.x0+0.03,B.x0+0.05,B.z0+0.03,B.z1-0.03,aprY,sy,oak,oc); bx(Gb,B.x1-0.05,B.x1-0.03,B.z0+0.03,B.z1-0.03,aprY,sy,oak,oc);
+    [[B.x0+0.04,B.z0+0.04],[B.x0+0.04,B.z1-0.04],[B.x1-0.04,B.z0+0.04],[B.x1-0.04,B.z1-0.04]].forEach(function(q){ cylm(Gb,q[0],q[1],0.021,0.012,0,aprY,oak,12); });   // tapered legs
+    const sh=0.16;                                                        // slatted shoe shelf
+    for(let z=B.z0+0.05;z<B.z1-0.06;z+=0.052) bx(Gb,B.x0+0.03,B.x1-0.03,z,z+0.044,sh,sh+0.016,oak,oc);
+    bx(Gb,B.x0+0.03,B.x0+0.045,B.z0+0.03,B.z1-0.03,sh-0.03,sh,oak,oc); bx(Gb,B.x1-0.045,B.x1-0.03,B.z0+0.03,B.z1-0.03,sh-0.03,sh,oak,oc);   // rails carrying the slats
+    [[0.14,['sneaker',0xf2efe8,0xf7f5f0,0.88]],[0.4,['loafer',0x2a2a2a,0x2a2a2a,1]]].forEach(function(q){ [-1,1].forEach(function(sd){ const g=Catalog.shoe(q[1][0],q[1][1],q[1][2]); g.scale.setScalar(q[1][3]); g.rotation.y=-Math.PI/2; g.position.set(B.x0+q[0]+sd*0.052*q[1][3],sh+0.017,Z((B.z0+B.z1)/2)); Gb.add(g); }); });   // toes to the wall
+    
+    /* hook rail on the wall above the bench */
+    bx(Gb,B.x0+0.05,B.x1-0.05,B.z0,B.z0+0.016,1.38,1.43,oak,oc);
+    [0.14,0.3,0.46].forEach(function(d){ const p=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.04,8),brass); p.rotation.x=Math.PI/2; p.position.set(B.x0+d,1.405,Z(B.z0+0.036)); Gb.add(p); });
+
+  };
+  const benchEast=new THREE.Group(); G.add(benchEast); makeBench(benchEast);
+  /* north-wall variant (used when the entry's east wall is taken away): the same bench turned a quarter, long side along the north wall, its end against the 30 cm stub */
+  const bcx=(B.x0+B.x1)/2, bcz=(Z(B.z0)+Z(B.z1))/2, NX=8.275, NZ=7.55;
+  const pivot=new THREE.Group(); pivot.position.set(NX,0,NZ); pivot.rotation.y=Math.PI/2; G.add(pivot);
+  const benchNorth=new THREE.Group(); benchNorth.position.set(-bcx,0,-bcz); pivot.add(benchNorth); makeBench(benchNorth);
+  pivot.visible=false;
+  const colE=E.addCol(0,EAST_COL[0],EAST_COL[1],EAST_COL[2],EAST_COL[3],0,B.seat+0.01,'x'), colN=E.addCol(0,NX-0.15-0.01,NX+0.15+0.01,NZ-0.3-0.01,NZ+0.3+0.01,0,B.seat+0.01,'x');
+  E.walls.splice(E.walls.indexOf(colN),1);   // only present while the east wall is removed
+  return {cabinet:CAB,bench:B,east:{group:benchEast,col:colE},north:{group:pivot,col:colN},northSeat:[NX,NZ]};
 }
