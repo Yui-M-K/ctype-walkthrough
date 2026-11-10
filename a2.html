@@ -83,20 +83,21 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261110f';
-import * as KIT from './a2-kitchen.js?v=20261110f';
-import * as LIT from './a2-lights.js?v=20261110f';
-import * as INT from './a2-interior.js?v=20261110f';
-import * as OPEN from './a2-open.js?v=20261110f';
-import * as MDL from './a2-models.js?v=20261110f';
-import * as CAT from './a2-cat.js?v=20261110f';
-import * as LIFE from './a2-life.js?v=20261110f';
-import * as GEN from './a2-genkan.js?v=20261110f';
-import * as BAY from './a2-bay.js?v=20261110f';
+import * as EXT from './a2-exterior.js?v=20261110g';
+import * as KIT from './a2-kitchen.js?v=20261110g';
+import * as LIT from './a2-lights.js?v=20261110g';
+import * as INT from './a2-interior.js?v=20261110g';
+import * as OPEN from './a2-open.js?v=20261110g';
+import * as MDL from './a2-models.js?v=20261110g';
+import * as CAT from './a2-cat.js?v=20261110g';
+import * as LIFE from './a2-life.js?v=20261110g';
+import * as GEN from './a2-genkan.js?v=20261110g';
+import * as BAY from './a2-bay.js?v=20261110g';
+import * as WET from './a2-wet.js?v=20261110g';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261110f')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261110g')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -373,6 +374,7 @@ fixtures:function(E){
   KIT.kitchen(THREE,E,{L1:L1});
   fixture(0,Catalog.plant(0.9),8.1,8.22,0); fixture(0,Catalog.plant(0.75),4.78,11.3,0);   // floor pots: beside the TV, and west of the massage chair against the south wall
   BAY.bay(THREE,E,{pf:FT.bayWindow.platformRect,bay:FT.bayWindow.rect});   // bay window deck with drawers, cushion, pillows, sheers (a2-bay.js)
+  WET.wet(THREE,E);   // 1F shower cell and changing area (a2-wet.js)
   GEN.genkan(THREE,E);   // shoe cabinet to the ceiling and the entry bench (a2-genkan.js)
   (function(){ const c=L1.extras.find(function(q){ return q.kind==='ellipse'; }).c, p=at(0,c[0],c[1]+15); fixture(0,Catalog.toilet(),p[0],p[1],0); })();
   (function(){ const r=byId(L1,'f11').rect, p=at(0,(r[0]+r[2])/2,r[1]+5.5); fixture(0,Catalog.evCharger(),p[0],p[1],0); })();
@@ -486,5 +488,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261110f"></script>
+<script src="a2-sunmap.js?v=20261110g"></script>
 </body></html>

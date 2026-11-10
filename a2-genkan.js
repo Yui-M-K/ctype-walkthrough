@@ -61,7 +61,7 @@ export function genkan(THREE,E){
   leaf('lo',zs+0.001,1,KB,LO,lw,LO-0.12); leaf('lo',Z1-0.001,-1,KB,LO,lw,LO-0.12);
   leaf('hi',zs+0.001,1,HI,top,lw,HI+0.12); leaf('hi',Z1-0.001,-1,HI,top,lw,HI+0.12);
   const opener=function(key,on,off){ const S=sets[key]; let cur=0, tg=0, last=null;
-    furnThings.push({pt:[X1+0.3,zm],l:0,part:S.parts,on:function(){ return true; },label:function(){ return tg?off:on; },act:function(){ tg=tg?0:1; last=null; }});
+    furnThings.push({pt:[X1+0.22,zm],l:0,part:S.parts,on:function(){ return true; },label:function(){ return tg?off:on; },act:function(){ tg=tg?0:1; last=null; }});
     furnAnims.push({live:function(){ return cur!==tg; },f:function(t2){ if(last===null) last=t2; const dt=Math.min(0.05,t2-last); last=t2; cur=Math.abs(tg-cur)<dt*2?tg:cur+Math.sign(tg-cur)*dt*2; S.leaves.forEach(function(q){ q.pv.rotation.y=q.sg*cur*1.55; }); E.renderer.shadowMap.needsUpdate=true; return true; }}); };
   opener('lo','打開下層鞋櫃','關上下層鞋櫃'); opener('hi','打開上層鞋櫃','關上上層鞋櫃');
 
