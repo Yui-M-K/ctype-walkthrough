@@ -7,9 +7,9 @@ export const ACCENTS=[
   {l:1,x0:301,x1:325,y0:65,y1:275,w:'sage'},      // master bedroom, south wall
   {l:1,x0:251,x1:275,y0:957,y1:1167,w:'a2kid'}    // child room, wall behind the bed and desk
 ];
-/* wall palette while the proposal is on (design plan section 1) */
+/* wall palette while the proposal is on: the colours of ideal_c (Walk.THEMES.A), the two accent roles are copies of its sage and peach */
 const SLAB_ON=0xe6dfd2;
-const WALL_ON={oat:0xe1d4bd,hall:0xdfd2bb,utility:0xe2d7c4,genkan:0xd6c9b2,peach:0xe6cfba,wc:0xdddad2,dress:0xe2d9ca,mist:0xd2cdc2,sage:0xa3b39d,a2kid:0xe2c0a8};
+const WALL_ON=Object.assign({},Walk.THEMES.A.wall,{sage:Walk.THEMES.A.wall.sage,a2kid:Walk.THEMES.A.wall.peach});
 
 /* curtains in the engine's format: [storey, wall side, a, b, wall line, auto, {color}, {off, top, bottom}] (plan x = n, y = e) */
 export function curtains(){
@@ -91,16 +91,11 @@ export function create(THREE,E,C){
 
   /* ---- swapped materials: [new, old]; floors are one oak per original so the pairs stay one to one after the engine merges meshes ---- */
   const swap=function(nw,old){ X.mats.push([nw,old]); return nw; };
-  const oakFloor=function(old,key){
-    const m=old.clone(); m.color.setHex(0xffffff); m.userData=Object.assign({},old.userData);
-    FIN.pbrMaps(m,'oak_planks',1.2/1.818,1.2/0.909,{rough:false,normalScale:0.7,color:0xf3e6d0}); m.roughness=0.62;
-    FL[key]=m; return swap(m,old); };
-  const FLOORS=new Map([[FL.wood,oakFloor(FL.wood,'a2oak')],[FL.woodD,oakFloor(FL.woodD,'a2oakD')]]);
   const replaceMat=function(root,map){
     root.traverse(function(o){ if(!o.isMesh) return;
       if(Array.isArray(o.material)){ o.material=o.material.map(function(m){ return map.get(m)||m; }); }
       else if(map.has(o.material)) o.material=map.get(o.material); }); };
-  [LG[0],LG[1]].forEach(function(g){ replaceMat(g,FLOORS); });
+
 
   /* ---- per-storey group for everything the proposal adds ---- */
   const G=[new THREE.Group(),new THREE.Group()];
