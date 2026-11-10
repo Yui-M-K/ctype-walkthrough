@@ -1,12 +1,16 @@
 /* A2 1F kitchen: peninsula with sink and IH hob under a range hood, appliance cabinet and base counter along the west wall.
    Pieces come from lib/catalog.js; layout follows ideal_c.html. Plan frame: engine x = n / 100, engine z = e / 100. */
+const HX=1.6, HZ=0.4;                              // hob offset from the peninsula's south-west corner (m)
+export function hob(L1){                           // [engine x, z] of the IH hob (centre); the cook stands on the west side, z smaller
+  const P=L1.furniture.find(function(f){ return f.name==='半島 200'; }).rect; return [P[1]/100+HX,P[0]/100+HZ];
+}
 export function kitchen(THREE,E,C){
   const {Catalog,LG,M,fixture,bx,CH}=E, L1=C.L1;
   const rect=function(name){ return L1.furniture.find(function(f){ return f.name===name; }).rect; };   // [e0,n0,e1,n1] in cm
   const P=rect('半島 200'), B=rect('背面收納'), F=rect('冰箱');
   const w=(P[3]-P[1])/100, d=(P[2]-P[0])/100, X0=P[1]/100, Z0=P[0]/100;
   /* peninsula: sink | prep space over the dishwasher | IH hob, the cook stands on the west (aisle) side */
-  const SX=[0.1,0.85], HX=1.6, HZ=0.4;
+  const SX=[0.1,0.85];
   fixture(0,Catalog.sinkCounter(w,d,[SX[0],SX[1],0.15,0.6],[{k:'fill',w:SX[0]},{k:'sink',w:SX[1]-SX[0]},{k:'dw',w:0.45},{k:'drawers',w:w-SX[1]-0.45}]),X0,Z0,0);
   fixture(0,Catalog.pullDownTap(),X0+(SX[0]+SX[1])/2,Z0+0.67,0);
   fixture(0,Catalog.dishSoap(true),X0+SX[0]+0.07,Z0+0.67,0);
