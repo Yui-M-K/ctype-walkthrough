@@ -83,23 +83,24 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261110m';
-import * as KIT from './a2-kitchen.js?v=20261110m';
-import * as LIT from './a2-lights.js?v=20261110m';
-import * as INT from './a2-interior.js?v=20261110m';
-import * as OPEN from './a2-open.js?v=20261110m';
-import * as MDL from './a2-models.js?v=20261110m';
-import * as CAT from './a2-cat.js?v=20261110m';
-import * as LIFE from './a2-life.js?v=20261110m';
-import * as GEN from './a2-genkan.js?v=20261110m';
-import * as BAY from './a2-bay.js?v=20261110m';
-import * as WET from './a2-wet.js?v=20261110m';
-import * as MIR from './a2-mirror.js?v=20261110m';
-import * as EW from './a2-eastwall.js?v=20261110m';
+import * as EXT from './a2-exterior.js?v=20261110n';
+import * as KIT from './a2-kitchen.js?v=20261110n';
+import * as LIT from './a2-lights.js?v=20261110n';
+import * as INT from './a2-interior.js?v=20261110n';
+import * as OPEN from './a2-open.js?v=20261110n';
+import * as MDL from './a2-models.js?v=20261110n';
+import * as CAT from './a2-cat.js?v=20261110n';
+import * as LIFE from './a2-life.js?v=20261110n';
+import * as GEN from './a2-genkan.js?v=20261110n';
+import * as BAY from './a2-bay.js?v=20261110n';
+import * as WET from './a2-wet.js?v=20261110n';
+import * as MIR from './a2-mirror.js?v=20261110n';
+import * as EW from './a2-eastwall.js?v=20261110n';
+import * as DOMA from './a2-doma.js?v=20261110n';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261110m')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261110n')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -187,7 +188,7 @@ build:function(E){
       const b={a:Math.max(o.from,lo),b:Math.min(o.to,hi)};
       if(o.kind==='door'){
         const closed=ew?o.closedDir[0]:o.closedDir[1], perp=ew?o.openDir[1]:o.openDir[0];
-        Object.assign(b,{k:'door',hinge:closed>0?'a':'b',sw:perp>0?1:-1}); if(FRONT(w,o)){ b.mat=M.entry; b.head=2.1; }
+        Object.assign(b,{k:'door',hinge:closed>0?'a':'b',sw:perp>0?1:-1}); if(FRONT(w,o)){ b.mat=M.entry; b.head=2.1; b.drop=DOMA.DEPTH; }   // the leaf reaches down to the lowered genkan floor
       } else if(o.kind==='slide'){ b.k='slide';
         if(w.openings.some(function(q){ return q.kind==='window'&&q.code===''&&q.from<=o.from+0.5&&q.to>=o.to-0.5; })) b.mat=CLEAR_DOOR(w)?M.glass:M.frost;   // glass sliding door: clear toward the void walkway, frosted elsewhere
       } else {
@@ -260,9 +261,15 @@ build:function(E){
       if(x0>=x1||y0>=y1){ nx.push(a); return; }
       if(a[1]<y0) nx.push([a[0],a[1],a[2],y0]); if(y1<a[3]) nx.push([a[0],y1,a[2],a[3]]);
       if(a[0]<x0) nx.push([a[0],y0,x0,y1]); if(x1<a[2]) nx.push([x1,y0,a[2],y1]); }); out=nx; }); return out; }
-  L1.rooms.forEach(function(r){ r.rects.forEach(function(q){ const b=box(q); slab(0,b[0],b[1],b[2],b[3]);
+  /* the slab of a room reaches 7 cm past its edges; where it meets the lowered genkan floor that margin would be a ledge in front of the step, so it stops at the entry's edge */
+  const ENT=box(L1.rooms.find(function(r){ return r.name==='玄關'; }).rects[0]);
+  const slabLow=function(cb){ const m=function(edge,e2,lo,hi,lo2,hi2){ return (Math.abs(edge-e2)<0.5&&Math.min(hi,hi2)-Math.max(lo,lo2)>0.5)?0:0.07; };
+    const mx0=m(cb[0],ENT[2],cb[1],cb[3],ENT[1],ENT[3]), mx1=m(cb[2],ENT[0],cb[1],cb[3],ENT[1],ENT[3]), mz0=m(cb[1],ENT[3],cb[0],cb[2],ENT[0],ENT[2]), mz1=m(cb[3],ENT[1],cb[0],cb[2],ENT[0],ENT[2]);
+    bx(LG[0],WX(0,cb[0])-mx0,WX(0,cb[2])+mx1,WZ(0,cb[1])-mz0,WZ(0,cb[3])+mz1,-E.SLAB,0,M.slab); };
+  L1.rooms.forEach(function(r){ r.rects.forEach(function(q){
     const cuts=[]; L1.rooms.forEach(function(o){ if(o!==r) o.rects.forEach(function(oq){ const ow=(oq[2]-oq[0])*(oq[3]-oq[1]), qw=(q[2]-q[0])*(q[3]-q[1]); if(ow<qw) cuts.push(oq); }); });
-    carve(q,cuts).forEach(function(c){ const cb=box(c); flr(0,cb[0],cb[1],cb[2],cb[3],FLOOR1[r.name]||FL.wood); }); }); });
+    if(r.name==='玄關') return;   // the genkan floor is 15 cm lower: a2-doma.js builds its slab and floor
+    carve(q,cuts).forEach(function(c){ const cb=box(c); slabLow(cb); flr(0,cb[0],cb[1],cb[2],cb[3],FLOOR1[r.name]||FL.wood); }); }); });
   L2.rooms.forEach(function(r){ if(r.kind==='void') return; r.rects.forEach(function(q){ const b=box(q); slab(1,b[0],b[1],b[2],b[3]); flr(1,b[0],b[1],b[2],b[3],FLOOR2[r.name]||FL.wood); }); });
   const flat=function(l,b){ ceilingOf(l,b[0],b[1],b[2],b[3]); };
   L1.rooms.forEach(function(r){ r.rects.forEach(function(q){
@@ -385,6 +392,7 @@ fixtures:function(E){
   fixture(0,Catalog.plant(0.9),8.1,8.22,0); fixture(0,Catalog.plant(0.75),4.78,11.3,0);   // floor pots: beside the TV, and west of the massage chair against the south wall
   BAY.bay(THREE,E,{pf:FT.bayWindow.platformRect,bay:FT.bayWindow.rect});   // bay window deck with drawers, cushion, pillows, sheers (a2-bay.js)
   WET.wet(THREE,E);   // 1F shower cell and changing area (a2-wet.js)
+  DOMA.doma(THREE,E,{eastGroup:window.__a2EWCap.group,door:[6.07,6.87]});   // lowered genkan floor, wall bases and the oak step edge (a2-doma.js)
   window.__a2Gen=GEN.genkan(THREE,E);   // shoe cabinet to the ceiling and the entry bench (a2-genkan.js)
   (function(){ const c=L1.extras.find(function(q){ return q.kind==='ellipse'; }).c, p=at(0,c[0],c[1]+15); fixture(0,Catalog.toilet(),p[0],p[1],0); })();
   (function(){ const r=byId(L1,'f11').rect, p=at(0,(r[0]+r[2])/2,r[1]+5.5); fixture(0,Catalog.evCharger(),p[0],p[1],0); })();
@@ -473,7 +481,7 @@ modes:function(E){
     enforce();
   };
   /* 咘咘 and the life modes. Cat route: bench -> genkan -> the gap beside the entry screen -> the free band south of the sofa and the kitchen aisle (engine metres, checked against the collision boxes) */
-  const bn=byId(L1,'f9').rect, bench={x:E.WX(0,(bn[1]+bn[3])/2),z:E.WZ(0,(bn[0]+bn[2])/2),y:GEN.BENCH.seat};
+  const bn=byId(L1,'f9').rect, bench={x:E.WX(0,(bn[1]+bn[3])/2),z:E.WZ(0,(bn[0]+bn[2])/2),y:GEN.BENCH.seat};   // relative to the genkan floor; the cat adds the floor height under her
   const nodes={B0:[bench.x,bench.z-0.47],N1:[7.55,7.3],N2:[6.9,7.3],M1:[6.5,7.5],S2:[5.8,7.5],S4:[3.9,7.5],M2:[6.6,8.2],S1:[7.2,8.3],K1:[6.5,5.6],S3:[5.0,5.45]}, edges={};
   [['B0','N1'],['N1','N2'],['N2','M1'],['M1','S2'],['S2','S4'],['M1','M2'],['M2','S1'],['M1','K1'],['K1','S3']].forEach(function(q){ (edges[q[0]]=edges[q[0]]||[]).push(q[1]); (edges[q[1]]=edges[q[1]]||[]).push(q[0]); });
   CAT.versionMenu(E);
@@ -499,5 +507,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261110m"></script>
+<script src="a2-sunmap.js?v=20261110n"></script>
 </body></html>

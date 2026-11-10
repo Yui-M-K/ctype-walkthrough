@@ -7,11 +7,11 @@ export const BENCH={x0:7.80,x1:8.40,z0:6.02,z1:6.32,seat:0.445};   // seat top (
 
 export function genkan(THREE,E){
   const {Catalog,LG,M,furnThings,furnAnims,lam,fab,notchPull}=E, CH=E.CH, G=LG[0], oc={cast:false};
-  const Z=function(z){ return 2*MZ-z; };
-  const bx=function(g,x0,x1,z0,z1,y0,y1,m,o){ return E.bx(g,x0,x1,Z(z1),Z(z0),y0,y1,m,o); };
-  const rbox=function(g,x0,x1,z0,z1,y0,y1,r,m){ return E.rbox(g,x0,x1,Z(z1),Z(z0),y0,y1,r,m); };
-  const cylm=function(g,cx,cz,r0,r1,y0,y1,m,n){ return E.cylm(g,cx,Z(cz),r0,r1,y0,y1,m,n); };
-  const addCol=function(l,x0,x1,z0,z1,y0,y1,k){ return E.addCol(l,x0,x1,Z(z1),Z(z0),y0,y1,k); };
+  const Z=function(z){ return 2*MZ-z; }, DY=-0.15, Y=function(y){ return y>CH-0.05?y:y+DY; };   // the genkan floor is 15 cm below the wood floor: every height is measured from it, the top stays at the ceiling
+  const bx=function(g,x0,x1,z0,z1,y0,y1,m,o){ return E.bx(g,x0,x1,Z(z1),Z(z0),Y(y0),Y(y1),m,o); };
+  const rbox=function(g,x0,x1,z0,z1,y0,y1,r,m){ return E.rbox(g,x0,x1,Z(z1),Z(z0),Y(y0),Y(y1),r,m); };
+  const cylm=function(g,cx,cz,r0,r1,y0,y1,m,n){ return E.cylm(g,cx,Z(cz),r0,r1,Y(y0),Y(y1),m,n); };
+  const addCol=function(l,x0,x1,z0,z1,y0,y1,k){ return E.addCol(l,x0,x1,Z(z1),Z(z0),Y(y0),Y(y1),k); };
   const top=CH-0.005, t=0.018, KB=0.12, X0=CAB.x0, X1=CAB.x1, Z0=CAB.z0, Z1=CAB.z1;
   const oak=M.oak, W=M.cabF;
   const dark=lam(0x2c2a27,{roughness:0.7});
@@ -38,7 +38,7 @@ export function genkan(THREE,E){
   const LOWS=[KB+0.22,KB+0.44,KB+0.66], UPS=[HI+0.24,HI+0.48,HI+0.72];
   LOWS.concat(UPS).forEach(function(y){ bx(G,X0+t,X1-0.02,zs+t/2,Z1-t,y,y+t,W,oc); });
   bx(G,X0+t,X1-0.02,zs+t/2,Z1-t,KB,KB+t,W,oc);
-  const pair=function(y,x,z,s,rot){ const sc=s[3]||0.88; [-1,1].forEach(function(sd){ const g=Catalog.shoe(s[0],s[1],s[2]); g.scale.setScalar(sc); g.rotation.y=rot||0; g.position.set(x,y+0.001,Z(z+sd*0.052*sc)); g.traverse(function(o){ if(o.isMesh) o.castShadow=true; }); G.add(g); }); };
+  const pair=function(y,x,z,s,rot){ const sc=s[3]||0.88; [-1,1].forEach(function(sd){ const g=Catalog.shoe(s[0],s[1],s[2]); g.scale.setScalar(sc); g.rotation.y=rot||0; g.position.set(x,Y(y)+0.001,Z(z+sd*0.052*sc)); g.traverse(function(o){ if(o.isMesh) o.castShadow=true; }); G.add(g); }); };
   const SHOES=[['sneaker',0xf2efe8,0xf7f5f0,0.88],['loafer',0x3a2a20,0x6b4a33,1],['sneaker',0x2f3a4a,0xf1efe9,1],['pump',0xd9c3a5,0xb9a184,0.88],['loafer',0x1d1e21,0x1d1e21,1],['sneaker',0x9fb0bf,0xf1efe9,0.88],['sandal',0x8c5a3c,0xcdb89a,0.88],['sneaker',0x5a6b58,0xf1efe9,1]];
   let si=0;
   const cx=X0+t+0.15;                                               // shoe centre: toe to the front (+x), heel to the back
@@ -48,7 +48,7 @@ export function genkan(THREE,E){
   pair(LO+0.03,X1-0.14,zs+0.17,['sneaker',0xf2efe8,0xf7f5f0,0.88],0); pair(LO+0.03,X1-0.14,zs+0.5,['loafer',0x3a2a20,0x6b4a33,1],0);
   bx(G,X0+0.06,X0+0.2,Z1-0.18,Z1-0.04,LO+0.03,LO+0.04,oakF,oc);                                    // a tray at the back with a key bowl
   cylm(G,X0+0.13,Z1-0.11,0.05,0.04,LO+0.04,LO+0.07,lam(0xb9b2a4,{roughness:0.7}),20);
-  const pl=Catalog.plant(0.28); pl.group.position.set(X0+0.15,LO+0.03,Z(zs+0.34)); G.add(pl.group);
+  const pl=Catalog.plant(0.28); pl.group.position.set(X0+0.15,Y(LO+0.03),Z(zs+0.34)); G.add(pl.group);
   /* umbrella slot: two folded umbrellas hanging from hooks over a drip tray */
   bx(G,X0+t,X1-0.05,Z0+t,zs-t/2,KB,KB+0.03,dark,oc);
   [Z0+0.055,Z0+0.105].forEach(function(z,i){ const hx=X0+t+0.03, ym=[0.78,0.7][i];
@@ -60,8 +60,8 @@ export function genkan(THREE,E){
   /* doors: finger-pull fronts, a pair for the lower cupboard and a pair for the upper one, each pair opens on its own; the umbrella slot stays open */
   const sets={lo:{leaves:[],parts:[]},hi:{leaves:[],parts:[]}}, zm=(zs+Z1)/2;
   const leaf=function(key,hz,sg,y0,y1,w,py){ sg=-sg; hz=Z(hz); const pv=new THREE.Group(); pv.userData.keep=true; pv.position.set(X1,0,hz); G.add(pv);
-    const m=new THREE.Mesh(new THREE.BoxGeometry(t,y1-y0-0.006,w),oakF); m.position.set(-t/2,(y0+y1)/2,sg*w/2); m.castShadow=m.receiveShadow=true; pv.add(m); sets[key].parts.push(m);
-    const n=notchPull(0xd2b184,0.16); n.position.set(0,py,sg*w); n.rotation.set(0,Math.PI/2,sg*Math.PI/2); pv.add(n);
+    const m=new THREE.Mesh(new THREE.BoxGeometry(t,Y(y1)-Y(y0)-0.006,w),oakF); m.position.set(-t/2,(Y(y0)+Y(y1))/2,sg*w/2); m.castShadow=m.receiveShadow=true; pv.add(m); sets[key].parts.push(m);
+    const n=notchPull(0xd2b184,0.16); n.position.set(0,Y(py),sg*w); n.rotation.set(0,Math.PI/2,sg*Math.PI/2); pv.add(n);
     sets[key].leaves.push({pv:pv,sg:sg}); };
   const lw=(Z1-zs)/2-0.002;
   leaf('lo',zs+0.001,1,KB,LO,lw,LO-0.12); leaf('lo',Z1-0.001,-1,KB,LO,lw,LO-0.12);
@@ -85,11 +85,11 @@ export function genkan(THREE,E){
     const sh=0.16;                                                        // slatted shoe shelf
     for(let z=B.z0+0.05;z<B.z1-0.06;z+=0.052) bx(Gb,B.x0+0.03,B.x1-0.03,z,z+0.044,sh,sh+0.016,oak,oc);
     bx(Gb,B.x0+0.03,B.x0+0.045,B.z0+0.03,B.z1-0.03,sh-0.03,sh,oak,oc); bx(Gb,B.x1-0.045,B.x1-0.03,B.z0+0.03,B.z1-0.03,sh-0.03,sh,oak,oc);   // rails carrying the slats
-    [[0.14,['sneaker',0xf2efe8,0xf7f5f0,0.88]],[0.4,['loafer',0x2a2a2a,0x2a2a2a,1]]].forEach(function(q){ [-1,1].forEach(function(sd){ const g=Catalog.shoe(q[1][0],q[1][1],q[1][2]); g.scale.setScalar(q[1][3]); g.rotation.y=-Math.PI/2; g.position.set(B.x0+q[0]+sd*0.052*q[1][3],sh+0.017,Z((B.z0+B.z1)/2)); Gb.add(g); }); });   // toes to the wall
+    [[0.14,['sneaker',0xf2efe8,0xf7f5f0,0.88]],[0.4,['loafer',0x2a2a2a,0x2a2a2a,1]]].forEach(function(q){ [-1,1].forEach(function(sd){ const g=Catalog.shoe(q[1][0],q[1][1],q[1][2]); g.scale.setScalar(q[1][3]); g.rotation.y=-Math.PI/2; g.position.set(B.x0+q[0]+sd*0.052*q[1][3],Y(sh+0.017),Z((B.z0+B.z1)/2)); Gb.add(g); }); });   // toes to the wall
     
     /* hook rail on the wall above the bench */
     bx(Gb,B.x0+0.05,B.x1-0.05,B.z0,B.z0+0.016,1.38,1.43,oak,oc);
-    [0.14,0.3,0.46].forEach(function(d){ const p=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.04,8),brass); p.rotation.x=Math.PI/2; p.position.set(B.x0+d,1.405,Z(B.z0+0.036)); Gb.add(p); });
+    [0.14,0.3,0.46].forEach(function(d){ const p=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.04,8),brass); p.rotation.x=Math.PI/2; p.position.set(B.x0+d,Y(1.405),Z(B.z0+0.036)); Gb.add(p); });
 
   };
   const benchEast=new THREE.Group(); G.add(benchEast); makeBench(benchEast);
@@ -98,7 +98,7 @@ export function genkan(THREE,E){
   const pivot=new THREE.Group(); pivot.position.set(NX,0,NZ); pivot.rotation.y=Math.PI/2; G.add(pivot);
   const benchNorth=new THREE.Group(); benchNorth.position.set(-bcx,0,-bcz); pivot.add(benchNorth); makeBench(benchNorth);
   pivot.visible=false;
-  const colE=E.addCol(0,EAST_COL[0],EAST_COL[1],EAST_COL[2],EAST_COL[3],0,B.seat+0.01,'x'), colN=E.addCol(0,NX-0.15-0.01,NX+0.15+0.01,NZ-0.3-0.01,NZ+0.3+0.01,0,B.seat+0.01,'x');
+  const colE=E.addCol(0,EAST_COL[0],EAST_COL[1],EAST_COL[2],EAST_COL[3],-0.15,B.seat-0.14,'x'), colN=E.addCol(0,NX-0.15-0.01,NX+0.15+0.01,NZ-0.3-0.01,NZ+0.3+0.01,-0.15,B.seat-0.14,'x');
   E.walls.splice(E.walls.indexOf(colN),1);   // only present while the east wall is removed
   return {cabinet:CAB,bench:B,east:{group:benchEast,col:colE},north:{group:pivot,col:colN},northSeat:[NX,NZ]};
 }

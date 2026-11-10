@@ -135,10 +135,10 @@ export function create(THREE,E,C){
     B(0,gapM,XW-0.014,XW,Z0,Z1,0,H);
     [[Z0,Z0+1.2],[Z0+1.2,Z0+2.4],[Z0+2.4,Z1]].forEach(function(q,i){
       const m=B(0,stoneM,XW-0.028,XW-0.014,q[0]+0.002,q[1]-0.002,0,H-0.003); const uv=m.geometry.attributes.uv; for(let k=0;k<uv.count;k++) uv.setXY(k,uv.getX(k)+i*0.37,uv.getY(k)+i*0.21); });
-    [[7.8,Z0],[Z1,11.59]].forEach(function(q){
+    [[8.0,Z0],[Z1,11.59]].forEach(function(q){
       B(0,backM,XW-0.014,XW,q[0],q[1],0,H);
       for(let z=q[0]+0.015;z<q[1]-0.02;z+=0.05) B(0,woodD,XW-0.044,XW-0.014,z,z+0.03,0,H); });
-    B(0,woodD,XW-0.044,XW,7.8,11.59,H,TOP);
+    B(0,woodD,XW-0.044,XW,8.0,11.59,H,TOP);
     wash(0,XW-0.004,-1,8.37,11.59,TOP,1.3);
   })();
   /* the TV board becomes black marble */

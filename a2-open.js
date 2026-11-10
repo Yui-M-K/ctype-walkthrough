@@ -175,7 +175,7 @@ export function details(THREE,E,C,X){
     const b=base(l), g=X.G[l], strips=[];
     LG[l].children.forEach(function(o){ if(!o.isMesh||o.material!==M.trim||o.geometry.type!=='BoxGeometry') return; const p=o.geometry.parameters;
       if(Math.abs(p.height-0.06)<0.002&&Math.abs(o.position.y-(b+0.03))<0.002&&Math.min(p.width,p.depth)<0.02) strips.push(o); });
-    strips.forEach(function(o){ const p=o.geometry.parameters; bx(g,o.position.x-p.width/2,o.position.x+p.width/2,o.position.z-p.depth/2,o.position.z+p.depth/2,b+0.06,b+0.09,M.trim,{cast:false}); });
+    strips.forEach(function(o){ const p=o.geometry.parameters, ew=l===0&&window.__a2EWCap&&o.position.x>7.15&&o.position.x<8.55&&Math.abs(o.position.z-7.95)<0.08; bx(ew?window.__a2EWCap.group:g,o.position.x-p.width/2,o.position.x+p.width/2,o.position.z-p.depth/2,o.position.z+p.depth/2,b+0.06,b+0.09,M.trim,{cast:false}); });
   });
   /* sills: 12 cm deep, 3 cm thick stone boards on the room side of the plain 0.9 m windows in the 15 cm exterior walls */
   const stone=M.a2stone, cx=4.5, cz=6.16;
