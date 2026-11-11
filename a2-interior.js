@@ -22,9 +22,9 @@ export function curtains(){
     [1,'N',400,750,65,false,{color:0xc9d2c2}],
     [1,'W',65,275,300,false,{color:0xc9d2c2}],
     [1,'E',107,237,850,false,{color:0xc9d2c2}],
-    [1,'S',310,500,1167,false,ivory],
     [1,'S',70,230,1167,false,ivory],
-    [1,'W',867,1127,50,false,ivory]
+    [1,'W',957,1127,50,false,ivory],
+    [1,'W',775,905,50,false,ivory]
   ];
 }
 
@@ -158,10 +158,10 @@ export function create(THREE,E,C){
       g.setAttribute('uv',new THREE.Float32BufferAttribute([x0/0.48,z0, x1/0.48,z0, x1/0.48,z1, x0/0.48,z1],2));
       g.setIndex([0,1,3,1,2,3]); g.computeVertexNormals();
       const m=new THREE.Mesh(g,cedarM); Z(0,(x0+x1)/2,(z0+z1)/2).add(m); });
-    const ZW0=8.37, ZW1=11.595;
+    const ZW0=9.45, ZW1=11.595;
     [5.5,6.6,7.7].forEach(function(x){ B(0,woodD,x-0.075,x+0.075,ZW0,ZW1,ZY(x)-0.31,ZY(x+0.075)+0.02); });
     /* fan: rod, motor, three blades, light disc */
-    const fx=5.9, fz=10.0, yc=ZY(fx), rod=1.7, fg=new THREE.Group(); fg.position.set(fx,yc-rod,fz);
+    const fx=6.5, fz=10.55, yc=ZY(fx), rod=1.7, fg=new THREE.Group(); fg.position.set(fx,yc-rod,fz);
     const part=function(geo,mat,x,y,z,ry){ const o=new THREE.Mesh(geo,mat); o.position.set(x,y,z); if(ry) o.rotation.y=ry; o.castShadow=false; fg.add(o); return o; };
     part(new THREE.CylinderGeometry(0.008,0.008,rod,6),M.dark,0,rod/2,0); part(new THREE.CylinderGeometry(0.1,0.12,0.14,20),M.dark,0,-0.07,0);
     for(let i=0;i<3;i++){ const a=i*Math.PI*2/3, b=part(new THREE.BoxGeometry(0.58,0.012,0.14),M.a2fan,Math.cos(a)*0.4,-0.12,-Math.sin(a)*0.4,a); }
@@ -225,7 +225,7 @@ export function create(THREE,E,C){
 
   /* sheer vertical blind between sofa and desk, hung from a plaster bulkhead (2.4 m at the north edge of the desk zone) */
   (function(){
-    const x=5.27, z0=8.64, z1=10.74, yTop=2.4, yBot=0.5, n=Math.round((z1-z0)/0.115), pos=[], idx=[], nor=[];
+    const x=5.27, z0=8.64, z1=9.42, yTop=2.4, yBot=0.5, n=Math.round((z1-z0)/0.115), pos=[], idx=[], nor=[];
     for(let i=0;i<n;i++){ const zc=z0+(i+0.5)*(z1-z0)/n, a=(i%2?1:-1)*0.5, hw=0.032, dz=Math.cos(a)*hw, dx=Math.sin(a)*hw, b=pos.length/3;
       pos.push(x-dx,yBot,zc-dz, x+dx,yBot,zc+dz, x+dx,yTop,zc+dz, x-dx,yTop,zc-dz); nor.push(1,0,0,1,0,0,1,0,0,1,0,0); idx.push(b,b+1,b+2,b,b+2,b+3); }
     const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3)); g.setIndex(idx);
@@ -236,7 +236,7 @@ export function create(THREE,E,C){
   (function(){
     const px=4.85, z0=8.8, z1=10.7, y=2.02;
     B(0,metalM,px-0.03,px+0.03,z0,z1,y,y+0.06); B(0,E.lampMat,px-0.024,px+0.024,z0+0.03,z1-0.03,y-0.012,y);
-    [10.0,10.55].forEach(function(z){ B(0,M.dark,px-0.003,px+0.003,z-0.003,z+0.003,y+0.06,2.55); });
+    [10.0,10.55].forEach(function(z){ B(0,M.dark,px-0.003,px+0.003,z-0.003,z+0.003,y+0.06,C.ceilY(px*100)-0.05); });   // hung on cables from the roof ceiling: the desk lies mostly under the void
   })();
   /* living-room furnishing around the TV wall */
   put(0,'wallSpeaker',855,846,'W',null,{y:1.1}); put(0,'wallSpeaker',1085,846,'W',null,{y:1.1});
@@ -253,8 +253,8 @@ export function create(THREE,E,C){
   put(0,'plant',1135,272,'E',Catalog.plant(0.75));
   /* ---- 2F ---- */
   rugRect(1,162,610,1.9,2.3); put(1,'plantS',92,808,'E');
-  rugRound(1,1010,420,0.9); put(1,'plantS',1135,262,'E');
-  rugRound(1,990,175,0.7); put(1,'plantS',870,230,'E');
+  rugRound(1,790,205,0.9); put(1,'plantS',1140,330,'E');
+  rugRound(1,1055,150,0.7); put(1,'plantS',760,280,'E');
 
   /* static pieces lose their own groups so the engine merges the whole proposal per material (a few draw calls instead of one set per piece) */
   X.finish=function(){

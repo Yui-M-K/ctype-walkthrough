@@ -21,7 +21,7 @@ export function ceilingLights(THREE,E,C){
   /* 1F */
   round(0,490,545,0.5,6);                    // kitchen aisle
   round(0,420,740,0.4,6);                    // walkway south of the living area
-  round(0,470,960,0.45,6);                   // over the long desk
+  round(0,470,895,0.45,6);                   // over the long desk (its east half lies under the void, so the light sits under the corridor slab)
   pendant(700,970,3.95);                     // over the lift table, shade at 2.25 m under the 6 m ceiling
   round(0,775,694,0.55,6); round(0,775,514,0.55,6); round(0,176,966,0.55,9); round(0,176,725,0.55,6);
   round(0,126,630,0.55,6); round(0,252,652,0.55,6);   // stair foot: the middle of the room is the stairwell opening
