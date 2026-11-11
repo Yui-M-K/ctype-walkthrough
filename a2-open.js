@@ -88,7 +88,7 @@ export function create(THREE,E,C,X,H){
     [zHi,zLo].forEach(function(z){ bx(g,xc-0.025,xc+0.025,z-0.025,z+0.025,b,rail(z)+0.02,E.M.oak); });
     const n=Math.round((zHi-zLo)/0.11);
     for(let i=1;i<n;i++){ const z=zHi-(zHi-zLo)*i/n, post=i%7===0, w=post?0.0125:0.006; bx(g,xc-w,xc+w,z-w,z+w,line(z)+0.2,rail(z)-0.016,rod,{cast:false}); }
-    state.cols.open.push(E.addCol(0,ST.x1-0.045,ST.x1+0.03,zLo-0.02,zHi+0.03,b,b+SH+1.0,'w'));
+    state.cols.open.push(E.addCol(0,ST.x1-0.045,ST.x1+0.03,zLo-0.02,zHi+0.03,b,b+SH+0.2,'w'));
   })();
 
   /* ---- 2. transom glass above doors: openings with a transom, from the door head up to the roof line (1F: ceiling) ---- */
