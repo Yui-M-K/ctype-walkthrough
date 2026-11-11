@@ -51,7 +51,7 @@ const sandbox={__rec:rec,Math,console,
     else if(tag==='polyline') f.misc.push({kind:'polyline',cls:a.class||''}); },
   __rect:(x1,y1,x2,y2,cls,extra)=>{ const f=F(); const A=fig2(Math.min(x1,x2),Math.min(y1,y2)),B=fig2(Math.max(x1,x2),Math.max(y1,y2));
     f.misc.push({kind:'rect',cls:cls||'',style:(extra&&extra.style)||'',rect:[Math.min(A[0],B[0]),Math.min(A[1],B[1]),Math.max(A[0],B[0]),Math.max(A[1],B[1])]}); },
-  __line:(x1,y1,x2,y2,cls)=>{ const f=F(); if(cls==='st') f.st.push({a:fig2(x1,y1),b:fig2(x2,y2)}); else if(cls==='wnH'||cls==='drl'||cls==='dr') f.hline.push({cls,a:fig2(x1,y1),b:fig2(x2,y2)}); },
+  __line:(x1,y1,x2,y2,cls)=>{ const f=F(); if(cls==='st') f.st.push({a:fig2(x1,y1),b:fig2(x2,y2)}); else if(cls==='wn') (f.guard=f.guard||[]).push({a:fig2(x1,y1),b:fig2(x2,y2)}); else if(cls==='wnH'||cls==='drl'||cls==='dr') f.hline.push({cls,a:fig2(x1,y1),b:fig2(x2,y2)}); },
   __text:(x,y,t,cls)=>{ F().texts.push({at:fig2(x,y),t,cls:cls||'',rot:0}); },
   __walls:(ws,ops)=>{ const f=F(); ws.forEach(w=>f.walls.push({a:fig2(w[0],w[1]),b:fig2(w[2],w[3]),t:w[4]}));
     ops.forEach(o=>{ if(Math.hypot(o.x2-o.x1,o.y2-o.y1)>0.5) f.ops.push({a:fig2(o.x1,o.y1),b:fig2(o.x2,o.y2)}); }); },
@@ -141,7 +141,7 @@ const out={
   roof:{type:'shed',highSide:'N',slope:SEC.roofSlope,highEaveHeightAboveGL:SEC.roofHighEaveGL,note:'height drops 0.13 per unit of distance southward from the north wall; ceiling follows the roof (no flat ceiling on 2F or over the void)'},
   levels:[
     Object.assign(L1,{rooms:F1.rooms,furniture:furn(F1),clearances:F1.rc.map(r=>r.rect),stair:stairOf(F1),extras:F1.circles.map(c=>({kind:c.kind,c:c.c,r:c.r||null,rx:c.rx||null,ry:c.ry||null,cls:c.cls}))}),
-    Object.assign(L2,{rooms:F2.rooms,furniture:furn(F2),clearances:F2.rc.map(r=>r.rect),stair:stairOf(F2),extras:F2.circles.map(c=>({kind:c.kind,c:c.c,r:c.r||null,rx:c.rx||null,ry:c.ry||null,cls:c.cls}))}),
+    Object.assign(L2,{guards:(F2.guard||[]).map(g=>({a:g.a,b:g.b})),rooms:F2.rooms,furniture:furn(F2),clearances:F2.rc.map(r=>r.rect),stair:stairOf(F2),extras:F2.circles.map(c=>({kind:c.kind,c:c.c,r:c.r||null,rx:c.rx||null,ry:c.ry||null,cls:c.cls}))}),
   ],
   site:{rooms:SITE.rooms,furniture:furn(SITE),extras:SITE.circles,misc:SITE.misc.filter(x=>x.kind==='rect').map(x=>({cls:x.cls,rect:x.rect.map(v=>+v.toFixed(2)),style:x.style})),
     labels:SITE.texts.filter(t=>t.t&&t.cls!=='dimt').map(t=>({at:t.at,t:t.t}))},
