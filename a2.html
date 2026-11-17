@@ -94,6 +94,7 @@ import * as LIFE from './a2-life.js?v=20261117a';
 import * as GEN from './a2-genkan.js?v=20261117a';
 import * as BAY from './a2-bay.js?v=20261117a';
 import * as WET from './a2-wet.js?v=20261117a';
+import * as ZFIX from './a2-zfix.js?v=20261117a';
 import * as MIR from './a2-mirror.js?v=20261117a';
 import * as EW from './a2-eastwall.js?v=20261117a';
 import * as DOMA from './a2-doma.js?v=20261117a';
@@ -131,6 +132,8 @@ const voidRoom=L2.rooms.find(function(r){ return r.kind==='void'; }), VOIDS=void
 const STAIR=L1.stair, STAIR2=L2.stair;
 const holeKey=function(o){ return o.code==='H1'||o.code==='H2'; };
 
+/* the engine merges its static meshes right after sharing materials: separate coplanar faces first, while every box is still its own mesh */
+{ const share=Walk.Perf.shareMaterials; Walk.Perf.shareMaterials=function(roots,named){ ZFIX.separate(THREE,roots[0].parent||roots[0]); return share.call(this,roots,named); }; }
 Walk.Storeys({THREE:THREE,EffectComposer:EffectComposer,RenderPass:RenderPass,GTAOPass:GTAOPass,OutputPass:OutputPass,HDRLoader:HDRLoader,mergeGeometries:mergeGeometries,KTX2Loader:KTX2Loader},
 {
 id:"a2",
@@ -371,7 +374,7 @@ layout:function(E){
   add('rackB','clothesRack',1,byId(L2,'f5'),'E',function(){ return Catalog.clothesRack(0.75); });
   add('rackC','clothesRack',1,byId(L2,'f6'),'E',function(){ return Catalog.clothesRack(1.4); });
   add('bedKid','bed',1,g(L2,'床 100×200'),'S',function(){ const P=Catalog.bed(), k=1.0/1.64; P.group.scale.x=k; P.cols.forEach(function(c){ c.x0*=k; c.x1*=k; }); return P; });   // the catalog bed is 164 wide: squeezed to a 100 cm single
-  add('deskKid','liftDesk',1,g(L2,'書桌'),'N',function(){ return Catalog.liftDesk(0.82); });
+  add('deskKid','liftDesk',1,(function(r){ return [r[0],r[1]+3,r[2],r[3]+3]; })(g(L2,'書桌').rect),'N',function(){ return Catalog.liftDesk(0.82); });   // 3 cm off the wall: the catalogue desk is deeper than the plan's 55 cm
   add('deskPC','liftDesk',1,g(L2,'電腦桌'),'W',function(){ return Catalog.liftDesk(1.8); });
   add('chairPC','gamingChair',1,[1017,125,1067,175],'E');   // the study chair between the workbench and the printer, west of the PC desk (the daily mode seats him on it)
   /* things ideal_c has in the rooms the two houses share (catalogue pieces, same models) */
