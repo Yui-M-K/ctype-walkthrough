@@ -31,7 +31,7 @@
 
 2F 試作的 PBR 材質（`assets/textures/<名稱>/` 的 albedo・normal・rough，1K）：Poly Haven oak_wood_planks（2F 木地板，調色成原本的淺橡木）；ambientCG Marble025（廚房石英檯面）、Onyx008（2F 淋浴間深灰色石材，去色後模糊成素色無紋，只留極淡的雲霧和細顆粒；原本試的 Marble012 保留在 assets）、Plaster001（2F 牆面的法線）；Poly Haven hinoki_planks（3F 浴室的淺檜木主牆與地磚，去色調亮）。ambientCG Marble024（1F 廁所的灰米色石紋磚 `stone_greige`，加上 60 × 60 cm 磚縫）。3F 浴室的白磁磚（`tile_white`）、1F 廁所的石灰塗料牆（`limewash`）和直條紋橡木的法線（`flute_oak`）是程式產生的。全部 CC0。（2F 試作之後已套用到全屋：1F・3F 的木地板、檯面、玄關石地板的法線，以及所有牆面的灰泥法線；沒有新增貼圖檔，沿用同一組 1K 材質。）
 
-咘咘的 3D 模型（`assets/models/bubu/bubu.glb`，meshopt 壓縮，含 20 段動作和眼睛的形態鍵；`bubu_clips.json` 是動作清單）是自己用 Blender 做的。休息時的麵包坐維持最早的程式模型；網址加 `?cat=old` 會改回原本的程式骨架。
+咘咘的 3D 模型（`assets/models/bubu/bubu.glb`，meshopt 壓縮，含 20 段動作和眼睛的形態鍵；`bubu_clips.json` 是動作清單）是自己用 Blender 做的。休息時的麵包坐維持最早的程式模型；網址加 `?cat=old` 會改回原本的程式骨架。目前預設的 `bubu_v8.glb`（虎斑版）以下列作品為基礎；網址加 `?glb=6` 可回到前一版 v6。
 
 A2 室內提案用的 PBR 材質（`assets/textures/<名稱>/albedo.jpg`，只用色圖）：ambientCG（CC0）Marble012（`stone_tv`，電視牆石材，1K）、Marble017（`stone_black`，黑大理石電視櫃，縮成 512）、Marble019（`marble_white`，書桌白石檯面，1K）；地板沿用 `oak_planks`。
 
@@ -41,6 +41,7 @@ A2 室內提案用的 PBR 材質（`assets/textures/<名稱>/albedo.jpg`，只�
 
 - `GlamVelvetSofa.glb`: © 2021 Wayfair, LLC — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[KhronosGroup/glTF-Sample-Assets](https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/GlamVelvetSofa) より。長さ 1.8 m に縮小し、布の色を青に変更して使用。
 - `assets/models/cats/sleeping_cats.glb`: 「Sleeping Cat」by psucdeviantart — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[Sketchfab](https://sketchfab.com/3d-models/3f7608e2b6b248bf83db09fb21125c2b)（UID 3f7608e2b6b248bf83db09fb21125c2b）より。理想之家（家事動線版）2F ごろ寝區の上で寝ている猫として使用。大きさを約 40 cm に合わせ、無光源（unlit）の材質をライティング対応の材質に置き換えて使用（モデルのファイル内の作者情報は残してある）。
+- `assets/models/bubu/bubu_v8.glb`: 「Bicolor Cat」by kenchoo — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[Sketchfab](https://sketchfab.com/3d-models/bicolor-cat-e623a618ca344a8393d7ba4d63ec23cf)。原作為 guillaume bolis 的「3d modelling my cat: Fripouille」（[https://skfb.ly/6TKqH](https://skfb.ly/6TKqH)，CC BY 4.0）。改作內容：骨架與蒙皮、貼圖調色、動畫。
 - `assets/models/plants/stylized_bush.glb`: 「Stylized Bush」by danielpetrov — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[Sketchfab](https://sketchfab.com/3d-models/9d9ce79d3ae040619e96d5b22c7de1a6)（UID 9d9ce79d3ae040619e96d5b22c7de1a6）より。理想之家（家事動線版）の庭の丸い低木として使用。大きさを調整し、葉の半透明をくり抜き表示（alphaTest）に変更して使用。
 - `assets/models/plants/fern_plant.glb`: 「Plant Bush」by Batuhan13 — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[Sketchfab](https://sketchfab.com/3d-models/42cb7fad10ba44ecbc9ae9cf5fdd63b6)（UID 42cb7fad10ba44ecbc9ae9cf5fdd63b6）より。理想之家（家事動線版）の庭のフェンス際と屋内の鉢植えとして使用。大きさを調整し、貼り付け画像を 2K から縮小（色 800 px・法線 1K の JPEG）して圧縮（4.4 MB → 約 0.7 MB）して使用。網址に `?plants=old` を付けると、庭の植栽を元のプログラム生成版に戻せる。
 - `assets/models/cars/tesla_model3_darkgray.glb`: 「Tesla Model 3」by David_Holiday — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[Sketchfab](https://sketchfab.com/3d-models/123c10f376ec4f18b93c73afc382808b)（UID 123c10f376ec4f18b93c73afc382808b）より。理想之家（家事動線版）・A2 の車庫の車として使用。車体を深灰色の烤漆に、ガラスを半透明に、ホイールを深灰色の金属に調色し、大きさと位置を元の車に合わせて使用（車体は一体のため、ドア・トランク・ボンネットの開閉と乗り込みは無し）。網址に `?car=old` を付けると、元のプログラム生成版の車に戻せる。
