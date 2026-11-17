@@ -83,24 +83,24 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {KTX2Loader} from 'three/addons/loaders/KTX2Loader.js';
-import * as EXT from './a2-exterior.js?v=20261110p';
-import * as KIT from './a2-kitchen.js?v=20261110p';
-import * as LIT from './a2-lights.js?v=20261110p';
-import * as INT from './a2-interior.js?v=20261110p';
-import * as OPEN from './a2-open.js?v=20261110p';
-import * as MDL from './a2-models.js?v=20261110p';
-import * as CAT from './a2-cat.js?v=20261110p';
-import * as LIFE from './a2-life.js?v=20261110p';
-import * as GEN from './a2-genkan.js?v=20261110p';
-import * as BAY from './a2-bay.js?v=20261110p';
-import * as WET from './a2-wet.js?v=20261110p';
-import * as MIR from './a2-mirror.js?v=20261110p';
-import * as EW from './a2-eastwall.js?v=20261110p';
-import * as DOMA from './a2-doma.js?v=20261110p';
+import * as EXT from './a2-exterior.js?v=20261114a';
+import * as KIT from './a2-kitchen.js?v=20261114a';
+import * as LIT from './a2-lights.js?v=20261114a';
+import * as INT from './a2-interior.js?v=20261114a';
+import * as OPEN from './a2-open.js?v=20261114a';
+import * as MDL from './a2-models.js?v=20261114a';
+import * as CAT from './a2-cat.js?v=20261114a';
+import * as LIFE from './a2-life.js?v=20261114a';
+import * as GEN from './a2-genkan.js?v=20261114a';
+import * as BAY from './a2-bay.js?v=20261114a';
+import * as WET from './a2-wet.js?v=20261114a';
+import * as MIR from './a2-mirror.js?v=20261114a';
+import * as EW from './a2-eastwall.js?v=20261114a';
+import * as DOMA from './a2-doma.js?v=20261114a';
 window.THREE=THREE; window.__walkStarted=true; document.getElementById('msg').hidden=true;
 
 /* The plan lives in plans/a2.json (regenerate with tools/extract_a2.js). Plan frame: e = cm east, n = cm north, road on the north side. */
-const PLAN=await (await fetch('plans/a2.json?v=20261110p')).json();
+const PLAN=await (await fetch('plans/a2.json?v=20261114a')).json();
 
 /* Orientation. The engine's straight stair can only rise toward its own "north" (-z), and A2's stair rises toward the true west, so the whole
    house is turned: engine x (right on the minimap) = true north, engine z (down) = true east, engine "up" = true west.
@@ -126,7 +126,7 @@ const byName=function(L,n){ return L.furniture.find(function(f){ return f.name==
 const byRect=function(L,r){ return L.furniture.find(function(f){ return f.rect.every(function(v,i){ return Math.abs(v-r[i])<0.6; }); }); };   // unnamed pieces: ids shift when the plan changes
 const byId=function(L,i){ return L.furniture.find(function(f){ return f.id===i; }); };
 const ROLE={'LDK':'oat','玄關':'hall','淋浴＋脫衣':'utility','鏡子房':'peach','走廊':'hall','廁所':'wc','樓梯':'hall','車庫（開放式）':'outside',
-  '挑高（下方客廳）':'oat','迴廊':'hall','小孩房':'oat','書房':'mist','納戶':'peach','三溫暖':'utility','浴室 1624':'bath','排水管PS':'utility','更衣間':'dress','主臥':'oat','洗面脫衣室':'utility','洗衣間':'dress'};   // wall colour roles after ideal_c's rooms (genkan -> hall, storeroom -> peach, laundry -> dress, sauna -> utility)
+  '挑高（下方客廳）':'oat','走廊東段':'hall','納戶B':'peach','小孩房':'oat','書房':'mist','納戶':'peach','三溫暖':'utility','浴室 1624':'bath','排水管PS':'utility','更衣間':'dress','主臥':'oat','洗面脫衣室':'utility','洗衣間':'dress'};   // wall colour roles after ideal_c's rooms (genkan -> hall, storeroom -> peach, laundry -> dress, sauna -> utility)
 const voidRoom=L2.rooms.find(function(r){ return r.kind==='void'; }), VOIDS=voidRoom.rects, VOID=VOIDS[0];   // [e0,n0,e1,n1]; VOID = the main part (the 1F exterior walls run along it), VOIDS = the L-shaped opening
 const STAIR=L1.stair, STAIR2=L2.stair;
 const holeKey=function(o){ return o.code==='H1'||o.code==='H2'; };
@@ -167,7 +167,7 @@ spots:(function(){
   return [S('玄關',700,830,0,760,450),S('LDK（看電視）',780,560,0,970,835,3),S('長書桌',967,451,0,970,840,6),S('廚房',545,480,0,950,600),
     S('鏡子房',1000,100,0,917,297),S('車庫',385,835,0,250,500),S('緣側',1205,335,0,1390,600,3),
     S('主臥',160,790,1,160,500),S('小孩房',840,270,1,890,80,-8),S('書房',1005,330,1,1100,100,-5),S('浴室群',582,625,1,582,800,-12),
-    S('二樓走廊',700,350,1,300,350),S('二樓西側走廊（看一樓客廳）',890,560,1,1010,690,-30),S('二樓南側走廊（看一樓）',1050,405,1,1050,700,-35),S('陽台',170,885,1,170,1100),
+    S('二樓走廊',700,350,1,300,350),S('納戶B（內部）',889,478,1,889,645,0),S('二樓走廊東段（看一樓）',1050,405,1,1050,700,-35),S('挑高凹進（從書房前沿看）',1000,440,1,889,780,-15),S('陽台',170,885,1,170,1100),
     S('外觀：道路側全景（白天）',700,2290,0,560,850,4),S('外觀：道路側（黃昏）',1800,1800,0,650,700,5),S('外觀：車庫與玄關特寫',560,1420,0,560,850,8),S('外觀：庭院側（黃昏）',2100,450,1,1100,450,-3)];
 })(),
 lay1:{},
@@ -178,7 +178,7 @@ build:function(E){
   const fm=function(r){ return r==='bath'?M.bathWall:(WM[r]||WM.outside); };
   const edgeM=WM.outside;
   /* ---- a wall from the plan: the engine builds it CH high with its doors and windows; walls that run taller get a cap above ---- */
-  const WALK=L2.rooms.find(function(r){ return r.name==='迴廊'; }).rects[0], CLEAR_DOOR=function(w){ return w.axis==='ns'&&Math.abs(w.a[0]-WALK[2])<1; };   // the child room's door onto the walkway
+  const WALK=L2.rooms.find(function(r){ return r.name==='走廊東段'; }).rects[0], CLEAR_DOOR=function(w){ return w.axis==='ns'&&Math.abs(w.a[0]-WALK[2])<1; };   // the child room's door onto the walkway
   const FRONT=function(w,o){ return o.kind==='door'&&w.axis==='ew'&&Math.abs(w.a[1]-NWALL)<1; };
   function opensOf(w,lo,hi,lvl){
     const ew=w.axis==='ew', out=[];
@@ -189,7 +189,7 @@ build:function(E){
       if(o.kind==='door'){
         const closed=ew?o.closedDir[0]:o.closedDir[1], perp=ew?o.openDir[1]:o.openDir[0];
         Object.assign(b,{k:'door',hinge:closed>0?'a':'b',sw:perp>0?1:-1}); if(FRONT(w,o)){ b.mat=M.entry; b.head=2.1; b.drop=DOMA.DEPTH; }   // the leaf reaches down to the lowered genkan floor
-      } else if(o.kind==='slide'){ b.k='slide';
+      } else if(o.kind==='slide'){ b.k='slide'; if(w.id==='L2W26') b.mat=M.frost;   // the closet B door is frosted glass (the plan draws it without a pane opening)
         if(w.openings.some(function(q){ return q.kind==='window'&&q.code===''&&q.from<=o.from+0.5&&q.to>=o.to-0.5; })) b.mat=CLEAR_DOOR(w)?M.glass:M.frost;   // glass sliding door: clear toward the void walkway, frosted elsewhere
       } else {
         const code=o.code;
@@ -230,7 +230,7 @@ build:function(E){
     }
   }
   const inVoid=function(w){ const ew=w.axis==='ew'; const c=ew?w.a[1]:w.a[0];
-    if(ew&&Math.abs(c-VOID[3])<1) return [VOID[0],VOID[2]];             // north wall along the void
+    if(ew&&Math.abs(c-VOID[3])<1) return [Math.min.apply(null,VOIDS.filter(function(q){ return Math.abs(q[3]-VOID[3])<1; }).map(function(q){ return q[0]; })),VOID[2]];   // north wall along the void, including the recess west of it
     if(!ew&&Math.abs(c-VOID[2])<1) return [VOID[1],VOID[3]];            // east wall along the void
     return null; };
   function buildWall(l,w){
@@ -255,7 +255,7 @@ build:function(E){
   L2.walls.forEach(function(w){ OPEN.treat(E,1,w,buildWall); });
   /* ---- slabs, floors, ceilings ---- */
   const FLOOR1={'LDK':FL.wood,'玄關':FL.stone,'淋浴＋脫衣':FL.wc,'鏡子房':FL.wood,'走廊':FL.wood,'廁所':FL.wc,'樓梯':FL.woodD,'車庫（開放式）':FL.conc};   // floors after ideal_c: wc tile for the dressing area, wood elsewhere
-  const FLOOR2={'迴廊':FL.woodD,'小孩房':FL.wood,'書房':FL.wood,'走廊':FL.wood,'納戶':FL.wood,'三溫暖':FL.wc,'浴室 1624':FL.bath,'排水管PS':FL.conc,'更衣間':FL.woodD,'主臥':FL.wood,'洗面脫衣室':FL.wc,'洗衣間':FL.wood,'廁所':FL.wc};
+  const FLOOR2={'走廊東段':FL.woodD,'納戶B':FL.wood,'小孩房':FL.wood,'書房':FL.wood,'走廊':FL.wood,'納戶':FL.wood,'三溫暖':FL.wc,'浴室 1624':FL.bath,'排水管PS':FL.conc,'更衣間':FL.woodD,'主臥':FL.wood,'洗面脫衣室':FL.wc,'洗衣間':FL.wood,'廁所':FL.wc};
   function carve(q,cuts){ let out=[q.slice()]; cuts.forEach(function(c){ const nx=[]; out.forEach(function(a){
       const x0=Math.max(a[0],c[0]), y0=Math.max(a[1],c[1]), x1=Math.min(a[2],c[2]), y1=Math.min(a[3],c[3]);
       if(x0>=x1||y0>=y1){ nx.push(a); return; }
@@ -378,6 +378,8 @@ layout:function(E){
   add('keys','keyRack',0,[788,790,794,810],'W');
   add('suitL','suit30P',1,[688,95,732,141],'W'); add('suitM','suit29B',1,[688,146,732,192],'W'); add('suitS','suit24P',1,[592,160,632,200],'E');
   add('mirrorW','fullMirror',1,[268,640,272,700],'W');
+  /* closet B (e837-942 x n457.5-650, 10 cm walls, door in the south wall): stock shelf on the north wall, cleaning station on the west wall, broom cabinet on the east wall */
+  add('stockB','stockShelf',1,[842,604,934,644],'S'); add('cleanB','cleanWall',1,[841,470,843,570],'E'); add('broomB','broomCabinet',1,[903,500,937,540],'W');
   add('pole','laundryPole',1,[420,520,530,540],'E',function(){ return Catalog.laundryPole(CH_M,1.1,true); });
   add('printer','printerCart',1,g(L2,'3D機'),'S');   // no table in the plan: the printer stands on its own cart
   add('clock','wallClock',0,[979,307,981,309],'N');   // ideal_c's wall clock on the LDK's south wall
@@ -410,6 +412,8 @@ fixtures:function(E){
   blk(1,byName(L2,'工具收納').rect,1.2,M.cab);
   (function(){ const r=byName(L2,'浴缸').rect, p=at(1,(r[0]+r[2])/2,(r[1]+r[3])/2); fixture(1,Catalog.bathtub((r[2]-r[0])/100),p[0],p[1],0); })();
   (function(){ const r=byName(L2,'洗手台').rect, p=at(1,(r[0]+r[2])/2,(r[1]+r[3])/2); fixture(1,Catalog.vanity(),p[0],p[1],0); })();
+  (function(){ const b=base(1), x=WX(1,644.5), z=WZ(1,889); bx(E.LG[1],x-0.012,x,z-0.09,z+0.09,b+2.12,b+2.3,M.trim,{cast:false});   // closet B has no window: a 24-hour ventilation grille high on the north wall
+    for(let i=0;i<5;i++) bx(E.LG[1],x-0.016,x-0.012,z-0.075,z+0.075,b+2.145+i*0.03,b+2.157+i*0.03,M.dark,{cast:false}); })();
   window.__a2X=INT.create(THREE,E,{OPEN:OPEN,ceilY:ceilY,NWALL:NWALL,PLAN:PLAN,L1:L1,L2:L2,VOIDS:VOIDS,NORTH:NORTH});
 },
 lighting:function(E){
@@ -507,5 +511,5 @@ modes:function(E){
 }
 });
 </script>
-<script src="a2-sunmap.js?v=20261110p"></script>
+<script src="a2-sunmap.js?v=20261114a"></script>
 </body></html>
