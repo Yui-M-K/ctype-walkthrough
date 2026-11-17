@@ -95,6 +95,7 @@ import * as GEN from './a2-genkan.js?v=20261117a';
 import * as BAY from './a2-bay.js?v=20261117a';
 import * as WET from './a2-wet.js?v=20261117a';
 import * as ZFIX from './a2-zfix.js?v=20261117a';
+import * as FIT from './a2-fittings.js?v=20261117a';
 import * as MIR from './a2-mirror.js?v=20261117a';
 import * as EW from './a2-eastwall.js?v=20261117a';
 import * as DOMA from './a2-doma.js?v=20261117a';
@@ -418,6 +419,7 @@ fixtures:function(E){
   (function(){ const b=base(1), x=WX(1,644.5), z=WZ(1,889); bx(E.LG[1],x-0.012,x,z-0.09,z+0.09,b+2.12,b+2.3,M.trim,{cast:false});   // closet B has no window: a 24-hour ventilation grille high on the north wall
     for(let i=0;i<5;i++) bx(E.LG[1],x-0.016,x-0.012,z-0.075,z+0.075,b+2.145+i*0.03,b+2.157+i*0.03,M.dark,{cast:false}); })();
   window.__a2X=INT.create(THREE,E,{OPEN:OPEN,ceilY:ceilY,NWALL:NWALL,PLAN:PLAN,L1:L1,L2:L2,VOIDS:VOIDS,NORTH:NORTH});
+  FIT.plates(THREE,E,{levels:[L1,L2]});   // switch plates by the doors and one outlet each (a2-fittings.js)
 },
 lighting:function(E){
   LIT.ceilingLights(THREE,E,{ceilY:ceilY,rooms:L2.rooms});
