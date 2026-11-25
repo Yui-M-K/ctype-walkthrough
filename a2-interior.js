@@ -141,6 +141,33 @@ export function create(THREE,E,C){
     B(0,woodD,XW-0.044,XW,8.0,11.59,H,TOP);
     wash(0,XW-0.004,-1,8.37,11.59,TOP,1.3);
   })();
+  /* ---- cove light along the top of the TV wall: a lipped ledge under the sloped ceiling with an LED strip on it, washing the wall above and the ceiling in front (the wash of the TV wall) ---- */
+  (function(){
+    const XW=C.NWALL/100-0.075, Z0=8.45, Z1=11.5, D=0.18, yTop=C.ceilY(XW*100), Y0=C.ceilY((XW-D/2)*100)-0.14, strip=new THREE.MeshBasicMaterial({color:0xffd9a8}); M.a2coveLed=strip;
+    B(0,M.trim,XW-D,XW,Z0,Z1,Y0,Y0+0.02,{cast:false});                    // ledge
+    B(0,M.trim,XW-D,XW-D+0.02,Z0,Z1,Y0,Y0+0.07,{cast:false});             // lip that hides the strip from below
+    B(0,strip,XW-D+0.04,XW-0.03,Z0+0.02,Z1-0.02,Y0+0.02,Y0+0.026,{cast:false,recv:false});
+    wash(0,XW-0.004,-1,Z0,Z1,Y0+0.06,yTop-Y0-0.07,0xffd0a0);                  // up the wall above the ledge
+    const m=new THREE.MeshBasicMaterial({map:washTex,color:0xffd0a0,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1}); glows.push(m);
+    const xs=XW-D+0.02, xe=XW-1.6, ya=C.ceilY(xs*100)-0.012, yb=C.ceilY(xe*100)-0.012, g=new THREE.BufferGeometry();   // along the ceiling away from the wall, bright at the ledge
+    g.setAttribute('position',new THREE.Float32BufferAttribute([xs,ya,Z0, xs,ya,Z1, xe,yb,Z1, xe,yb,Z0],3)); g.setAttribute('uv',new THREE.Float32BufferAttribute([0,1, 1,1, 1,0, 0,0],2)); g.setIndex([0,1,2,0,2,3,0,2,1,0,3,2]);
+    const w=new THREE.Mesh(g,m); w.renderOrder=2; w.castShadow=w.receiveShadow=false; Z(0,XW,(Z0+Z1)/2).add(w);
+    for(let i=0;i<2;i++){ const p=new THREE.PointLight(0xffd0a0,0.22*E.PLI,3.2,2); p.position.set(XW-D-0.1,Y0-0.1,Z0+(Z1-Z0)*(i+0.5)/2); Z(0,XW,(Z0+Z1)/2).add(p); E.pointLights.push(p); }
+  })();
+
+  /* ---- stair wall: a landscape picture and a brass wall lamp on the solid wall beside the flight (the picture and the brass of ideal_c's hall) ---- */
+  (function(){
+    const xw=2.10, zs=6.85, run=0.225, rise=E.SH/15, brass=mk('a2brass',0xc9a96a,{metalness:0.8,roughness:0.3,envMapIntensity:1});
+    const hAt=function(z){ return (Math.floor((zs-z)/run)+1)*rise; };                    // tread height under a point of the flight
+    const pz=4.9, py=hAt(pz)+1.7;
+    put(0,'artLand',pz*100,xw*100,'E',Catalog.picture(0.9,0.6,py),{});
+    const lz=5.8, ly=2.98, cyl=function(r,h,mat,x,y){ const o=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,16),mat); o.position.set(x,base(0)+y,lz); o.castShadow=false; Z(0,x,lz).add(o); return o; };
+    B(0,brass,xw,xw+0.012,lz-0.04,lz+0.04,ly-0.09,ly+0.09,{cast:false});                     // back plate
+    B(0,brass,xw+0.012,xw+0.1,lz-0.01,lz+0.01,ly-0.01,ly+0.01,{cast:false});                 // arm
+    cyl(0.03,0.2,E.lampMat,xw+0.13,ly); cyl(0.05,0.012,brass,xw+0.13,ly+0.106); cyl(0.05,0.012,brass,xw+0.13,ly-0.106);   // lit tube between two caps
+    wash(0,xw+0.004,1,lz-0.3,lz+0.3,ly+0.12,0.75,0xffd0a0); wash(0,xw+0.004,1,lz-0.3,lz+0.3,ly-0.12,-0.75,0xffd0a0);
+    const p=new THREE.PointLight(0xffd0a0,0.2*E.PLI,3,2); p.position.set(xw+0.25,base(0)+ly,lz); Z(0,xw,lz).add(p); E.pointLights.push(p);
+  })();
   /* the TV board becomes black marble */
   (function(){
     const mv=E.FS.movers.find(function(q){ return q.id==='tv'; }); if(!mv) return;
@@ -314,4 +341,27 @@ export function menu(THREE,E,X){
   X.openOn=startOpen; bo.setAttribute('aria-pressed',String(startOpen));
   X.collectCurtains(); X.late(); set(start);
   window.__a2Int={set:set,setOpen:setOpen,X:X};
+}
+
+/* 2F tone: the upstairs rooms are small, white-walled and lit by several lamps each, so the plaster and ceiling read almost white. The 2F meshes get their own copies of the
+   wall-role and ceiling materials, a little darker and warmer. A copy follows its original (colour set by the proposal switch or a theme change, plaster normal map arriving
+   after the textures load), so 1F and the other houses keep the shared materials. */
+const TONE_WALL=[0.86,0.83,0.79], TONE_CEIL=[0.85,0.83,0.8];
+export function tone2F(THREE,E){
+  const {LG,WM,M}=E, pairs=new Map();
+  const tint=function(hex,f){ return (Math.round((hex>>16&255)*f[0])<<16)|(Math.round((hex>>8&255)*f[1])<<8)|Math.round((hex&255)*f[2]); };
+  const follow=function(orig,f){
+    const cl=orig.clone(); cl.color.setHex(tint(orig.color.getHex(),f)); cl.normalScale=orig.normalScale;
+    const setHex=orig.color.setHex; orig.color.setHex=function(h,cs){ const r=setHex.call(this,h,cs); cl.color.setHex(tint(this.getHex(),f)); Walk.syncSheen(cl); return r; };
+    if(orig.emissive){ const setE=orig.emissive.setHex; orig.emissive.setHex=function(h,cs){ const r=setE.call(this,h,cs); cl.emissive.setHex(h,cs); return r; }; }
+    ['map','normalMap','bumpMap'].forEach(function(k){ let v=orig[k];
+      Object.defineProperty(orig,k,{configurable:true,enumerable:true,get:function(){ return v; },set:function(t){ v=t; cl[k]=t; cl.needsUpdate=true; }}); });
+    pairs.set(orig,cl);
+  };
+  Object.keys(WM).forEach(function(k){ if(!pairs.has(WM[k])) follow(WM[k],TONE_WALL); });
+  if(M.ceil) follow(M.ceil,TONE_CEIL);
+  if(M.bathWall) follow(M.bathWall,TONE_WALL);
+  LG[1].traverse(function(o){ if(!o.isMesh) return;
+    if(Array.isArray(o.material)) o.material=o.material.map(function(m){ return pairs.get(m)||m; });
+    else if(pairs.has(o.material)) o.material=pairs.get(o.material); });
 }

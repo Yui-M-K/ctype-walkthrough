@@ -425,6 +425,7 @@ lighting:function(E){
   LIT.ceilingLights(THREE,E,{ceilY:ceilY,rooms:L2.rooms});
 },
 modes:function(E){
+  ZFIX.clearHeadFrame(THREE,E); INT.tone2F(THREE,E);
   E.player.yaw=Math.PI/2; window.__a2E=E; EXT.frameFinish(THREE,E); INT.menu(THREE,E,window.__a2X);
   /* the engine only draws the storeys above when the stairwell is in view; the LDK void needs its 2F walls (and the roof side) from below */
   /* ---- sun path: Walk.Sun drives the engine's sun; the engine's hour slider is replaced by the date / time panel ---- */

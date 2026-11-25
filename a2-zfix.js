@@ -44,3 +44,24 @@ export function separate(THREE,root){
   }
   return moved;
 }
+
+/* The engine hangs a swing leaf on the outer face of its 4.5 cm hinge jamb, so past about 30% the leaf end still grazes the jamb, and the leaf top sits 2 cm
+   above the underside of the head frame. Halves the width of each hinge jamb (the 2.2 cm that stays is hidden behind the leaf and the wall) and lowers
+   the leaf top by 0.8 cm, so the leaf swings clear of its frame. Door gaps stay as they were. */
+export function clearHeadFrame(THREE,E){
+  const box=new THREE.Box3(), c=new THREE.Vector3(), s=new THREE.Vector3();
+  E.doors.forEach(function(d){
+    if(!d.pv||d.slide||d.fold||d.th===undefined) return;
+    const leaf=d.pv.children[0], lm=leaf&&leaf.children[0], p=lm&&lm.geometry&&lm.geometry.parameters;
+    if(!p||lm.position.y!==0||lm.userData.headClear) return;
+    lm.scale.y=(p.height-0.008)/p.height; lm.position.y=-0.004; lm.userData.headClear=true;
+    const alongX=p.width>p.depth, ax=alongX?'x':'z', cr=alongX?'z':'x', hp=d.pv.position[ax], dir=Math.sign(lm.position[ax]);
+    E.LG[d.l].updateMatrixWorld(true);
+    E.LG[d.l].traverse(function(o){
+      if(!o.isMesh||!o.geometry||o.geometry.type!=='BoxGeometry'||o.userData.headClear) return;
+      box.setFromObject(o); box.getCenter(c); box.getSize(s);
+      if(Math.abs(s[ax]-0.045)>0.004||s.y<1.5||Math.abs(s[cr]-0.12)>0.004||Math.abs(c[ax]-(hp+dir*0.0225))>0.004||Math.abs(c[cr]-d.pv.position[cr])>0.06) return;
+      o.scale[ax]*=0.5; o.position[ax]-=dir*0.01125; o.userData.headClear=true;
+    });
+  });
+}
