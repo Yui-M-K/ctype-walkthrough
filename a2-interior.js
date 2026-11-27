@@ -57,6 +57,14 @@ function cvWash(THREE){
   const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t;
 }
 
+/* the same wash with soft sides, for a short strip (a wall lamp) whose edges would otherwise show as a hard-edged rectangle */
+function cvWashSoft(THREE){
+  const W=32,H=128,c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d'), im=g.createImageData(W,H), st=[[0,1],[0.12,0.7],[0.35,0.3],[0.65,0.08],[1,0]];
+  for(let y=0;y<H;y++){ const t=1-y/(H-1); let a=0; for(let i=1;i<st.length;i++) if(t<=st[i][0]){ const p=st[i-1],q=st[i]; a=p[1]+(q[1]-p[1])*(t-p[0])/(q[0]-p[0]); break; }
+    for(let x=0;x<W;x++){ const u=Math.sin(Math.PI*(x+0.5)/W); const o=(y*W+x)*4; im.data[o]=im.data[o+1]=im.data[o+2]=255; im.data[o+3]=Math.round(255*a*u*u); } }
+  g.putImageData(im,0,0); const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t;
+}
+
 
 /* flat woven rugs as one small canvas each (the catalogue's long-pile rugs cost 15 meshes and a 1024 texture per rug) */
 function cvRug(THREE,kind){
@@ -124,8 +132,8 @@ export function create(THREE,E,C){
   const metalM=mk('a2metal',0xc9cbcc,{roughness:0.35,metalness:0.8,envMapIntensity:1});
   const washTex=cvWash(THREE), glows=[];
   /* additive light wash on a wall: plane at x facing -x (or +x), bright edge at y0, fading along `len` (up if len > 0, down if < 0) */
-  const wash=function(l,x,face,z0,z1,y0,len,col){
-    const m=new THREE.MeshBasicMaterial({map:washTex,color:col||0xffc98f,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
+  const wash=function(l,x,face,z0,z1,y0,len,col,tex){
+    const m=new THREE.MeshBasicMaterial({map:tex||washTex,color:col||0xffc98f,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
     const g=new THREE.Mesh(new THREE.PlaneGeometry(z1-z0,Math.abs(len)),m); g.rotation.y=face>0?Math.PI/2:-Math.PI/2; if(len<0) g.rotation.z=Math.PI;
     g.position.set(x,base(l)+y0+len/2,(z0+z1)/2); g.renderOrder=2; Z(l,x,(z0+z1)/2).add(g); glows.push(m); return g; };
 
@@ -165,8 +173,8 @@ export function create(THREE,E,C){
     B(0,brass,xw,xw+0.012,lz-0.04,lz+0.04,ly-0.09,ly+0.09,{cast:false});                     // back plate
     B(0,brass,xw+0.012,xw+0.1,lz-0.01,lz+0.01,ly-0.01,ly+0.01,{cast:false});                 // arm
     cyl(0.03,0.2,E.lampMat,xw+0.13,ly); cyl(0.05,0.012,brass,xw+0.13,ly+0.106); cyl(0.05,0.012,brass,xw+0.13,ly-0.106);   // lit tube between two caps
-    wash(0,xw+0.004,1,lz-0.3,lz+0.3,ly+0.12,0.75,0xffd0a0); wash(0,xw+0.004,1,lz-0.3,lz+0.3,ly-0.12,-0.75,0xffd0a0);
-    const p=new THREE.PointLight(0xffd0a0,0.2*E.PLI,3,2); p.position.set(xw+0.25,base(0)+ly,lz); Z(0,xw,lz).add(p); E.pointLights.push(p);
+    const soft=cvWashSoft(THREE); [wash(0,xw+0.004,1,lz-0.4,lz+0.4,ly+0.12,0.75,0xffd0a0,soft),wash(0,xw+0.004,1,lz-0.4,lz+0.4,ly-0.12,-0.75,0xffd0a0,soft)].forEach(function(g){ g.material.userData.k=0.8; });
+    const p=new THREE.PointLight(0xffd0a0,0.12*E.PLI,3,2); p.position.set(xw+0.25,base(0)+ly,lz); Z(0,xw,lz).add(p); E.pointLights.push(p);
   })();
   /* the TV board becomes black marble */
   (function(){
@@ -292,7 +300,7 @@ export function create(THREE,E,C){
   };
 
   /* light washes follow the engine's cove: soft by day, full at night, off while everyone sleeps */
-  const glowTick=function(){ let h; try{ h=E.hour; }catch(_){ return; } const night=h>=16.5||h<6.5, o=E.sleepOn?0:(h>=18.5?0.75:night?0.55:0.22); glows.forEach(function(m){ m.opacity=X.on?o:0; }); };
+  const glowTick=function(){ let h; try{ h=E.hour; }catch(_){ return; } const night=h>=16.5||h<6.5, o=E.sleepOn?0:(h>=18.5?0.75:night?0.55:0.22); glows.forEach(function(m){ m.opacity=X.on?o*(m.userData.k||1):0; }); };
   setInterval(glowTick,400);
   X.glowTick=glowTick;
   let oldPendant=[];
